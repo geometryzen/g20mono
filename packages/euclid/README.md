@@ -1,5 +1,3 @@
-# g2o-euclid
-
 g2o Euclidean Geometry Utilities
 
 [![version](https://img.shields.io/npm/v/g2o-euclid.svg)](https://www.npmjs.com/package/g2o-euclid) 

@@ -1,5 +1,3 @@
-# g2o
-
 Geometric Algebra 2D Graphics Library
 
 [![version](https://img.shields.io/npm/v/g2o.svg)](https://www.npmjs.com/package/g2o) 

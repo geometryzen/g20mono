@@ -1,9 +1,12 @@
 {
+    "$schema": "https://typedoc.org/schema.json",
     "entryPoints": [
-        "src/index.ts"
+        "./src/index.ts"
     ],
     "out": "docs",
-    "exclude": "src/**/*.spec.ts",
+    "exclude": [
+        "./src/**/*.spec.ts"
+    ],
     "excludePrivate": true,
     "theme": "default"
 }

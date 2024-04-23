@@ -1,5 +1,3 @@
-# g2o-player
-
 g2o Player
 
 [![version](https://img.shields.io/npm/v/g2o-player.svg)](https://www.npmjs.com/package/g2o-player) 
