@@ -4,33 +4,36 @@ import { Flag } from '../Flag';
 import { IBoard } from '../IBoard';
 import { G20 } from '../math/G20';
 import { Path, PathAttributes } from '../path';
+import { Observable } from '../reactive/Observable';
 import { variable } from '../reactive/variable';
 import { PositionLike } from '../Shape';
 import { HALF_PI, TWO_PI } from '../utils/math';
 import { Commands } from '../utils/path-commands';
 
-export interface CircleAPI<X> {
-    position: X;
+export interface CircleAttributes {
+    position?: PositionLike;
+    attitude?: G20;
+    radius?: number;
+    fill?: Color;
+    fillOpacity?: number;
+    stroke?: Color;
+    strokeOpacity?: number;
+    strokeWidth?: number;
+    resolution?: number;
+}
+
+export interface CircleProperties {
+    X: G20;
+    R: G20;
+    position: G20;
     attitude: G20;
     radius: number;
+    radius$: Observable<number>;
     fill: Color;
     fillOpacity: number;
     stroke: Color;
     strokeOpacity: number;
     strokeWidth: number;
-}
-
-export interface CircleAttributes extends Partial<CircleAPI<PositionLike>> {
-    position?: PositionLike;
-    attitude?: G20;
-    radius?: number;
-    resolution?: number;
-}
-
-export interface CircleProperties extends CircleAPI<G20> {
-    position: G20;
-    attitude: G20;
-    radius: number;
 }
 
 export class Circle extends Path implements CircleProperties {
@@ -127,6 +130,9 @@ export class Circle extends Path implements CircleProperties {
                 this.update();
             }
         }
+    }
+    get radius$(): Observable<number> {
+        return this.zzz.radius$;
     }
 }
 

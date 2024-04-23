@@ -1,4 +1,4 @@
-import { Circle, Disposable, dispose, G20, variable } from "g2o";
+import { CircleProperties, Disposable, dispose, G20, variable } from "g2o";
 
 export class CircleCircleIntersection implements Disposable {
     readonly #disposables: Disposable[] = [];
@@ -11,7 +11,7 @@ export class CircleCircleIntersection implements Disposable {
      * A monotonically increasing number that increments every time the points are re-computed.
      */
     readonly change$ = this.#change.asObservable();
-    constructor(circleA: Circle, circleB: Circle) {
+    constructor(circleA: CircleProperties, circleB: CircleProperties) {
         const P1: G20 = G20.vector(0, 0);
         const P2: G20 = G20.vector(0, 0);
         const ca: G20 = G20.vector(0, 0);
@@ -68,7 +68,7 @@ export class CircleCircleIntersection implements Disposable {
             compute();
             this.#change.set(this.#change.get() + 1);
         }));
-        this.#disposables.push(circleA.zzz.radius$.subscribe(() => {
+        this.#disposables.push(circleA.radius$.subscribe(() => {
             ca.copy(circleA.X);
             cb.copy(circleB.X);
             R = circleA.radius;
@@ -76,7 +76,7 @@ export class CircleCircleIntersection implements Disposable {
             compute();
             this.#change.set(this.#change.get() + 1);
         }));
-        this.#disposables.push(circleB.zzz.radius$.subscribe(() => {
+        this.#disposables.push(circleB.radius$.subscribe(() => {
             ca.copy(circleA.X);
             cb.copy(circleB.X);
             R = circleA.radius;
