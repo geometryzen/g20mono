@@ -1,6 +1,7 @@
 import { debounceTime, fromEvent, Subscription } from 'rxjs';
 import { Anchor } from './anchor';
 import { Constants } from './constants';
+import { Color } from './effects/ColorProvider';
 import { Group } from './group';
 import { IBoard } from './IBoard';
 import { G20 } from './math/G20';
@@ -30,8 +31,13 @@ export interface BoardAttributes {
 }
 
 export interface PointAttributes {
-    id: string;
-    visibility: 'visible' | 'hidden' | 'collapse';
+    id?: string;
+    fill?: Color;
+    fillOpacity?: number;
+    stroke?: Color;
+    strokeOpacity?: number;
+    strokeWidth?: number;
+    visibility?: 'visible' | 'hidden' | 'collapse';
 }
 
 export class Board implements IBoard {
@@ -269,8 +275,8 @@ export class Board implements IBoard {
         return circle;
     }
 
-    ellipse(options: Partial<EllipseAttributes> = {}): Ellipse {
-        const ellipse = new Ellipse(this, options);
+    ellipse(attributes: EllipseAttributes = {}): Ellipse {
+        const ellipse = new Ellipse(this, attributes);
         this.add(ellipse);
         return ellipse;
     }
@@ -292,14 +298,17 @@ export class Board implements IBoard {
         return path;
     }
 
-    point(position: PositionLike, attributes: Partial<PointAttributes> = {}): Shape {
+    point(position: PositionLike, attributes: PointAttributes = {}): Shape {
         const { left, top, right, bottom } = this.getBoundingBox();
         const sx = this.width / (top - left);
         const sy = this.height / (bottom - right);
         const rx = 4 / sx;
         const ry = 4 / sy;
-        const options: Partial<EllipseAttributes> = { position, rx, ry, id: attributes.id, visibility: attributes.visibility };
-        const ellipse = new Ellipse(this, options);
+        const ellipse_attribs = ellipse_attribs_from_point_attribs(attributes);
+        ellipse_attribs.position = position;
+        ellipse_attribs.rx = rx;
+        ellipse_attribs.ry = ry;
+        const ellipse = new Ellipse(this, ellipse_attribs);
         this.add(ellipse);
         return ellipse;
     }
@@ -550,4 +559,18 @@ function get_container_id(elementOrId: string | HTMLElement): string {
     }
 }
 
+function ellipse_attribs_from_point_attribs(attributes: PointAttributes): EllipseAttributes {
+    const retval: EllipseAttributes = {
+        id: attributes.id,
+        fill: attributes.fill,
+        fillOpacity: attributes.fillOpacity,
+        // attitude: attributes.attitude,
+        // position: attributes.position,
+        stroke: attributes.stroke,
+        strokeOpacity: attributes.strokeOpacity,
+        strokeWidth: attributes.strokeWidth,
+        visibility: attributes.visibility
+    };
+    return retval;
+}
 

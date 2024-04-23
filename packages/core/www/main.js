@@ -1,7 +1,7 @@
 new EventSource('/esbuild').addEventListener('change', () => location.reload());
 "use strict";
 (() => {
-  // node_modules/tslib/tslib.es6.mjs
+  // ../../node_modules/tslib/tslib.es6.mjs
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
@@ -230,12 +230,12 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     }
   }
 
-  // node_modules/rxjs/dist/esm5/internal/util/isFunction.js
+  // ../../node_modules/rxjs/dist/esm5/internal/util/isFunction.js
   function isFunction(value) {
     return typeof value === "function";
   }
 
-  // node_modules/rxjs/dist/esm5/internal/util/createErrorClass.js
+  // ../../node_modules/rxjs/dist/esm5/internal/util/createErrorClass.js
   function createErrorClass(createImpl) {
     var _super = function(instance) {
       Error.call(instance);
@@ -247,7 +247,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     return ctorFunc;
   }
 
-  // node_modules/rxjs/dist/esm5/internal/util/UnsubscriptionError.js
+  // ../../node_modules/rxjs/dist/esm5/internal/util/UnsubscriptionError.js
   var UnsubscriptionError = createErrorClass(function(_super) {
     return function UnsubscriptionErrorImpl(errors) {
       _super(this);
@@ -259,7 +259,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     };
   });
 
-  // node_modules/rxjs/dist/esm5/internal/util/arrRemove.js
+  // ../../node_modules/rxjs/dist/esm5/internal/util/arrRemove.js
   function arrRemove(arr, item) {
     if (arr) {
       var index = arr.indexOf(item);
@@ -267,7 +267,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     }
   }
 
-  // node_modules/rxjs/dist/esm5/internal/Subscription.js
+  // ../../node_modules/rxjs/dist/esm5/internal/Subscription.js
   var Subscription = function() {
     function Subscription3(initialTeardown) {
       this.initialTeardown = initialTeardown;
@@ -404,7 +404,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     }
   }
 
-  // node_modules/rxjs/dist/esm5/internal/config.js
+  // ../../node_modules/rxjs/dist/esm5/internal/config.js
   var config = {
     onUnhandledError: null,
     onStoppedNotification: null,
@@ -413,7 +413,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     useDeprecatedNextContext: false
   };
 
-  // node_modules/rxjs/dist/esm5/internal/scheduler/timeoutProvider.js
+  // ../../node_modules/rxjs/dist/esm5/internal/scheduler/timeoutProvider.js
   var timeoutProvider = {
     setTimeout: function(handler, timeout) {
       var args = [];
@@ -433,7 +433,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     delegate: void 0
   };
 
-  // node_modules/rxjs/dist/esm5/internal/util/reportUnhandledError.js
+  // ../../node_modules/rxjs/dist/esm5/internal/util/reportUnhandledError.js
   function reportUnhandledError(err) {
     timeoutProvider.setTimeout(function() {
       var onUnhandledError = config.onUnhandledError;
@@ -445,11 +445,11 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     });
   }
 
-  // node_modules/rxjs/dist/esm5/internal/util/noop.js
+  // ../../node_modules/rxjs/dist/esm5/internal/util/noop.js
   function noop() {
   }
 
-  // node_modules/rxjs/dist/esm5/internal/NotificationFactories.js
+  // ../../node_modules/rxjs/dist/esm5/internal/NotificationFactories.js
   var COMPLETE_NOTIFICATION = function() {
     return createNotification("C", void 0, void 0);
   }();
@@ -467,7 +467,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     };
   }
 
-  // node_modules/rxjs/dist/esm5/internal/util/errorContext.js
+  // ../../node_modules/rxjs/dist/esm5/internal/util/errorContext.js
   var context = null;
   function errorContext(cb) {
     if (config.useDeprecatedSynchronousErrorHandling) {
@@ -494,7 +494,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     }
   }
 
-  // node_modules/rxjs/dist/esm5/internal/Subscriber.js
+  // ../../node_modules/rxjs/dist/esm5/internal/Subscriber.js
   var Subscriber = function(_super) {
     __extends(Subscriber2, _super);
     function Subscriber2(destination) {
@@ -659,17 +659,17 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     complete: noop
   };
 
-  // node_modules/rxjs/dist/esm5/internal/symbol/observable.js
+  // ../../node_modules/rxjs/dist/esm5/internal/symbol/observable.js
   var observable = function() {
     return typeof Symbol === "function" && Symbol.observable || "@@observable";
   }();
 
-  // node_modules/rxjs/dist/esm5/internal/util/identity.js
+  // ../../node_modules/rxjs/dist/esm5/internal/util/identity.js
   function identity(x) {
     return x;
   }
 
-  // node_modules/rxjs/dist/esm5/internal/util/pipe.js
+  // ../../node_modules/rxjs/dist/esm5/internal/util/pipe.js
   function pipeFromArray(fns) {
     if (fns.length === 0) {
       return identity;
@@ -684,7 +684,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     };
   }
 
-  // node_modules/rxjs/dist/esm5/internal/Observable.js
+  // ../../node_modules/rxjs/dist/esm5/internal/Observable.js
   var Observable = function() {
     function Observable5(subscribe) {
       if (subscribe) {
@@ -776,7 +776,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     return value && value instanceof Subscriber || isObserver(value) && isSubscription(value);
   }
 
-  // node_modules/rxjs/dist/esm5/internal/util/lift.js
+  // ../../node_modules/rxjs/dist/esm5/internal/util/lift.js
   function hasLift(source) {
     return isFunction(source === null || source === void 0 ? void 0 : source.lift);
   }
@@ -795,7 +795,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     };
   }
 
-  // node_modules/rxjs/dist/esm5/internal/operators/OperatorSubscriber.js
+  // ../../node_modules/rxjs/dist/esm5/internal/operators/OperatorSubscriber.js
   function createOperatorSubscriber(destination, onNext, onComplete, onError, onFinalize) {
     return new OperatorSubscriber(destination, onNext, onComplete, onError, onFinalize);
   }
@@ -843,7 +843,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     return OperatorSubscriber2;
   }(Subscriber);
 
-  // node_modules/rxjs/dist/esm5/internal/util/ObjectUnsubscribedError.js
+  // ../../node_modules/rxjs/dist/esm5/internal/util/ObjectUnsubscribedError.js
   var ObjectUnsubscribedError = createErrorClass(function(_super) {
     return function ObjectUnsubscribedErrorImpl() {
       _super(this);
@@ -852,7 +852,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     };
   });
 
-  // node_modules/rxjs/dist/esm5/internal/Subject.js
+  // ../../node_modules/rxjs/dist/esm5/internal/Subject.js
   var Subject = function(_super) {
     __extends(Subject2, _super);
     function Subject2() {
@@ -1009,7 +1009,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     return AnonymousSubject2;
   }(Subject);
 
-  // node_modules/rxjs/dist/esm5/internal/BehaviorSubject.js
+  // ../../node_modules/rxjs/dist/esm5/internal/BehaviorSubject.js
   var BehaviorSubject = function(_super) {
     __extends(BehaviorSubject2, _super);
     function BehaviorSubject2(_value) {
@@ -1043,7 +1043,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     return BehaviorSubject2;
   }(Subject);
 
-  // node_modules/rxjs/dist/esm5/internal/scheduler/dateTimestampProvider.js
+  // ../../node_modules/rxjs/dist/esm5/internal/scheduler/dateTimestampProvider.js
   var dateTimestampProvider = {
     now: function() {
       return (dateTimestampProvider.delegate || Date).now();
@@ -1051,7 +1051,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     delegate: void 0
   };
 
-  // node_modules/rxjs/dist/esm5/internal/scheduler/Action.js
+  // ../../node_modules/rxjs/dist/esm5/internal/scheduler/Action.js
   var Action = function(_super) {
     __extends(Action2, _super);
     function Action2(scheduler, work) {
@@ -1066,7 +1066,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     return Action2;
   }(Subscription);
 
-  // node_modules/rxjs/dist/esm5/internal/scheduler/intervalProvider.js
+  // ../../node_modules/rxjs/dist/esm5/internal/scheduler/intervalProvider.js
   var intervalProvider = {
     setInterval: function(handler, timeout) {
       var args = [];
@@ -1086,7 +1086,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     delegate: void 0
   };
 
-  // node_modules/rxjs/dist/esm5/internal/scheduler/AsyncAction.js
+  // ../../node_modules/rxjs/dist/esm5/internal/scheduler/AsyncAction.js
   var AsyncAction = function(_super) {
     __extends(AsyncAction2, _super);
     function AsyncAction2(scheduler, work) {
@@ -1176,7 +1176,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     return AsyncAction2;
   }(Action);
 
-  // node_modules/rxjs/dist/esm5/internal/Scheduler.js
+  // ../../node_modules/rxjs/dist/esm5/internal/Scheduler.js
   var Scheduler = function() {
     function Scheduler2(schedulerActionCtor, now) {
       if (now === void 0) {
@@ -1195,7 +1195,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     return Scheduler2;
   }();
 
-  // node_modules/rxjs/dist/esm5/internal/scheduler/AsyncScheduler.js
+  // ../../node_modules/rxjs/dist/esm5/internal/scheduler/AsyncScheduler.js
   var AsyncScheduler = function(_super) {
     __extends(AsyncScheduler2, _super);
     function AsyncScheduler2(SchedulerAction, now) {
@@ -1231,35 +1231,35 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     return AsyncScheduler2;
   }(Scheduler);
 
-  // node_modules/rxjs/dist/esm5/internal/scheduler/async.js
+  // ../../node_modules/rxjs/dist/esm5/internal/scheduler/async.js
   var asyncScheduler = new AsyncScheduler(AsyncAction);
 
-  // node_modules/rxjs/dist/esm5/internal/util/isArrayLike.js
+  // ../../node_modules/rxjs/dist/esm5/internal/util/isArrayLike.js
   var isArrayLike = function(x) {
     return x && typeof x.length === "number" && typeof x !== "function";
   };
 
-  // node_modules/rxjs/dist/esm5/internal/util/isPromise.js
+  // ../../node_modules/rxjs/dist/esm5/internal/util/isPromise.js
   function isPromise(value) {
     return isFunction(value === null || value === void 0 ? void 0 : value.then);
   }
 
-  // node_modules/rxjs/dist/esm5/internal/util/isInteropObservable.js
+  // ../../node_modules/rxjs/dist/esm5/internal/util/isInteropObservable.js
   function isInteropObservable(input) {
     return isFunction(input[observable]);
   }
 
-  // node_modules/rxjs/dist/esm5/internal/util/isAsyncIterable.js
+  // ../../node_modules/rxjs/dist/esm5/internal/util/isAsyncIterable.js
   function isAsyncIterable(obj) {
     return Symbol.asyncIterator && isFunction(obj === null || obj === void 0 ? void 0 : obj[Symbol.asyncIterator]);
   }
 
-  // node_modules/rxjs/dist/esm5/internal/util/throwUnobservableError.js
+  // ../../node_modules/rxjs/dist/esm5/internal/util/throwUnobservableError.js
   function createInvalidObservableTypeError(input) {
     return new TypeError("You provided " + (input !== null && typeof input === "object" ? "an invalid object" : "'" + input + "'") + " where a stream was expected. You can provide an Observable, Promise, ReadableStream, Array, AsyncIterable, or Iterable.");
   }
 
-  // node_modules/rxjs/dist/esm5/internal/symbol/iterator.js
+  // ../../node_modules/rxjs/dist/esm5/internal/symbol/iterator.js
   function getSymbolIterator() {
     if (typeof Symbol !== "function" || !Symbol.iterator) {
       return "@@iterator";
@@ -1268,12 +1268,12 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
   }
   var iterator = getSymbolIterator();
 
-  // node_modules/rxjs/dist/esm5/internal/util/isIterable.js
+  // ../../node_modules/rxjs/dist/esm5/internal/util/isIterable.js
   function isIterable(input) {
     return isFunction(input === null || input === void 0 ? void 0 : input[iterator]);
   }
 
-  // node_modules/rxjs/dist/esm5/internal/util/isReadableStreamLike.js
+  // ../../node_modules/rxjs/dist/esm5/internal/util/isReadableStreamLike.js
   function readableStreamLikeToAsyncGenerator(readableStream) {
     return __asyncGenerator(this, arguments, function readableStreamLikeToAsyncGenerator_1() {
       var reader, _a, value, done;
@@ -1318,7 +1318,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     return isFunction(obj === null || obj === void 0 ? void 0 : obj.getReader);
   }
 
-  // node_modules/rxjs/dist/esm5/internal/observable/innerFrom.js
+  // ../../node_modules/rxjs/dist/esm5/internal/observable/innerFrom.js
   function innerFrom(input) {
     if (input instanceof Observable) {
       return input;
@@ -1463,7 +1463,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     });
   }
 
-  // node_modules/rxjs/dist/esm5/internal/util/executeSchedule.js
+  // ../../node_modules/rxjs/dist/esm5/internal/util/executeSchedule.js
   function executeSchedule(parentSubscription, scheduler, work, delay, repeat) {
     if (delay === void 0) {
       delay = 0;
@@ -1485,7 +1485,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     }
   }
 
-  // node_modules/rxjs/dist/esm5/internal/operators/map.js
+  // ../../node_modules/rxjs/dist/esm5/internal/operators/map.js
   function map(project, thisArg) {
     return operate(function(source, subscriber) {
       var index = 0;
@@ -1495,7 +1495,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     });
   }
 
-  // node_modules/rxjs/dist/esm5/internal/util/mapOneOrManyArgs.js
+  // ../../node_modules/rxjs/dist/esm5/internal/util/mapOneOrManyArgs.js
   var isArray = Array.isArray;
   function callOrApply(fn, args) {
     return isArray(args) ? fn.apply(void 0, __spreadArray([], __read(args))) : fn(args);
@@ -1506,7 +1506,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     });
   }
 
-  // node_modules/rxjs/dist/esm5/internal/operators/mergeInternals.js
+  // ../../node_modules/rxjs/dist/esm5/internal/operators/mergeInternals.js
   function mergeInternals(source, subscriber, project, concurrent, onBeforeNext, expand, innerSubScheduler, additionalFinalizer) {
     var buffer = [];
     var active = 0;
@@ -1566,7 +1566,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     };
   }
 
-  // node_modules/rxjs/dist/esm5/internal/operators/mergeMap.js
+  // ../../node_modules/rxjs/dist/esm5/internal/operators/mergeMap.js
   function mergeMap(project, resultSelector, concurrent) {
     if (concurrent === void 0) {
       concurrent = Infinity;
@@ -1585,7 +1585,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     });
   }
 
-  // node_modules/rxjs/dist/esm5/internal/observable/fromEvent.js
+  // ../../node_modules/rxjs/dist/esm5/internal/observable/fromEvent.js
   var nodeEventEmitterMethods = ["addListener", "removeListener"];
   var eventTargetMethods = ["addEventListener", "removeEventListener"];
   var jqueryMethods = ["on", "off"];
@@ -1643,7 +1643,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     return isFunction(target.addEventListener) && isFunction(target.removeEventListener);
   }
 
-  // node_modules/rxjs/dist/esm5/internal/operators/debounceTime.js
+  // ../../node_modules/rxjs/dist/esm5/internal/operators/debounceTime.js
   function debounceTime(dueTime, scheduler) {
     if (scheduler === void 0) {
       scheduler = asyncScheduler;
@@ -6361,20 +6361,20 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     _flagHeight = false;
     _width = 0;
     _height = 0;
-    constructor(board, options = {}) {
-      const amount = options.resolution ? Math.max(options.resolution, 2) : 4;
+    constructor(board, attributes = {}) {
+      const amount = attributes.resolution ? Math.max(attributes.resolution, 2) : 4;
       const points = [];
       for (let i = 0; i < amount; i++) {
         points.push(new Anchor(G20.vector(0, 0)));
       }
-      super(board, points, true, true, true, path_attributes2(options));
-      if (typeof options.rx === "number") {
-        this.width = options.rx * 2;
+      super(board, points, true, true, true, path_attribs_from_ellipse_attribs(attributes));
+      if (typeof attributes.rx === "number") {
+        this.width = attributes.rx * 2;
       } else {
         this.width = 1;
       }
-      if (typeof options.ry === "number") {
-        this.height = options.ry * 2;
+      if (typeof attributes.ry === "number") {
+        this.height = attributes.ry * 2;
       } else {
         this.height = 1;
       }
@@ -6431,11 +6431,16 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       this._flagWidth = true;
     }
   };
-  function path_attributes2(attributes) {
+  function path_attribs_from_ellipse_attribs(attributes) {
     const retval = {
       id: attributes.id,
+      fill: attributes.fill,
+      fillOpacity: attributes.fillOpacity,
       attitude: attributes.attitude,
       position: attributes.position,
+      stroke: attributes.stroke,
+      strokeOpacity: attributes.strokeOpacity,
+      strokeWidth: attributes.strokeWidth,
       visibility: attributes.visibility
     };
     return retval;
@@ -6494,12 +6499,12 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
   var Polygon = class extends Path {
     constructor(board, points = [], attributes = {}) {
       const vertices = points.map((point) => position_from_like(point)).map((position, index) => new Anchor(position, index === 0 ? "M" : "L"));
-      super(board, vertices, true, false, false, path_attributes3(attributes));
+      super(board, vertices, true, false, false, path_attributes2(attributes));
       this.flagReset(true);
       this.update();
     }
   };
-  function path_attributes3(attributes) {
+  function path_attributes2(attributes) {
     const retval = {
       id: attributes.id,
       opacity: attributes.opacity,
@@ -7400,8 +7405,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       this.add(circle);
       return circle;
     }
-    ellipse(options = {}) {
-      const ellipse = new Ellipse(this, options);
+    ellipse(attributes = {}) {
+      const ellipse = new Ellipse(this, attributes);
       this.add(ellipse);
       return ellipse;
     }
@@ -7425,8 +7430,11 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       const sy = this.height / (bottom - right);
       const rx = 4 / sx;
       const ry = 4 / sy;
-      const options = { position, rx, ry, id: attributes.id, visibility: attributes.visibility };
-      const ellipse = new Ellipse(this, options);
+      const ellipse_attribs = ellipse_attribs_from_point_attribs(attributes);
+      ellipse_attribs.position = position;
+      ellipse_attribs.rx = rx;
+      ellipse_attribs.ry = ry;
+      const ellipse = new Ellipse(this, ellipse_attribs);
       this.add(ellipse);
       return ellipse;
     }
@@ -7645,13 +7653,27 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       return elementOrId.id;
     }
   }
+  function ellipse_attribs_from_point_attribs(attributes) {
+    const retval = {
+      id: attributes.id,
+      fill: attributes.fill,
+      fillOpacity: attributes.fillOpacity,
+      // attitude: attributes.attitude,
+      // position: attributes.position,
+      stroke: attributes.stroke,
+      strokeOpacity: attributes.strokeOpacity,
+      strokeWidth: attributes.strokeWidth,
+      visibility: attributes.visibility
+    };
+    return retval;
+  }
 
   // src/main.ts
   document.addEventListener("DOMContentLoaded", function() {
     const board = new Board("my-board", {
       boundingBox: { left: -5, top: 5, right: 5, bottom: -5 }
     });
-    const A = board.point([0, 0], { id: "A", visibility: "hidden" });
+    const A = board.point([0, 0], { id: "A", visibility: "visible", fill: "red", stroke: "red" });
     const B = board.point([8, 0], { id: "B", visibility: "hidden" });
     const C = board.point([8, 4], { id: "C", visibility: "hidden" });
     const AB = B.position.__sub__(A.position);

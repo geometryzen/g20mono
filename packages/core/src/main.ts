@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
         boundingBox: { left: -5, top: 5, right: 5, bottom: -5 },
     });
 
-    const A = board.point([0.0, 0.0], { id: 'A', visibility: 'hidden' });
+    const A = board.point([0.0, 0.0], { id: 'A', visibility: 'visible', fill: 'red', stroke: 'red' });
     const B = board.point([8.0, 0.0], { id: 'B', visibility: 'hidden' });
     const C = board.point([8.0, 4.0], { id: 'C', visibility: 'hidden' });
 

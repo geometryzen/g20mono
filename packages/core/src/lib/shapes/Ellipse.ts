@@ -1,4 +1,5 @@
 import { Anchor } from '../anchor.js';
+import { Color } from '../effects/ColorProvider.js';
 import { Flag } from '../Flag.js';
 import { IBoard } from '../IBoard.js';
 import { G20 } from '../math/G20.js';
@@ -10,13 +11,18 @@ import { Commands } from '../utils/path-commands.js';
 const cos = Math.cos, sin = Math.sin;
 
 export interface EllipseAttributes {
-    id: string;
-    position: PositionLike;
-    attitude: G20;
-    rx: number;
-    ry: number;
-    resolution: number;
-    visibility: 'visible' | 'hidden' | 'collapse';
+    id?: string;
+    fill?: Color;
+    fillOpacity?: number;
+    position?: PositionLike;
+    attitude?: G20;
+    rx?: number;
+    ry?: number;
+    stroke?: Color;
+    strokeOpacity?: number;
+    strokeWidth?: number;
+    resolution?: number;
+    visibility?: 'visible' | 'hidden' | 'collapse';
 }
 
 export class Ellipse extends Path {
@@ -27,26 +33,26 @@ export class Ellipse extends Path {
     _width = 0;
     _height = 0;
 
-    constructor(board: IBoard, options: Partial<EllipseAttributes> = {}) {
+    constructor(board: IBoard, attributes: EllipseAttributes = {}) {
 
         // At least 2 vertices are required for proper circlage
-        const amount = options.resolution ? Math.max(options.resolution, 2) : 4;
+        const amount = attributes.resolution ? Math.max(attributes.resolution, 2) : 4;
         const points = [];
         for (let i = 0; i < amount; i++) {
             points.push(new Anchor(G20.vector(0, 0)));
         }
 
-        super(board, points, true, true, true, path_attributes(options));
+        super(board, points, true, true, true, path_attribs_from_ellipse_attribs(attributes));
 
-        if (typeof options.rx === 'number') {
-            this.width = options.rx * 2;
+        if (typeof attributes.rx === 'number') {
+            this.width = attributes.rx * 2;
         }
         else {
             this.width = 1;
         }
 
-        if (typeof options.ry === 'number') {
-            this.height = options.ry * 2;
+        if (typeof attributes.ry === 'number') {
+            this.height = attributes.ry * 2;
         }
         else {
             this.height = 1;
@@ -122,11 +128,16 @@ export class Ellipse extends Path {
     }
 }
 
-function path_attributes(attributes: Partial<EllipseAttributes>): Partial<PathAttributes> {
+function path_attribs_from_ellipse_attribs(attributes: EllipseAttributes): Partial<PathAttributes> {
     const retval: Partial<PathAttributes> = {
         id: attributes.id,
+        fill: attributes.fill,
+        fillOpacity: attributes.fillOpacity,
         attitude: attributes.attitude,
         position: attributes.position,
+        stroke: attributes.stroke,
+        strokeOpacity: attributes.strokeOpacity,
+        strokeWidth: attributes.strokeWidth,
         visibility: attributes.visibility
     };
     return retval;
