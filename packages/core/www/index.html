@@ -1,0 +1,41 @@
+<html>
+
+<head>
+    <base href="/">
+    <title>g2o</title>
+    <script tpe="module" src="./main.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/modern-css-reset/dist/reset.min.css" />
+    <style>
+        body {
+            background-color: #ffffff;
+            margin: 8px;
+        }
+
+        .board {
+            /* for IE 7 */
+            position: relative;
+            overflow: hidden;
+            background-color: #fff;
+            border-style: solid;
+            border-width: 1px;
+            border-color: #356aa0;
+            border-radius: 10px;
+            -webkit-border-radius: 10px;
+            margin: 0;
+        }
+
+        .board svg text {
+            cursor: default;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='my-board' class='board' style='width:600px; height:600px'></div>
+</body>
+
+</html>
