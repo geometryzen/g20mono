@@ -1,5 +1,5 @@
 /**
-* g2o 0.9.167
+* g2o 0.9.168
 * (c) David Geo Holmes david.geo.holmes@gmail.com
 * Released under the MIT License.
 */
