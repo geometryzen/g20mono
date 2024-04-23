@@ -1,6 +1,6 @@
 {
     "name": "g2o-player",
-    "version": "0.9.0",
+    "version": "0.9.168",
     "description": "g2o Player",
     "exports": {
         ".": {
