@@ -10,7 +10,7 @@ echo "Please enter a commit message"
 read message
 git commit -m "'$message'"
 git push origin main
-lerna version --no-private
+lerna version --no-private --force-publish
 lerna publish from-package
 #lerna run docs
 #lerna run pages
