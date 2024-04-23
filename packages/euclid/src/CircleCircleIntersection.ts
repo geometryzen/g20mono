@@ -1,10 +1,5 @@
 import { Circle, Disposable, dispose, G20, variable } from "g2o";
 
-/**
- * The following calculation is coordinate-free.
- * For a coordinate-based solution see
- * https://mathworld.wolfram.com/Circle-CircleIntersection.html#:~:text=Two%20circles%20may%20intersect%20in,known%20as%20the%20radical%20line. 
- */
 export class CircleCircleIntersection implements Disposable {
     readonly #disposables: Disposable[] = [];
     /**
@@ -27,6 +22,11 @@ export class CircleCircleIntersection implements Disposable {
         const D: G20 = G20.vector(0, 0);
         let R: number = -1;
         let r: number = -1;
+        /**
+         * The following calculation is coordinate-free.
+         * For a coordinate-based solution see
+         * https://mathworld.wolfram.com/Circle-CircleIntersection.html#:~:text=Two%20circles%20may%20intersect%20in,known%20as%20the%20radical%20line. 
+         */
         const compute = () => {
             if (R !== -1 && r !== -1) {
                 D.copy(cb).sub(ca);
