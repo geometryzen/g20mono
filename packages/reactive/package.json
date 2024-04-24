@@ -1,7 +1,7 @@
 {
     "name": "g2o-reactive",
     "version": "0.9.174",
-    "description": "Template TypeScript Library",
+    "description": "Wrapper around signal-polyfill to support different module formats",
     "exports": {
         ".": {
             "types": "./dist/index.d.ts",

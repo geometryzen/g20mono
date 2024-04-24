@@ -1,3 +1,4 @@
+import { effect, state } from 'g2o-reactive';
 import { Anchor } from './anchor';
 import { Collection } from './collection';
 import { Color, is_color_provider, serialize_color } from './effects/ColorProvider';
@@ -63,7 +64,7 @@ export class Path extends Shape implements PathAttributes {
 
     readonly #stroke = variable('#000000' as Color);
     #stroke_change: Disposable | null = null;
-    readonly #strokeWidth = variable(1);
+    readonly #strokeWidth = state(1);
     readonly #strokeOpacity = variable(1.0);
 
     #vectorEffect: 'none' | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position' = 'non-scaling-stroke';
@@ -120,7 +121,6 @@ export class Path extends Shape implements PathAttributes {
         this.zzz.fillOpacity$ = this.#fillOpacity.asObservable();
         this.zzz.stroke$ = this.#stroke.asObservable();
         this.zzz.strokeOpacity$ = this.#strokeOpacity.asObservable();
-        this.zzz.strokeWidth$ = this.#strokeWidth.asObservable();
 
         this.flagReset(true);
         this.zzz.flags[Flag.ClipPath] = false;
@@ -384,9 +384,9 @@ export class Path extends Shape implements PathAttributes {
             }));
 
             // strokeWidth
-            this.zzz.disposables.push(this.zzz.strokeWidth$.subscribe((strokeWidth) => {
+            this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = {};
-                change['stroke-width'] = `${strokeWidth}`;
+                change['stroke-width'] = `${this.strokeWidth}`;
                 svg.setAttributes(this.zzz.elem, change);
                 return function () {
                     // No cleanup to be done.

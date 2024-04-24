@@ -1,3 +1,4 @@
+import { effect } from 'g2o-reactive';
 import { Color, is_color_provider, serialize_color } from './effects/ColorProvider';
 import { ElementBase } from './element';
 import { Flag } from './Flag';
@@ -122,7 +123,6 @@ export class Text extends Shape implements TextProperties {
         this.zzz.fontStyle$ = this.#fontStyle.asObservable();
         this.zzz.fontWeight$ = this.#fontWeight.asObservable();
         this.zzz.stroke$ = this.#stroke.asObservable();
-        this.zzz.strokeWidth$ = this.#strokeWidth.asObservable();
         this.zzz.textContent$ = this.#textContent.asObservable();
 
         this.zzz.flags[Flag.Stroke] = true;
@@ -395,9 +395,9 @@ export class Text extends Shape implements TextProperties {
             }));
 
             // stroke-width
-            this.zzz.disposables.push(this.zzz.strokeWidth$.subscribe((strokeWidth) => {
+            this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = {};
-                change['stroke-width'] = `${strokeWidth}`;
+                change['stroke-width'] = `${this.strokeWidth}`;
                 svg.setAttributes(this.zzz.elem, change);
                 return function () {
                     // No cleanup to be done.

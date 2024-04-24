@@ -70,7 +70,6 @@ export class ZZZ implements Disposable {
     spreadMethod$: Observable<'pad' | 'reflect' | 'repeat'>;
     stroke$?: Observable<Color>;
     strokeOpacity$?: Observable<number>;
-    strokeWidth$?: Observable<number>;
     textContent$?: Observable<string>;
     units$?: Observable<'userSpaceOnUse' | 'objectBoundingBox'>;
 

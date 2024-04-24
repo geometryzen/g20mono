@@ -310,6 +310,18 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       e2.get();
     q.watch();
   }
+  function j(e2) {
+    let r2;
+    const o2 = new P.Computed(() => {
+      "function" == typeof r2 && r2(), r2 = e2();
+    });
+    return q.watch(o2), o2.get(), t2 = () => {
+      q.unwatch(o2), "function" == typeof r2 && r2();
+    }, { dispose: () => {
+      t2();
+    } };
+    var t2;
+  }
   function G(e2, r2 = {}) {
     return new P.State(e2, r2);
   }
@@ -2060,11 +2072,11 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     }
     return maxRow;
   }
-  function swapRows(A, i2, j, N2) {
+  function swapRows(A, i2, j2, N2) {
     const colLength = N2 + 1;
     for (let column = i2; column < colLength; column++) {
-      const temp = A[j][column];
-      A[j][column] = A[i2][column];
+      const temp = A[j2][column];
+      A[j2][column] = A[i2][column];
       A[i2][column] = temp;
     }
   }
@@ -2097,9 +2109,9 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       const bi = b2[i2];
       Ai.push(bi);
     }
-    for (let j = 0; j < N2; j++) {
-      swapRows(A, j, rowWithMaximumInColumn(A, j, N2), N2);
-      makeZeroBelow(A, j, N2);
+    for (let j2 = 0; j2 < N2; j2++) {
+      swapRows(A, j2, rowWithMaximumInColumn(A, j2, N2), N2);
+      makeZeroBelow(A, j2, N2);
     }
     return solve(A, N2);
   }
@@ -3770,7 +3782,6 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     spreadMethod$;
     stroke$;
     strokeOpacity$;
-    strokeWidth$;
     textContent$;
     units$;
     vertices;
@@ -5206,13 +5217,13 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       }
     }
     const jlen = tvalues.length;
-    let j = jlen;
+    let j2 = jlen;
     let mt;
-    while (j--) {
-      t2 = tvalues[j];
+    while (j2--) {
+      t2 = tvalues[j2];
       mt = 1 - t2;
-      bounds[0][j] = mt * mt * mt * x1 + 3 * mt * mt * t2 * x2 + 3 * mt * t2 * t2 * x3 + t2 * t2 * t2 * x4;
-      bounds[1][j] = mt * mt * mt * y1 + 3 * mt * mt * t2 * y2 + 3 * mt * t2 * t2 * y3 + t2 * t2 * t2 * y4;
+      bounds[0][j2] = mt * mt * mt * x1 + 3 * mt * mt * t2 * x2 + 3 * mt * t2 * t2 * x3 + t2 * t2 * t2 * x4;
+      bounds[1][j2] = mt * mt * mt * y1 + 3 * mt * mt * t2 * y2 + 3 * mt * t2 * t2 * y3 + t2 * t2 * t2 * y4;
     }
     bounds[0][jlen] = x1;
     bounds[1][jlen] = y1;
@@ -5382,7 +5393,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     #fillOpacity = variable(1);
     #stroke = variable("#000000");
     #stroke_change = null;
-    #strokeWidth = variable(1);
+    #strokeWidth = G(1);
     #strokeOpacity = variable(1);
     #vectorEffect = "non-scaling-stroke";
     /**
@@ -5428,7 +5439,6 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       this.zzz.fillOpacity$ = this.#fillOpacity.asObservable();
       this.zzz.stroke$ = this.#stroke.asObservable();
       this.zzz.strokeOpacity$ = this.#strokeOpacity.asObservable();
-      this.zzz.strokeWidth$ = this.#strokeWidth.asObservable();
       this.flagReset(true);
       this.zzz.flags[6 /* ClipPath */] = false;
       this.zzz.flags[5 /* ClipFlag */] = false;
@@ -5590,9 +5600,9 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
           return function() {
           };
         }));
-        this.zzz.disposables.push(this.zzz.strokeWidth$.subscribe((strokeWidth) => {
+        this.zzz.disposables.push(j(() => {
           const change = {};
-          change["stroke-width"] = `${strokeWidth}`;
+          change["stroke-width"] = `${this.strokeWidth}`;
           svg.setAttributes(this.zzz.elem, change);
           return function() {
           };
@@ -7024,7 +7034,6 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       this.zzz.fontStyle$ = this.#fontStyle.asObservable();
       this.zzz.fontWeight$ = this.#fontWeight.asObservable();
       this.zzz.stroke$ = this.#stroke.asObservable();
-      this.zzz.strokeWidth$ = this.#strokeWidth.asObservable();
       this.zzz.textContent$ = this.#textContent.asObservable();
       this.zzz.flags[28 /* Stroke */] = true;
       this.value = value;
@@ -7237,9 +7246,9 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
           return function() {
           };
         }));
-        this.zzz.disposables.push(this.zzz.strokeWidth$.subscribe((strokeWidth) => {
+        this.zzz.disposables.push(j(() => {
           const change = {};
-          change["stroke-width"] = `${strokeWidth}`;
+          change["stroke-width"] = `${this.strokeWidth}`;
           svg.setAttributes(this.zzz.elem, change);
           return function() {
           };
