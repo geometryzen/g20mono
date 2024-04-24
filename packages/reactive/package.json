@@ -1,6 +1,6 @@
 {
     "name": "g2o-reactive",
-    "version": "0.9.4",
+    "version": "0.9.174",
     "description": "Template TypeScript Library",
     "exports": {
         ".": {
