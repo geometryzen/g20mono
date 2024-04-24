@@ -1,4 +1,4 @@
-import { debounceTime, fromEvent, Subscription } from 'rxjs';
+import { effect, state } from 'g2o-reactive';
 import { Anchor } from './anchor';
 import { Constants } from './constants';
 import { Color } from './effects/ColorProvider';
@@ -6,8 +6,8 @@ import { Group } from './group';
 import { IBoard } from './IBoard';
 import { G20 } from './math/G20';
 import { Path } from './path';
-import { Disposable } from './reactive/Disposable';
-import { variable } from './reactive/variable';
+import { Disposable, disposableFromFunction, dispose } from './reactive/Disposable';
+import { sizeEquals } from './renderers/Size';
 import { SVGViewFactory } from './renderers/SVGViewFactory';
 import { View } from './renderers/View';
 import { ViewFactory } from './renderers/ViewFactory';
@@ -42,8 +42,9 @@ export interface PointAttributes {
 
 export class Board implements IBoard {
 
+    readonly #disposables: Disposable[] = [];
+
     readonly #view: View;
-    #view_resize: Disposable | null = null;
 
     /**
      * A wrapper group that is used to transform the scene from user coordinates to pixels.
@@ -54,31 +55,15 @@ export class Board implements IBoard {
      */
     readonly #scene: Group;
 
-    /**
-     * The width of the instance's dom element.
-     */
-    width = 0;
-
-    /**
-     * The height of the instance's dom element.
-     */
-    height = 0;
-
-    readonly #size = variable({ width: this.width, height: this.height });
-    readonly size$ = this.#size.asObservable();
-
-    /**
-     * 
-     */
-    ratio: number | undefined = void 0;
+    readonly #size = state({ width: 0, height: 0 }, { equals: sizeEquals });
+    readonly #ratio = state(1);
 
     /**
      * A helper to handle sizing.
      */
     readonly #fitter: Fitter;
 
-    readonly #frameCount = variable(0);
-    readonly frameCount$ = this.#frameCount.asObservable();
+    readonly #frameCount = state(0);
 
     // Used to compute the elapsed time between frames.
     #curr_now: number | null = null;
@@ -144,24 +129,18 @@ export class Board implements IBoard {
         }
 
         // Why do we need to create this subscription to the view?
-        if (typeof this.#view.size$ === 'object') {
-            this.#view_resize = this.#view.size$.subscribe(({ width, height }) => {
-                this.width = width;
-                this.height = height;
-                this.#update_view_box();
-                this.#size.set({ width, height });
-            });
-        }
-        else {
-            throw new Error("view.size$ MUST be defined");
-        }
+        this.#disposables.push(effect(() => {
+            const width = this.#view.width;
+            const height = this.#view.height;
+            this.width = width;
+            this.height = height;
+            this.#update_view_box();
+            this.#size.set({ width, height });
+        }));
     }
 
     dispose(): void {
-        if (this.#view_resize) {
-            this.#view_resize.dispose();
-            this.#view_resize = null;
-        }
+        dispose(this.#disposables);
         this.#fitter.unsubscribe();
     }
 
@@ -186,12 +165,39 @@ export class Board implements IBoard {
         this.#viewBox.scaleXY.set(sx, sy);
     }
 
+    get frameCount(): number {
+        return this.#frameCount.get();
+    }
+
     get scaleXY(): G20 {
         return this.#viewBox.scaleXY.clone();
     }
 
     get scene(): Group {
         return this.#scene;
+    }
+
+    get width(): number {
+        return this.#size.get().width;
+    }
+    set width(width: number) {
+        const size = this.#size.get();
+        size.width = width;
+        this.#size.set(size);
+    }
+    get height(): number {
+        return this.#size.get().height;
+    }
+    set height(height: number) {
+        const size = this.#size.get();
+        size.height = height;
+        this.#size.set(size);
+    }
+    get ratio(): number {
+        return this.#ratio.get();
+    }
+    set ratio(ratio: number) {
+        this.#ratio.set(ratio);
     }
 
     appendTo(container: Element) {
@@ -357,77 +363,6 @@ export class Board implements IBoard {
         this.add(group);
         return group;
     }
-
-    // TODO
-    /*
-    interpret(svg: SVGElement, shallow?: boolean, add?: boolean): Group {
-
-        const tag = svg.tagName.toLowerCase() as 'svg';
-
-        add = (typeof add !== 'undefined') ? add : true;
-
-        if (!(tag in read)) {
-            return null;
-        }
-
-        const node = read[tag].call(this, svg);
-
-        if (add) {
-            this.add(shallow && node instanceof Group ? node.children : node);
-        }
-        else if (node.parent) {
-            // Remove `g` tags that have been added to scenegraph / DOM
-            // in order to be compatible with `getById` methods.
-            node.remove();
-        }
-
-        return node;
-
-    }
-    */
-
-    /*
-    load(url: string): Promise<Group> {
-        return new Promise<Group>((resolve, reject) => {
-            const group = new Group(this);
-            // let elem, i, child;
-
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const attach = (responseText: string) => {
-                // TODO
-                dom.temp.innerHTML = responseText;
-
-                for (i = 0; i < dom.temp.children.length; i++) {
-                    elem = dom.temp.children[i];
-                    child = this.interpret(elem, false, false);
-                    if (child !== null) {
-                        group.add(child);
-                    }
-                }
-
-                if (typeof callback === 'function') {
-                    const svg = dom.temp.children.length <= 1
-                        ? dom.temp.children[0] : dom.temp.children;
-                    callback(group, svg);
-                }
-            };
-
-            if (/\.svg$/i.test(url)) {
-                try {
-                    xhr(url, attach);
-                    resolve(group);
-                }
-                catch (e) {
-                    reject(e);
-                }
-            }
-            else {
-                attach(url);
-                resolve(group);
-            }
-        });
-    }
-    */
 }
 
 class Fitter {
@@ -435,7 +370,7 @@ class Fitter {
     readonly #view: View;
     readonly #domElement: HTMLElement | SVGElement;
     #target: Element | null = null;
-    #target_resize: Subscription | null = null;
+    #target_resize: Disposable | null = null;
     constructor(board: Board, view: View) {
         this.#board = board;
         this.#view = view;
@@ -452,18 +387,22 @@ class Fitter {
      */
     subscribe(): void {
         this.unsubscribe();
-        this.#target_resize = fromEvent(this.#target, 'resize')
-            .pipe(debounceTime(200))
-            .subscribe(() => {
-                this.resize();
-            });
+        const callback = () => {
+            this.resize();
+
+        };
+        this.#target.addEventListener('resize', callback);
+        const cleanup = () => {
+            this.#target.removeEventListener('resize', callback);
+        };
+        this.#target_resize = disposableFromFunction(cleanup);
     }
     /**
      * Idempotent unsubscribe from 'resize' events of the target.
      */
     unsubscribe(): void {
         if (this.#target_resize) {
-            this.#target_resize.unsubscribe();
+            this.#target_resize.dispose();
             this.#target_resize = null;
         }
     }

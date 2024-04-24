@@ -1,20 +1,27 @@
 import { Canvg } from 'canvg';
-import { Group, Observable, SVGViewFactory, View } from "g2o";
+import { Group, SVGViewFactory, View } from "g2o";
 
 export class CanvasView implements View {
-    domElement: HTMLCanvasElement | SVGElement;
+    domElement: HTMLCanvasElement;
     #ctx: CanvasRenderingContext2D;
-    height?: number;
-    size$: Observable<{ width: number; height: number; }>;
-    width?: number;
     #svgView: View;
     constructor(viewBox: Group, containerId: string) {
         this.#svgView = new SVGViewFactory().createView(viewBox, containerId);
-        const canvas = document.createElement('canvas');
-        this.#ctx = canvas.getContext('2d');
-        this.domElement = canvas;//this.#svgView.domElement;
-        this.size$ = this.#svgView.size$;
-        document.body.appendChild(canvas);
+        this.domElement = document.createElement('canvas');
+        this.#ctx = this.domElement.getContext('2d');
+        document.body.appendChild(this.domElement);
+    }
+    get width(): number {
+        return this.#svgView.width;
+    }
+    set width(width: number) {
+        this.#svgView.width = width;
+    }
+    get height(): number {
+        return this.#svgView.height;
+    }
+    set height(height: number) {
+        this.#svgView.height = height;
     }
     render(): void {
         this.#svgView.render();

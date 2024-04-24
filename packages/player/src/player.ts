@@ -1,4 +1,5 @@
 import { Board, Disposable } from "g2o";
+import { effect } from "g2o-reactive";
 
 export class Player {
     readonly #board: Board;
@@ -9,7 +10,9 @@ export class Player {
     #handle: number | null = null;
     constructor(board: Board, callback: (frameCount: number) => void) {
         this.#board = board;
-        this.#frameCount = board.frameCount$.subscribe(callback);
+        this.#frameCount = effect(() => {
+            callback(board.frameCount);
+        });
     }
     dispose(): void {
         if (this.#frameCount) {

@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const board = new Board("my-board", {
         boundingBox: { left: -5, top: 5, right: 5, bottom: -5 },
+        resizeTo: document.body
     });
 
     const A = board.point([0.0, 0.0], { id: 'A', visibility: 'collapse', fill: 'red', stroke: 'red' });

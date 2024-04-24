@@ -380,9 +380,6 @@ export class SVGView implements View {
     readonly viewBox: Group;
     readonly defs: SVGDefsElement;
 
-    width?: number;
-    height?: number;
-
     readonly #size = variable({ width: 0, height: 0 });
     readonly size$ = this.#size.asObservable();
 
@@ -405,6 +402,24 @@ export class SVGView implements View {
         set_defs_dirty_flag(this.defs, false);
         this.domElement.appendChild(this.defs);
         this.domElement.style.overflow = 'hidden';
+    }
+
+    get width(): number {
+        return this.#size.get().width;
+    }
+    set width(width: number) {
+        const size = this.#size.get();
+        size.width = width;
+        this.#size.set(size);
+    }
+
+    get height(): number {
+        return this.#size.get().height;
+    }
+    set height(height: number) {
+        const size = this.#size.get();
+        size.height = height;
+        this.#size.set(size);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

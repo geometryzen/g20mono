@@ -66,7 +66,8 @@
     },
     "homepage": "https://github.com/geometryzen/g2o-player#readme",
     "peerDependencies": {
-        "g2o": "file:../core"
+        "g2o": "file:../core",
+        "g2o-reactive": "file:../reactive"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^25.0.7",
