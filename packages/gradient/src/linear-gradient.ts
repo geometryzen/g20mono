@@ -1,4 +1,5 @@
 import { ColorProvider, Disposable, G20 } from 'g2o';
+import { effect } from 'g2o-reactive';
 import { Gradient } from './gradient';
 import { Stop } from './stop';
 import { createElement, get_svg_element_defs, setAttributes, SVGAttributes } from './svg';
@@ -45,14 +46,14 @@ export class LinearGradient extends Gradient implements ColorProvider {
             changed.id = this.id;
             this.zzz.elem = createElement('linearGradient', changed);
 
-            this.zzz.disposables.push(this.zzz.units$.subscribe((units) => {
+            this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = {};
-                change.gradientUnits = units;
+                change.gradientUnits = this.units;
                 setAttributes(this.zzz.elem, change);
             }));
-            this.zzz.disposables.push(this.zzz.spreadMethod$.subscribe((spreadMethod) => {
+            this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = {};
-                change.spreadMethod = spreadMethod;
+                change.spreadMethod = this.spreadMethod;
                 setAttributes(this.zzz.elem, change);
             }));
         }

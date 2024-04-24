@@ -130,11 +130,6 @@ export class Circle extends Path implements CircleProperties {
             }
         }
     }
-    /*
-    get radius$(): Observable<number> {
-        return this.zzz.radius$;
-    }
-    */
 }
 
 function path_attributes(attributes: CircleAttributes): Partial<PathAttributes> {

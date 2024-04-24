@@ -1,20 +1,14 @@
-import { ColorProvider, Disposable, G20, variable } from 'g2o';
+import { ColorProvider, G20 } from 'g2o';
+import { effect, state } from 'g2o-reactive';
 import { Gradient } from './gradient';
 import { Stop } from './stop';
 import { createElement, get_svg_element_defs, setAttributes, SVGAttributes } from './svg';
 
 export class RadialGradient extends Gradient implements ColorProvider {
 
-    _flagCenter = false;
-    _flagFocal = false;
-
-    readonly #radius = variable(null as number | null);
-
-    #center: G20 | null = null;
-    #center_change: Disposable | null = null;
-
-    #focal: G20 | null = null;
-    #focal_change: Disposable | null = null;
+    readonly #center: G20;
+    readonly #radius = state(null as number | null);
+    readonly #focal: G20;
 
     /**
      * @param cx The x position of the origin of the radial gradient.
@@ -28,14 +22,11 @@ export class RadialGradient extends Gradient implements ColorProvider {
 
         super(stops);
 
-        this.zzz.radius$ = this.#radius.asObservable();
+        this.#center = new G20(cx, cy);
 
-        this.center = new G20(cx, cy);
+        this.#radius.set(r);
 
-        this.radius = r;
-
-        this.focal = new G20(fx, fy);
-        this.focal.copy(this.center);
+        this.#focal = this.center.clone();
         if (typeof fx === 'number') {
             this.focal.x = fx;
         }
@@ -47,37 +38,42 @@ export class RadialGradient extends Gradient implements ColorProvider {
     render(svgElement: SVGElement): this {
         const changed: SVGAttributes = {};
 
-        if (this._flagCenter) {
-            changed.cx = `${this.center.x}`;
-            changed.cy = `${this.center.y}`;
-        }
-        if (this._flagFocal) {
-            changed.fx = `${this.focal.x}`;
-            changed.fy = `${this.focal.y}`;
-        }
-
         if (this.zzz.elem) {
             setAttributes(this.zzz.elem, changed);
         }
         else {
             changed.id = this.id;
             this.zzz.elem = createElement('radialGradient', changed);
-            // gradientUnits
-            this.zzz.disposables.push(this.zzz.units$.subscribe((units) => {
+            // center
+            this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = {};
-                change.gradientUnits = units;
+                change.cx = `${this.center.x}`;
+                change.cy = `${this.center.y}`;
+                setAttributes(this.zzz.elem, change);
+            }));
+            // focal
+            this.zzz.disposables.push(effect(() => {
+                const change: SVGAttributes = {};
+                change.fx = `${this.focal.x}`;
+                change.fy = `${this.focal.y}`;
+                setAttributes(this.zzz.elem, change);
+            }));
+            // gradientUnits
+            this.zzz.disposables.push(effect(() => {
+                const change: SVGAttributes = {};
+                change.gradientUnits = this.units;
                 setAttributes(this.zzz.elem, change);
             }));
             // radius
-            this.zzz.disposables.push(this.zzz.radius$.subscribe((radius) => {
+            this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = {};
-                change.r = `${radius}`;
+                change.r = `${this.radius}`;
                 setAttributes(this.zzz.elem, change);
             }));
             // spreadMethod
-            this.zzz.disposables.push(this.zzz.spreadMethod$.subscribe((spreadMethod) => {
+            this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = {};
-                change.spreadMethod = spreadMethod;
+                change.spreadMethod = this.spreadMethod;
                 setAttributes(this.zzz.elem, change);
             }));
         }
@@ -127,52 +123,29 @@ export class RadialGradient extends Gradient implements ColorProvider {
         return this.flagReset();
     }
 
-    static Stop = Stop;
-    static Properties = ['center', 'radius', 'focal'];
-
     update() {
-        if (this._flagCenter || this._flagFocal || this._flagStops) {
+        if (this._flagStops) {
             this._change.set(this);
         }
         return this;
     }
 
     override flagReset(dirtyFlag = false) {
-        this._flagCenter = this._flagFocal = false;
         super.flagReset(dirtyFlag);
         return this;
     }
 
-    get center() {
+    get center(): G20 {
         return this.#center;
     }
-
-    set center(v) {
-        if (this.#center_change) {
-            this.#center_change.dispose();
-            this.#center_change = null;
-        }
-        this.#center = v;
-        this.#center_change = this.#center.change$.subscribe(() => {
-            this._flagCenter = true;
-        });
-        this._flagCenter = true;
+    set center(center: G20) {
+        this.#center.copyVector(center);
     }
-
-    get focal() {
+    get focal(): G20 {
         return this.#focal;
     }
-
-    set focal(v) {
-        if (this.#focal_change) {
-            this.#focal_change.dispose();
-            this.#focal_change = null;
-        }
-        this.#focal = v;
-        this.#focal_change = this.#focal.change$.subscribe(() => {
-            this._flagFocal = true;
-        });
-        this._flagFocal = true;
+    set focal(focal) {
+        this.#focal.copyVector(focal);
     }
     get radius(): number | null {
         return this.#radius.get();

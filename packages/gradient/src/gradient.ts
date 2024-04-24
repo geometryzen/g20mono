@@ -1,4 +1,5 @@
 import { Children, Disposable, ElementBase, Group, variable } from 'g2o';
+import { state } from 'g2o-reactive';
 import { Constants } from './constants';
 import { Stop } from './stop';
 
@@ -13,12 +14,12 @@ export abstract class Gradient extends ElementBase<Group> {
      * Indicates what happens if the gradient starts or ends inside the bounds of the target rectangle.
      * @see {@link https://www.w3.org/TR/SVG11/pservers.html#LinearGradientElementSpreadMethodAttribute} for more information
      */
-    readonly #spreadMethod = variable('pad' as 'pad' | 'reflect' | 'repeat');
+    readonly #spreadMethod = state('pad' as 'pad' | 'reflect' | 'repeat');
     /**
      * Indicates how coordinate values are interpreted by the renderer.
      * @see {@link https://www.w3.org/TR/SVG11/pservers.html#RadialGradientElementGradientUnitsAttribute} for more information
      */
-    readonly #units = variable('userSpaceOnUse' as 'userSpaceOnUse' | 'objectBoundingBox');
+    readonly #units = state('userSpaceOnUse' as 'userSpaceOnUse' | 'objectBoundingBox');
 
     _stops: Children<Stop> | null = null;
     _stops_insert: Disposable | null = null;
@@ -30,16 +31,8 @@ export abstract class Gradient extends ElementBase<Group> {
     readonly _stop_subscriptions: { [id: string]: Disposable } = {};
 
     constructor(stops?: Stop[]) {
-
         super(Constants.Identifier + Constants.uniqueId());
-
-        this.zzz.spreadMethod$ = this.#spreadMethod.asObservable();
-        this.zzz.units$ = this.#units.asObservable();
-
         this.classList = [];
-
-        this.spreadMethod = 'pad';
-
         this.#set_children(stops);
     }
 
