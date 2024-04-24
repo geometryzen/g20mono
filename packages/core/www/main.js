@@ -3465,16 +3465,6 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     disposables.length = 0;
   }
 
-  // src/lib/utils/root.ts
-  var root;
-  if (typeof window !== "undefined") {
-    root = window;
-  } else if (typeof global !== "undefined") {
-    root = global;
-  } else if (typeof self !== "undefined") {
-    root = self;
-  }
-
   // src/lib/utils/math.ts
   var TWO_PI = Math.PI * 2;
   var HALF_PI = Math.PI * 0.5;
@@ -3487,7 +3477,6 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     }
     return v2 % l2;
   }
-  var NumArray = root.Float32Array || Array;
   var floor = Math.floor;
   function toFixed(v2) {
     return floor(v2 * 1e6) / 1e6;
@@ -3872,150 +3861,157 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
   var cos = Math.cos;
   var sin = Math.sin;
   var tan = Math.tan;
+  function equals2(P2, Q) {
+    return P2[0] === Q[0] && P2[1] === Q[1] && P2[2] === Q[2] && P2[3] === Q[3] && P2[4] === Q[4] && P2[5] === Q[5] && P2[6] === Q[6] && P2[7] === Q[7] && P2[8] === Q[8];
+  }
   var Matrix = class _Matrix {
-    #change = variable(this);
-    change$ = this.#change.asObservable();
     /**
      * 1st row is [0,1,2], 2nd row is [3,4,5], 3rd row is [6,7,8]
      */
-    #elements = new NumArray(9);
-    /**
-     * Determines whether we automatically calculate the values for the matrix or if the developer intends to manage the matrix.
-     */
-    manual = false;
-    #verbose = true;
+    #elements = G([1, 0, 0, 0, 1, 0, 0, 0, 1], { equals: equals2 });
     constructor(a11 = 1, a12 = 0, a13 = 0, a21 = 0, a22 = 1, a23 = 0, a31 = 0, a32 = 0, a33 = 1) {
-      this.#elements[0] = a11;
-      this.#elements[1] = a12;
-      this.#elements[2] = a13;
-      this.#elements[3] = a21;
-      this.#elements[4] = a22;
-      this.#elements[5] = a23;
-      this.#elements[6] = a31;
-      this.#elements[7] = a32;
-      this.#elements[8] = a33;
+      const elements = this.#elements.get();
+      elements[0] = a11;
+      elements[1] = a12;
+      elements[2] = a13;
+      elements[3] = a21;
+      elements[4] = a22;
+      elements[5] = a23;
+      elements[6] = a31;
+      elements[7] = a32;
+      elements[8] = a33;
+      this.#elements.set(elements);
     }
     get a() {
-      return this.#elements[0];
+      return this.#elements.get()[0];
     }
     get b() {
-      return this.#elements[3];
+      return this.#elements.get()[3];
     }
     get c() {
-      return this.#elements[1];
+      return this.#elements.get()[1];
     }
     get d() {
-      return this.#elements[4];
+      return this.#elements.get()[4];
     }
     get e() {
-      return this.#elements[2];
+      return this.#elements.get()[2];
     }
     get f() {
-      return this.#elements[5];
+      return this.#elements.get()[5];
     }
     get a11() {
-      return this.#elements[0];
+      return this.#elements.get()[0];
     }
     get a12() {
-      return this.#elements[1];
+      return this.#elements.get()[1];
     }
     get a13() {
-      return this.#elements[2];
+      return this.#elements.get()[2];
     }
     get a21() {
-      return this.#elements[3];
+      return this.#elements.get()[3];
     }
     get a22() {
-      return this.#elements[4];
+      return this.#elements.get()[4];
     }
     get a23() {
-      return this.#elements[5];
+      return this.#elements.get()[5];
     }
     get a31() {
-      return this.#elements[6];
+      return this.#elements.get()[6];
     }
     get a32() {
-      return this.#elements[7];
+      return this.#elements.get()[7];
     }
     get a33() {
-      return this.#elements[8];
+      return this.#elements.get()[8];
     }
     set(a11, a12, a13, a21, a22, a23, a31, a32, a33) {
-      this.#elements[0] = a11;
-      this.#elements[1] = a12;
-      this.#elements[2] = a13;
-      this.#elements[3] = a21;
-      this.#elements[4] = a22;
-      this.#elements[5] = a23;
-      this.#elements[6] = a31;
-      this.#elements[7] = a32;
-      this.#elements[8] = a33;
-      return this.#broadcast();
+      const elements = this.#elements.get();
+      elements[0] = a11;
+      elements[1] = a12;
+      elements[2] = a13;
+      elements[3] = a21;
+      elements[4] = a22;
+      elements[5] = a23;
+      elements[6] = a31;
+      elements[7] = a32;
+      elements[8] = a33;
+      this.#elements.set(elements);
+      return this;
     }
     set_from_matrix(m2) {
-      this.#elements[0] = m2.a11;
-      this.#elements[1] = m2.a12;
-      this.#elements[2] = m2.a13;
-      this.#elements[3] = m2.a21;
-      this.#elements[4] = m2.a22;
-      this.#elements[5] = m2.a23;
-      this.#elements[6] = m2.a31;
-      this.#elements[7] = m2.a32;
-      this.#elements[8] = m2.a33;
-      return this.#broadcast();
+      const elements = this.#elements.get();
+      elements[0] = m2.a11;
+      elements[1] = m2.a12;
+      elements[2] = m2.a13;
+      elements[3] = m2.a21;
+      elements[4] = m2.a22;
+      elements[5] = m2.a23;
+      elements[6] = m2.a31;
+      elements[7] = m2.a32;
+      elements[8] = m2.a33;
+      this.#elements.set(elements);
+      return this;
     }
     /**
      * Copy the matrix of one to the current instance.
      */
     copy(m2) {
-      this.#elements[0] = m2.#elements[0];
-      this.#elements[1] = m2.#elements[1];
-      this.#elements[2] = m2.#elements[2];
-      this.#elements[3] = m2.#elements[3];
-      this.#elements[4] = m2.#elements[4];
-      this.#elements[5] = m2.#elements[5];
-      this.#elements[6] = m2.#elements[6];
-      this.#elements[7] = m2.#elements[7];
-      this.#elements[8] = m2.#elements[8];
-      this.manual = m2.manual;
-      return this.#broadcast();
+      const source = m2.#elements.get();
+      const elements = this.#elements.get();
+      elements[0] = source[0];
+      elements[1] = source[1];
+      elements[2] = source[2];
+      elements[3] = source[3];
+      elements[4] = source[4];
+      elements[5] = source[5];
+      elements[6] = source[6];
+      elements[7] = source[7];
+      elements[8] = source[8];
+      this.#elements.set(elements);
+      return this;
     }
     /**
      * Sets matrix to the identity, like resetting.
      */
     identity() {
-      this.#elements[0] = 1;
-      this.#elements[1] = 0;
-      this.#elements[2] = 0;
-      this.#elements[3] = 0;
-      this.#elements[4] = 1;
-      this.#elements[5] = 0;
-      this.#elements[6] = 0;
-      this.#elements[7] = 0;
-      this.#elements[8] = 1;
-      return this.#broadcast();
+      const elements = this.#elements.get();
+      elements[0] = 1;
+      elements[1] = 0;
+      elements[2] = 0;
+      elements[3] = 0;
+      elements[4] = 1;
+      elements[5] = 0;
+      elements[6] = 0;
+      elements[7] = 0;
+      elements[8] = 1;
+      this.#elements.set(elements);
+      return this;
     }
     multiply(b11, b12, b13, b21, b22, b23, b31, b32, b33) {
-      const A = this.#elements;
-      const a11 = A[0];
-      const a12 = A[1];
-      const a13 = A[2];
-      const a21 = A[3];
-      const a22 = A[4];
-      const a23 = A[5];
-      const a31 = A[6];
-      const a32 = A[7];
-      const a33 = A[8];
-      this.#elements[0] = a11 * b11 + a12 * b21 + a13 * b31;
-      this.#elements[1] = a11 * b12 + a12 * b22 + a13 * b32;
-      this.#elements[2] = a11 * b13 + a12 * b23 + a13 * b33;
-      this.#elements[3] = a21 * b11 + a22 * b21 + a23 * b31;
-      this.#elements[4] = a21 * b12 + a22 * b22 + a23 * b32;
-      this.#elements[5] = a21 * b13 + a22 * b23 + a23 * b33;
-      this.#elements[6] = a31 * b11 + a32 * b21 + a33 * b31;
-      this.#elements[7] = a31 * b12 + a32 * b22 + a33 * b32;
-      this.#elements[8] = a31 * b13 + a32 * b23 + a33 * b33;
-      return this.#broadcast();
+      const elements = this.#elements.get();
+      const a11 = elements[0];
+      const a12 = elements[1];
+      const a13 = elements[2];
+      const a21 = elements[3];
+      const a22 = elements[4];
+      const a23 = elements[5];
+      const a31 = elements[6];
+      const a32 = elements[7];
+      const a33 = elements[8];
+      elements[0] = a11 * b11 + a12 * b21 + a13 * b31;
+      elements[1] = a11 * b12 + a12 * b22 + a13 * b32;
+      elements[2] = a11 * b13 + a12 * b23 + a13 * b33;
+      elements[3] = a21 * b11 + a22 * b21 + a23 * b31;
+      elements[4] = a21 * b12 + a22 * b22 + a23 * b32;
+      elements[5] = a21 * b13 + a22 * b23 + a23 * b33;
+      elements[6] = a31 * b11 + a32 * b21 + a33 * b31;
+      elements[7] = a31 * b12 + a32 * b22 + a33 * b32;
+      elements[8] = a31 * b13 + a32 * b23 + a33 * b33;
+      this.#elements.set(elements);
+      return this;
     }
     multiply_vector(x2 = 0, y2 = 0, z = 1) {
       const x1 = this.a11 * x2 + this.a12 * y2 + this.a13 * z;
@@ -4024,23 +4020,25 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       return [x1, x22, x3];
     }
     multiply_by_scalar(s2) {
-      this.#elements[0] *= s2;
-      this.#elements[1] *= s2;
-      this.#elements[2] *= s2;
-      this.#elements[3] *= s2;
-      this.#elements[4] *= s2;
-      this.#elements[5] *= s2;
-      this.#elements[6] *= s2;
-      this.#elements[7] *= s2;
-      this.#elements[8] *= s2;
-      return this.#broadcast();
+      const elements = this.#elements.get();
+      elements[0] *= s2;
+      elements[1] *= s2;
+      elements[2] *= s2;
+      elements[3] *= s2;
+      elements[4] *= s2;
+      elements[5] *= s2;
+      elements[6] *= s2;
+      elements[7] *= s2;
+      elements[8] *= s2;
+      this.#elements.set(elements);
+      return this;
     }
     /**
      * @param out The optional matrix to apply the inversion to.
      * Return an inverted version of the matrix. If no optional one is passed a new matrix is created and returned.
      */
     inverse(out) {
-      const a2 = this.#elements;
+      const a2 = this.#elements.get();
       out = out || new _Matrix();
       const a00 = a2[0], a01 = a2[1], a02 = a2[2];
       const a10 = a2[3], a11 = a2[4], a12 = a2[5];
@@ -4053,15 +4051,17 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
         return null;
       }
       det = 1 / det;
-      out.#elements[0] = b01 * det;
-      out.#elements[1] = (-a22 * a01 + a02 * a21) * det;
-      out.#elements[2] = (a12 * a01 - a02 * a11) * det;
-      out.#elements[3] = b11 * det;
-      out.#elements[4] = (a22 * a00 - a02 * a20) * det;
-      out.#elements[5] = (-a12 * a00 + a02 * a10) * det;
-      out.#elements[6] = b21 * det;
-      out.#elements[7] = (-a21 * a00 + a01 * a20) * det;
-      out.#elements[8] = (a11 * a00 - a01 * a10) * det;
+      const elements = out.#elements.get();
+      elements[0] = b01 * det;
+      elements[1] = (-a22 * a01 + a02 * a21) * det;
+      elements[2] = (a12 * a01 - a02 * a11) * det;
+      elements[3] = b11 * det;
+      elements[4] = (a22 * a00 - a02 * a20) * det;
+      elements[5] = (-a12 * a00 + a02 * a10) * det;
+      elements[6] = b21 * det;
+      elements[7] = (-a21 * a00 + a01 * a20) * det;
+      elements[8] = (a11 * a00 - a01 * a10) * det;
+      out.#elements.set(elements);
       return out;
     }
     scale(sx, sy) {
@@ -4116,20 +4116,6 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
         const a2 = tan(skewY);
         return this.multiply(1, 0, 0, a2, 1, 0, 0, 0, 1);
       }
-    }
-    silence() {
-      this.#verbose = false;
-      return this;
-    }
-    #broadcast() {
-      if (this.#verbose) {
-        this.#change.set(this);
-      }
-      return this;
-    }
-    touch() {
-      this.#verbose = true;
-      return this.#broadcast();
     }
   };
 
@@ -4274,7 +4260,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       }
     }
     update() {
-      if (!this.matrix.manual && this.zzz.flags[17 /* Matrix */]) {
+      if (this.zzz.flags[17 /* Matrix */]) {
         this.#update_matrix(this.#compensate);
       }
       return this;
@@ -4511,7 +4497,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       } else {
         this.zzz.elem = svg.createElement("g", { id: this.id });
         domElement.appendChild(this.zzz.elem);
-        this.zzz.disposables.push(this.matrix.change$.subscribe(() => {
+        this.zzz.disposables.push(j(() => {
           this.zzz.elem.setAttribute("transform", transform_value_of_matrix(this.matrix));
         }));
         this.zzz.disposables.push(this.zzz.opacity$.subscribe((opacity) => {
@@ -4541,7 +4527,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
           };
         }));
       }
-      const flagMatrix = this.matrix.manual || this.zzz.flags[17 /* Matrix */];
+      const flagMatrix = this.zzz.flags[17 /* Matrix */];
       const dom_context = {
         domElement,
         elem: this.zzz.elem
@@ -5072,28 +5058,6 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     }
   }
 
-  // src/lib/math/decompose_2d_3x3_matrix.ts
-  function decompose_2d_3x3_matrix(m2) {
-    const a2 = m2.a11;
-    const c2 = m2.a12;
-    const x2 = m2.a13;
-    const b2 = m2.a21;
-    const d2 = m2.a22;
-    const y2 = m2.a23;
-    return {
-      position: { x: x2, y: y2 },
-      translateX: x2,
-      translateY: y2,
-      scaleX: Math.sqrt(a2 * a2 + c2 * c2),
-      // should be multiplied by sign(a)
-      scaleY: Math.sqrt(b2 * b2 + d2 * d2),
-      // should be multiplied by sign(d)
-      // TODO: rotation is being reported in degrees.
-      // tan(φ) = -b/a = c/d
-      rotation: Math.atan2(b2, a2)
-    };
-  }
-
   // src/lib/utils/curves.ts
   var Curve = {
     CollinearityEpsilon: Math.pow(10, -30),
@@ -5486,7 +5450,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     render(domElement, svgElement) {
       this.update();
       const changed = {};
-      const flagMatrix = this.matrix.manual || this.zzz.flags[17 /* Matrix */];
+      const flagMatrix = this.zzz.flags[17 /* Matrix */];
       if (flagMatrix) {
         changed.transform = transform_value_of_matrix(this.matrix);
       }
@@ -5544,9 +5508,9 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
         changed.id = this.id;
         this.zzz.elem = svg.createElement("path", changed);
         domElement.appendChild(this.zzz.elem);
-        this.zzz.disposables.push(this.matrix.change$.subscribe((matrix) => {
+        this.zzz.disposables.push(j(() => {
           const change = {};
-          change.transform = transform_value_of_matrix(matrix);
+          change.transform = transform_value_of_matrix(this.matrix);
           svg.setAttributes(this.zzz.elem, change);
         }));
         this.zzz.disposables.push(this.zzz.vertices$.subscribe(() => {
@@ -5709,12 +5673,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       let border = (this.strokeWidth || 0) / 2;
       const l2 = this.zzz.vertices.length;
       if (this.strokeWidth > 0 || this.stroke && typeof this.stroke === "string" && !/(transparent|none)/i.test(this.stroke)) {
-        if (this.matrix.manual) {
-          const { scaleX, scaleY } = decompose_2d_3x3_matrix(M2);
-          border = max(scaleX, scaleY) * (this.strokeWidth || 0) / 2;
-        } else {
-          border *= max(this.scaleXY.x, this.scaleXY.y);
-        }
+        border *= max(this.scaleXY.x, this.scaleXY.y);
       }
       if (l2 <= 0) {
         return {};
@@ -7092,7 +7051,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     render(domElement, svgElement) {
       this.update();
       const changed = {};
-      const flagMatrix = this.matrix.manual || this.zzz.flags[17 /* Matrix */];
+      const flagMatrix = this.zzz.flags[17 /* Matrix */];
       if (flagMatrix) {
         changed.transform = transform_value_of_matrix(this.matrix);
       }
@@ -7142,9 +7101,9 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
         changed.id = this.id;
         this.zzz.elem = svg.createElement("text", changed);
         domElement.appendChild(this.zzz.elem);
-        this.zzz.disposables.push(this.matrix.change$.subscribe((matrix) => {
+        this.zzz.disposables.push(j(() => {
           const change = {};
-          change.transform = transform_value_of_matrix(matrix);
+          change.transform = transform_value_of_matrix(this.matrix);
           svg.setAttributes(this.zzz.elem, change);
         }));
         this.zzz.disposables.push(this.zzz.anchor$.subscribe((anchor) => {
@@ -7555,6 +7514,16 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       position: attributes.position
     };
     return retval;
+  }
+
+  // src/lib/utils/root.ts
+  var root;
+  if (typeof window !== "undefined") {
+    root = window;
+  } else if (typeof global !== "undefined") {
+    root = global;
+  } else if (typeof self !== "undefined") {
+    root = self;
   }
 
   // src/lib/utils/performance.ts
@@ -8116,6 +8085,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     arrow.headLength = 0.25;
     arrow.origin = G20.ey.scale(1 / 2);
     box.position.copyVector(A.position).add(AC.__mul__(0.75)).add(N2.__mul__(box.height / 2));
+    board.update();
     window.onunload = function() {
       board.dispose();
     };
