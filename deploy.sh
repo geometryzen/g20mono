@@ -12,5 +12,5 @@ git commit -m "'$message'"
 git push origin main
 lerna version --no-private --force-publish
 lerna publish from-package
-lerna run docs
-lerna run pages --concurrency=1
+# lerna run docs
+# lerna run pages --concurrency=1

@@ -22,11 +22,11 @@ describe("decompose_2d_3x3_matrix", function () {
             .skewX(skewX)
             .skewY(skewY);
 
-        expect(m.a11).toBe(0.4534498453140259);
-        expect(m.a12).toBe(-0.2617993950843811);
+        expect(m.a11).toBe(0.45344984105855446);
+        expect(m.a12).toBe(-0.26179938779914935);
         expect(m.a13).toBe(3);
-        expect(m.a21).toBe(0.2617993950843811);
-        expect(m.a22).toBe(0.4534498453140259);
+        expect(m.a21).toBe(0.26179938779914935);
+        expect(m.a22).toBe(0.45344984105855446);
         expect(m.a23).toBe(4);
         expect(m.a31).toBe(0);
         expect(m.a32).toBe(0);
@@ -46,11 +46,11 @@ describe("decompose_2d_3x3_matrix", function () {
 
         compose_2d_3x3_transform(x, y, sx, sy, attitude.a, -attitude.b, skewX, skewY, m);
 
-        expect(m.a11).toBe(0.4534498453140259);
-        expect(m.a12).toBe(-0.2617993950843811);
+        expect(m.a11).toBe(0.45344984105855446);
+        expect(m.a12).toBe(-0.26179938779914935);
         expect(m.a13).toBe(3);
-        expect(m.a21).toBe(0.2617993950843811);
-        expect(m.a22).toBe(0.4534498453140259);
+        expect(m.a21).toBe(0.26179938779914935);
+        expect(m.a22).toBe(0.45344984105855446);
         expect(m.a23).toBe(4);
         expect(m.a31).toBe(0);
         expect(m.a32).toBe(0);

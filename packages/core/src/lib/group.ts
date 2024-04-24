@@ -1,3 +1,4 @@
+import { effect } from 'g2o-reactive';
 import { Children } from './children';
 import { Color } from './effects/ColorProvider';
 import { Flag } from './Flag';
@@ -95,7 +96,7 @@ export class Group extends Shape {
         else {
             this.zzz.elem = svg.createElement('g', { id: this.id });
             domElement.appendChild(this.zzz.elem);
-            this.zzz.disposables.push(this.matrix.change$.subscribe(() => {
+            this.zzz.disposables.push(effect(() => {
                 this.zzz.elem.setAttribute('transform', transform_value_of_matrix(this.matrix));
             }));
 
@@ -134,7 +135,7 @@ export class Group extends Shape {
         }
 
         // _Update styles for the <g>
-        const flagMatrix = this.matrix.manual || this.zzz.flags[Flag.Matrix];
+        const flagMatrix = this.zzz.flags[Flag.Matrix];
         const dom_context: DomContext = {
             domElement: domElement,
             elem: this.zzz.elem

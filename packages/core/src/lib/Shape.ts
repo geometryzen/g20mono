@@ -249,7 +249,7 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
     }
 
     update(): this {
-        if (!this.matrix.manual && this.zzz.flags[Flag.Matrix]) {
+        if (this.zzz.flags[Flag.Matrix]) {
             this.#update_matrix(this.#compensate);
         }
 

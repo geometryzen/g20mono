@@ -1,4 +1,3 @@
-import { root } from './root.js';
 
 export const TWO_PI = Math.PI * 2;
 export const HALF_PI = Math.PI * 0.5;
@@ -35,7 +34,6 @@ export function mod(v: number, l: number): number {
     return v % l;
 }
 
-export const NumArray = root.Float32Array || Array;
 const floor = Math.floor;
 
 /**

@@ -1,182 +1,186 @@
-import { variable } from './reactive/variable.js';
-import { NumArray } from './utils/math.js';
+import { State, state } from 'g2o-reactive';
 
 const cos = Math.cos;
 const sin = Math.sin;
 const tan = Math.tan;
+
+function equals(P: [a11: number, a12: number, a13: number, a21: number, a22: number, a23: number, a31: number, a32: number, a33: number], Q: [a11: number, a12: number, a13: number, a21: number, a22: number, a23: number, a31: number, a32: number, a33: number]): boolean {
+    return P[0] === Q[0] &&
+        P[1] === Q[1] &&
+        P[2] === Q[2] &&
+        P[3] === Q[3] &&
+        P[4] === Q[4] &&
+        P[5] === Q[5] &&
+        P[6] === Q[6] &&
+        P[7] === Q[7] &&
+        P[8] === Q[8];
+}
 
 /**
  * 1st row is [a11,a12,a13], 2nd row is [a21,a22,a23], 3rd row is [a31,a32,a33]
  */
 export class Matrix {
 
-    readonly #change = variable(this);
-    readonly change$ = this.#change.asObservable();
-
     /**
      * 1st row is [0,1,2], 2nd row is [3,4,5], 3rd row is [6,7,8]
      */
-    #elements = new NumArray(9);
-
-    /**
-     * Determines whether we automatically calculate the values for the matrix or if the developer intends to manage the matrix.
-     */
-    manual = false;
-
-    #verbose = true;
+    readonly #elements: State<[a11: number, a12: number, a13: number, a21: number, a22: number, a23: number, a31: number, a32: number, a33: number]> = state([1, 0, 0, 0, 1, 0, 0, 0, 1], { equals });
 
     constructor(a11 = 1, a12 = 0, a13 = 0, a21 = 0, a22 = 1, a23 = 0, a31 = 0, a32 = 0, a33 = 1) {
-        this.#elements[0] = a11;
-        this.#elements[1] = a12;
-        this.#elements[2] = a13;
-        this.#elements[3] = a21;
-        this.#elements[4] = a22;
-        this.#elements[5] = a23;
-        this.#elements[6] = a31;
-        this.#elements[7] = a32;
-        this.#elements[8] = a33;
+        const elements = this.#elements.get();
+        elements[0] = a11;
+        elements[1] = a12;
+        elements[2] = a13;
+        elements[3] = a21;
+        elements[4] = a22;
+        elements[5] = a23;
+        elements[6] = a31;
+        elements[7] = a32;
+        elements[8] = a33;
+        this.#elements.set(elements);
     }
     get a(): number {
-        return this.#elements[0];
+        return this.#elements.get()[0];
     }
     get b(): number {
-        return this.#elements[3];
+        return this.#elements.get()[3];
     }
     get c(): number {
-        return this.#elements[1];
+        return this.#elements.get()[1];
     }
     get d(): number {
-        return this.#elements[4];
+        return this.#elements.get()[4];
     }
     get e(): number {
-        return this.#elements[2];
+        return this.#elements.get()[2];
     }
     get f(): number {
-        return this.#elements[5];
+        return this.#elements.get()[5];
     }
     get a11(): number {
-        return this.#elements[0];
+        return this.#elements.get()[0];
     }
     get a12(): number {
-        return this.#elements[1];
+        return this.#elements.get()[1];
     }
     get a13(): number {
-        return this.#elements[2];
+        return this.#elements.get()[2];
     }
     get a21(): number {
-        return this.#elements[3];
+        return this.#elements.get()[3];
     }
     get a22(): number {
-        return this.#elements[4];
+        return this.#elements.get()[4];
     }
     get a23(): number {
-        return this.#elements[5];
+        return this.#elements.get()[5];
     }
     get a31(): number {
-        return this.#elements[6];
+        return this.#elements.get()[6];
     }
     get a32(): number {
-        return this.#elements[7];
+        return this.#elements.get()[7];
     }
     get a33(): number {
-        return this.#elements[8];
+        return this.#elements.get()[8];
     }
 
     set(a11: number, a12: number, a13: number, a21: number, a22: number, a23: number, a31: number, a32: number, a33: number): this {
-
-        this.#elements[0] = a11;
-        this.#elements[1] = a12;
-        this.#elements[2] = a13;
-        this.#elements[3] = a21;
-        this.#elements[4] = a22;
-        this.#elements[5] = a23;
-        this.#elements[6] = a31;
-        this.#elements[7] = a32;
-        this.#elements[8] = a33;
-
-        return this.#broadcast();
+        const elements = this.#elements.get();
+        elements[0] = a11;
+        elements[1] = a12;
+        elements[2] = a13;
+        elements[3] = a21;
+        elements[4] = a22;
+        elements[5] = a23;
+        elements[6] = a31;
+        elements[7] = a32;
+        elements[8] = a33;
+        this.#elements.set(elements);
+        return this;
     }
 
     set_from_matrix(m: Matrix): this {
-
-        this.#elements[0] = m.a11;
-        this.#elements[1] = m.a12;
-        this.#elements[2] = m.a13;
-        this.#elements[3] = m.a21;
-        this.#elements[4] = m.a22;
-        this.#elements[5] = m.a23;
-        this.#elements[6] = m.a31;
-        this.#elements[7] = m.a32;
-        this.#elements[8] = m.a33;
-
-        return this.#broadcast();
+        const elements = this.#elements.get();
+        elements[0] = m.a11;
+        elements[1] = m.a12;
+        elements[2] = m.a13;
+        elements[3] = m.a21;
+        elements[4] = m.a22;
+        elements[5] = m.a23;
+        elements[6] = m.a31;
+        elements[7] = m.a32;
+        elements[8] = m.a33;
+        this.#elements.set(elements);
+        return this;
     }
 
     /**
      * Copy the matrix of one to the current instance.
      */
     copy(m: Matrix): this {
-
-        this.#elements[0] = m.#elements[0];
-        this.#elements[1] = m.#elements[1];
-        this.#elements[2] = m.#elements[2];
-        this.#elements[3] = m.#elements[3];
-        this.#elements[4] = m.#elements[4];
-        this.#elements[5] = m.#elements[5];
-        this.#elements[6] = m.#elements[6];
-        this.#elements[7] = m.#elements[7];
-        this.#elements[8] = m.#elements[8];
-
-        this.manual = m.manual;
-
-        return this.#broadcast();
+        const source = m.#elements.get();
+        const elements = this.#elements.get();
+        elements[0] = source[0];
+        elements[1] = source[1];
+        elements[2] = source[2];
+        elements[3] = source[3];
+        elements[4] = source[4];
+        elements[5] = source[5];
+        elements[6] = source[6];
+        elements[7] = source[7];
+        elements[8] = source[8];
+        this.#elements.set(elements);
+        return this;
     }
 
     /**
      * Sets matrix to the identity, like resetting.
      */
     identity(): this {
-
-        this.#elements[0] = 1;
-        this.#elements[1] = 0;
-        this.#elements[2] = 0;
-        this.#elements[3] = 0;
-        this.#elements[4] = 1;
-        this.#elements[5] = 0;
-        this.#elements[6] = 0;
-        this.#elements[7] = 0;
-        this.#elements[8] = 1;
-
-        return this.#broadcast();
+        const elements = this.#elements.get();
+        elements[0] = 1;
+        elements[1] = 0;
+        elements[2] = 0;
+        elements[3] = 0;
+        elements[4] = 1;
+        elements[5] = 0;
+        elements[6] = 0;
+        elements[7] = 0;
+        elements[8] = 1;
+        this.#elements.set(elements);
+        return this;
     }
 
     multiply(b11: number, b12: number, b13: number, b21: number, b22: number, b23: number, b31: number, b32: number, b33: number): this {
 
-        const A = this.#elements;
+        const elements = this.#elements.get();
 
-        const a11 = A[0];
-        const a12 = A[1];
-        const a13 = A[2];
-        const a21 = A[3];
-        const a22 = A[4];
-        const a23 = A[5];
-        const a31 = A[6];
-        const a32 = A[7];
-        const a33 = A[8];
+        const a11 = elements[0];
+        const a12 = elements[1];
+        const a13 = elements[2];
+        const a21 = elements[3];
+        const a22 = elements[4];
+        const a23 = elements[5];
+        const a31 = elements[6];
+        const a32 = elements[7];
+        const a33 = elements[8];
 
-        this.#elements[0] = a11 * b11 + a12 * b21 + a13 * b31;  // c11
-        this.#elements[1] = a11 * b12 + a12 * b22 + a13 * b32;  // c12
-        this.#elements[2] = a11 * b13 + a12 * b23 + a13 * b33;  // c13
+        elements[0] = a11 * b11 + a12 * b21 + a13 * b31;  // c11
+        elements[1] = a11 * b12 + a12 * b22 + a13 * b32;  // c12
+        elements[2] = a11 * b13 + a12 * b23 + a13 * b33;  // c13
 
-        this.#elements[3] = a21 * b11 + a22 * b21 + a23 * b31;  // c21
-        this.#elements[4] = a21 * b12 + a22 * b22 + a23 * b32;  // c22
-        this.#elements[5] = a21 * b13 + a22 * b23 + a23 * b33;  // c23
+        elements[3] = a21 * b11 + a22 * b21 + a23 * b31;  // c21
+        elements[4] = a21 * b12 + a22 * b22 + a23 * b32;  // c22
+        elements[5] = a21 * b13 + a22 * b23 + a23 * b33;  // c23
 
-        this.#elements[6] = a31 * b11 + a32 * b21 + a33 * b31;  // c31
-        this.#elements[7] = a31 * b12 + a32 * b22 + a33 * b32;  // c32
-        this.#elements[8] = a31 * b13 + a32 * b23 + a33 * b33;  // c33
+        elements[6] = a31 * b11 + a32 * b21 + a33 * b31;  // c31
+        elements[7] = a31 * b12 + a32 * b22 + a33 * b32;  // c32
+        elements[8] = a31 * b13 + a32 * b23 + a33 * b33;  // c33
 
-        return this.#broadcast();
+        this.#elements.set(elements);
+
+        return this;
     }
 
     multiply_vector(x: number = 0, y: number = 0, z: number = 1): [number, number, number] {
@@ -189,16 +193,18 @@ export class Matrix {
     }
 
     multiply_by_scalar(s: number): this {
-        this.#elements[0] *= s;
-        this.#elements[1] *= s;
-        this.#elements[2] *= s;
-        this.#elements[3] *= s;
-        this.#elements[4] *= s;
-        this.#elements[5] *= s;
-        this.#elements[6] *= s;
-        this.#elements[7] *= s;
-        this.#elements[8] *= s;
-        return this.#broadcast();
+        const elements = this.#elements.get();
+        elements[0] *= s;
+        elements[1] *= s;
+        elements[2] *= s;
+        elements[3] *= s;
+        elements[4] *= s;
+        elements[5] *= s;
+        elements[6] *= s;
+        elements[7] *= s;
+        elements[8] *= s;
+        this.#elements.set(elements);
+        return this;
     }
 
     /**
@@ -207,7 +213,7 @@ export class Matrix {
      */
     inverse(out?: Matrix): Matrix {
 
-        const a = this.#elements;
+        const a = this.#elements.get();
         out = out || new Matrix();
 
         const a00 = a[0], a01 = a[1], a02 = a[2];
@@ -227,15 +233,17 @@ export class Matrix {
 
         det = 1.0 / det;
 
-        out.#elements[0] = b01 * det;
-        out.#elements[1] = (-a22 * a01 + a02 * a21) * det;
-        out.#elements[2] = (a12 * a01 - a02 * a11) * det;
-        out.#elements[3] = b11 * det;
-        out.#elements[4] = (a22 * a00 - a02 * a20) * det;
-        out.#elements[5] = (-a12 * a00 + a02 * a10) * det;
-        out.#elements[6] = b21 * det;
-        out.#elements[7] = (-a21 * a00 + a01 * a20) * det;
-        out.#elements[8] = (a11 * a00 - a01 * a10) * det;
+        const elements = out.#elements.get();
+        elements[0] = b01 * det;
+        elements[1] = (-a22 * a01 + a02 * a21) * det;
+        elements[2] = (a12 * a01 - a02 * a11) * det;
+        elements[3] = b11 * det;
+        elements[4] = (a22 * a00 - a02 * a20) * det;
+        elements[5] = (-a12 * a00 + a02 * a10) * det;
+        elements[6] = b21 * det;
+        elements[7] = (-a21 * a00 + a01 * a20) * det;
+        elements[8] = (a11 * a00 - a01 * a10) * det;
+        out.#elements.set(elements);
 
         return out;
     }
@@ -308,23 +316,6 @@ export class Matrix {
         }
 
     }
-
-    silence(): this {
-        this.#verbose = false;
-        return this;
-    }
-
-    #broadcast(): this {
-        if (this.#verbose) {
-            this.#change.set(this);
-        }
-        return this;
-    }
-
-    touch(): this {
-        this.#verbose = true;
-        return this.#broadcast();
-    }
 }
 // TODO
 /*
@@ -358,7 +349,7 @@ export function multiply(A: Matrix, B, C) {
     const B3 = B[3], B4 = B[4], B5 = B[5];
     const B6 = B[6], B7 = B[7], B8 = B[8];
 
-    C = C || new NumArray(9);
+    C = C || new Array<number>(9);
 
     C[0] = A0 * B0 + A1 * B3 + A2 * B6;
     C[1] = A0 * B1 + A1 * B4 + A2 * B7;

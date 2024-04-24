@@ -195,7 +195,7 @@ export class Text extends Shape implements TextProperties {
         // The styles that will be applied to an SVG
         const changed: SVGAttributes = {};
 
-        const flagMatrix = this.matrix.manual || this.zzz.flags[Flag.Matrix];
+        const flagMatrix = this.zzz.flags[Flag.Matrix];
 
         if (flagMatrix) {
             changed.transform = transform_value_of_matrix(this.matrix);
@@ -252,9 +252,9 @@ export class Text extends Shape implements TextProperties {
             this.zzz.elem = svg.createElement('text', changed);
             domElement.appendChild(this.zzz.elem);
 
-            this.zzz.disposables.push(this.matrix.change$.subscribe((matrix) => {
+            this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = {};
-                change.transform = transform_value_of_matrix(matrix);
+                change.transform = transform_value_of_matrix(this.matrix);
                 svg.setAttributes(this.zzz.elem, change);
             }));
 

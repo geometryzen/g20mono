@@ -5,7 +5,6 @@ import { Color, is_color_provider, serialize_color } from './effects/ColorProvid
 import { ElementBase } from './element';
 import { Flag } from './Flag';
 import { IBoard } from './IBoard';
-import { decompose_2d_3x3_matrix } from './math/decompose_2d_3x3_matrix';
 import { G20 } from './math/G20.js';
 import { Disposable } from './reactive/Disposable';
 import { variable } from './reactive/variable';
@@ -230,7 +229,7 @@ export class Path extends Shape implements PathAttributes {
         // Collect any attribute that needs to be changed here
         const changed: SVGAttributes = {};
 
-        const flagMatrix = this.matrix.manual || this.zzz.flags[Flag.Matrix];
+        const flagMatrix = this.zzz.flags[Flag.Matrix];
 
         if (flagMatrix) {
             changed.transform = transform_value_of_matrix(this.matrix);
@@ -305,9 +304,9 @@ export class Path extends Shape implements PathAttributes {
             domElement.appendChild(this.zzz.elem);
 
             // The matrix is in the Shape.
-            this.zzz.disposables.push(this.matrix.change$.subscribe((matrix) => {
+            this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = {};
-                change.transform = transform_value_of_matrix(matrix);
+                change.transform = transform_value_of_matrix(this.matrix);
                 svg.setAttributes(this.zzz.elem, change);
             }));
 
@@ -525,13 +524,7 @@ export class Path extends Shape implements PathAttributes {
         const l = this.zzz.vertices.length;
 
         if (this.strokeWidth > 0 || (this.stroke && typeof this.stroke === 'string' && !(/(transparent|none)/i.test(this.stroke)))) {
-            if (this.matrix.manual) {
-                const { scaleX, scaleY } = decompose_2d_3x3_matrix(M);
-                border = max(scaleX, scaleY) * (this.strokeWidth || 0) / 2;
-            }
-            else {
-                border *= max(this.scaleXY.x, this.scaleXY.y);
-            }
+            border *= max(this.scaleXY.x, this.scaleXY.y);
         }
 
         if (l <= 0) {
