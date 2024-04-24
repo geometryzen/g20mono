@@ -57,7 +57,7 @@ export class Path extends Shape implements PathAttributes {
 
     readonly #lengths: number[] = [];
 
-    readonly #fill = variable('none' as Color);
+    readonly #fill = state('none' as Color);
     #fill_change: Disposable | null = null;
     readonly #fillOpacity = variable(1.0);
 
@@ -83,7 +83,7 @@ export class Path extends Shape implements PathAttributes {
      */
     readonly #miter = variable(4);
 
-    #closed = true;
+    readonly #closed = state(true);
     #curved = false;
     #automatic = true;
     #beginning = 0.0;
@@ -116,9 +116,7 @@ export class Path extends Shape implements PathAttributes {
 
         super(board, attributes);
 
-        this.zzz.fill$ = this.#fill.asObservable();
         this.zzz.fillOpacity$ = this.#fillOpacity.asObservable();
-        this.zzz.stroke$ = this.#stroke.asObservable();
         this.zzz.strokeOpacity$ = this.#strokeOpacity.asObservable();
 
         this.flagReset(true);
@@ -317,7 +315,8 @@ export class Path extends Shape implements PathAttributes {
             }));
 
             // fill
-            this.zzz.disposables.push(this.zzz.fill$.subscribe((fill) => {
+            this.zzz.disposables.push(effect(() => {
+                const fill = this.fill;
                 const change: SVGAttributes = {};
                 change.fill = serialize_color(fill);
                 svg.setAttributes(this.zzz.elem, change);
@@ -357,7 +356,8 @@ export class Path extends Shape implements PathAttributes {
             }));
 
             // stroke
-            this.zzz.disposables.push(this.zzz.stroke$.subscribe((stroke) => {
+            this.zzz.disposables.push(effect(() => {
+                const stroke = this.stroke;
                 const change: SVGAttributes = {};
                 change.stroke = serialize_color(stroke);
                 svg.setAttributes(this.zzz.elem, change);
@@ -1079,11 +1079,13 @@ export class Path extends Shape implements PathAttributes {
         this.zzz.flags[Flag.Cap] = true;
     }
     get closed(): boolean {
-        return this.#closed;
+        return this.#closed.get();
     }
     set closed(closed: boolean) {
-        this.#closed = !!closed;
-        this.zzz.flags[Flag.Vertices] = true;
+        if (typeof closed === 'boolean') {
+            this.#closed.set(closed);
+            this.zzz.flags[Flag.Vertices] = true;
+        }
     }
     get curved(): boolean {
         return this.#curved;

@@ -1,16 +1,20 @@
+import { state } from 'g2o-reactive';
 import { Anchor } from '../anchor';
 import { Group } from '../group';
 import { IBoard } from '../IBoard';
 import { G20 } from '../math/G20';
 import { Matrix } from '../matrix';
-import { variable } from '../reactive/variable';
 import { Shape } from '../Shape';
 import { mod, toFixed } from '../utils/math';
 import { Commands } from '../utils/path-commands';
+import { sizeEquals } from './Size';
 import { View } from './View';
 
 type DOMElement = HTMLElement | SVGElement;
 
+/**
+ * Finds the SVGDefsElement from the children of the SVGElement.
+ */
 export function get_svg_element_defs(svg: SVGElement): SVGDefsElement {
     const children = svg.children;
     const N = children.length;
@@ -380,8 +384,7 @@ export class SVGView implements View {
     readonly viewBox: Group;
     readonly defs: SVGDefsElement;
 
-    readonly #size = variable({ width: 0, height: 0 });
-    readonly size$ = this.#size.asObservable();
+    readonly #size = state({ width: 0, height: 0 }, { equals: sizeEquals });
 
     constructor(viewBox: Group, containerId: string, params: SVGViewParams = {}) {
         if (viewBox instanceof Group) {

@@ -20,11 +20,14 @@ export function is_color_provider(x: Color): x is ColorProvider {
     }
 }
 
-export function serialize_color(x: Color): string {
-    if (is_color_provider(x)) {
-        return `url(#${x.id})`;
+/**
+ * If the color is a color provider then the returned value is `url(#id)`, otherwise it's the color itself.
+ */
+export function serialize_color(color: Color): string {
+    if (is_color_provider(color)) {
+        return `url(#${color.id})`;
     }
     else {
-        return x;
+        return color;
     }
 }

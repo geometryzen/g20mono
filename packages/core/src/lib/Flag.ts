@@ -22,7 +22,6 @@ export enum Flag {
     Rows,
     Scale,
     Sides,
-    Size,
     Spread,
     StartAngle,
     Stops,

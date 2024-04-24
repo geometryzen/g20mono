@@ -1,3 +1,4 @@
+import { effect, state } from 'g2o-reactive';
 import { Anchor } from '../anchor';
 import { Collection } from '../collection';
 import { Color } from '../effects/ColorProvider';
@@ -6,7 +7,6 @@ import { IBoard } from '../IBoard';
 import { G20 } from '../math/G20';
 import { Path, PathAttributes } from '../path';
 import { Disposable, dispose } from '../reactive/Disposable';
-import { variable } from '../reactive/variable';
 import { PositionLike } from '../Shape';
 
 export interface RectangleAPI<X> {
@@ -48,8 +48,8 @@ export class Rectangle extends Path implements RectangleProperties, Disposable {
 
     readonly #disposables: Disposable[] = [];
 
-    readonly #width = variable(1);
-    readonly #height = variable(1);
+    readonly #width = state(1);
+    readonly #height = state(1);
 
     readonly #origin = G20.zero.clone();
 
@@ -64,9 +64,6 @@ export class Rectangle extends Path implements RectangleProperties, Disposable {
 
         super(board, points, true, false, true, path_options_from_rectangle_options(attributes));
 
-        this.zzz.width$ = this.#width.asObservable();
-        this.zzz.height$ = this.#height.asObservable();
-
         if (typeof attributes.width === 'number') {
             this.width = attributes.width;
         }
@@ -79,24 +76,8 @@ export class Rectangle extends Path implements RectangleProperties, Disposable {
             this.zzz.flags[Flag.Vertices] = true;
         }));
 
-        this.#disposables.push(this.zzz.width$.subscribe((width) => {
-            update_rectangle_vertices(width, this.height, this.origin, this.closed, this.vertices);
-            // Nothing will happen if the Flag.Vertices is not set.
-            this.zzz.flags[Flag.Vertices] = true;
-            this.zzz.flags[Flag.Matrix] = true;
-            super.update();
-        }));
-
-        this.#disposables.push(this.zzz.height$.subscribe((height) => {
-            update_rectangle_vertices(this.width, height, this.origin, this.closed, this.vertices);
-            // Nothing will happen if the Flag.Vertices is not set.
-            this.zzz.flags[Flag.Vertices] = true;
-            this.zzz.flags[Flag.Matrix] = true;
-            super.update();
-        }));
-
-        this.#disposables.push(this.#origin.change$.subscribe((origin) => {
-            update_rectangle_vertices(this.width, this.height, origin, this.closed, this.vertices);
+        this.#disposables.push(effect(() => {
+            update_rectangle_vertices(this.width, this.height, this.origin, this.closed, this.vertices);
             // Nothing will happen if the Flag.Vertices is not set.
             this.zzz.flags[Flag.Vertices] = true;
             this.zzz.flags[Flag.Matrix] = true;
