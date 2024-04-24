@@ -136,8 +136,8 @@ export class Rectangle extends Path implements RectangleProperties, Disposable {
     }
 }
 
-function path_options_from_rectangle_options(attributes: RectangleAttributes): Partial<PathAttributes> {
-    const retval: Partial<PathAttributes> = {
+function path_options_from_rectangle_options(attributes: RectangleAttributes): PathAttributes {
+    const retval: PathAttributes = {
         id: attributes.id,
         attitude: attributes.attitude,
         opacity: attributes.opacity,

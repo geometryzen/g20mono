@@ -1,6 +1,6 @@
+import { effect, state } from 'g2o-reactive';
 import { Anchor } from './anchor';
 import { Constants } from './constants';
-import { Color } from './effects/ColorProvider';
 import { ElementBase } from './element';
 import { Flag } from './Flag';
 import { IBoard } from './IBoard';
@@ -10,6 +10,7 @@ import { G20 } from './math/G20';
 import { Matrix } from './matrix';
 import { Disposable } from './reactive/Disposable';
 import { variable } from './reactive/variable';
+import { svg, SVGAttributes } from './renderers/SVGView';
 import { computed_world_matrix } from './utils/compute_world_matrix';
 
 export type PositionLike = Anchor | G20 | Shape | [x: number, y: number];
@@ -46,12 +47,12 @@ export interface Parent {
 }
 
 export interface ShapeAttributes {
-    id: string;
-    opacity: number;
-    position: PositionLike;
-    attitude: G20;
-    visibility: 'visible' | 'hidden' | 'collapse';
-    compensate: boolean;
+    id?: string;
+    opacity?: number;
+    position?: PositionLike;
+    attitude?: G20;
+    visibility?: 'visible' | 'hidden' | 'collapse';
+    compensate?: boolean;
 }
 
 export interface ShapeProperties {
@@ -70,7 +71,7 @@ export interface ShapeProperties {
     visibility: 'visible' | 'hidden' | 'collapse';
 }
 
-function ensure_identifier(attributes: Partial<ShapeAttributes>): string {
+function ensure_identifier(attributes: ShapeAttributes): string {
     if (typeof attributes.id === 'string') {
         return attributes.id;
     }
@@ -112,8 +113,8 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
 
     readonly #skewY = variable(0);
 
-    readonly #opacity = variable(1);
-    readonly #visibility = variable('visible' as 'visible' | 'hidden' | 'collapse');
+    readonly #opacity = state(1);
+    readonly #visibility = state('visible' as 'visible' | 'hidden' | 'collapse');
 
     readonly #compensate: boolean;
 
@@ -121,29 +122,16 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
 
     abstract automatic: boolean;
     abstract beginning: number;
-    abstract cap: 'butt' | 'round' | 'square';
-    abstract closed: boolean;
-    abstract curved: boolean;
     abstract ending: number;
-    abstract fill: Color;
-    abstract join: 'arcs' | 'bevel' | 'miter' | 'miter-clip' | 'round';
+    // TODO: Remove the properties that don't generally apply
     abstract length: number;
-    abstract strokeWidth: number;
-    abstract miter: number;
-    abstract stroke: Color;
     abstract getBoundingBox(shallow?: boolean): { top?: number; left?: number; right?: number; bottom?: number };
     abstract hasBoundingBox(): boolean;
-    abstract noFill(): this;
-    abstract noStroke(): this;
     abstract subdivide(limit: number): this;
-    abstract render(domElement: HTMLElement | SVGElement, svgElement: SVGElement): void;
 
-    constructor(readonly board: IBoard, attributes: Partial<ShapeAttributes> = {}) {
+    constructor(readonly board: IBoard, attributes: ShapeAttributes = {}) {
 
         super(ensure_identifier(attributes));
-
-        this.zzz.opacity$ = this.#opacity.asObservable();
-        this.zzz.visibility$ = this.#visibility.asObservable();
 
         this.flagReset(true);
 
@@ -211,6 +199,43 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
         this.#position_change_unbind();
         this.#attitude_change_unbind();
         super.dispose();
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    render(domElement: HTMLElement | SVGElement, svgElement: SVGElement): void {
+        // opacity
+        this.zzz.disposables.push(effect(() => {
+            const opacity = this.opacity;
+            const change: SVGAttributes = { opacity: `${opacity}` };
+            if (opacity === 1) {
+                svg.removeAttributes(this.zzz.elem, change);
+            }
+            else {
+                svg.setAttributes(this.zzz.elem, change);
+            }
+            return function () {
+                // No cleanup to be done.
+            };
+        }));
+        // visibility
+        this.zzz.disposables.push(effect(() => {
+            const visibility = this.visibility;
+            switch (visibility) {
+                case 'visible': {
+                    const change: SVGAttributes = { visibility };
+                    svg.removeAttributes(this.zzz.elem, change);
+                    break;
+                }
+                default: {
+                    const change: SVGAttributes = { visibility };
+                    svg.setAttributes(this.zzz.elem, change);
+                    break;
+                }
+            }
+            return function () {
+                // No cleanup to be done.
+            };
+        }));
     }
 
     #update_matrix(compensate: boolean): void {

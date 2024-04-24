@@ -128,8 +128,8 @@ export class Ellipse extends Path {
     }
 }
 
-function path_attribs_from_ellipse_attribs(attributes: EllipseAttributes): Partial<PathAttributes> {
-    const retval: Partial<PathAttributes> = {
+function path_attribs_from_ellipse_attribs(attributes: EllipseAttributes): PathAttributes {
+    const retval: PathAttributes = {
         id: attributes.id,
         fill: attributes.fill,
         fillOpacity: attributes.fillOpacity,

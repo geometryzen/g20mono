@@ -58,8 +58,8 @@ export class Line extends Path implements LineProperties {
     }
 }
 
-function path_attribs_from_line_attribs(attributes: LineAttributes): Partial<PathAttributes> {
-    const retval: Partial<PathAttributes> = {
+function path_attribs_from_line_attribs(attributes: LineAttributes): PathAttributes {
+    const retval: PathAttributes = {
         id: attributes.id,
         visibility: attributes.visibility,
         stroke: attributes.stroke,

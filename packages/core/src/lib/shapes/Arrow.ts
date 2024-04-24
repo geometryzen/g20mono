@@ -150,8 +150,8 @@ function update_arrow_vertices(axis: G20, headLength: number, origin: G20, verti
     stbd_tail.origin.set(axis.x - headLength * Math.cos(θ + φ), axis.y - headLength * Math.sin(θ + φ)).sub(origin);
 }
 
-function path_attribs_from_arrow_attribs(attributes: ArrowAttributes): Partial<PathAttributes> {
-    const retval: Partial<PathAttributes> = {
+function path_attribs_from_arrow_attribs(attributes: ArrowAttributes): PathAttributes {
+    const retval: PathAttributes = {
         id: attributes.id,
         // attitude: attributes.attitude,
         // opacity: attributes.opacity,

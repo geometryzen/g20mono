@@ -1,36 +1,38 @@
 import { effect, state } from 'g2o-reactive';
+import { ColoredShape, ColoredShapeAttributes } from './ColoredShape';
 import { Color, is_color_provider, serialize_color } from './effects/ColorProvider';
 import { ElementBase } from './element';
 import { Flag } from './Flag';
 import { IBoard } from './IBoard';
 import { get_dashes_offset, set_dashes_offset } from './path';
-import { Disposable } from './reactive/Disposable';
 import { get_svg_element_defs, set_defs_dirty_flag, svg, SVGAttributes, transform_value_of_matrix } from './renderers/SVGView';
-import { PositionLike, Shape, ShapeAttributes } from './Shape';
+import { PositionLike } from './Shape';
 
 const min = Math.min, max = Math.max;
 
 export type TextDecoration = 'none' | 'underline' | 'overline' | 'line-through';
 
 export interface TextAttributes {
-    anchor: 'start' | 'middle' | 'end';
-    baseline: 'auto' | 'text-bottom' | 'alphabetic' | 'ideographic' | 'middle' | 'central' | 'mathematical' | 'hanging' | 'text-top';
-    decoration: TextDecoration[];
-    direction: 'ltr' | 'rtl';
-    dx: number | string;
-    dy: number | string;
-    fontFamily: string;
-    fill: Color;
-    id: string;
-    strokeWidth: number;
-    opacity: number;
-    position: PositionLike;
-    fontSize: number;
-    stroke: Color;
-    fontStyle: 'normal' | 'italic' | 'oblique';
-    value: string;
-    visibility: 'visible' | 'hidden' | 'collapse';
-    fontWeight: 'normal' | 'bold' | 'bolder' | 'lighter' | number;
+    anchor?: 'start' | 'middle' | 'end';
+    baseline?: 'auto' | 'text-bottom' | 'alphabetic' | 'ideographic' | 'middle' | 'central' | 'mathematical' | 'hanging' | 'text-top';
+    decoration?: TextDecoration[];
+    direction?: 'ltr' | 'rtl';
+    dx?: number | string;
+    dy?: number | string;
+    fill?: Color;
+    fillOpacity?: number;
+    fontFamily?: string;
+    fontStyle?: 'normal' | 'italic' | 'oblique';
+    fontWeight?: 'normal' | 'bold' | 'bolder' | 'lighter' | number;
+    id?: string;
+    opacity?: number;
+    position?: PositionLike;
+    fontSize?: number;
+    stroke?: Color;
+    strokeOpacity?: number;
+    strokeWidth?: number;
+    value?: string;
+    visibility?: 'visible' | 'hidden' | 'collapse';
 }
 
 export interface TextProperties {
@@ -53,16 +55,11 @@ export interface TextProperties {
     fontWeight: 'normal' | 'bold' | 'bolder' | 'lighter' | number;
 }
 
-export class Text extends Shape implements TextProperties {
+export class Text extends ColoredShape implements TextProperties {
     automatic: boolean;
     beginning: number;
-    cap: 'butt' | 'round' | 'square';
-    closed: boolean;
-    curved: boolean;
     ending: number;
-    join: 'arcs' | 'bevel' | 'miter' | 'miter-clip' | 'round';
     length: number;
-    miter: number;
 
     readonly #content = state('');
 
@@ -89,29 +86,13 @@ export class Text extends Shape implements TextProperties {
     readonly #dx = state(0 as number | string);
     readonly #dy = state(0 as number | string);
 
-    /**
-     * @see {@link https://developer.mozilla.org/en-US/docs/Web/CSS/color_value} for more information on CSS's colors as `String`.
-     */
-    readonly #fill = state('#000000' as Color);
-    #fill_change: Disposable | null = null;
-
-    /**
-     * @see {@link https://developer.mozilla.org/en-US/docs/Web/CSS/color_value} for more information on CSS's colors as `String`.
-     */
-    readonly #stroke = state('none' as Color);
-    #stroke_change: Disposable | null = null;
-
-    readonly #strokeWidth = state(1);
-
     #dashes: number[] | null = null;
 
-    constructor(board: IBoard, value: string, attributes: Partial<TextAttributes> = {}) {
+    constructor(board: IBoard, content: string, attributes: Partial<TextAttributes> = {}) {
 
         super(board, shape_attributes_from_text_attributes(attributes));
 
-        this.zzz.flags[Flag.Stroke] = true;
-
-        this.content = value;
+        this.content = content;
 
         /**
          * @see {@link https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray} for more information on the SVG stroke-dasharray attribute.
@@ -329,29 +310,6 @@ export class Text extends Shape implements TextProperties {
                 };
             }));
 
-            // fill
-            this.zzz.disposables.push(effect(() => {
-                const fill = this.fill;
-                if (fill) {
-                    if (is_color_provider(fill)) {
-                        this.zzz.hasFillEffect = true;
-                        fill.render(svgElement);
-                    }
-                    else {
-                        if (this.zzz.hasFillEffect) {
-                            set_defs_dirty_flag(get_svg_element_defs(svgElement), true);
-                            delete this.zzz.hasFillEffect;
-                        }
-                    }
-                    const change: SVGAttributes = { fill: serialize_color(fill) };
-                    svg.setAttributes(this.zzz.elem, change);
-                }
-                else {
-                    const change: SVGAttributes = { fill: serialize_color(fill) };
-                    svg.removeAttributes(this.zzz.elem, change);
-                }
-            }));
-
             // font-family
             this.zzz.disposables.push(effect(() => {
                 svg.setAttributes(this.zzz.elem, { 'font-family': this.fontFamily });
@@ -390,75 +348,9 @@ export class Text extends Shape implements TextProperties {
                 };
             }));
 
-            // opacity
-            this.zzz.disposables.push(this.zzz.opacity$.subscribe((opacity) => {
-                const change: SVGAttributes = { opacity: `${opacity}` };
-                if (opacity === 1) {
-                    svg.removeAttributes(this.zzz.elem, change);
-                }
-                else {
-                    svg.setAttributes(this.zzz.elem, change);
-                }
-                return function () {
-                    // No cleanup to be done.
-                };
-            }));
-
-            // stroke
-            this.zzz.disposables.push(effect(() => {
-                const stroke = this.stroke;
-                if (stroke) {
-                    if (is_color_provider(stroke)) {
-                        this.zzz.hasStrokeEffect = true;
-                        stroke.render(svgElement);
-                    }
-                    else {
-                        if (this.zzz.hasStrokeEffect) {
-                            set_defs_dirty_flag(get_svg_element_defs(svgElement), true);
-                            delete this.zzz.hasStrokeEffect;
-                        }
-                    }
-                    const change: SVGAttributes = { stroke: serialize_color(stroke) };
-                    svg.setAttributes(this.zzz.elem, change);
-                }
-                else {
-                    const change: SVGAttributes = { stroke: serialize_color(stroke) };
-                    svg.removeAttributes(this.zzz.elem, change);
-                }
-            }));
-
-            // stroke-width
-            this.zzz.disposables.push(effect(() => {
-                const change: SVGAttributes = {};
-                change['stroke-width'] = `${this.strokeWidth}`;
-                svg.setAttributes(this.zzz.elem, change);
-                return function () {
-                    // No cleanup to be done.
-                };
-            }));
-
             // textContent
             this.zzz.disposables.push(effect(() => {
                 this.zzz.elem.textContent = this.content;
-            }));
-
-            // visibility
-            this.zzz.disposables.push(this.zzz.visibility$.subscribe((visibility) => {
-                switch (visibility) {
-                    case 'visible': {
-                        const change: SVGAttributes = { visibility };
-                        svg.removeAttributes(this.zzz.elem, change);
-                        break;
-                    }
-                    default: {
-                        const change: SVGAttributes = { visibility };
-                        svg.setAttributes(this.zzz.elem, change);
-                        break;
-                    }
-                }
-                return function () {
-                    // No cleanup to be done.
-                };
             }));
         }
 
@@ -494,6 +386,8 @@ export class Text extends Shape implements TextProperties {
             }
         }
 
+        super.render(domElement, svgElement);
+
         this.flagReset();
     }
 
@@ -502,22 +396,6 @@ export class Text extends Shape implements TextProperties {
         const width = text.content.length * text.fontSize * 0.6;
         const height = text.fontSize;
         return { width, height };
-    }
-
-    /**
-     * Convenience method to set fill to `none`.
-     */
-    noFill() {
-        this.fill = 'none';
-        return this;
-    }
-
-    /**
-     * Convenience method to set stroke to `none`.
-     */
-    noStroke() {
-        this.stroke = 'none';
-        return this;
     }
 
     getBoundingBox(shallow = false): { top: number; left: number; right: number; bottom: number; } {
@@ -586,8 +464,6 @@ export class Text extends Shape implements TextProperties {
 
     override flagReset(dirtyFlag = false) {
         super.flagReset(dirtyFlag);
-        this.zzz.flags[Flag.Fill] = dirtyFlag;
-        this.zzz.flags[Flag.Stroke] = dirtyFlag;
         this.zzz.flags[Flag.ClipFlag] = dirtyFlag;
         this.zzz.flags[Flag.ClassName] = dirtyFlag;
         return this;
@@ -624,6 +500,16 @@ export class Text extends Shape implements TextProperties {
                 case 'text-top': {
                     this.#baseline.set(baseline);
                 }
+            }
+        }
+    }
+    get content(): string {
+        return this.#content.get();
+    }
+    set content(value: string) {
+        if (typeof value === 'string') {
+            if (this.content !== value) {
+                this.#content.set(value);
             }
         }
     }
@@ -684,54 +570,12 @@ export class Text extends Shape implements TextProperties {
             }
         }
     }
-    get fill(): Color {
-        return this.#fill.get();
-    }
-    set fill(fill) {
-        if (this.#fill_change) {
-            this.#fill_change.dispose();
-            this.#fill_change = null;
-        }
-        this.#fill.set(fill);
-        this.zzz.flags[Flag.Fill] = true;
-        if (is_color_provider(this.fill)) {
-            this.#fill_change = this.fill.change$.subscribe(() => {
-                this.zzz.flags[Flag.Fill] = true;
-            });
-        }
-    }
-    get strokeWidth(): number {
-        return this.#strokeWidth.get();
-    }
-    set strokeWidth(strokeWidth: number) {
-        if (typeof strokeWidth === 'number') {
-            if (this.strokeWidth !== strokeWidth) {
-                this.#strokeWidth.set(strokeWidth);
-            }
-        }
-    }
     get fontSize(): number {
         return this.#fontSize.get();
     }
     set fontSize(size: number) {
         if (typeof size === 'number') {
             this.#fontSize.set(size);
-        }
-    }
-    get stroke(): Color {
-        return this.#stroke.get();
-    }
-    set stroke(stroke: Color) {
-        if (this.#stroke_change) {
-            this.#stroke_change.dispose();
-            this.#stroke_change = null;
-        }
-        this.#stroke.set(stroke);
-        this.zzz.flags[Flag.Stroke] = true;
-        if (is_color_provider(this.stroke)) {
-            this.#stroke_change = this.stroke.change$.subscribe(() => {
-                this.zzz.flags[Flag.Stroke] = true;
-            });
         }
     }
     get fontStyle(): 'normal' | 'italic' | 'oblique' {
@@ -742,16 +586,6 @@ export class Text extends Shape implements TextProperties {
             this.#fontStyle.set(fontStyle);
         }
     }
-    get content(): string {
-        return this.#content.get();
-    }
-    set content(value: string) {
-        if (typeof value === 'string') {
-            if (this.content !== value) {
-                this.#content.set(value);
-            }
-        }
-    }
     get fontWeight() {
         return this.#fontWeight.get();
     }
@@ -760,11 +594,11 @@ export class Text extends Shape implements TextProperties {
     }
 }
 
-function shape_attributes_from_text_attributes(attributes: Partial<TextAttributes>): Partial<ShapeAttributes> {
-    const retval: Partial<ShapeAttributes> = {
+function shape_attributes_from_text_attributes(attributes: Partial<TextAttributes>): Partial<ColoredShapeAttributes> {
+    const retval: Partial<ColoredShapeAttributes> = {
         id: attributes.id,
         compensate: true,
-        position: attributes.position
+        position: attributes.position,
     };
     return retval;
 }

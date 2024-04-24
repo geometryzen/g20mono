@@ -1,15 +1,16 @@
 import { effect, state } from 'g2o-reactive';
 import { Anchor } from './anchor';
 import { Collection } from './collection';
-import { Color, is_color_provider, serialize_color } from './effects/ColorProvider';
+import { ColoredShape, ColoredShapeAttributes } from './ColoredShape';
+import { Color } from './effects/ColorProvider';
 import { ElementBase } from './element';
 import { Flag } from './Flag';
 import { IBoard } from './IBoard';
 import { G20 } from './math/G20.js';
 import { Disposable } from './reactive/Disposable';
 import { variable } from './reactive/variable';
-import { get_svg_element_defs, set_defs_dirty_flag, svg, SVGAttributes, transform_value_of_matrix } from './renderers/SVGView';
-import { PositionLike, Shape } from './Shape';
+import { svg, SVGAttributes, transform_value_of_matrix } from './renderers/SVGView';
+import { PositionLike } from './Shape';
 import { getComponentOnCubicBezier, getCurveBoundingBox, getCurveFromPoints } from './utils/curves';
 import { lerp, mod } from './utils/math';
 import { Commands } from './utils/path-commands';
@@ -30,41 +31,32 @@ const max = Math.max;
 
 const vector = new G20();
 
-export interface PathAttributes {
-    attitude: G20;
-    id: string,
-    opacity: number;
-    position: PositionLike;
-    visibility: 'visible' | 'hidden' | 'collapse';
+export interface PathAttributes extends ColoredShapeAttributes {
+    attitude?: G20;
+    id?: string,
+    opacity?: number;
+    position?: PositionLike;
+    visibility?: 'visible' | 'hidden' | 'collapse';
     /**
      * The value of what the path should be filled in with.
      * @see {@link https://developer.mozilla.org/en-US/docs/Web/CSS/color_value} for more information on CSS's colors as `String`.
      */
-    fill: Color;
-    fillOpacity: number;
+    fill?: Color;
+    fillOpacity?: number;
     /**
      * The value of what the path should be outlined in with.
      * @see {@link https://developer.mozilla.org/en-US/docs/Web/CSS/color_value} for more information on CSS's colors as `String`.
      */
-    stroke: Color;
-    strokeWidth: number;
-    strokeOpacity: number;
+    stroke?: Color;
+    strokeOpacity?: number;
+    strokeWidth?: number;
 }
 
-export class Path extends Shape implements PathAttributes {
+export class Path extends ColoredShape implements PathAttributes {
 
     #length = 0;
 
     readonly #lengths: number[] = [];
-
-    readonly #fill = state('none' as Color);
-    #fill_change: Disposable | null = null;
-    readonly #fillOpacity = variable(1.0);
-
-    readonly #stroke = variable('#000000' as Color);
-    #stroke_change: Disposable | null = null;
-    readonly #strokeWidth = state(1);
-    readonly #strokeOpacity = variable(1.0);
 
     #vectorEffect: 'none' | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position' = 'non-scaling-stroke';
 
@@ -112,12 +104,9 @@ export class Path extends Shape implements PathAttributes {
      * @param curved Describes whether the path automatically calculates bezier handles for each vertex.
      * @param manual Describes whether the developer controls how vertices are plotted.
      */
-    constructor(board: IBoard, vertices: Anchor[] = [], closed?: boolean, curved?: boolean, manual?: boolean, attributes: Partial<PathAttributes> = {}) {
+    constructor(board: IBoard, vertices: Anchor[] = [], closed?: boolean, curved?: boolean, manual?: boolean, attributes: PathAttributes = {}) {
 
         super(board, attributes);
-
-        this.zzz.fillOpacity$ = this.#fillOpacity.asObservable();
-        this.zzz.strokeOpacity$ = this.#strokeOpacity.asObservable();
 
         this.flagReset(true);
         this.zzz.flags[Flag.ClipPath] = false;
@@ -233,40 +222,6 @@ export class Path extends Shape implements PathAttributes {
             changed.transform = transform_value_of_matrix(this.matrix);
         }
 
-        if (this.fill && is_color_provider(this.fill)) {
-            this.zzz.hasFillEffect = true;
-            this.fill.render(svgElement);
-        }
-
-        if (this.zzz.flags[Flag.Fill]) {
-            if (this.fill) {
-                changed.fill = serialize_color(this.fill);
-            }
-            if (this.zzz.hasFillEffect && typeof this.fill === 'string') {
-                set_defs_dirty_flag(get_svg_element_defs(svgElement), true);
-                delete this.zzz.hasFillEffect;
-            }
-        }
-
-        if (this.stroke && is_color_provider(this.stroke)) {
-            this.zzz.hasStrokeEffect = true;
-            this.stroke.render(svgElement);
-        }
-
-        if (this.zzz.flags[Flag.Stroke]) {
-            if (this.stroke) {
-                changed.stroke = serialize_color(this.stroke);
-            }
-            if (this.zzz.hasStrokeEffect && typeof this.stroke === 'string') {
-                set_defs_dirty_flag(get_svg_element_defs(svgElement), true);
-                delete this.zzz.hasStrokeEffect;
-            }
-        }
-
-        if (this.zzz.flags[Flag.Linewidth]) {
-            changed['stroke-width'] = `${this.strokeWidth}`;
-        }
-
         if (this.zzz.flags[Flag.ClassName]) {
             changed['class'] = this.classList.join(' ');
         }
@@ -313,103 +268,6 @@ export class Path extends Shape implements PathAttributes {
                 change.d = svg.path_from_anchors(this.board, this.position, this.attitude, this.zzz.vertices, this.closed);
                 svg.setAttributes(this.zzz.elem, change);
             }));
-
-            // fill
-            this.zzz.disposables.push(effect(() => {
-                const fill = this.fill;
-                const change: SVGAttributes = {};
-                change.fill = serialize_color(fill);
-                svg.setAttributes(this.zzz.elem, change);
-
-                if (this.zzz.hasFillEffect && typeof fill === 'string') {
-                    set_defs_dirty_flag(get_svg_element_defs(svgElement), true);
-                    delete this.zzz.hasFillEffect;
-                }
-
-                return function () {
-                    // No cleanup to be done.
-                };
-            }));
-
-            // fillOpacity
-            this.zzz.disposables.push(this.zzz.fillOpacity$.subscribe((fillOpacity) => {
-                const change: SVGAttributes = {};
-                change['fill-opacity'] = `${fillOpacity}`;
-                svg.setAttributes(this.zzz.elem, change);
-                return function () {
-                    // No cleanup to be done.
-                };
-            }));
-
-            // opacity
-            this.zzz.disposables.push(this.zzz.opacity$.subscribe((opacity) => {
-                const change: SVGAttributes = { opacity: `${opacity}` };
-                if (opacity === 1) {
-                    svg.removeAttributes(this.zzz.elem, change);
-                }
-                else {
-                    svg.setAttributes(this.zzz.elem, change);
-                }
-                return function () {
-                    // No cleanup to be done.
-                };
-            }));
-
-            // stroke
-            this.zzz.disposables.push(effect(() => {
-                const stroke = this.stroke;
-                const change: SVGAttributes = {};
-                change.stroke = serialize_color(stroke);
-                svg.setAttributes(this.zzz.elem, change);
-
-                if (this.zzz.hasStrokeEffect && typeof stroke === 'string') {
-                    set_defs_dirty_flag(get_svg_element_defs(svgElement), true);
-                    delete this.zzz.hasStrokeEffect;
-                }
-
-                return function () {
-                    // No cleanup to be done.
-                };
-            }));
-
-            // strokeOpacity
-            this.zzz.disposables.push(this.zzz.strokeOpacity$.subscribe((strokeOpacity) => {
-                const change: SVGAttributes = {};
-                change['stroke-opacity'] = `${strokeOpacity}`;
-                svg.setAttributes(this.zzz.elem, change);
-                return function () {
-                    // No cleanup to be done.
-                };
-            }));
-
-            // strokeWidth
-            this.zzz.disposables.push(effect(() => {
-                const change: SVGAttributes = {};
-                change['stroke-width'] = `${this.strokeWidth}`;
-                svg.setAttributes(this.zzz.elem, change);
-                return function () {
-                    // No cleanup to be done.
-                };
-            }));
-
-            // visibility
-            this.zzz.disposables.push(this.zzz.visibility$.subscribe((visibility) => {
-                switch (visibility) {
-                    case 'visible': {
-                        const change: SVGAttributes = { visibility };
-                        svg.removeAttributes(this.zzz.elem, change);
-                        break;
-                    }
-                    default: {
-                        const change: SVGAttributes = { visibility };
-                        svg.setAttributes(this.zzz.elem, change);
-                        break;
-                    }
-                }
-                return function () {
-                    // No cleanup to be done.
-                };
-            }));
         }
 
         if (this.zzz.flags[Flag.ClipFlag]) {
@@ -445,23 +303,9 @@ export class Path extends Shape implements PathAttributes {
             }
         }
 
+        super.render(domElement, svgElement);
+
         this.flagReset();
-    }
-
-    /**
-     * A convenience method for setting the `fill` attribute to "none".
-     */
-    noFill(): this {
-        this.fill = 'none';
-        return this;
-    }
-
-    /**
-     * A convenience method for setting the `stroke` attribute to "none".
-     */
-    noStroke(): this {
-        this.stroke = 'none';
-        return this;
     }
 
     corner(): this {
@@ -1028,13 +872,10 @@ export class Path extends Shape implements PathAttributes {
 
         this.zzz.flags[Flag.Cap] = dirtyFlag;
         this.zzz.flags[Flag.ClipFlag] = dirtyFlag;
-        this.zzz.flags[Flag.Fill] = dirtyFlag;
         this.zzz.flags[Flag.Join] = dirtyFlag;
         this.zzz.flags[Flag.Length] = dirtyFlag;
-        this.zzz.flags[Flag.Linewidth] = dirtyFlag;
         this.zzz.flags[Flag.ClipPath] = dirtyFlag;
         this.zzz.flags[Flag.Miter] = dirtyFlag;
-        this.zzz.flags[Flag.Stroke] = dirtyFlag;
         this.zzz.flags[Flag.VectorEffect] = dirtyFlag;
         this.zzz.flags[Flag.Vertices] = dirtyFlag;
 
@@ -1110,30 +951,6 @@ export class Path extends Shape implements PathAttributes {
         this.#ending = ending;
         this.zzz.flags[Flag.Vertices] = true;
     }
-    get fill(): Color {
-        return this.#fill.get();
-    }
-    set fill(fill: Color) {
-        if (this.#fill_change) {
-            this.#fill_change.dispose();
-            this.#fill_change = null;
-        }
-
-        this.#fill.set(fill);
-        this.zzz.flags[Flag.Fill] = true;
-
-        if (is_color_provider(fill)) {
-            this.#fill_change = fill.change$.subscribe(() => {
-                this.zzz.flags[Flag.Fill] = true;
-            });
-        }
-    }
-    get fillOpacity(): number {
-        return this.#fillOpacity.get();
-    }
-    set fillOpacity(fillOpacity: number) {
-        this.#fillOpacity.set(fillOpacity);
-    }
     get join(): 'arcs' | 'bevel' | 'miter' | 'miter-clip' | 'round' {
         return this.#join.get();
     }
@@ -1150,47 +967,12 @@ export class Path extends Shape implements PathAttributes {
     get lengths(): number[] {
         return this.#lengths;
     }
-    get strokeWidth(): number {
-        return this.#strokeWidth.get();
-    }
-    set strokeWidth(stroeWidth: number) {
-        if (typeof stroeWidth === 'number') {
-            if (this.strokeWidth !== stroeWidth) {
-                this.#strokeWidth.set(stroeWidth);
-                this.zzz.flags[Flag.Linewidth] = true;
-            }
-        }
-    }
     get miter(): number {
         return this.#miter.get();
     }
     set miter(miter: number) {
         this.#miter.set(miter);
         this.zzz.flags[Flag.Miter] = true;
-    }
-    get stroke(): Color {
-        return this.#stroke.get();
-    }
-    set stroke(stroke: Color) {
-        if (this.#stroke_change) {
-            this.#stroke_change.dispose();
-            this.#stroke_change = null;
-        }
-
-        this.#stroke.set(stroke);
-        this.zzz.flags[Flag.Stroke] = true;
-
-        if (is_color_provider(stroke)) {
-            this.#stroke_change = stroke.change$.subscribe(() => {
-                this.zzz.flags[Flag.Stroke] = true;
-            });
-        }
-    }
-    get strokeOpacity(): number {
-        return this.#strokeOpacity.get();
-    }
-    set strokeOpacity(strokeOpacity: number) {
-        this.#strokeOpacity.set(strokeOpacity);
     }
     get vertices(): Collection<Anchor> {
         return this.#vertices;

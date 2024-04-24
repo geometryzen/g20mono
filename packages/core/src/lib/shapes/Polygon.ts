@@ -28,8 +28,8 @@ export class Polygon extends Path implements PolygonAttributes {
     }
 }
 
-function path_attributes(attributes: Partial<PolygonAttributes>): Partial<PathAttributes> {
-    const retval: Partial<PathAttributes> = {
+function path_attributes(attributes: Partial<PolygonAttributes>): PathAttributes {
+    const retval: PathAttributes = {
         id: attributes.id,
         opacity: attributes.opacity,
         fill: attributes.fill,

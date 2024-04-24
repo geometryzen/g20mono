@@ -1,11 +1,10 @@
 import { effect } from 'g2o-reactive';
 import { Children } from './children';
-import { Color } from './effects/ColorProvider';
 import { Flag } from './Flag';
 import { IBoard } from './IBoard';
 import { IShape } from './IShape';
 import { Disposable, dispose } from './reactive/Disposable';
-import { DomContext, svg, SVGAttributes, transform_value_of_matrix } from './renderers/SVGView';
+import { DomContext, svg, transform_value_of_matrix } from './renderers/SVGView';
 import { Parent, Shape, ShapeAttributes } from './Shape';
 
 export interface IGroup extends Parent {
@@ -18,12 +17,6 @@ export interface GroupAttributes {
 
 export class Group extends Shape {
 
-    #strokeWidth = 1.0;
-    #cap: 'butt' | 'round' | 'square' = 'round';
-    #join: 'arcs' | 'bevel' | 'miter' | 'miter-clip' | 'round' = 'round';
-    #miter = 4;
-    #closed = true;
-    #curved = false;
     /**
      * Determines whether Path plots coordinates base don "closed" and "curved" flags.
      * The presence in Group seems unnecessary.
@@ -98,39 +91,6 @@ export class Group extends Shape {
             domElement.appendChild(this.zzz.elem);
             this.zzz.disposables.push(effect(() => {
                 this.zzz.elem.setAttribute('transform', transform_value_of_matrix(this.matrix));
-            }));
-
-            // opacity
-            this.zzz.disposables.push(this.zzz.opacity$.subscribe((opacity) => {
-                const change: SVGAttributes = { opacity: `${opacity}` };
-                if (opacity === 1) {
-                    svg.removeAttributes(this.zzz.elem, change);
-                }
-                else {
-                    svg.setAttributes(this.zzz.elem, change);
-                }
-                return function () {
-                    // No cleanup to be done.
-                };
-            }));
-
-            // visibility
-            this.zzz.disposables.push(this.zzz.visibility$.subscribe((visibility) => {
-                switch (visibility) {
-                    case 'visible': {
-                        const change: SVGAttributes = { visibility };
-                        svg.removeAttributes(this.zzz.elem, change);
-                        break;
-                    }
-                    default: {
-                        const change: SVGAttributes = { visibility };
-                        svg.setAttributes(this.zzz.elem, change);
-                        break;
-                    }
-                }
-                return function () {
-                    // No cleanup to be done.
-                };
             }));
         }
 
@@ -226,8 +186,10 @@ export class Group extends Shape {
                 }
             }
 
-            this.flagReset();
         }
+        super.render(domElement, svgElement);
+
+        this.flagReset();
     }
 
     #subscribe_to_shapes(): void {
@@ -435,26 +397,6 @@ export class Group extends Shape {
     }
 
     /**
-     * Apply `noFill` method to all child shapes.
-     */
-    noFill() {
-        this.children.forEach(function (child) {
-            child.noFill();
-        });
-        return this;
-    }
-
-    /**
-     * Apply `noStroke` method to all child shapes.
-     */
-    noStroke() {
-        this.children.forEach(function (child) {
-            child.noStroke();
-        });
-        return this;
-    }
-
-    /**
      * Apply `subdivide` method to all child shapes.
      */
     subdivide(limit: number) {
@@ -548,16 +490,6 @@ export class Group extends Shape {
             }
         }
     }
-    get cap(): 'butt' | 'round' | 'square' {
-        return this.#cap;
-    }
-    set cap(cap: 'butt' | 'round' | 'square') {
-        this.#cap = cap;
-        for (let i = 0; i < this.children.length; i++) {
-            const child = this.children.getAt(i);
-            child.cap = cap;
-        }
-    }
     /**
      * A list of all the children in the scenegraph.
      */
@@ -577,26 +509,6 @@ export class Group extends Shape {
             update_shape_group(shape, this);
         }
     }
-    get closed(): boolean {
-        return this.#closed;
-    }
-    set closed(v: boolean) {
-        this.#closed = v;
-        for (let i = 0; i < this.children.length; i++) {
-            const child = this.children.getAt(i);
-            child.closed = v;
-        }
-    }
-    get curved(): boolean {
-        return this.#curved;
-    }
-    set curved(v: boolean) {
-        this.#curved = v;
-        for (let i = 0; i < this.children.length; i++) {
-            const child = this.children.getAt(i);
-            child.curved = v;
-        }
-    }
     get ending(): number {
         return this.#ending;
     }
@@ -606,25 +518,6 @@ export class Group extends Shape {
                 this.#ending = ending;
                 this.zzz.flags[Flag.Ending] = true;
             }
-        }
-    }
-    get fill(): Color {
-        throw new Error();
-    }
-    set fill(fill: Color) {
-        for (let i = 0; i < this.children.length; i++) {
-            const child = this.children.getAt(i);
-            child.fill = fill;
-        }
-    }
-    get join(): 'arcs' | 'bevel' | 'miter' | 'miter-clip' | 'round' {
-        return this.#join;
-    }
-    set join(v: 'arcs' | 'bevel' | 'miter' | 'miter-clip' | 'round') {
-        this.#join = v;
-        for (let i = 0; i < this.children.length; i++) {
-            const child = this.children.getAt(i);
-            child.join = v;
         }
     }
     get length(): number {
@@ -639,35 +532,6 @@ export class Group extends Shape {
             }
         }
         return this.#length;
-    }
-    get strokeWidth(): number {
-        return this.#strokeWidth;
-    }
-    set strokeWidth(strokeWidth: number) {
-        this.#strokeWidth = strokeWidth;
-        for (let i = 0; i < this.children.length; i++) {
-            const child = this.children.getAt(i);
-            child.strokeWidth = strokeWidth;
-        }
-    }
-    get miter(): number {
-        return this.#miter;
-    }
-    set miter(v: number) {
-        this.#miter = v;
-        for (let i = 0; i < this.children.length; i++) {
-            const child = this.children.getAt(i);
-            child.miter = v;
-        }
-    }
-    get stroke(): Color {
-        throw new Error();
-    }
-    set stroke(stroke: Color) {
-        for (let i = 0; i < this.children.length; i++) {
-            const child = this.children.getAt(i);
-            child.stroke = stroke;
-        }
     }
 }
 
@@ -742,8 +606,8 @@ export function update_shape_group(child: Shape, parent?: Group) {
     }
 }
 
-function shape_attributes(attributes: Partial<GroupAttributes>): Partial<ShapeAttributes> {
-    const retval: Partial<ShapeAttributes> = {
+function shape_attributes(attributes: Partial<GroupAttributes>): ShapeAttributes {
+    const retval: ShapeAttributes = {
         id: attributes.id
     };
     return retval;

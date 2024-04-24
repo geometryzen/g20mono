@@ -38,25 +38,20 @@ export class ZZZ implements Disposable {
      * The element corresponding to some Shape and used by the SVG renderer. It will share the same identifier.
      */
     elem?: HTMLElement | SVGElement;
-    fillOpacity$?: Observable<number>;
     /**
-     * DGH: Something strange in use.
+     * A flag that reminds us that the fill (ColorProvider) has been rendered into the SVGDefsElement.
      */
     hasFillEffect?: boolean;
     /**
-     * DGH: Something strange in use.
+     * A flag that reminds us that the stroke (ColorProvider) has been rendered into the SVGDefsElement.
      */
     hasStrokeEffect?: boolean;
     image?: SVGImageElement;
     offset?: G20;
-    opacity$?: Observable<number>;
-    strokeOpacity$?: Observable<number>;
 
     vertices?: Anchor[];
     vertices_subject?: Variable<number>;
     vertices$?: Observable<number>;
-
-    visibility$?: Observable<'visible' | 'hidden' | 'collapse'>;
 
     dispose(): void {
         dispose(this.disposables);

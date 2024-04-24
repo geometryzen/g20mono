@@ -67,7 +67,7 @@ export class Circle extends Path implements CircleProperties {
     }
 
     override update(): this {
-        if (this.zzz.flags[Flag.Vertices] || this.zzz.flags[Flag.Radius]) {
+        if (this.zzz.flags[Flag.Vertices]) {
 
             let length = this.vertices.length;
 
@@ -110,7 +110,6 @@ export class Circle extends Path implements CircleProperties {
     }
 
     flagReset(dirtyFlag = false): this {
-        this.zzz.flags[Flag.Radius] = dirtyFlag;
         super.flagReset(dirtyFlag);
         return this;
     }
@@ -120,20 +119,17 @@ export class Circle extends Path implements CircleProperties {
     }
     set radius(radius: number) {
         if (typeof radius === 'number') {
-            if (this.radius !== radius) {
-                this.#radius.set(radius);
-                this.zzz.flags[Flag.Radius] = true;
-                // This is critical, but does it violate encapsulation?
-                // By extending Path, it seems I have to know something of the implementation details.
-                this.zzz.flags[Flag.Length] = true;
-                this.update();
-            }
+            this.#radius.set(radius);
+            // This is critical, but does it violate encapsulation?
+            // By extending Path, it seems I have to know something of the implementation details.
+            this.zzz.flags[Flag.Length] = true;
+            this.update();
         }
     }
 }
 
-function path_attributes(attributes: CircleAttributes): Partial<PathAttributes> {
-    const retval: Partial<PathAttributes> = {
+function path_attributes(attributes: CircleAttributes): PathAttributes {
+    const retval: PathAttributes = {
         attitude: attributes.attitude,
         position: attributes.position,
         fill: attributes.fill,
