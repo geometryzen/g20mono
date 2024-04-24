@@ -1,5 +1,4 @@
 {
-    "extends": "../../tsconfig.json",
     "compilerOptions": {
         "target": "esnext",
         "module": "esnext",
@@ -22,12 +21,8 @@
         "removeComments": false,
         "resolveJsonModule": true
     },
-    "include": [
-        "./src/**/*.ts",
-        "./rollup.config.mts",
-        "./rollup-plugin-dts.d.ts"
-    ],
     "exclude": [
-        "node_modules"
+        "node_modules",
+        "**/*.spec.ts"
     ]
 }

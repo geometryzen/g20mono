@@ -1,7 +1,7 @@
 {
-    "name": "g2o-euclid",
-    "version": "0.9.173",
-    "description": "g2o Euclidean Geometry Utilities",
+    "name": "g2o-reactive",
+    "version": "0.9.4",
+    "description": "Template TypeScript Library",
     "exports": {
         ".": {
             "types": "./dist/index.d.ts",
@@ -31,11 +31,8 @@
         "dist/umd/index.js.map"
     ],
     "keywords": [
-        "g2o",
-        "Euclid",
-        "Elements",
-        "Euclidean",
-        "Geometry"
+        "my",
+        "lib"
     ],
     "publishConfig": {
         "access": "public"
@@ -49,15 +46,14 @@
         "docs": "npm run docs:typedoc && open-cli docs/index.html",
         "docs:typedoc": "rm -rf docs && typedoc --options typedoc.json",
         "lint": "eslint .",
-        "pages": "npm run docs:typedoc && gh-pages --dist docs --dest euclid",
+        "pages": "npm run docs:typedoc && gh-pages -d docs",
         "pretest": "npm run build",
-        "prepublishOnly": "npm run check && npm run build && npm run test && npm run lint && npm run pages",
-        "release": "release-it",
-        "test": "jest"
+        "prepublishOnly": "npm run check && npm run build && npm run lint && npm run pages",
+        "release": "release-it"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/geometryzen/g2o-euclid.git"
+        "url": "git+https://github.com/geometryzen/reactive.git"
     },
     "author": {
         "name": "David Geo Holmes",
@@ -65,12 +61,11 @@
     },
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/geometryzen/g2o-euclid/issues"
+        "url": "https://github.com/geometryzen/reactive/issues"
     },
-    "homepage": "https://github.com/geometryzen/g2o-euclid#readme",
-    "peerDependencies": {
-        "g2o": "file:../core",
-        "g2o-reactive": "file:../reactive"
+    "homepage": "https://github.com/geometryzen/reactive#readme",
+    "dependencies": {
+        "signal-polyfill": "^0.1.0"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^25.0.7",

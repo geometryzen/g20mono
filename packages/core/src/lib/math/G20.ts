@@ -1,3 +1,4 @@
+import { State, state } from 'g2o-reactive';
 import { variable } from '../reactive/variable';
 import { Bivector } from './Bivector';
 import { gauss } from './gauss';
@@ -46,11 +47,10 @@ function lock(m: G20): G20 {
 function isScalar(m: G20): boolean {
     return m.x === 0 && m.y === 0 && m.b === 0;
 }
-/*
+
 function equals(P: [a: number, x: number, y: number, b: number], Q: [a: number, x: number, y: number, b: number]): boolean {
     return P[0] === Q[0] && P[1] === Q[1] && P[2] === Q[2] && P[3] === Q[3];
 }
-*/
 
 const COORD_A = 0;
 const COORD_X = 1;
@@ -62,7 +62,7 @@ const COORD_B = 3;
  */
 export class G20 {
 
-    readonly #coords: [a: number, x: number, y: number, b: number];
+    readonly #coords: State<[a: number, x: number, y: number, b: number]>;
 
     #lock = UNLOCKED;
 
@@ -70,7 +70,7 @@ export class G20 {
     readonly change$ = this.#change.asObservable();
 
     constructor(x = 0, y = 0, a = 0, b = 0) {
-        this.#coords = [a, x, y, b];
+        this.#coords = state([a, x, y, b], { equals });
     }
 
     static scalar(a: number): G20 {
@@ -134,52 +134,60 @@ export class G20 {
     }
 
     get a(): number {
-        return this.#coords[COORD_A];
+        return this.#coords.get()[COORD_A];
     }
 
     set a(a: number) {
         if (typeof a === 'number') {
             if (this.a !== a) {
-                this.#coords[COORD_A] = a;
+                const coords = this.#coords.get();
+                coords[COORD_A] = a;
+                this.#coords.set(coords);
                 this.#change.set(this);
             }
         }
     }
 
     get x(): number {
-        return this.#coords[COORD_X];
+        return this.#coords.get()[COORD_X];
     }
 
     set x(x: number) {
         if (typeof x === 'number') {
             if (this.x !== x) {
-                this.#coords[COORD_X] = x;
+                const coords = this.#coords.get();
+                coords[COORD_X] = x;
+                this.#coords.set(coords);
                 this.#change.set(this);
             }
         }
     }
 
     get y(): number {
-        return this.#coords[COORD_Y];
+        return this.#coords.get()[COORD_Y];
     }
 
     set y(y: number) {
         if (typeof y === 'number') {
             if (this.y !== y) {
-                this.#coords[COORD_Y] = y;
+                const coords = this.#coords.get();
+                coords[COORD_Y] = y;
+                this.#coords.set(coords);
                 this.#change.set(this);
             }
         }
     }
 
     get b(): number {
-        return this.#coords[COORD_B];
+        return this.#coords.get()[COORD_B];
     }
 
     set b(b: number) {
         if (typeof b === 'number') {
             if (this.b !== b) {
-                this.#coords[COORD_B] = b;
+                const coords = this.#coords.get();
+                coords[COORD_B] = b;
+                this.#coords.set(coords);
                 this.#change.set(this);
             }
         }
@@ -783,11 +791,12 @@ export class G20 {
             // Take special care to only fire changed event if necessary.
             const changed = (this.x !== x || this.y !== y || this.a !== a || this.b != b);
             if (changed) {
-                const coords = this.#coords;
+                const coords = this.#coords.get();
                 coords[COORD_A] = a;
                 coords[COORD_X] = x;
                 coords[COORD_Y] = y;
                 coords[COORD_B] = b;
+                this.#coords.set(coords);
                 this.#change.set(this);
             }
             return this;

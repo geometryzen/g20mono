@@ -1,11 +1,10 @@
+import { state } from 'g2o-reactive';
 import { Anchor } from '../anchor';
 import { Color } from '../effects/ColorProvider';
 import { Flag } from '../Flag';
 import { IBoard } from '../IBoard';
 import { G20 } from '../math/G20';
 import { Path, PathAttributes } from '../path';
-import { Observable } from '../reactive/Observable';
-import { variable } from '../reactive/variable';
 import { PositionLike } from '../Shape';
 import { HALF_PI, TWO_PI } from '../utils/math';
 import { Commands } from '../utils/path-commands';
@@ -28,7 +27,7 @@ export interface CircleProperties {
     position: G20;
     attitude: G20;
     radius: number;
-    radius$: Observable<number>;
+    // radius$: Observable<number>;
     fill: Color;
     fillOpacity: number;
     stroke: Color;
@@ -38,7 +37,7 @@ export interface CircleProperties {
 
 export class Circle extends Path implements CircleProperties {
 
-    readonly #radius = variable(1);
+    readonly #radius = state(1);
 
     constructor(board: IBoard, options: CircleAttributes = {}) {
 
@@ -52,7 +51,7 @@ export class Circle extends Path implements CircleProperties {
 
         super(board, points, true, true, true, path_attributes(options));
 
-        this.zzz.radius$ = this.#radius.asObservable();
+        // this.zzz.radius$ = this.#radius.asObservable();
 
         if (typeof options.radius === 'number') {
             this.#radius.set(options.radius);
@@ -131,9 +130,11 @@ export class Circle extends Path implements CircleProperties {
             }
         }
     }
+    /*
     get radius$(): Observable<number> {
         return this.zzz.radius$;
     }
+    */
 }
 
 function path_attributes(attributes: CircleAttributes): Partial<PathAttributes> {

@@ -72,6 +72,9 @@
     "dependencies": {
         "rxjs": "^7.8.1"
     },
+    "peerDependencies": {
+        "g2o-reactive": "file:../reactive"
+    },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^25.0.7",
         "@rollup/plugin-node-resolve": "^15.2.3",

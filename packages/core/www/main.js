@@ -1,45 +1,358 @@
 new EventSource('/esbuild').addEventListener('change', () => location.reload());
 "use strict";
 (() => {
-  // ../../node_modules/tslib/tslib.es6.mjs
-  var extendStatics = function(d, b) {
-    extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
-      d2.__proto__ = b2;
-    } || function(d2, b2) {
-      for (var p in b2)
-        if (Object.prototype.hasOwnProperty.call(b2, p))
-          d2[p] = b2[p];
-    };
-    return extendStatics(d, b);
+  // ../reactive/dist/esm/index.min.js
+  var e = Object.defineProperty;
+  var r = (r2, o2, t2) => (((r3, o3, t3) => {
+    o3 in r3 ? e(r3, o3, { enumerable: true, configurable: true, writable: true, value: t3 }) : r3[o3] = t3;
+  })(r2, "symbol" != typeof o2 ? o2 + "" : o2, t2), t2);
+  var o = (e2, r2) => {
+    if (Object(r2) !== r2)
+      throw TypeError('Cannot use the "in" operator on this value');
+    return e2.has(r2);
   };
-  function __extends(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-    extendStatics(d, b);
-    function __() {
-      this.constructor = d;
-    }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  var t = (e2, r2, o2) => {
+    if (r2.has(e2))
+      throw TypeError("Cannot add the same private member more than once");
+    r2 instanceof WeakSet ? r2.add(e2) : r2.set(e2, o2);
+  };
+  var n = (e2, r2, o2) => (((e3, r3, o3) => {
+    if (!r3.has(e3))
+      throw TypeError("Cannot " + o3);
+  })(e2, r2, "access private method"), o2);
+  function u(e2, r2) {
+    return Object.is(e2, r2);
   }
-  function __awaiter(thisArg, _arguments, P, generator) {
+  var i = null;
+  var c = false;
+  var d = 1;
+  var s = Symbol("SIGNAL");
+  function l(e2) {
+    const r2 = i;
+    return i = e2, r2;
+  }
+  var a = { version: 0, lastCleanEpoch: 0, dirty: false, producerNode: void 0, producerLastReadVersion: void 0, producerIndexOfThis: void 0, nextProducerIndex: 0, liveConsumerNode: void 0, liveConsumerIndexOfThis: void 0, consumerAllowSignalWrites: false, consumerIsAlwaysLive: false, producerMustRecompute: () => false, producerRecomputeValue: () => {
+  }, consumerMarkedDirty: () => {
+  }, consumerOnSignalRead: () => {
+  } };
+  function p(e2) {
+    if (c)
+      throw new Error(typeof ngDevMode < "u" && ngDevMode ? "Assertion error: signal read during notification phase" : "");
+    if (null === i)
+      return;
+    i.consumerOnSignalRead(e2);
+    const r2 = i.nextProducerIndex++;
+    if (y(i), r2 < i.producerNode.length && i.producerNode[r2] !== e2 && g(i)) {
+      m(i.producerNode[r2], i.producerIndexOfThis[r2]);
+    }
+    i.producerNode[r2] !== e2 && (i.producerNode[r2] = e2, i.producerIndexOfThis[r2] = g(i) ? w(e2, i, r2) : 0), i.producerLastReadVersion[r2] = e2.version;
+  }
+  function h(e2) {
+    if ((!g(e2) || e2.dirty) && (e2.dirty || e2.lastCleanEpoch !== d)) {
+      if (!e2.producerMustRecompute(e2) && !function(e3) {
+        y(e3);
+        for (let r2 = 0; r2 < e3.producerNode.length; r2++) {
+          const o2 = e3.producerNode[r2], t2 = e3.producerLastReadVersion[r2];
+          if (t2 !== o2.version || (h(o2), t2 !== o2.version))
+            return true;
+        }
+        return false;
+      }(e2))
+        return e2.dirty = false, void (e2.lastCleanEpoch = d);
+      e2.producerRecomputeValue(e2), e2.dirty = false, e2.lastCleanEpoch = d;
+    }
+  }
+  function f(e2) {
+    if (void 0 === e2.liveConsumerNode)
+      return;
+    const r2 = c;
+    c = true;
+    try {
+      for (const r3 of e2.liveConsumerNode)
+        r3.dirty || v(r3);
+    } finally {
+      c = r2;
+    }
+  }
+  function v(e2) {
+    var r2;
+    e2.dirty = true, f(e2), null == (r2 = e2.consumerMarkedDirty) || r2.call(e2, e2);
+  }
+  function w(e2, r2, o2) {
+    var t2;
+    if (N(e2), y(e2), 0 === e2.liveConsumerNode.length) {
+      null == (t2 = e2.watched) || t2.call(e2.wrapper);
+      for (let r3 = 0; r3 < e2.producerNode.length; r3++)
+        e2.producerIndexOfThis[r3] = w(e2.producerNode[r3], e2, r3);
+    }
+    return e2.liveConsumerIndexOfThis.push(o2), e2.liveConsumerNode.push(r2) - 1;
+  }
+  function m(e2, r2) {
+    var o2;
+    if (N(e2), y(e2), typeof ngDevMode < "u" && ngDevMode && r2 >= e2.liveConsumerNode.length)
+      throw new Error(`Assertion error: active consumer index ${r2} is out of bounds of ${e2.liveConsumerNode.length} consumers)`);
+    if (1 === e2.liveConsumerNode.length) {
+      null == (o2 = e2.unwatched) || o2.call(e2.wrapper);
+      for (let r3 = 0; r3 < e2.producerNode.length; r3++)
+        m(e2.producerNode[r3], e2.producerIndexOfThis[r3]);
+    }
+    const t2 = e2.liveConsumerNode.length - 1;
+    if (e2.liveConsumerNode[r2] = e2.liveConsumerNode[t2], e2.liveConsumerIndexOfThis[r2] = e2.liveConsumerIndexOfThis[t2], e2.liveConsumerNode.length--, e2.liveConsumerIndexOfThis.length--, r2 < e2.liveConsumerNode.length) {
+      const o3 = e2.liveConsumerIndexOfThis[r2], t3 = e2.liveConsumerNode[r2];
+      y(t3), t3.producerIndexOfThis[o3] = r2;
+    }
+  }
+  function g(e2) {
+    var r2;
+    return e2.consumerIsAlwaysLive || ((null == (r2 = null == e2 ? void 0 : e2.liveConsumerNode) ? void 0 : r2.length) ?? 0) > 0;
+  }
+  function y(e2) {
+    e2.producerNode ?? (e2.producerNode = []), e2.producerIndexOfThis ?? (e2.producerIndexOfThis = []), e2.producerLastReadVersion ?? (e2.producerLastReadVersion = []);
+  }
+  function N(e2) {
+    e2.liveConsumerNode ?? (e2.liveConsumerNode = []), e2.liveConsumerIndexOfThis ?? (e2.liveConsumerIndexOfThis = []);
+  }
+  function C(e2) {
+    if (h(e2), p(e2), e2.value === S)
+      throw e2.error;
+    return e2.value;
+  }
+  var T = Symbol("UNSET");
+  var x = Symbol("COMPUTING");
+  var S = Symbol("ERRORED");
+  var I = { ...a, value: T, dirty: true, error: null, equal: u, producerMustRecompute: (e2) => e2.value === T || e2.value === x, producerRecomputeValue(e2) {
+    if (e2.value === x)
+      throw new Error("Detected cycle in computations.");
+    const r2 = e2.value;
+    e2.value = x;
+    const o2 = function(e3) {
+      return e3 && (e3.nextProducerIndex = 0), l(e3);
+    }(e2);
+    let t2;
+    try {
+      t2 = e2.computation.call(e2.wrapper);
+    } catch (r3) {
+      t2 = S, e2.error = r3;
+    } finally {
+      !function(e3, r3) {
+        if (l(r3), e3 && void 0 !== e3.producerNode && void 0 !== e3.producerIndexOfThis && void 0 !== e3.producerLastReadVersion) {
+          if (g(e3))
+            for (let r4 = e3.nextProducerIndex; r4 < e3.producerNode.length; r4++)
+              m(e3.producerNode[r4], e3.producerIndexOfThis[r4]);
+          for (; e3.producerNode.length > e3.nextProducerIndex; )
+            e3.producerNode.pop(), e3.producerLastReadVersion.pop(), e3.producerIndexOfThis.pop();
+        }
+      }(e2, o2);
+    }
+    r2 !== T && r2 !== S && t2 !== S && e2.equal.call(e2.wrapper, r2, t2) ? e2.value = r2 : (e2.value = t2, e2.version++);
+  } };
+  var O = function() {
+    throw new Error();
+  };
+  function b() {
+    return p(this), this.value;
+  }
+  function E(e2, r2) {
+    false !== (null == i ? void 0 : i.consumerAllowSignalWrites) || O(), e2.equal.call(e2.wrapper, e2.value, r2) || (e2.value = r2, function(e3) {
+      e3.version++, d++, f(e3);
+    }(e2));
+  }
+  var W = { ...a, equal: u, value: void 0 };
+  var R = Symbol("node");
+  var k;
+  var M;
+  var L;
+  var P;
+  ((e2) => {
+    var u2, d2, h2, f2;
+    u2 = R, d2 = /* @__PURE__ */ new WeakSet(), k = (e3) => o(d2, e3), e2.State = class {
+      constructor(o2, n2 = {}) {
+        t(this, d2), r(this, u2);
+        const i2 = (
+          /**
+           * @license
+           * Copyright Google LLC All Rights Reserved.
+           *
+           * Use of this source code is governed by an MIT-style license that can be
+           * found in the LICENSE file at https://angular.io/license
+           */
+          function(e3) {
+            const r2 = Object.create(W);
+            r2.value = e3;
+            const o3 = () => (p(r2), r2.value);
+            return o3[s] = r2, o3;
+          }(o2)[s]
+        );
+        if (this[R] = i2, i2.wrapper = this, n2) {
+          const r2 = n2.equals;
+          r2 && (i2.equal = r2), i2.watched = n2[e2.subtle.watched], i2.unwatched = n2[e2.subtle.unwatched];
+        }
+      }
+      get() {
+        if (!k(this))
+          throw new TypeError("Wrong receiver type for Signal.State.prototype.get");
+        return b.call(this[R]);
+      }
+      set(e3) {
+        if (!k(this))
+          throw new TypeError("Wrong receiver type for Signal.State.prototype.set");
+        if (c)
+          throw new Error("Writes to signals not permitted during Watcher callback");
+        E(this[R], e3);
+      }
+    };
+    h2 = R, f2 = /* @__PURE__ */ new WeakSet(), M = (e3) => o(f2, e3), e2.Computed = class {
+      constructor(o2, n2) {
+        t(this, f2), r(this, h2);
+        const u3 = function(e3) {
+          const r2 = Object.create(I);
+          r2.computation = e3;
+          const o3 = () => C(r2);
+          return o3[s] = r2, o3;
+        }(o2)[s];
+        if (u3.consumerAllowSignalWrites = true, this[R] = u3, u3.wrapper = this, n2) {
+          const r2 = n2.equals;
+          r2 && (u3.equal = r2), u3.watched = n2[e2.subtle.watched], u3.unwatched = n2[e2.subtle.unwatched];
+        }
+      }
+      get() {
+        if (!M(this))
+          throw new TypeError("Wrong receiver type for Signal.Computed.prototype.get");
+        return C(this[R]);
+      }
+    }, ((e3) => {
+      var u3, c2, d3, s2;
+      e3.untrack = function(e4) {
+        let r2, o2 = null;
+        try {
+          o2 = l(null), r2 = e4();
+        } finally {
+          l(o2);
+        }
+        return r2;
+      }, e3.introspectSources = function(e4) {
+        var r2;
+        if (!M(e4) && !L(e4))
+          throw new TypeError("Called introspectSources without a Computed or Watcher argument");
+        return (null == (r2 = e4[R].producerNode) ? void 0 : r2.map((e5) => e5.wrapper)) ?? [];
+      }, e3.introspectSinks = function(e4) {
+        var r2;
+        if (!M(e4) && !k(e4))
+          throw new TypeError("Called introspectSinks without a Signal argument");
+        return (null == (r2 = e4[R].liveConsumerNode) ? void 0 : r2.map((e5) => e5.wrapper)) ?? [];
+      }, e3.hasSinks = function(e4) {
+        if (!M(e4) && !k(e4))
+          throw new TypeError("Called hasSinks without a Signal argument");
+        const r2 = e4[R].liveConsumerNode;
+        return !!r2 && r2.length > 0;
+      }, e3.hasSources = function(e4) {
+        if (!M(e4) && !L(e4))
+          throw new TypeError("Called hasSources without a Computed or Watcher argument");
+        const r2 = e4[R].producerNode;
+        return !!r2 && r2.length > 0;
+      };
+      u3 = R, c2 = /* @__PURE__ */ new WeakSet(), d3 = /* @__PURE__ */ new WeakSet(), s2 = function(e4) {
+        for (const r2 of e4)
+          if (!M(r2) && !k(r2))
+            throw new TypeError("Called watch/unwatch without a Computed or State argument");
+      }, L = (e4) => o(c2, e4), e3.Watcher = class {
+        constructor(e4) {
+          t(this, c2), t(this, d3), r(this, u3);
+          let o2 = Object.create(a);
+          o2.wrapper = this, o2.consumerMarkedDirty = e4, o2.consumerIsAlwaysLive = true, o2.consumerAllowSignalWrites = false, o2.producerNode = [], this[R] = o2;
+        }
+        watch(...e4) {
+          if (!L(this))
+            throw new TypeError("Called unwatch without Watcher receiver");
+          n(this, d3, s2).call(this, e4);
+          const r2 = this[R];
+          r2.dirty = false;
+          const o2 = l(r2);
+          for (const r3 of e4)
+            p(r3[R]);
+          l(o2);
+        }
+        unwatch(...e4) {
+          if (!L(this))
+            throw new TypeError("Called unwatch without Watcher receiver");
+          n(this, d3, s2).call(this, e4);
+          const r2 = this[R];
+          y(r2);
+          let o2 = [];
+          for (let t2 = 0; t2 < r2.producerNode.length; t2++)
+            e4.includes(r2.producerNode[t2].wrapper) && (m(r2.producerNode[t2], r2.producerIndexOfThis[t2]), o2.push(t2));
+          for (const e5 of o2) {
+            const o3 = r2.producerNode.length - 1;
+            if (r2.producerNode[e5] = r2.producerNode[o3], r2.producerIndexOfThis[e5] = r2.producerIndexOfThis[o3], r2.producerNode.length--, r2.producerIndexOfThis.length--, r2.nextProducerIndex--, e5 < r2.producerNode.length) {
+              const o4 = r2.producerIndexOfThis[e5], t2 = r2.producerNode[e5];
+              N(t2), t2.liveConsumerIndexOfThis[o4] = e5;
+            }
+          }
+        }
+        getPending() {
+          if (!L(this))
+            throw new TypeError("Called getPending without Watcher receiver");
+          return this[R].producerNode.filter((e4) => e4.dirty).map((e4) => e4.wrapper);
+        }
+      }, e3.currentComputed = function() {
+        var e4;
+        return null == (e4 = i) ? void 0 : e4.wrapper;
+      }, e3.watched = Symbol("watched"), e3.unwatched = Symbol("unwatched");
+    })(e2.subtle || (e2.subtle = {}));
+  })(P || (P = {}));
+  var V = true;
+  var q = new P.subtle.Watcher(() => {
+    V && (V = false, queueMicrotask(D));
+  });
+  function D() {
+    V = true;
+    for (const e2 of q.getPending())
+      e2.get();
+    q.watch();
+  }
+  function G(e2, r2 = {}) {
+    return new P.State(e2, r2);
+  }
+
+  // ../../node_modules/tslib/tslib.es6.mjs
+  var extendStatics = function(d2, b2) {
+    extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d3, b3) {
+      d3.__proto__ = b3;
+    } || function(d3, b3) {
+      for (var p2 in b3)
+        if (Object.prototype.hasOwnProperty.call(b3, p2))
+          d3[p2] = b3[p2];
+    };
+    return extendStatics(d2, b2);
+  };
+  function __extends(d2, b2) {
+    if (typeof b2 !== "function" && b2 !== null)
+      throw new TypeError("Class extends value " + String(b2) + " is not a constructor or null");
+    extendStatics(d2, b2);
+    function __() {
+      this.constructor = d2;
+    }
+    d2.prototype = b2 === null ? Object.create(b2) : (__.prototype = b2.prototype, new __());
+  }
+  function __awaiter(thisArg, _arguments, P2, generator) {
     function adopt(value) {
-      return value instanceof P ? value : new P(function(resolve) {
+      return value instanceof P2 ? value : new P2(function(resolve) {
         resolve(value);
       });
     }
-    return new (P || (P = Promise))(function(resolve, reject) {
+    return new (P2 || (P2 = Promise))(function(resolve, reject) {
       function fulfilled(value) {
         try {
           step(generator.next(value));
-        } catch (e) {
-          reject(e);
+        } catch (e2) {
+          reject(e2);
         }
       }
       function rejected(value) {
         try {
           step(generator["throw"](value));
-        } catch (e) {
-          reject(e);
+        } catch (e2) {
+          reject(e2);
         }
       }
       function step(result) {
@@ -50,38 +363,38 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
   }
   function __generator(thisArg, body) {
     var _ = { label: 0, sent: function() {
-      if (t[0] & 1)
-        throw t[1];
-      return t[1];
-    }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() {
+      if (t2[0] & 1)
+        throw t2[1];
+      return t2[1];
+    }, trys: [], ops: [] }, f2, y2, t2, g2;
+    return g2 = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g2[Symbol.iterator] = function() {
       return this;
-    }), g;
-    function verb(n) {
-      return function(v) {
-        return step([n, v]);
+    }), g2;
+    function verb(n2) {
+      return function(v2) {
+        return step([n2, v2]);
       };
     }
     function step(op) {
-      if (f)
+      if (f2)
         throw new TypeError("Generator is already executing.");
-      while (g && (g = 0, op[0] && (_ = 0)), _)
+      while (g2 && (g2 = 0, op[0] && (_ = 0)), _)
         try {
-          if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done)
-            return t;
-          if (y = 0, t)
-            op = [op[0] & 2, t.value];
+          if (f2 = 1, y2 && (t2 = op[0] & 2 ? y2["return"] : op[0] ? y2["throw"] || ((t2 = y2["return"]) && t2.call(y2), 0) : y2.next) && !(t2 = t2.call(y2, op[1])).done)
+            return t2;
+          if (y2 = 0, t2)
+            op = [op[0] & 2, t2.value];
           switch (op[0]) {
             case 0:
             case 1:
-              t = op;
+              t2 = op;
               break;
             case 4:
               _.label++;
               return { value: op[1], done: false };
             case 5:
               _.label++;
-              y = op[1];
+              y2 = op[1];
               op = [0];
               continue;
             case 7:
@@ -89,114 +402,114 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
               _.trys.pop();
               continue;
             default:
-              if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+              if (!(t2 = _.trys, t2 = t2.length > 0 && t2[t2.length - 1]) && (op[0] === 6 || op[0] === 2)) {
                 _ = 0;
                 continue;
               }
-              if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
+              if (op[0] === 3 && (!t2 || op[1] > t2[0] && op[1] < t2[3])) {
                 _.label = op[1];
                 break;
               }
-              if (op[0] === 6 && _.label < t[1]) {
-                _.label = t[1];
-                t = op;
+              if (op[0] === 6 && _.label < t2[1]) {
+                _.label = t2[1];
+                t2 = op;
                 break;
               }
-              if (t && _.label < t[2]) {
-                _.label = t[2];
+              if (t2 && _.label < t2[2]) {
+                _.label = t2[2];
                 _.ops.push(op);
                 break;
               }
-              if (t[2])
+              if (t2[2])
                 _.ops.pop();
               _.trys.pop();
               continue;
           }
           op = body.call(thisArg, _);
-        } catch (e) {
-          op = [6, e];
-          y = 0;
+        } catch (e2) {
+          op = [6, e2];
+          y2 = 0;
         } finally {
-          f = t = 0;
+          f2 = t2 = 0;
         }
       if (op[0] & 5)
         throw op[1];
       return { value: op[0] ? op[1] : void 0, done: true };
     }
   }
-  function __values(o) {
-    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
-    if (m)
-      return m.call(o);
-    if (o && typeof o.length === "number")
+  function __values(o2) {
+    var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o2[s2], i2 = 0;
+    if (m2)
+      return m2.call(o2);
+    if (o2 && typeof o2.length === "number")
       return {
         next: function() {
-          if (o && i >= o.length)
-            o = void 0;
-          return { value: o && o[i++], done: !o };
+          if (o2 && i2 >= o2.length)
+            o2 = void 0;
+          return { value: o2 && o2[i2++], done: !o2 };
         }
       };
-    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+    throw new TypeError(s2 ? "Object is not iterable." : "Symbol.iterator is not defined.");
   }
-  function __read(o, n) {
-    var m = typeof Symbol === "function" && o[Symbol.iterator];
-    if (!m)
-      return o;
-    var i = m.call(o), r, ar = [], e;
+  function __read(o2, n2) {
+    var m2 = typeof Symbol === "function" && o2[Symbol.iterator];
+    if (!m2)
+      return o2;
+    var i2 = m2.call(o2), r2, ar = [], e2;
     try {
-      while ((n === void 0 || n-- > 0) && !(r = i.next()).done)
-        ar.push(r.value);
+      while ((n2 === void 0 || n2-- > 0) && !(r2 = i2.next()).done)
+        ar.push(r2.value);
     } catch (error) {
-      e = { error };
+      e2 = { error };
     } finally {
       try {
-        if (r && !r.done && (m = i["return"]))
-          m.call(i);
+        if (r2 && !r2.done && (m2 = i2["return"]))
+          m2.call(i2);
       } finally {
-        if (e)
-          throw e.error;
+        if (e2)
+          throw e2.error;
       }
     }
     return ar;
   }
   function __spreadArray(to, from, pack) {
     if (pack || arguments.length === 2)
-      for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
+      for (var i2 = 0, l2 = from.length, ar; i2 < l2; i2++) {
+        if (ar || !(i2 in from)) {
           if (!ar)
-            ar = Array.prototype.slice.call(from, 0, i);
-          ar[i] = from[i];
+            ar = Array.prototype.slice.call(from, 0, i2);
+          ar[i2] = from[i2];
         }
       }
     return to.concat(ar || Array.prototype.slice.call(from));
   }
-  function __await(v) {
-    return this instanceof __await ? (this.v = v, this) : new __await(v);
+  function __await(v2) {
+    return this instanceof __await ? (this.v = v2, this) : new __await(v2);
   }
   function __asyncGenerator(thisArg, _arguments, generator) {
     if (!Symbol.asyncIterator)
       throw new TypeError("Symbol.asyncIterator is not defined.");
-    var g = generator.apply(thisArg, _arguments || []), i, q = [];
-    return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function() {
+    var g2 = generator.apply(thisArg, _arguments || []), i2, q2 = [];
+    return i2 = {}, verb("next"), verb("throw"), verb("return"), i2[Symbol.asyncIterator] = function() {
       return this;
-    }, i;
-    function verb(n) {
-      if (g[n])
-        i[n] = function(v) {
-          return new Promise(function(a, b) {
-            q.push([n, v, a, b]) > 1 || resume(n, v);
+    }, i2;
+    function verb(n2) {
+      if (g2[n2])
+        i2[n2] = function(v2) {
+          return new Promise(function(a2, b2) {
+            q2.push([n2, v2, a2, b2]) > 1 || resume(n2, v2);
           });
         };
     }
-    function resume(n, v) {
+    function resume(n2, v2) {
       try {
-        step(g[n](v));
-      } catch (e) {
-        settle(q[0][3], e);
+        step(g2[n2](v2));
+      } catch (e2) {
+        settle(q2[0][3], e2);
       }
     }
-    function step(r) {
-      r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r);
+    function step(r2) {
+      r2.value instanceof __await ? Promise.resolve(r2.value.v).then(fulfill, reject) : settle(q2[0][2], r2);
     }
     function fulfill(value) {
       resume("next", value);
@@ -204,28 +517,28 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     function reject(value) {
       resume("throw", value);
     }
-    function settle(f, v) {
-      if (f(v), q.shift(), q.length)
-        resume(q[0][0], q[0][1]);
+    function settle(f2, v2) {
+      if (f2(v2), q2.shift(), q2.length)
+        resume(q2[0][0], q2[0][1]);
     }
   }
-  function __asyncValues(o) {
+  function __asyncValues(o2) {
     if (!Symbol.asyncIterator)
       throw new TypeError("Symbol.asyncIterator is not defined.");
-    var m = o[Symbol.asyncIterator], i;
-    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function() {
+    var m2 = o2[Symbol.asyncIterator], i2;
+    return m2 ? m2.call(o2) : (o2 = typeof __values === "function" ? __values(o2) : o2[Symbol.iterator](), i2 = {}, verb("next"), verb("throw"), verb("return"), i2[Symbol.asyncIterator] = function() {
       return this;
-    }, i);
-    function verb(n) {
-      i[n] = o[n] && function(v) {
+    }, i2);
+    function verb(n2) {
+      i2[n2] = o2[n2] && function(v2) {
         return new Promise(function(resolve, reject) {
-          v = o[n](v), settle(resolve, reject, v.done, v.value);
+          v2 = o2[n2](v2), settle(resolve, reject, v2.done, v2.value);
         });
       };
     }
-    function settle(resolve, reject, d, v) {
-      Promise.resolve(v).then(function(v2) {
-        resolve({ value: v2, done: d });
+    function settle(resolve, reject, d2, v2) {
+      Promise.resolve(v2).then(function(v3) {
+        resolve({ value: v3, done: d2 });
       }, reject);
     }
   }
@@ -251,8 +564,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
   var UnsubscriptionError = createErrorClass(function(_super) {
     return function UnsubscriptionErrorImpl(errors) {
       _super(this);
-      this.message = errors ? errors.length + " errors occurred during unsubscription:\n" + errors.map(function(err, i) {
-        return i + 1 + ") " + err.toString();
+      this.message = errors ? errors.length + " errors occurred during unsubscription:\n" + errors.map(function(err, i2) {
+        return i2 + 1 + ") " + err.toString();
       }).join("\n  ") : "";
       this.name = "UnsubscriptionError";
       this.errors = errors;
@@ -308,8 +621,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
         if (isFunction(initialFinalizer)) {
           try {
             initialFinalizer();
-          } catch (e) {
-            errors = e instanceof UnsubscriptionError ? e.errors : [e];
+          } catch (e2) {
+            errors = e2 instanceof UnsubscriptionError ? e2.errors : [e2];
           }
         }
         var _finalizers = this._finalizers;
@@ -665,8 +978,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
   }();
 
   // ../../node_modules/rxjs/dist/esm5/internal/util/identity.js
-  function identity(x) {
-    return x;
+  function identity(x2) {
+    return x2;
   }
 
   // ../../node_modules/rxjs/dist/esm5/internal/util/pipe.js
@@ -751,8 +1064,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       promiseCtor = getPromiseCtor(promiseCtor);
       return new promiseCtor(function(resolve, reject) {
         var value;
-        _this.subscribe(function(x) {
-          return value = x;
+        _this.subscribe(function(x2) {
+          return value = x2;
         }, function(err) {
           return reject(err);
         }, function() {
@@ -1150,9 +1463,9 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       var errorValue;
       try {
         this.work(state);
-      } catch (e) {
+      } catch (e2) {
         errored = true;
-        errorValue = e ? e : new Error("Scheduled action threw falsy error");
+        errorValue = e2 ? e2 : new Error("Scheduled action threw falsy error");
       }
       if (errored) {
         this.unsubscribe();
@@ -1235,8 +1548,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
   var asyncScheduler = new AsyncScheduler(AsyncAction);
 
   // ../../node_modules/rxjs/dist/esm5/internal/util/isArrayLike.js
-  var isArrayLike = function(x) {
-    return x && typeof x.length === "number" && typeof x !== "function";
+  var isArrayLike = function(x2) {
+    return x2 && typeof x2.length === "number" && typeof x2 !== "function";
   };
 
   // ../../node_modules/rxjs/dist/esm5/internal/util/isPromise.js
@@ -1356,8 +1669,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
   }
   function fromArrayLike(array) {
     return new Observable(function(subscriber) {
-      for (var i = 0; i < array.length && !subscriber.closed; i++) {
-        subscriber.next(array[i]);
+      for (var i2 = 0; i2 < array.length && !subscriber.closed; i2++) {
+        subscriber.next(array[i2]);
       }
       subscriber.complete();
     });
@@ -1572,10 +1885,10 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       concurrent = Infinity;
     }
     if (isFunction(resultSelector)) {
-      return mergeMap(function(a, i) {
-        return map(function(b, ii) {
-          return resultSelector(a, b, i, ii);
-        })(innerFrom(project(a, i)));
+      return mergeMap(function(a2, i2) {
+        return map(function(b2, ii) {
+          return resultSelector(a2, b2, i2, ii);
+        })(innerFrom(project(a2, i2)));
       }, concurrent);
     } else if (typeof resultSelector === "number") {
       concurrent = resultSelector;
@@ -1729,17 +2042,17 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
 
   // src/lib/math/gauss.ts
   var abs = Math.abs;
-  function makeColumnVector(n, v) {
-    const a = [];
-    for (let i = 0; i < n; i++) {
-      a.push(v);
+  function makeColumnVector(n2, v2) {
+    const a2 = [];
+    for (let i2 = 0; i2 < n2; i2++) {
+      a2.push(v2);
     }
-    return a;
+    return a2;
   }
-  function rowWithMaximumInColumn(A, column, N) {
+  function rowWithMaximumInColumn(A, column, N2) {
     let biggest = abs(A[column][column]);
     let maxRow = column;
-    for (let row = column + 1; row < N; row++) {
+    for (let row = column + 1; row < N2; row++) {
       if (abs(A[row][column]) > biggest) {
         biggest = abs(A[row][column]);
         maxRow = row;
@@ -1747,57 +2060,57 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     }
     return maxRow;
   }
-  function swapRows(A, i, j, N) {
-    const colLength = N + 1;
-    for (let column = i; column < colLength; column++) {
+  function swapRows(A, i2, j, N2) {
+    const colLength = N2 + 1;
+    for (let column = i2; column < colLength; column++) {
       const temp = A[j][column];
-      A[j][column] = A[i][column];
-      A[i][column] = temp;
+      A[j][column] = A[i2][column];
+      A[i2][column] = temp;
     }
   }
-  function makeZeroBelow(A, i, N) {
-    for (let row = i + 1; row < N; row++) {
-      const c = -A[row][i] / A[i][i];
-      for (let column = i; column < N + 1; column++) {
-        if (i === column) {
+  function makeZeroBelow(A, i2, N2) {
+    for (let row = i2 + 1; row < N2; row++) {
+      const c2 = -A[row][i2] / A[i2][i2];
+      for (let column = i2; column < N2 + 1; column++) {
+        if (i2 === column) {
           A[row][column] = 0;
         } else {
-          A[row][column] += c * A[i][column];
+          A[row][column] += c2 * A[i2][column];
         }
       }
     }
   }
-  function solve(A, N) {
-    const x = makeColumnVector(N, 0);
-    for (let i = N - 1; i > -1; i--) {
-      x[i] = A[i][N] / A[i][i];
-      for (let k = i - 1; k > -1; k--) {
-        A[k][N] -= A[k][i] * x[i];
+  function solve(A, N2) {
+    const x2 = makeColumnVector(N2, 0);
+    for (let i2 = N2 - 1; i2 > -1; i2--) {
+      x2[i2] = A[i2][N2] / A[i2][i2];
+      for (let k2 = i2 - 1; k2 > -1; k2--) {
+        A[k2][N2] -= A[k2][i2] * x2[i2];
       }
     }
-    return x;
+    return x2;
   }
-  function gauss(A, b) {
-    const N = A.length;
-    for (let i = 0; i < N; i++) {
-      const Ai = A[i];
-      const bi = b[i];
+  function gauss(A, b2) {
+    const N2 = A.length;
+    for (let i2 = 0; i2 < N2; i2++) {
+      const Ai = A[i2];
+      const bi = b2[i2];
       Ai.push(bi);
     }
-    for (let j = 0; j < N; j++) {
-      swapRows(A, j, rowWithMaximumInColumn(A, j, N), N);
-      makeZeroBelow(A, j, N);
+    for (let j = 0; j < N2; j++) {
+      swapRows(A, j, rowWithMaximumInColumn(A, j, N2), N2);
+      makeZeroBelow(A, j, N2);
     }
-    return solve(A, N);
+    return solve(A, N2);
   }
 
   // src/lib/math/rotorFromDirections.ts
   var sqrt = Math.sqrt;
-  function rotorFromDirections(a, b, m) {
-    const ax = a.x;
-    const ay = a.y;
-    const bx = b.x;
-    const by = b.y;
+  function rotorFromDirections(a2, b2, m2) {
+    const ax = a2.x;
+    const ay = a2.y;
+    const bx = b2.x;
+    const by = b2.y;
     const aa = ax * ax + ay * ay;
     const absA = sqrt(aa);
     const bb = bx * bx + by * by;
@@ -1807,28 +2120,31 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     const denom = sqrt(2 * (bb * aa + BA * dotBA));
     if (denom !== 0) {
       const B = ay * bx - ax * by;
-      m.set(0, 0, (BA + dotBA) / denom, B / denom);
+      m2.set(0, 0, (BA + dotBA) / denom, B / denom);
     } else {
     }
   }
 
   // src/lib/math/G20.ts
-  function is_zero_vector(v) {
-    return v.x === 0 && v.y === 0;
+  function is_zero_vector(v2) {
+    return v2.x === 0 && v2.y === 0;
   }
-  function is_zero_bivector(m) {
-    return m.b === 0;
+  function is_zero_bivector(m2) {
+    return m2.b === 0;
   }
-  function is_zero_multivector(m) {
-    return is_zero_vector(m) && is_zero_bivector(m) && m.a === 0 && m.b === 0;
+  function is_zero_multivector(m2) {
+    return is_zero_vector(m2) && is_zero_bivector(m2) && m2.a === 0 && m2.b === 0;
   }
   var UNLOCKED = -1 * Math.random();
-  function lock(m) {
-    m.lock();
-    return m;
+  function lock(m2) {
+    m2.lock();
+    return m2;
   }
-  function isScalar(m) {
-    return m.x === 0 && m.y === 0 && m.b === 0;
+  function isScalar(m2) {
+    return m2.x === 0 && m2.y === 0 && m2.b === 0;
+  }
+  function equals(P2, Q) {
+    return P2[0] === Q[0] && P2[1] === Q[1] && P2[2] === Q[2] && P2[3] === Q[3];
   }
   var COORD_A = 0;
   var COORD_X = 1;
@@ -1839,20 +2155,20 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     #lock = UNLOCKED;
     #change = variable(this);
     change$ = this.#change.asObservable();
-    constructor(x = 0, y = 0, a = 0, b = 0) {
-      this.#coords = [a, x, y, b];
+    constructor(x2 = 0, y2 = 0, a2 = 0, b2 = 0) {
+      this.#coords = G([a2, x2, y2, b2], { equals });
     }
-    static scalar(a) {
-      return new _G20(0, 0, a, 0);
+    static scalar(a2) {
+      return new _G20(0, 0, a2, 0);
     }
-    static bivector(b) {
-      return new _G20(0, 0, 0, b);
+    static bivector(b2) {
+      return new _G20(0, 0, 0, b2);
     }
-    static spinor(a, b) {
-      return new _G20(0, 0, a, b);
+    static spinor(a2, b2) {
+      return new _G20(0, 0, a2, b2);
     }
-    static vector(x, y) {
-      return new _G20(x, y, 0, 0);
+    static vector(x2, y2) {
+      return new _G20(x2, y2, 0, 0);
     }
     /**
      * Determines whether this multivector is locked.
@@ -1892,45 +2208,53 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       }
     }
     get a() {
-      return this.#coords[COORD_A];
+      return this.#coords.get()[COORD_A];
     }
-    set a(a) {
-      if (typeof a === "number") {
-        if (this.a !== a) {
-          this.#coords[COORD_A] = a;
+    set a(a2) {
+      if (typeof a2 === "number") {
+        if (this.a !== a2) {
+          const coords = this.#coords.get();
+          coords[COORD_A] = a2;
+          this.#coords.set(coords);
           this.#change.set(this);
         }
       }
     }
     get x() {
-      return this.#coords[COORD_X];
+      return this.#coords.get()[COORD_X];
     }
-    set x(x) {
-      if (typeof x === "number") {
-        if (this.x !== x) {
-          this.#coords[COORD_X] = x;
+    set x(x2) {
+      if (typeof x2 === "number") {
+        if (this.x !== x2) {
+          const coords = this.#coords.get();
+          coords[COORD_X] = x2;
+          this.#coords.set(coords);
           this.#change.set(this);
         }
       }
     }
     get y() {
-      return this.#coords[COORD_Y];
+      return this.#coords.get()[COORD_Y];
     }
-    set y(y) {
-      if (typeof y === "number") {
-        if (this.y !== y) {
-          this.#coords[COORD_Y] = y;
+    set y(y2) {
+      if (typeof y2 === "number") {
+        if (this.y !== y2) {
+          const coords = this.#coords.get();
+          coords[COORD_Y] = y2;
+          this.#coords.set(coords);
           this.#change.set(this);
         }
       }
     }
     get b() {
-      return this.#coords[COORD_B];
+      return this.#coords.get()[COORD_B];
     }
-    set b(b) {
-      if (typeof b === "number") {
-        if (this.b !== b) {
-          this.#coords[COORD_B] = b;
+    set b(b2) {
+      if (typeof b2 === "number") {
+        if (this.b !== b2) {
+          const coords = this.#coords.get();
+          coords[COORD_B] = b2;
+          this.#coords.set(coords);
           this.#change.set(this);
         }
       }
@@ -1941,11 +2265,11 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     static ey = lock(new _G20(0, 1, 0, 0));
     static I = lock(new _G20(0, 0, 0, 1));
     static add(v1, v2) {
-      const x = v1.x + v2.x;
-      const y = v1.y + v2.y;
-      const a = v1.a + v2.a;
-      const b = v1.b + v2.b;
-      return new _G20(x, y, a, b);
+      const x2 = v1.x + v2.x;
+      const y2 = v1.y + v2.y;
+      const a2 = v1.a + v2.a;
+      const b2 = v1.b + v2.b;
+      return new _G20(x2, y2, a2, b2);
     }
     static copy(mv) {
       return new _G20(mv.x, mv.y, mv.a, mv.b);
@@ -1956,24 +2280,24 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     static fromScalar(alpha) {
       return _G20.scalar(alpha.a);
     }
-    static fromSpinor(R) {
-      return _G20.spinor(R.a, R.b);
+    static fromSpinor(R2) {
+      return _G20.spinor(R2.a, R2.b);
     }
-    static fromVector(v) {
-      return _G20.vector(v.x, v.y);
+    static fromVector(v2) {
+      return _G20.vector(v2.x, v2.y);
     }
-    static rotorFromDirections(a, b) {
-      return new _G20(0, 0, 0, 0).rotorFromDirections(a, b);
+    static rotorFromDirections(a2, b2) {
+      return new _G20(0, 0, 0, 0).rotorFromDirections(a2, b2);
     }
-    static rotorFromVectorToVector(a, b) {
-      return new _G20(0, 0, 0, 0).rotorFromVectorToVector(a, b);
+    static rotorFromVectorToVector(a2, b2) {
+      return new _G20(0, 0, 0, 0).rotorFromVectorToVector(a2, b2);
     }
     static sub(v1, v2) {
-      const x = v1.x - v2.x;
-      const y = v1.y - v2.y;
-      const a = v1.a - v2.a;
-      const b = v1.b - v2.b;
-      return new _G20(x, y, a, b);
+      const x2 = v1.x - v2.x;
+      const y2 = v1.y - v2.y;
+      const a2 = v1.a - v2.a;
+      const b2 = v1.b - v2.b;
+      return new _G20(x2, y2, a2, b2);
     }
     static subtract(v1, v2) {
       return _G20.sub(v1, v2);
@@ -1997,13 +2321,13 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     /**
      * 
      */
-    add2(a, b) {
-      if (is_zero_multivector(a)) {
-        return this.set(b.x, b.y, b.a, b.b);
-      } else if (is_zero_multivector(b)) {
-        return this.set(a.x, a.y, a.a, a.b);
+    add2(a2, b2) {
+      if (is_zero_multivector(a2)) {
+        return this.set(b2.x, b2.y, b2.a, b2.b);
+      } else if (is_zero_multivector(b2)) {
+        return this.set(a2.x, a2.y, a2.a, a2.b);
       } else {
-        return this.set(a.x + b.x, a.y + b.y, a.a + b.a, a.b + b.b);
+        return this.set(a2.x + b2.x, a2.y + b2.y, a2.a + b2.a, a2.b + b2.b);
       }
     }
     addPseudo(\u03B2) {
@@ -2023,17 +2347,17 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
      * @param α The fraction of (a * uom) to be added. Default is 1.
      * @returns this + (a * uom) * α
      */
-    addScalar(a, \u03B1 = 1) {
+    addScalar(a2, \u03B1 = 1) {
       if (this.isLocked()) {
-        return lock(this.clone().addScalar(a, \u03B1));
+        return lock(this.clone().addScalar(a2, \u03B1));
       } else {
         if (this.isZero()) {
-          this.a = a * \u03B1;
+          this.a = a2 * \u03B1;
           return this;
-        } else if (a === 0 || \u03B1 === 0) {
+        } else if (a2 === 0 || \u03B1 === 0) {
           return this;
         } else {
-          this.a += a * \u03B1;
+          this.a += a2 * \u03B1;
           return this;
         }
       }
@@ -2095,23 +2419,23 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
      * @param m
      * @returns this ^ m
      */
-    ext(m) {
+    ext(m2) {
       if (this.isLocked()) {
-        return lock(this.clone().ext(m));
+        return lock(this.clone().ext(m2));
       } else {
         const La = this.a;
         const Lx = this.x;
         const Ly = this.y;
         const Lb = this.b;
-        const Ra = m.a;
-        const Rx = m.x;
-        const Ry = m.y;
-        const Rb = m.b;
-        const a = La * Ra;
-        const x = La * Rx + Lx * Ra;
-        const y = La * Ry + Ly * Ra;
-        const b = La * Rb + Lx * Ry - Ly * Rx + Lb * Ra;
-        return this.set(x, y, a, b);
+        const Ra = m2.a;
+        const Rx = m2.x;
+        const Ry = m2.y;
+        const Rb = m2.b;
+        const a2 = La * Ra;
+        const x2 = La * Rx + Lx * Ra;
+        const y2 = La * Ry + Ly * Ra;
+        const b2 = La * Rb + Lx * Ry - Ly * Rx + Lb * Ra;
+        return this.set(x2, y2, a2, b2);
       }
     }
     /**
@@ -2133,13 +2457,13 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
           [+x2, +x3, +x0, -x1],
           [+x3, +x2, -x1, +x0]
         ];
-        const s = [1, 0, 0, 0];
-        const X = gauss(A, s);
-        const a = X[0];
-        const x = X[1];
-        const y = X[2];
-        const b = X[3];
-        return this.set(x, y, a, b);
+        const s2 = [1, 0, 0, 0];
+        const X = gauss(A, s2);
+        const a2 = X[0];
+        const x4 = X[1];
+        const y2 = X[2];
+        const b2 = X[3];
+        return this.set(x4, y2, a2, b2);
       }
     }
     lco(rhs) {
@@ -2158,32 +2482,32 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       const Rx = rhs.x;
       const Ry = rhs.y;
       const Rb = rhs.b;
-      const a = La * Ra + Lx * Rx + Ly * Ry - Lb * Rb;
-      const x = La * Rx - Ly * Rb;
-      const y = La * Ry + Lx * Rb;
-      const b = La * Rb;
-      return this.set(x, y, a, b);
+      const a2 = La * Ra + Lx * Rx + Ly * Ry - Lb * Rb;
+      const x2 = La * Rx - Ly * Rb;
+      const y2 = La * Ry + Lx * Rb;
+      const b2 = La * Rb;
+      return this.set(x2, y2, a2, b2);
     }
     add(rhs) {
       if (this.isLocked()) {
         return lock(this.clone().add(rhs));
       } else {
-        const x = this.x + rhs.x;
-        const y = this.y + rhs.y;
-        const a = this.a + rhs.a;
-        const b = this.b + rhs.b;
-        return this.set(x, y, a, b);
+        const x2 = this.x + rhs.x;
+        const y2 = this.y + rhs.y;
+        const a2 = this.a + rhs.a;
+        const b2 = this.b + rhs.b;
+        return this.set(x2, y2, a2, b2);
       }
     }
     sub(rhs) {
       if (this.isLocked()) {
         return lock(this.clone().sub(rhs));
       } else {
-        const x = this.x - rhs.x;
-        const y = this.y - rhs.y;
-        const a = this.a - rhs.a;
-        const b = this.b - rhs.b;
-        return this.set(x, y, a, b);
+        const x2 = this.x - rhs.x;
+        const y2 = this.y - rhs.y;
+        const a2 = this.a - rhs.a;
+        const b2 = this.b - rhs.b;
+        return this.set(x2, y2, a2, b2);
       }
     }
     /**
@@ -2209,41 +2533,41 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       const Rx = rhs.x;
       const Ry = rhs.y;
       const Rb = rhs.b;
-      const a = La * Ra + Lx * Rx + Ly * Ry - Lb * Rb;
-      const x = La * Rx + Lx * Ra - Ly * Rb + Lb * Ry;
-      const y = La * Ry + Lx * Rb + Ly * Ra - Lb * Rx;
-      const b = La * Rb + Lx * Ry - Ly * Rx + Lb * Ra;
-      return this.set(x, y, a, b);
+      const a2 = La * Ra + Lx * Rx + Ly * Ry - Lb * Rb;
+      const x2 = La * Rx + Lx * Ra - Ly * Rb + Lb * Ry;
+      const y2 = La * Ry + Lx * Rb + Ly * Ra - Lb * Rx;
+      const b2 = La * Rb + Lx * Ry - Ly * Rx + Lb * Ra;
+      return this.set(x2, y2, a2, b2);
     }
     neg() {
       return this.scale(-1);
     }
-    dot(v) {
-      return this.x * v.x + this.y * v.y;
+    dot(v2) {
+      return this.x * v2.x + this.y * v2.y;
     }
     exp() {
       if (this.isLocked()) {
         return lock(this.clone().exp());
       } else {
-        const w = this.a;
+        const w2 = this.a;
         const z = this.b;
-        const expW = Math.exp(w);
+        const expW = Math.exp(w2);
         const \u03C6 = Math.sqrt(z * z);
-        const s = expW * (\u03C6 !== 0 ? Math.sin(\u03C6) / \u03C6 : 1);
-        const a = expW * Math.cos(\u03C6);
-        const b = z * s;
-        return this.set(0, 0, a, b);
+        const s2 = expW * (\u03C6 !== 0 ? Math.sin(\u03C6) / \u03C6 : 1);
+        const a2 = expW * Math.cos(\u03C6);
+        const b2 = z * s2;
+        return this.set(0, 0, a2, b2);
       }
     }
     magnitude() {
       return Math.sqrt(this.quaditude());
     }
     quaditude() {
-      const a = this.a;
-      const x = this.x;
-      const y = this.y;
-      const b = this.b;
-      return a * a + x * x + y * y - b * b;
+      const a2 = this.a;
+      const x2 = this.x;
+      const y2 = this.y;
+      const b2 = this.b;
+      return a2 * a2 + x2 * x2 + y2 * y2 - b2 * b2;
     }
     normalize() {
       if (this.isLocked()) {
@@ -2252,19 +2576,19 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
         return this.scale(1 / this.magnitude());
       }
     }
-    distanceTo(v) {
-      return Math.sqrt(this.distanceToSquared(v));
+    distanceTo(v2) {
+      return Math.sqrt(this.distanceToSquared(v2));
     }
-    distanceToSquared(v) {
-      const dx = this.x - v.x;
-      const dy = this.y - v.y;
+    distanceToSquared(v2) {
+      const dx = this.x - v2.x;
+      const dy = this.y - v2.y;
       return dx * dx + dy * dy;
     }
-    rco(m) {
+    rco(m2) {
       if (this.isLocked()) {
-        return lock(this.clone().rco(m));
+        return lock(this.clone().rco(m2));
       } else {
-        return this.#rco2(this, m);
+        return this.#rco2(this, m2);
       }
     }
     #rco2(lhs, rhs) {
@@ -2276,11 +2600,11 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       const Rx = rhs.x;
       const Ry = rhs.y;
       const Rb = rhs.b;
-      const a = La * Ra + Lx * Rx + Ly * Ry - Lb * Rb;
-      const x = Lx * Ra + Lb * Ry;
-      const y = Ly * Ra - Lb * Rx;
-      const b = Lb * Ra;
-      return this.set(x, y, a, b);
+      const a2 = La * Ra + Lx * Rx + Ly * Ry - Lb * Rb;
+      const x2 = Lx * Ra + Lb * Ry;
+      const y2 = Ly * Ra - Lb * Rx;
+      const b2 = Lb * Ra;
+      return this.set(x2, y2, a2, b2);
     }
     /**
      * If `this` is mutable, then sets `this` multivector to its reflection in the plane orthogonal to vector n. The result is mutable.
@@ -2303,25 +2627,25 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
      *
      * @param n The unit vector that defines the reflection plane.
      */
-    reflect(n) {
+    reflect(n2) {
       if (this.isLocked()) {
-        return lock(this.clone().reflect(n));
+        return lock(this.clone().reflect(n2));
       } else {
-        const nx = n.x;
-        const ny = n.y;
-        const a = this.a;
-        const x = this.x;
-        const y = this.y;
-        const b = this.b;
+        const nx = n2.x;
+        const ny = n2.y;
+        const a2 = this.a;
+        const x2 = this.x;
+        const y2 = this.y;
+        const b2 = this.b;
         const nx2 = nx * nx;
         const ny2 = ny * ny;
         const \u03BC = nx2 - ny2;
         const \u03BB = -2 * nx * ny;
         const \u03B2 = nx2 + ny2;
-        const A = -\u03B2 * a;
-        const X = \u03BB * y - \u03BC * x;
-        const Y = \u03BB * x + \u03BC * y;
-        const B = \u03B2 * b;
+        const A = -\u03B2 * a2;
+        const X = \u03BB * y2 - \u03BC * x2;
+        const Y = \u03BB * x2 + \u03BC * y2;
+        const B = \u03B2 * b2;
         return this.set(X, Y, A, B);
       }
     }
@@ -2337,11 +2661,11 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
      * @param b The ending vector
      * @returns The rotor representing a rotation from a to b.
      */
-    rotorFromDirections(a, b) {
+    rotorFromDirections(a2, b2) {
       if (this.isLocked()) {
-        return lock(this.clone().rotorFromDirections(a, b));
+        return lock(this.clone().rotorFromDirections(a2, b2));
       } else {
-        rotorFromDirections(a, b, this);
+        rotorFromDirections(a2, b2, this);
         return this;
       }
     }
@@ -2368,23 +2692,23 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
      *
      * The result is depends  on the magnitudes of a and b. 
      */
-    rotorFromVectorToVector(a, b) {
+    rotorFromVectorToVector(a2, b2) {
       if (this.isLocked()) {
-        return lock(this.clone().rotorFromVectorToVector(a, b));
+        return lock(this.clone().rotorFromVectorToVector(a2, b2));
       } else {
-        const ax = a.x;
-        const ay = a.y;
-        const bx = b.x;
-        const by = b.y;
+        const ax = a2.x;
+        const ay = a2.y;
+        const bx = b2.x;
+        const by = b2.y;
         const absB = Math.sqrt(bx * bx + by * by);
         const absA = Math.sqrt(ax * ax + ay * ay);
         const BA = absB * absA;
         const dotBA = bx * ax + by * ay;
-        const q = bx * ay - by * ax;
+        const q2 = bx * ay - by * ax;
         const denom = Math.sqrt(2 * BA * (BA + dotBA));
-        const f = Math.sqrt(absB) / (Math.sqrt(absA) * denom);
-        const A = f * (BA + dotBA);
-        const B = f * q;
+        const f2 = Math.sqrt(absB) / (Math.sqrt(absA) * denom);
+        const A = f2 * (BA + dotBA);
+        const B = f2 * q2;
         return this.set(0, 0, A, B);
       }
     }
@@ -2392,22 +2716,22 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       if (this.isLocked()) {
         return lock(this.clone().scale(\u03B1));
       } else {
-        const x = this.x * \u03B1;
-        const y = this.y * \u03B1;
-        const a = this.a * \u03B1;
-        const b = this.b * \u03B1;
-        return this.set(x, y, a, b);
+        const x2 = this.x * \u03B1;
+        const y2 = this.y * \u03B1;
+        const a2 = this.a * \u03B1;
+        const b2 = this.b * \u03B1;
+        return this.set(x2, y2, a2, b2);
       }
     }
     /**
      * @param m
      * @returns this | m
      */
-    scp(m) {
+    scp(m2) {
       if (this.isLocked()) {
-        return lock(this.clone().scp(m));
+        return lock(this.clone().scp(m2));
       } else {
-        return this.#scp2(this, m);
+        return this.#scp2(this, m2);
       }
     }
     /**
@@ -2422,11 +2746,11 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       const Rx = rhs.x;
       const Ry = rhs.y;
       const Rb = rhs.b;
-      const a = La * Ra + Lx * Rx + Ly * Ry - Lb * Rb;
-      const x = 0;
-      const y = 0;
-      const b = 0;
-      return this.set(x, y, a, b);
+      const a2 = La * Ra + Lx * Rx + Ly * Ry - Lb * Rb;
+      const x2 = 0;
+      const y2 = 0;
+      const b2 = 0;
+      return this.set(x2, y2, a2, b2);
     }
     /**
      * Sets the coordinates of `this` multivector.
@@ -2436,15 +2760,16 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
      * @param a The scalar coordinate.
      * @param b The bivector coordinate.
      */
-    set(x, y, a = 0, b = 0) {
+    set(x2, y2, a2 = 0, b2 = 0) {
       if (this.isMutable()) {
-        const changed = this.x !== x || this.y !== y || this.a !== a || this.b != b;
+        const changed = this.x !== x2 || this.y !== y2 || this.a !== a2 || this.b != b2;
         if (changed) {
-          const coords = this.#coords;
-          coords[COORD_A] = a;
-          coords[COORD_X] = x;
-          coords[COORD_Y] = y;
-          coords[COORD_B] = b;
+          const coords = this.#coords.get();
+          coords[COORD_A] = a2;
+          coords[COORD_X] = x2;
+          coords[COORD_Y] = y2;
+          coords[COORD_B] = b2;
+          this.#coords.set(coords);
           this.#change.set(this);
         }
         return this;
@@ -2452,19 +2777,19 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
         throw new Error();
       }
     }
-    equals(v, eps) {
+    equals(v2, eps) {
       eps = typeof eps === "undefined" ? 1e-4 : eps;
-      return this.distanceTo(v) < eps;
+      return this.distanceTo(v2) < eps;
     }
-    lerp(v, t) {
+    lerp(v2, t2) {
       if (this.isLocked()) {
-        return lock(this.clone().lerp(v, t));
+        return lock(this.clone().lerp(v2, t2));
       } else {
-        const x = (v.x - this.x) * t + this.x;
-        const y = (v.y - this.y) * t + this.y;
-        const a = (v.a - this.a) * t + this.a;
-        const b = (v.b - this.b) * t + this.b;
-        return this.set(x, y, a, b);
+        const x2 = (v2.x - this.x) * t2 + this.x;
+        const y2 = (v2.y - this.y) * t2 + this.y;
+        const a2 = (v2.a - this.a) * t2 + this.a;
+        const b2 = (v2.b - this.b) * t2 + this.b;
+        return this.set(x2, y2, a2, b2);
       }
     }
     /**
@@ -2488,11 +2813,11 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
      */
     rev() {
       if (this.isMutable()) {
-        const a = +this.a;
-        const x = +this.x;
-        const y = +this.y;
-        const b = -this.b;
-        return this.set(x, y, a, b);
+        const a2 = +this.a;
+        const x2 = +this.x;
+        const y2 = +this.y;
+        const b2 = -this.b;
+        return this.set(x2, y2, a2, b2);
       } else {
         return lock(this.clone().rev());
       }
@@ -2503,9 +2828,9 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
         const y0 = this.y;
         const cos3 = Math.cos(radians);
         const sin3 = Math.sin(radians);
-        const x = x0 * cos3 - y0 * sin3;
-        const y = x0 * sin3 + y0 * cos3;
-        return this.set(x, y, this.a, this.b);
+        const x2 = x0 * cos3 - y0 * sin3;
+        const y2 = x0 * sin3 + y0 * cos3;
+        return this.set(x2, y2, this.a, this.b);
       } else {
         return lock(this.clone().rotate(radians));
       }
@@ -2516,17 +2841,17 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
      * @param α The fraction of (a * uom) to be subtracted. Default is 1.
      * @returns this - (a * uom) * α
      */
-    subScalar(a, \u03B1 = 1) {
+    subScalar(a2, \u03B1 = 1) {
       if (this.isLocked()) {
-        return lock(this.clone().subScalar(a, \u03B1));
+        return lock(this.clone().subScalar(a2, \u03B1));
       } else {
         if (this.isZero()) {
-          this.a = -a * \u03B1;
+          this.a = -a2 * \u03B1;
           return this;
-        } else if (a === 0 || \u03B1 === 0) {
+        } else if (a2 === 0 || \u03B1 === 0) {
           return this;
         } else {
-          this.a -= a * \u03B1;
+          this.a -= a2 * \u03B1;
           return this;
         }
       }
@@ -2537,12 +2862,12 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
      * </p>
      * Sets this Geometric2 to the geometric product a * b of the vector arguments.
      */
-    versor(a, b) {
+    versor(a2, b2) {
       if (this.isMutable()) {
-        const A = a.x * b.x + a.y * b.y;
+        const A = a2.x * b2.x + a2.y * b2.y;
         const X = 0;
         const Y = 0;
-        const B = a.x * b.y - a.y * b.x;
+        const B = a2.x * b2.y - a2.y * b2.x;
         return this.set(X, Y, A, B);
       } else {
         throw new Error();
@@ -2866,34 +3191,34 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     get x() {
       return this.origin.x;
     }
-    set x(x) {
-      this.origin.x = x;
+    set x(x2) {
+      this.origin.x = x2;
     }
     get y() {
       return this.origin.y;
     }
-    set y(y) {
-      this.origin.y = y;
+    set y(y2) {
+      this.origin.y = y2;
     }
     get t() {
       return this.#t;
     }
-    set t(t) {
-      if (this.t !== t) {
-        this.#t = t;
+    set t(t2) {
+      if (this.t !== t2) {
+        this.#t = t2;
       }
     }
-    copy(v) {
-      this.origin.copyVector(v.origin);
-      this.command = v.command;
-      this.controls.a.copyVector(v.controls.a);
-      this.controls.b.copyVector(v.controls.b);
-      this.relative = v.relative;
-      this.rx = v.rx;
-      this.ry = v.ry;
-      this.xAxisRotation = v.xAxisRotation;
-      this.largeArcFlag = v.largeArcFlag;
-      this.sweepFlag = v.sweepFlag;
+    copy(v2) {
+      this.origin.copyVector(v2.origin);
+      this.command = v2.command;
+      this.controls.a.copyVector(v2.controls.a);
+      this.controls.b.copyVector(v2.controls.b);
+      this.relative = v2.relative;
+      this.rx = v2.rx;
+      this.ry = v2.ry;
+      this.xAxisRotation = v2.xAxisRotation;
+      this.largeArcFlag = v2.largeArcFlag;
+      this.sweepFlag = v2.sweepFlag;
       return this;
     }
     /**
@@ -3033,14 +3358,14 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       this.#insert.next(this.#items);
     }
     pop() {
-      const x = this.#items.pop();
-      this.#remove.next([x]);
-      return x;
+      const x2 = this.#items.pop();
+      this.#remove.next([x2]);
+      return x2;
     }
     shift() {
-      const x = this.#items.shift();
-      this.#remove.next([x]);
-      return x;
+      const x2 = this.#items.shift();
+      this.#remove.next([x2]);
+      return x2;
     }
     push(...items) {
       const new_length = this.#items.push(...items);
@@ -3102,8 +3427,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       this.#remove_subscription.dispose();
     }
     #attach(children) {
-      for (let i = 0; i < children.length; i++) {
-        const child = children[i];
+      for (let i2 = 0; i2 < children.length; i2++) {
+        const child = children[i2];
         if (child && child.id) {
           this.ids[child.id] = child;
         }
@@ -3111,8 +3436,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       return this;
     }
     #detach(children) {
-      for (let i = 0; i < children.length; i++) {
-        const child = children[i];
+      for (let i2 = 0; i2 < children.length; i2++) {
+        const child = children[i2];
         delete this.ids[child.id];
       }
       return this;
@@ -3122,8 +3447,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
   // src/lib/reactive/Disposable.ts
   function dispose(disposables) {
     const length = disposables.length;
-    for (let i = length - 1; i >= 0; i--) {
-      disposables[i].dispose();
+    for (let i2 = length - 1; i2 >= 0; i2--) {
+      disposables[i2].dispose();
     }
     disposables.length = 0;
   }
@@ -3141,27 +3466,27 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
   // src/lib/utils/math.ts
   var TWO_PI = Math.PI * 2;
   var HALF_PI = Math.PI * 0.5;
-  function lerp(a, b, t) {
-    return t * (b - a) + a;
+  function lerp(a2, b2, t2) {
+    return t2 * (b2 - a2) + a2;
   }
-  function mod(v, l) {
-    while (v < 0) {
-      v += l;
+  function mod(v2, l2) {
+    while (v2 < 0) {
+      v2 += l2;
     }
-    return v % l;
+    return v2 % l2;
   }
   var NumArray = root.Float32Array || Array;
   var floor = Math.floor;
-  function toFixed(v) {
-    return floor(v * 1e6) / 1e6;
+  function toFixed(v2) {
+    return floor(v2 * 1e6) / 1e6;
   }
 
   // src/lib/renderers/SVGView.ts
   function get_svg_element_defs(svg2) {
     const children = svg2.children;
-    const N = children.length;
-    for (let i = 0; i < N; i++) {
-      const child = children.item(i);
+    const N2 = children.length;
+    for (let i2 = 0; i2 < N2; i2++) {
+      const child = children.item(i2);
       if (child instanceof SVGDefsElement) {
         return child;
       }
@@ -3189,10 +3514,10 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     setAttributes: function(elem, attrs) {
       const styles = attrs;
       const keys = Object.keys(attrs);
-      for (let i = 0; i < keys.length; i++) {
-        const qualifiedName = keys[i];
+      for (let i2 = 0; i2 < keys.length; i2++) {
+        const qualifiedName = keys[i2];
         const value = styles[qualifiedName];
-        if (/href/.test(keys[i])) {
+        if (/href/.test(keys[i2])) {
           elem.setAttributeNS(svg.xlink, qualifiedName, value);
         } else {
           elem.setAttribute(qualifiedName, value);
@@ -3209,85 +3534,85 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     },
     path_from_anchors: function(board, position, attitude, anchors, closed) {
       const [screenX, screenY] = screen_functions(board);
-      const l = anchors.length;
-      const last = l - 1;
-      let d;
+      const l2 = anchors.length;
+      const last = l2 - 1;
+      let d2;
       let string = "";
-      for (let i = 0; i < l; i++) {
-        const b = anchors[i];
-        const prev = closed ? mod(i - 1, l) : Math.max(i - 1, 0);
-        const a = anchors[prev];
+      for (let i2 = 0; i2 < l2; i2++) {
+        const b2 = anchors[i2];
+        const prev = closed ? mod(i2 - 1, l2) : Math.max(i2 - 1, 0);
+        const a2 = anchors[prev];
         let command;
-        let c;
+        let c2;
         Anchor;
         let vx, vy, ux, uy, ar, bl, br, cl;
         let rx, ry, xAxisRotation, largeArcFlag, sweepFlag;
-        let x = toFixed(screenX(b.x, b.y));
-        let y = toFixed(screenY(b.x, b.y));
-        switch (b.command) {
+        let x2 = toFixed(screenX(b2.x, b2.y));
+        let y2 = toFixed(screenY(b2.x, b2.y));
+        switch (b2.command) {
           case Commands.close:
             command = Commands.close;
             break;
           case Commands.arc:
-            rx = b.rx;
-            ry = b.ry;
-            xAxisRotation = b.xAxisRotation;
-            largeArcFlag = b.largeArcFlag;
-            sweepFlag = b.sweepFlag;
-            command = Commands.arc + " " + rx + " " + ry + " " + xAxisRotation + " " + largeArcFlag + " " + sweepFlag + " " + x + " " + y;
+            rx = b2.rx;
+            ry = b2.ry;
+            xAxisRotation = b2.xAxisRotation;
+            largeArcFlag = b2.largeArcFlag;
+            sweepFlag = b2.sweepFlag;
+            command = Commands.arc + " " + rx + " " + ry + " " + xAxisRotation + " " + largeArcFlag + " " + sweepFlag + " " + x2 + " " + y2;
             break;
           case Commands.curve:
-            ar = a.controls && a.controls.b || G20.zero;
-            bl = b.controls && b.controls.a || G20.zero;
-            if (a.relative) {
-              vx = toFixed(screenX(ar.x + a.x, ar.y + a.y));
-              vy = toFixed(screenY(ar.x + a.x, ar.y + a.y));
+            ar = a2.controls && a2.controls.b || G20.zero;
+            bl = b2.controls && b2.controls.a || G20.zero;
+            if (a2.relative) {
+              vx = toFixed(screenX(ar.x + a2.x, ar.y + a2.y));
+              vy = toFixed(screenY(ar.x + a2.x, ar.y + a2.y));
             } else {
               vx = toFixed(screenX(ar.x, ar.y));
               vy = toFixed(screenY(ar.x, ar.y));
             }
-            if (b.relative) {
-              ux = toFixed(screenX(bl.x + b.x, bl.y + b.y));
-              uy = toFixed(screenY(bl.x + b.x, bl.y + b.y));
+            if (b2.relative) {
+              ux = toFixed(screenX(bl.x + b2.x, bl.y + b2.y));
+              uy = toFixed(screenY(bl.x + b2.x, bl.y + b2.y));
             } else {
               ux = toFixed(screenX(bl.x, bl.y));
               uy = toFixed(screenY(bl.x, bl.y));
             }
-            command = (i === 0 ? Commands.move : Commands.curve) + " " + vx + " " + vy + " " + ux + " " + uy + " " + x + " " + y;
+            command = (i2 === 0 ? Commands.move : Commands.curve) + " " + vx + " " + vy + " " + ux + " " + uy + " " + x2 + " " + y2;
             break;
           case Commands.move: {
-            d = b;
-            command = Commands.move + " " + x + " " + y;
+            d2 = b2;
+            command = Commands.move + " " + x2 + " " + y2;
             break;
           }
           default: {
-            command = b.command + " " + x + " " + y;
+            command = b2.command + " " + x2 + " " + y2;
           }
         }
-        if (i >= last && closed) {
-          if (b.command === Commands.curve) {
-            c = d;
-            br = b.controls && b.controls.b || b;
-            cl = c.controls && c.controls.a || c;
-            if (b.relative) {
-              vx = toFixed(screenX(br.x + b.x, br.y + b.y));
-              vy = toFixed(screenY(br.x + b.x, br.y + b.y));
+        if (i2 >= last && closed) {
+          if (b2.command === Commands.curve) {
+            c2 = d2;
+            br = b2.controls && b2.controls.b || b2;
+            cl = c2.controls && c2.controls.a || c2;
+            if (b2.relative) {
+              vx = toFixed(screenX(br.x + b2.x, br.y + b2.y));
+              vy = toFixed(screenY(br.x + b2.x, br.y + b2.y));
             } else {
               vx = toFixed(screenX(br.x, br.y));
               vy = toFixed(screenY(br.x, br.y));
             }
-            if (c.relative) {
-              ux = toFixed(screenX(cl.x + c.x, cl.y + c.y));
-              uy = toFixed(screenY(cl.x + c.x, cl.y + c.y));
+            if (c2.relative) {
+              ux = toFixed(screenX(cl.x + c2.x, cl.y + c2.y));
+              uy = toFixed(screenY(cl.x + c2.x, cl.y + c2.y));
             } else {
               ux = toFixed(screenX(cl.x, cl.y));
               uy = toFixed(screenY(cl.x, cl.y));
             }
-            x = toFixed(screenX(c.x, c.y));
-            y = toFixed(screenY(c.x, c.y));
-            command += " C " + vx + " " + vy + " " + ux + " " + uy + " " + x + " " + y;
+            x2 = toFixed(screenX(c2.x, c2.y));
+            y2 = toFixed(screenY(c2.x, c2.y));
+            command += " C " + vx + " " + vy + " " + ux + " " + uy + " " + x2 + " " + y2;
           }
-          if (b.command !== Commands.close) {
+          if (b2.command !== Commands.close) {
             command += " Z";
           }
         }
@@ -3315,8 +3640,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       update: function(svgElement, defs) {
         if (get_defs_dirty_flag(defs)) {
           const children = Array.prototype.slice.call(defs.children, 0);
-          for (let i = 0; i < children.length; i++) {
-            const child = children[i];
+          for (let i2 = 0; i2 < children.length; i2++) {
+            const child = children[i2];
             const id = child.id;
             const selector = `[fill="url(#${id})"],[stroke="url(#${id})"],[clip-path="url(#${id})"]`;
             const exists = svgElement.querySelector(selector);
@@ -3372,20 +3697,20 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       return this;
     }
   };
-  function transform_value_of_matrix(m) {
-    const a = m.a;
-    const b = m.b;
-    const c = m.c;
-    const d = m.d;
-    const e = m.e;
-    const f = m.f;
-    return `matrix(${[a, b, c, d, e, f].map(toFixed).join(" ")})`;
+  function transform_value_of_matrix(m2) {
+    const a2 = m2.a;
+    const b2 = m2.b;
+    const c2 = m2.c;
+    const d2 = m2.d;
+    const e2 = m2.e;
+    const f2 = m2.f;
+    return `matrix(${[a2, b2, c2, d2, e2, f2].map(toFixed).join(" ")})`;
   }
   function screen_functions(board) {
     if (board.goofy) {
-      return [(x, y) => x, (x, y) => y];
+      return [(x2, y2) => x2, (x2, y2) => y2];
     } else {
-      return [(x, y) => y, (x, y) => x];
+      return [(x2, y2) => y2, (x2, y2) => x2];
     }
   }
 
@@ -3437,6 +3762,9 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     image;
     offset;
     opacity$;
+    /**
+     * Use by Circle and RadialGradient.
+     */
     radius$;
     scale;
     spreadMethod$;
@@ -3502,30 +3830,30 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
   };
 
   // src/lib/math/compose_2d_3x3_transform.ts
-  function compose_2d_3x3_transform(x, y, sx, sy, cos_\u03C6, sin_\u03C6, skewX, skewY, matrix) {
+  function compose_2d_3x3_transform(x2, y2, sx, sy, cos_\u03C6, sin_\u03C6, skewX, skewY, matrix) {
     const cos_\u03B8 = cos_\u03C6 * cos_\u03C6 - sin_\u03C6 * sin_\u03C6;
     const sin_\u03B8 = 2 * cos_\u03C6 * sin_\u03C6;
-    const a = sx;
-    const b = sy;
-    const p = Math.tan(skewX);
-    const q = Math.tan(skewY);
-    const c = cos_\u03B8;
-    const s = sin_\u03B8;
-    const ac = a * c;
-    const as = a * s;
-    const asq = as * q;
-    const bc = b * c;
-    const bcp = bc * p;
-    const bcq = bc * q;
-    const bs = b * s;
-    const pq = p * q;
-    const py = p * y;
+    const a2 = sx;
+    const b2 = sy;
+    const p2 = Math.tan(skewX);
+    const q2 = Math.tan(skewY);
+    const c2 = cos_\u03B8;
+    const s2 = sin_\u03B8;
+    const ac = a2 * c2;
+    const as = a2 * s2;
+    const asq = as * q2;
+    const bc = b2 * c2;
+    const bcp = bc * p2;
+    const bcq = bc * q2;
+    const bs = b2 * s2;
+    const pq = p2 * q2;
+    const py = p2 * y2;
     const a11 = ac - asq + bcp * pq * bs;
     const a12 = -as + bcp;
-    const a13 = x + py;
+    const a13 = x2 + py;
     const a21 = bcq + bs;
     const a22 = bc;
-    const a23 = y;
+    const a23 = y2;
     matrix.set(a11, a12, a13, a21, a22, a23, 0, 0, 1);
   }
 
@@ -3613,32 +3941,32 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       this.#elements[8] = a33;
       return this.#broadcast();
     }
-    set_from_matrix(m) {
-      this.#elements[0] = m.a11;
-      this.#elements[1] = m.a12;
-      this.#elements[2] = m.a13;
-      this.#elements[3] = m.a21;
-      this.#elements[4] = m.a22;
-      this.#elements[5] = m.a23;
-      this.#elements[6] = m.a31;
-      this.#elements[7] = m.a32;
-      this.#elements[8] = m.a33;
+    set_from_matrix(m2) {
+      this.#elements[0] = m2.a11;
+      this.#elements[1] = m2.a12;
+      this.#elements[2] = m2.a13;
+      this.#elements[3] = m2.a21;
+      this.#elements[4] = m2.a22;
+      this.#elements[5] = m2.a23;
+      this.#elements[6] = m2.a31;
+      this.#elements[7] = m2.a32;
+      this.#elements[8] = m2.a33;
       return this.#broadcast();
     }
     /**
      * Copy the matrix of one to the current instance.
      */
-    copy(m) {
-      this.#elements[0] = m.#elements[0];
-      this.#elements[1] = m.#elements[1];
-      this.#elements[2] = m.#elements[2];
-      this.#elements[3] = m.#elements[3];
-      this.#elements[4] = m.#elements[4];
-      this.#elements[5] = m.#elements[5];
-      this.#elements[6] = m.#elements[6];
-      this.#elements[7] = m.#elements[7];
-      this.#elements[8] = m.#elements[8];
-      this.manual = m.manual;
+    copy(m2) {
+      this.#elements[0] = m2.#elements[0];
+      this.#elements[1] = m2.#elements[1];
+      this.#elements[2] = m2.#elements[2];
+      this.#elements[3] = m2.#elements[3];
+      this.#elements[4] = m2.#elements[4];
+      this.#elements[5] = m2.#elements[5];
+      this.#elements[6] = m2.#elements[6];
+      this.#elements[7] = m2.#elements[7];
+      this.#elements[8] = m2.#elements[8];
+      this.manual = m2.manual;
       return this.#broadcast();
     }
     /**
@@ -3678,22 +4006,22 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       this.#elements[8] = a31 * b13 + a32 * b23 + a33 * b33;
       return this.#broadcast();
     }
-    multiply_vector(x = 0, y = 0, z = 1) {
-      const x1 = this.a11 * x + this.a12 * y + this.a13 * z;
-      const x2 = this.a21 * x + this.a22 * y + this.a23 * z;
-      const x3 = this.a31 * x + this.a32 * y + this.a33 * z;
-      return [x1, x2, x3];
+    multiply_vector(x2 = 0, y2 = 0, z = 1) {
+      const x1 = this.a11 * x2 + this.a12 * y2 + this.a13 * z;
+      const x22 = this.a21 * x2 + this.a22 * y2 + this.a23 * z;
+      const x3 = this.a31 * x2 + this.a32 * y2 + this.a33 * z;
+      return [x1, x22, x3];
     }
-    multiply_by_scalar(s) {
-      this.#elements[0] *= s;
-      this.#elements[1] *= s;
-      this.#elements[2] *= s;
-      this.#elements[3] *= s;
-      this.#elements[4] *= s;
-      this.#elements[5] *= s;
-      this.#elements[6] *= s;
-      this.#elements[7] *= s;
-      this.#elements[8] *= s;
+    multiply_by_scalar(s2) {
+      this.#elements[0] *= s2;
+      this.#elements[1] *= s2;
+      this.#elements[2] *= s2;
+      this.#elements[3] *= s2;
+      this.#elements[4] *= s2;
+      this.#elements[5] *= s2;
+      this.#elements[6] *= s2;
+      this.#elements[7] *= s2;
+      this.#elements[8] *= s2;
       return this.#broadcast();
     }
     /**
@@ -3701,11 +4029,11 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
      * Return an inverted version of the matrix. If no optional one is passed a new matrix is created and returned.
      */
     inverse(out) {
-      const a = this.#elements;
+      const a2 = this.#elements;
       out = out || new _Matrix();
-      const a00 = a[0], a01 = a[1], a02 = a[2];
-      const a10 = a[3], a11 = a[4], a12 = a[5];
-      const a20 = a[6], a21 = a[7], a22 = a[8];
+      const a00 = a2[0], a01 = a2[1], a02 = a2[2];
+      const a10 = a2[3], a11 = a2[4], a12 = a2[5];
+      const a20 = a2[6], a21 = a2[7], a22 = a2[8];
       const b01 = a22 * a11 - a12 * a21;
       const b11 = -a22 * a10 + a12 * a20;
       const b21 = a21 * a10 - a11 * a20;
@@ -3737,12 +4065,12 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
      * @returns 
      */
     rotate(angle) {
-      const c = cos(angle);
-      const s = sin(angle);
-      if (c === 1 && s === 0) {
+      const c2 = cos(angle);
+      const s2 = sin(angle);
+      if (c2 === 1 && s2 === 0) {
         return this;
       } else {
-        return this.multiply(c, -s, 0, s, c, 0, 0, 0, 1);
+        return this.multiply(c2, -s2, 0, s2, c2, 0, 0, 0, 1);
       }
     }
     translate(translation) {
@@ -3761,8 +4089,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       if (skewX === 0) {
         return this;
       } else {
-        const a = tan(skewX);
-        return this.multiply(1, a, 0, 0, 1, 0, 0, 0, 1);
+        const a2 = tan(skewX);
+        return this.multiply(1, a2, 0, 0, 1, 0, 0, 0, 1);
       }
     }
     /**
@@ -3774,8 +4102,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       if (skewY === 0) {
         return this;
       } else {
-        const a = tan(skewY);
-        return this.multiply(1, 0, 0, a, 1, 0, 0, 0, 1);
+        const a2 = tan(skewY);
+        return this.multiply(1, 0, 0, a2, 1, 0, 0, 0, 1);
       }
     }
     silence() {
@@ -3804,9 +4132,9 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       parent = parent.parent;
     }
     matrices.reverse();
-    for (let i = 0; i < matrices.length; i++) {
-      const m = matrices[i];
-      matrix.multiply(m.a11, m.a12, m.a13, m.a21, m.a22, m.a23, m.a31, m.a32, m.a33);
+    for (let i2 = 0; i2 < matrices.length; i2++) {
+      const m2 = matrices[i2];
+      matrix.multiply(m2.a11, m2.a12, m2.a13, m2.a21, m2.a22, m2.a23, m2.a31, m2.a32, m2.a33);
     }
   }
 
@@ -3910,8 +4238,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     }
     #update_matrix(compensate) {
       const position = this.position;
-      const x = position.x;
-      const y = position.y;
+      const x2 = position.x;
+      const y2 = position.y;
       const attitude = this.attitude;
       const scale = this.scaleXY;
       const sx = scale.x;
@@ -3919,18 +4247,18 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       if (this.board.goofy) {
         const cos_\u03C6 = attitude.a;
         const sin_\u03C6 = attitude.b;
-        compose_2d_3x3_transform(x, y, sx, sy, cos_\u03C6, sin_\u03C6, this.skewX, this.skewY, this.matrix);
+        compose_2d_3x3_transform(x2, y2, sx, sy, cos_\u03C6, sin_\u03C6, this.skewX, this.skewY, this.matrix);
       } else {
         if (compensate) {
-          const a = attitude.a;
-          const b = attitude.b;
-          const cos_\u03C6 = (a - b) / Math.SQRT2;
-          const sin_\u03C6 = (a + b) / Math.SQRT2;
-          compose_2d_3x3_transform(y, x, sy, sx, cos_\u03C6, sin_\u03C6, this.skewY, this.skewX, this.matrix);
+          const a2 = attitude.a;
+          const b2 = attitude.b;
+          const cos_\u03C6 = (a2 - b2) / Math.SQRT2;
+          const sin_\u03C6 = (a2 + b2) / Math.SQRT2;
+          compose_2d_3x3_transform(y2, x2, sy, sx, cos_\u03C6, sin_\u03C6, this.skewY, this.skewX, this.matrix);
         } else {
           const cos_\u03C6 = attitude.a;
           const sin_\u03C6 = attitude.b;
-          compose_2d_3x3_transform(y, x, sy, sx, cos_\u03C6, sin_\u03C6, this.skewY, this.skewX, this.matrix);
+          compose_2d_3x3_transform(y2, x2, sy, sx, cos_\u03C6, sin_\u03C6, this.skewY, this.skewX, this.matrix);
         }
       }
     }
@@ -4210,8 +4538,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       if (flagMatrix) {
         this.zzz.elem.setAttribute("transform", transform_value_of_matrix(this.matrix));
       }
-      for (let i = 0; i < this.children.length; i++) {
-        const child = this.children.getAt(i);
+      for (let i2 = 0; i2 < this.children.length; i2++) {
+        const child = this.children.getAt(i2);
         const elem = this.zzz.elem;
         child.render(elem, svgElement);
       }
@@ -4298,8 +4626,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
      */
     corner() {
       const bbox = this.getBoundingBox(true);
-      for (let i = 0; i < this.children.length; i++) {
-        const child = this.children.getAt(i);
+      for (let i2 = 0; i2 < this.children.length; i2++) {
+        const child = this.children.getAt(i2);
         child.position.x -= bbox.left;
         child.position.y -= bbox.top;
       }
@@ -4316,8 +4644,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       const bbox = this.getBoundingBox(true);
       const cx = (bbox.left + bbox.right) / 2 - this.position.x;
       const cy = (bbox.top + bbox.bottom) / 2 - this.position.y;
-      for (let i = 0; i < this.children.length; i++) {
-        const child = this.children.getAt(i);
+      for (let i2 = 0; i2 < this.children.length; i2++) {
+        const child = this.children.getAt(i2);
         child.position.x -= cx;
         child.position.y -= cy;
       }
@@ -4333,8 +4661,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
         if (node.id === id) {
           return node;
         } else if (node instanceof _Group && node.children) {
-          for (let i = 0; i < node.children.length; i++) {
-            found = search(node.children.getAt(i));
+          for (let i2 = 0; i2 < node.children.length; i2++) {
+            found = search(node.children.getAt(i2));
             if (found) {
               return found;
             }
@@ -4351,8 +4679,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
           found.push(node);
         }
         if (node instanceof _Group && node.children) {
-          for (let i = 0; i < node.children.length; i++) {
-            const child = node.children.getAt(i);
+          for (let i2 = 0; i2 < node.children.length; i2++) {
+            const child = node.children.getAt(i2);
             search(child);
           }
         }
@@ -4368,8 +4696,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
           found.push(node);
         }
         if (node instanceof _Group && node.children) {
-          for (let i = 0; i < node.children.length; i++) {
-            const child = node.children.getAt(i);
+          for (let i2 = 0; i2 < node.children.length; i2++) {
+            const child = node.children.getAt(i2);
             search(child);
           }
         }
@@ -4378,8 +4706,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       return search(this);
     }
     add(...shapes) {
-      for (let i = 0; i < shapes.length; i++) {
-        const child = shapes[i];
+      for (let i2 = 0; i2 < shapes.length; i2++) {
+        const child = shapes[i2];
         if (!(child && child.id)) {
           continue;
         }
@@ -4392,8 +4720,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       return this;
     }
     remove(...shapes) {
-      for (let i = 0; i < shapes.length; i++) {
-        const shape = shapes[i];
+      for (let i2 = 0; i2 < shapes.length; i2++) {
+        const shape = shapes[i2];
         shape.dispose();
         const index = this.children.indexOf(shape);
         if (index >= 0) {
@@ -4406,8 +4734,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       this.update();
       let left = Infinity, right = -Infinity, top = Infinity, bottom = -Infinity;
       const matrix = shallow ? this.matrix : this.worldMatrix;
-      for (let i = 0; i < this.children.length; i++) {
-        const child = this.children.getAt(i);
+      for (let i2 = 0; i2 < this.children.length; i2++) {
+        const child = this.children.getAt(i2);
         if (!(child.visibility === "visible") || child.hasBoundingBox()) {
           continue;
         }
@@ -4472,26 +4800,26 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
         let sum = 0;
         const bd = beginning * length;
         const ed = ending * length;
-        for (let i = 0; i < this.children.length; i++) {
-          const child = this.children.getAt(i);
-          const l = child.length;
-          if (bd > sum + l) {
+        for (let i2 = 0; i2 < this.children.length; i2++) {
+          const child = this.children.getAt(i2);
+          const l2 = child.length;
+          if (bd > sum + l2) {
             child.beginning = 1;
             child.ending = 1;
           } else if (ed < sum) {
             child.beginning = 0;
             child.ending = 0;
-          } else if (bd > sum && bd < sum + l) {
-            child.beginning = (bd - sum) / l;
+          } else if (bd > sum && bd < sum + l2) {
+            child.beginning = (bd - sum) / l2;
             child.ending = 1;
-          } else if (ed > sum && ed < sum + l) {
+          } else if (ed > sum && ed < sum + l2) {
             child.beginning = 0;
-            child.ending = (ed - sum) / l;
+            child.ending = (ed - sum) / l2;
           } else {
             child.beginning = 0;
             child.ending = 1;
           }
-          sum += l;
+          sum += l2;
         }
       }
       return super.update();
@@ -4517,8 +4845,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     }
     set automatic(automatic) {
       this.#automatic = automatic;
-      for (let i = 0; i < this.children.length; i++) {
-        const child = this.children.getAt(i);
+      for (let i2 = 0; i2 < this.children.length; i2++) {
+        const child = this.children.getAt(i2);
         child.automatic = automatic;
       }
     }
@@ -4538,8 +4866,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     }
     set cap(cap) {
       this.#cap = cap;
-      for (let i = 0; i < this.children.length; i++) {
-        const child = this.children.getAt(i);
+      for (let i2 = 0; i2 < this.children.length; i2++) {
+        const child = this.children.getAt(i2);
         child.cap = cap;
       }
     }
@@ -4554,29 +4882,29 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       this.#shapes.dispose();
       this.#shapes = children;
       this.#subscribe_to_shapes();
-      for (let i = 0; i < children.length; i++) {
-        const shape = children.getAt(i);
+      for (let i2 = 0; i2 < children.length; i2++) {
+        const shape = children.getAt(i2);
         update_shape_group(shape, this);
       }
     }
     get closed() {
       return this.#closed;
     }
-    set closed(v) {
-      this.#closed = v;
-      for (let i = 0; i < this.children.length; i++) {
-        const child = this.children.getAt(i);
-        child.closed = v;
+    set closed(v2) {
+      this.#closed = v2;
+      for (let i2 = 0; i2 < this.children.length; i2++) {
+        const child = this.children.getAt(i2);
+        child.closed = v2;
       }
     }
     get curved() {
       return this.#curved;
     }
-    set curved(v) {
-      this.#curved = v;
-      for (let i = 0; i < this.children.length; i++) {
-        const child = this.children.getAt(i);
-        child.curved = v;
+    set curved(v2) {
+      this.#curved = v2;
+      for (let i2 = 0; i2 < this.children.length; i2++) {
+        const child = this.children.getAt(i2);
+        child.curved = v2;
       }
     }
     get ending() {
@@ -4594,19 +4922,19 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       throw new Error();
     }
     set fill(fill) {
-      for (let i = 0; i < this.children.length; i++) {
-        const child = this.children.getAt(i);
+      for (let i2 = 0; i2 < this.children.length; i2++) {
+        const child = this.children.getAt(i2);
         child.fill = fill;
       }
     }
     get join() {
       return this.#join;
     }
-    set join(v) {
-      this.#join = v;
-      for (let i = 0; i < this.children.length; i++) {
-        const child = this.children.getAt(i);
-        child.join = v;
+    set join(v2) {
+      this.#join = v2;
+      for (let i2 = 0; i2 < this.children.length; i2++) {
+        const child = this.children.getAt(i2);
+        child.join = v2;
       }
     }
     get length() {
@@ -4615,8 +4943,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
         if (!this.children) {
           return this.#length;
         }
-        for (let i = 0; i < this.children.length; i++) {
-          const child = this.children.getAt(i);
+        for (let i2 = 0; i2 < this.children.length; i2++) {
+          const child = this.children.getAt(i2);
           this.#length += child.length;
         }
       }
@@ -4627,27 +4955,27 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     }
     set strokeWidth(strokeWidth) {
       this.#strokeWidth = strokeWidth;
-      for (let i = 0; i < this.children.length; i++) {
-        const child = this.children.getAt(i);
+      for (let i2 = 0; i2 < this.children.length; i2++) {
+        const child = this.children.getAt(i2);
         child.strokeWidth = strokeWidth;
       }
     }
     get miter() {
       return this.#miter;
     }
-    set miter(v) {
-      this.#miter = v;
-      for (let i = 0; i < this.children.length; i++) {
-        const child = this.children.getAt(i);
-        child.miter = v;
+    set miter(v2) {
+      this.#miter = v2;
+      for (let i2 = 0; i2 < this.children.length; i2++) {
+        const child = this.children.getAt(i2);
+        child.miter = v2;
       }
     }
     get stroke() {
       throw new Error();
     }
     set stroke(stroke) {
-      for (let i = 0; i < this.children.length; i++) {
-        const child = this.children.getAt(i);
+      for (let i2 = 0; i2 < this.children.length; i2++) {
+        const child = this.children.getAt(i2);
         child.stroke = stroke;
       }
     }
@@ -4716,42 +5044,42 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
   }
 
   // src/lib/effects/ColorProvider.ts
-  function is_color_provider(x) {
-    if (typeof x === "string") {
+  function is_color_provider(x2) {
+    if (typeof x2 === "string") {
       return false;
-    } else if (typeof x === "object") {
+    } else if (typeof x2 === "object") {
       return true;
     } else {
       throw new Error();
     }
   }
-  function serialize_color(x) {
-    if (is_color_provider(x)) {
-      return `url(#${x.id})`;
+  function serialize_color(x2) {
+    if (is_color_provider(x2)) {
+      return `url(#${x2.id})`;
     } else {
-      return x;
+      return x2;
     }
   }
 
   // src/lib/math/decompose_2d_3x3_matrix.ts
-  function decompose_2d_3x3_matrix(m) {
-    const a = m.a11;
-    const c = m.a12;
-    const x = m.a13;
-    const b = m.a21;
-    const d = m.a22;
-    const y = m.a23;
+  function decompose_2d_3x3_matrix(m2) {
+    const a2 = m2.a11;
+    const c2 = m2.a12;
+    const x2 = m2.a13;
+    const b2 = m2.a21;
+    const d2 = m2.a22;
+    const y2 = m2.a23;
     return {
-      position: { x, y },
-      translateX: x,
-      translateY: y,
-      scaleX: Math.sqrt(a * a + c * c),
+      position: { x: x2, y: y2 },
+      translateX: x2,
+      translateY: y2,
+      scaleX: Math.sqrt(a2 * a2 + c2 * c2),
       // should be multiplied by sign(a)
-      scaleY: Math.sqrt(b * b + d * d),
+      scaleY: Math.sqrt(b2 * b2 + d2 * d2),
       // should be multiplied by sign(d)
       // TODO: rotation is being reported in degrees.
       // tan(φ) = -b/a = c/d
-      rotation: Math.atan2(b, a)
+      rotation: Math.atan2(b2, a2)
     };
   }
 
@@ -4803,9 +5131,9 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       [0.1894506104550685, 0.18260341504492358, 0.16915651939500254, 0.14959598881657674, 0.12462897125553388, 0.09515851168249279, 0.062253523938647894, 0.027152459411754096]
     ]
   };
-  function getComponentOnCubicBezier(t, a, b, c, d) {
-    const k = 1 - t;
-    return k * k * k * a + 3 * k * k * t * b + 3 * k * t * t * c + t * t * t * d;
+  function getComponentOnCubicBezier(t2, a2, b2, c2, d2) {
+    const k2 = 1 - t2;
+    return k2 * k2 * k2 * a2 + 3 * k2 * k2 * t2 * b2 + 3 * k2 * t2 * t2 * c2 + t2 * t2 * t2 * d2;
   }
   function subdivide(builder, x1, y1, x2, y2, x3, y3, x4, y4, limit = Curve.RecursionLimit) {
     const amount = limit + 1;
@@ -4813,11 +5141,11 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       return [builder(x4, y4)];
     }
     const result = [];
-    for (let i = 0; i < amount; i++) {
-      const t = i / amount;
-      const x = getComponentOnCubicBezier(t, x1, x2, x3, x4);
-      const y = getComponentOnCubicBezier(t, y1, y2, y3, y4);
-      result.push(builder(x, y));
+    for (let i2 = 0; i2 < amount; i2++) {
+      const t2 = i2 / amount;
+      const x5 = getComponentOnCubicBezier(t2, x1, x2, x3, x4);
+      const y5 = getComponentOnCubicBezier(t2, y1, y2, y3, y4);
+      result.push(builder(x5, y5));
     }
     return result;
   }
@@ -4828,8 +5156,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       return Math.sqrt(dx * dx + dy * dy);
     }
     const ax = 9 * (x2 - x3) + 3 * (x4 - x1), bx = 6 * (x1 + x3) - 12 * x2, cx = 3 * (x2 - x1), ay = 9 * (y2 - y3) + 3 * (y4 - y1), by = 6 * (y1 + y3) - 12 * y2, cy = 3 * (y2 - y1);
-    function integrand(t) {
-      const dx = (ax * t + bx) * t + cx, dy = (ay * t + by) * t + cy;
+    function integrand(t2) {
+      const dx = (ax * t2 + bx) * t2 + cx, dy = (ay * t2 + by) * t2 + cy;
       return Math.sqrt(dx * dx + dy * dy);
     }
     return integrate(
@@ -4842,49 +5170,49 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
   function getCurveBoundingBox(x1, y1, x2, y2, x3, y3, x4, y4) {
     const tvalues = [];
     const bounds = [[], []];
-    let a, b, c, t, t1, t2, b2ac, sqrtb2ac;
-    for (let i = 0; i < 2; ++i) {
-      if (i == 0) {
-        b = 6 * x1 - 12 * x2 + 6 * x3;
-        a = -3 * x1 + 9 * x2 - 9 * x3 + 3 * x4;
-        c = 3 * x2 - 3 * x1;
+    let a2, b2, c2, t2, t1, t22, b2ac, sqrtb2ac;
+    for (let i2 = 0; i2 < 2; ++i2) {
+      if (i2 == 0) {
+        b2 = 6 * x1 - 12 * x2 + 6 * x3;
+        a2 = -3 * x1 + 9 * x2 - 9 * x3 + 3 * x4;
+        c2 = 3 * x2 - 3 * x1;
       } else {
-        b = 6 * y1 - 12 * y2 + 6 * y3;
-        a = -3 * y1 + 9 * y2 - 9 * y3 + 3 * y4;
-        c = 3 * y2 - 3 * y1;
+        b2 = 6 * y1 - 12 * y2 + 6 * y3;
+        a2 = -3 * y1 + 9 * y2 - 9 * y3 + 3 * y4;
+        c2 = 3 * y2 - 3 * y1;
       }
-      if (Math.abs(a) < 1e-12) {
-        if (Math.abs(b) < 1e-12) {
+      if (Math.abs(a2) < 1e-12) {
+        if (Math.abs(b2) < 1e-12) {
           continue;
         }
-        t = -c / b;
-        if (0 < t && t < 1) {
-          tvalues.push(t);
+        t2 = -c2 / b2;
+        if (0 < t2 && t2 < 1) {
+          tvalues.push(t2);
         }
         continue;
       }
-      b2ac = b * b - 4 * c * a;
+      b2ac = b2 * b2 - 4 * c2 * a2;
       sqrtb2ac = Math.sqrt(b2ac);
       if (b2ac < 0) {
         continue;
       }
-      t1 = (-b + sqrtb2ac) / (2 * a);
+      t1 = (-b2 + sqrtb2ac) / (2 * a2);
       if (0 < t1 && t1 < 1) {
         tvalues.push(t1);
       }
-      t2 = (-b - sqrtb2ac) / (2 * a);
-      if (0 < t2 && t2 < 1) {
-        tvalues.push(t2);
+      t22 = (-b2 - sqrtb2ac) / (2 * a2);
+      if (0 < t22 && t22 < 1) {
+        tvalues.push(t22);
       }
     }
     const jlen = tvalues.length;
     let j = jlen;
     let mt;
     while (j--) {
-      t = tvalues[j];
-      mt = 1 - t;
-      bounds[0][j] = mt * mt * mt * x1 + 3 * mt * mt * t * x2 + 3 * mt * t * t * x3 + t * t * t * x4;
-      bounds[1][j] = mt * mt * mt * y1 + 3 * mt * mt * t * y2 + 3 * mt * t * t * y3 + t * t * t * y4;
+      t2 = tvalues[j];
+      mt = 1 - t2;
+      bounds[0][j] = mt * mt * mt * x1 + 3 * mt * mt * t2 * x2 + 3 * mt * t2 * t2 * x3 + t2 * t2 * t2 * x4;
+      bounds[1][j] = mt * mt * mt * y1 + 3 * mt * mt * t2 * y2 + 3 * mt * t2 * t2 * y3 + t2 * t2 * t2 * y4;
     }
     bounds[0][jlen] = x1;
     bounds[1][jlen] = y1;
@@ -4896,78 +5224,78 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       max: { x: Math.max.apply(0, bounds[0]), y: Math.max.apply(0, bounds[1]) }
     };
   }
-  function integrate(f, a, b, n) {
-    const x = Curve.abscissas[n - 2];
-    const w = Curve.weights[n - 2];
-    const A = 0.5 * (b - a);
-    const B = A + a;
-    let i = 0;
-    const m = n + 1 >> 1;
-    let sum = n & 1 ? w[i++] * f(B) : 0;
-    while (i < m) {
-      const Ax = A * x[i];
-      sum += w[i++] * (f(B + Ax) + f(B - Ax));
+  function integrate(f2, a2, b2, n2) {
+    const x2 = Curve.abscissas[n2 - 2];
+    const w2 = Curve.weights[n2 - 2];
+    const A = 0.5 * (b2 - a2);
+    const B = A + a2;
+    let i2 = 0;
+    const m2 = n2 + 1 >> 1;
+    let sum = n2 & 1 ? w2[i2++] * f2(B) : 0;
+    while (i2 < m2) {
+      const Ax = A * x2[i2];
+      sum += w2[i2++] * (f2(B + Ax) + f2(B - Ax));
     }
     return A * sum;
   }
   function getCurveFromPoints(points, closed) {
-    const l = points.length, last = l - 1;
-    for (let i = 0; i < l; i++) {
-      const point = points.getAt(i);
-      const prev = closed ? mod(i - 1, l) : Math.max(i - 1, 0);
-      const next = closed ? mod(i + 1, l) : Math.min(i + 1, last);
-      const a = points.getAt(prev);
-      const b = point;
-      const c = points.getAt(next);
-      getControlPoints(a, b, c);
-      b.command = i === 0 ? Commands.move : Commands.curve;
+    const l2 = points.length, last = l2 - 1;
+    for (let i2 = 0; i2 < l2; i2++) {
+      const point = points.getAt(i2);
+      const prev = closed ? mod(i2 - 1, l2) : Math.max(i2 - 1, 0);
+      const next = closed ? mod(i2 + 1, l2) : Math.min(i2 + 1, last);
+      const a2 = points.getAt(prev);
+      const b2 = point;
+      const c2 = points.getAt(next);
+      getControlPoints(a2, b2, c2);
+      b2.command = i2 === 0 ? Commands.move : Commands.curve;
     }
   }
-  function getControlPoints(a, b, c) {
-    const a1 = G20.angleBetween(a.origin, b.origin);
-    const a2 = G20.angleBetween(c.origin, b.origin);
-    let d1 = G20.distanceBetween(a.origin, b.origin);
-    let d2 = G20.distanceBetween(c.origin, b.origin);
-    let mid = (a1 + a2) / 2;
+  function getControlPoints(a2, b2, c2) {
+    const a1 = G20.angleBetween(a2.origin, b2.origin);
+    const a22 = G20.angleBetween(c2.origin, b2.origin);
+    let d1 = G20.distanceBetween(a2.origin, b2.origin);
+    let d2 = G20.distanceBetween(c2.origin, b2.origin);
+    let mid = (a1 + a22) / 2;
     if (d1 < 1e-4 || d2 < 1e-4) {
-      if (typeof b.relative === "boolean" && !b.relative) {
-        b.controls.a.copyVector(b.origin);
-        b.controls.b.copyVector(b.origin);
+      if (typeof b2.relative === "boolean" && !b2.relative) {
+        b2.controls.a.copyVector(b2.origin);
+        b2.controls.b.copyVector(b2.origin);
       }
-      return b;
+      return b2;
     }
     d1 *= 0.33;
     d2 *= 0.33;
-    if (a2 < a1) {
+    if (a22 < a1) {
       mid += HALF_PI;
     } else {
       mid -= HALF_PI;
     }
-    b.controls.a.x = Math.cos(mid) * d1;
-    b.controls.a.y = Math.sin(mid) * d1;
+    b2.controls.a.x = Math.cos(mid) * d1;
+    b2.controls.a.y = Math.sin(mid) * d1;
     mid -= Math.PI;
-    b.controls.b.x = Math.cos(mid) * d2;
-    b.controls.b.y = Math.sin(mid) * d2;
-    if (typeof b.relative === "boolean" && !b.relative) {
-      b.controls.a.x += b.x;
-      b.controls.a.y += b.y;
-      b.controls.b.x += b.x;
-      b.controls.b.y += b.y;
+    b2.controls.b.x = Math.cos(mid) * d2;
+    b2.controls.b.y = Math.sin(mid) * d2;
+    if (typeof b2.relative === "boolean" && !b2.relative) {
+      b2.controls.a.x += b2.x;
+      b2.controls.a.y += b2.y;
+      b2.controls.b.x += b2.x;
+      b2.controls.b.y += b2.y;
     }
-    return b;
+    return b2;
   }
 
   // src/lib/utils/shape.ts
-  function contains(path, t) {
-    if (t === 0 || t === 1) {
+  function contains(path, t2) {
+    if (t2 === 0 || t2 === 1) {
       return true;
     }
     const length = path.length;
-    const target = length * t;
+    const target = length * t2;
     let elapsed = 0;
     const lengths = path.lengths;
-    for (let i = 0; i < lengths.length; i++) {
-      const dist = lengths[i];
+    for (let i2 = 0; i2 < lengths.length; i2++) {
+      const dist = lengths[i2];
       if (elapsed >= target) {
         return target - elapsed >= 0;
       }
@@ -4982,57 +5310,57 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     } else if (target >= total) {
       return path.lengths.length - 1;
     }
-    for (let i = 0, sum = 0; i < path.lengths.length; i++) {
-      if (sum + path.lengths[i] >= target) {
+    for (let i2 = 0, sum = 0; i2 < path.lengths.length; i2++) {
+      if (sum + path.lengths[i2] >= target) {
         target -= sum;
-        return Math.max(i - 1, 0) + target / path.lengths[i];
+        return Math.max(i2 - 1, 0) + target / path.lengths[i2];
       }
-      sum += path.lengths[i];
+      sum += path.lengths[i2];
     }
     return -1;
   }
-  function getCurveLength2(a, b, limit) {
+  function getCurveLength2(a2, b2, limit) {
     let x2, x3, y2, y3;
-    const right = b.controls && b.controls.b;
-    const left = a.controls && a.controls.a;
-    const x1 = b.x;
-    const y1 = b.y;
-    x2 = (right || b).x;
-    y2 = (right || b).y;
-    x3 = (left || a).x;
-    y3 = (left || a).y;
-    const x4 = a.x;
-    const y4 = a.y;
-    if (right && b.relative) {
-      x2 += b.x;
-      y2 += b.y;
+    const right = b2.controls && b2.controls.b;
+    const left = a2.controls && a2.controls.a;
+    const x1 = b2.x;
+    const y1 = b2.y;
+    x2 = (right || b2).x;
+    y2 = (right || b2).y;
+    x3 = (left || a2).x;
+    y3 = (left || a2).y;
+    const x4 = a2.x;
+    const y4 = a2.y;
+    if (right && b2.relative) {
+      x2 += b2.x;
+      y2 += b2.y;
     }
-    if (left && a.relative) {
-      x3 += a.x;
-      y3 += a.y;
+    if (left && a2.relative) {
+      x3 += a2.x;
+      y3 += a2.y;
     }
     return getCurveLength(x1, y1, x2, y2, x3, y3, x4, y4, limit);
   }
-  function getSubdivisions(a, b, limit) {
-    const br = b.controls.b;
-    const al = a.controls.a;
-    const bx = b.x;
-    const by = b.y;
+  function getSubdivisions(a2, b2, limit) {
+    const br = b2.controls.b;
+    const al = a2.controls.a;
+    const bx = b2.x;
+    const by = b2.y;
     let brx = br.x;
     let bry = br.y;
     let alx = al.x;
     let aly = al.y;
-    const ax = a.x;
-    const ay = a.y;
-    if (b.relative) {
-      brx += b.x;
-      bry += b.y;
+    const ax = a2.x;
+    const ay = a2.y;
+    if (b2.relative) {
+      brx += b2.x;
+      bry += b2.y;
     }
-    if (a.relative) {
-      alx += a.x;
-      aly += a.y;
+    if (a2.relative) {
+      alx += a2.x;
+      aly += a2.y;
     }
-    const builder = (x, y) => new Anchor(G20.vector(x, y));
+    const builder = (x2, y2) => new Anchor(G20.vector(x2, y2));
     return subdivide(builder, bx, by, brx, bry, alx, aly, ax, ay, limit);
   }
 
@@ -5331,12 +5659,12 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       const hh = (bbox.bottom - bbox.top) / 2;
       const cx = (bbox.left + bbox.right) / 2;
       const cy = (bbox.top + bbox.bottom) / 2;
-      for (let i = 0; i < this.vertices.length; i++) {
-        const v = this.vertices.getAt(i);
-        v.x -= cx;
-        v.y -= cy;
-        v.x += hw;
-        v.y += hh;
+      for (let i2 = 0; i2 < this.vertices.length; i2++) {
+        const v2 = this.vertices.getAt(i2);
+        v2.x -= cx;
+        v2.y -= cy;
+        v2.x += hw;
+        v2.y += hh;
       }
       if (this.clipPath) {
         this.clipPath.position.x -= cx;
@@ -5350,10 +5678,10 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       const bbox = this.getBoundingBox(true);
       const cx = (bbox.left + bbox.right) / 2 - this.position.x;
       const cy = (bbox.top + bbox.bottom) / 2 - this.position.y;
-      for (let i = 0; i < this.vertices.length; i++) {
-        const v = this.vertices.getAt(i);
-        v.x -= cx;
-        v.y -= cy;
+      for (let i2 = 0; i2 < this.vertices.length; i2++) {
+        const v2 = this.vertices.getAt(i2);
+        v2.x -= cx;
+        v2.y -= cy;
       }
       if (this.clipPath) {
         this.clipPath.position.x -= cx;
@@ -5367,25 +5695,25 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       let top = Infinity;
       let bottom = -Infinity;
       this.update();
-      const M = shallow ? this.matrix : this.worldMatrix;
+      const M2 = shallow ? this.matrix : this.worldMatrix;
       let border = (this.strokeWidth || 0) / 2;
-      const l = this.zzz.vertices.length;
+      const l2 = this.zzz.vertices.length;
       if (this.strokeWidth > 0 || this.stroke && typeof this.stroke === "string" && !/(transparent|none)/i.test(this.stroke)) {
         if (this.matrix.manual) {
-          const { scaleX, scaleY } = decompose_2d_3x3_matrix(M);
+          const { scaleX, scaleY } = decompose_2d_3x3_matrix(M2);
           border = max(scaleX, scaleY) * (this.strokeWidth || 0) / 2;
         } else {
           border *= max(this.scaleXY.x, this.scaleXY.y);
         }
       }
-      if (l <= 0) {
+      if (l2 <= 0) {
         return {};
       }
-      for (let i = 0; i < l; i++) {
-        const v1 = this.zzz.vertices[i];
-        const v0 = this.zzz.vertices[(i + l - 1) % l];
-        const [v0x, v0y] = M.multiply_vector(v0.x, v0.y);
-        const [v1x, v1y] = M.multiply_vector(v1.x, v1.y);
+      for (let i2 = 0; i2 < l2; i2++) {
+        const v1 = this.zzz.vertices[i2];
+        const v0 = this.zzz.vertices[(i2 + l2 - 1) % l2];
+        const [v0x, v0y] = M2.multiply_vector(v0.x, v0.y);
+        const [v1x, v1y] = M2.multiply_vector(v1.x, v1.y);
         if (v0.controls && v1.controls) {
           let rx = v0.controls.b.x;
           let ry = v0.controls.b.y;
@@ -5393,21 +5721,21 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
             rx += v0.x;
             ry += v0.y;
           }
-          const [c0x, c0y] = M.multiply_vector(rx, ry);
+          const [c0x, c0y] = M2.multiply_vector(rx, ry);
           let lx = v1.controls.a.x;
           let ly = v1.controls.a.y;
           if (v1.relative) {
             lx += v1.x;
             ly += v1.y;
           }
-          const [c1x, c1y] = M.multiply_vector(lx, ly);
+          const [c1x, c1y] = M2.multiply_vector(lx, ly);
           const bb = getCurveBoundingBox(v0x, v0y, c0x, c0y, c1x, c1y, v1x, v1y);
           top = min(bb.min.y - border, top);
           left = min(bb.min.x - border, left);
           right = max(bb.max.x + border, right);
           bottom = max(bb.max.y + border, bottom);
         } else {
-          if (i <= 1) {
+          if (i2 <= 1) {
             top = min(v0y - border, top);
             left = min(v0x - border, left);
             right = max(v0x + border, right);
@@ -5433,93 +5761,93 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
      * @param anchor - Object to apply calculated x, y to. If none available returns new `Object`.
      * @description Given a float `t` from 0 to 1, return a point or assign a passed `obj`'s coordinates to that percentage on this {@link Path}'s curve.
      */
-    getPointAt(t, anchor) {
+    getPointAt(t2, anchor) {
       const ank = anchor;
-      let target = this.length * min(max(t, 0), 1);
+      let target = this.length * min(max(t2, 0), 1);
       const Nvs = this.vertices.length;
       const last = Nvs - 1;
-      let a = null;
-      let b = null;
+      let a2 = null;
+      let b2 = null;
       const Nseg = this.#lengths.length;
       let sum = 0;
-      for (let i = 0; i < Nseg; i++) {
-        if (sum + this.#lengths[i] >= target) {
+      for (let i2 = 0; i2 < Nseg; i2++) {
+        if (sum + this.#lengths[i2] >= target) {
           let ia;
           let ib;
           if (this.closed) {
-            ia = mod(i, Nvs);
-            ib = mod(i - 1, Nvs);
-            if (i === 0) {
+            ia = mod(i2, Nvs);
+            ib = mod(i2 - 1, Nvs);
+            if (i2 === 0) {
               ia = ib;
-              ib = i;
+              ib = i2;
             }
           } else {
-            ia = i;
-            ib = min(max(i - 1, 0), last);
+            ia = i2;
+            ib = min(max(i2 - 1, 0), last);
           }
-          a = this.vertices.getAt(ia);
-          b = this.vertices.getAt(ib);
+          a2 = this.vertices.getAt(ia);
+          b2 = this.vertices.getAt(ib);
           target -= sum;
-          if (this.#lengths[i] !== 0) {
-            t = target / this.#lengths[i];
+          if (this.#lengths[i2] !== 0) {
+            t2 = target / this.#lengths[i2];
           } else {
-            t = 0;
+            t2 = 0;
           }
           break;
         }
-        sum += this.#lengths[i];
+        sum += this.#lengths[i2];
       }
-      if (a === null || b === null) {
+      if (a2 === null || b2 === null) {
         return null;
       }
-      if (!a) {
-        return b;
-      } else if (!b) {
-        return a;
+      if (!a2) {
+        return b2;
+      } else if (!b2) {
+        return a2;
       }
-      const bb = b.controls && b.controls.b;
-      const aa = a.controls && a.controls.a;
-      const x1 = b.x;
-      const y1 = b.y;
-      let x2 = (bb || b).x;
-      let y2 = (bb || b).y;
-      let x3 = (aa || a).x;
-      let y3 = (aa || a).y;
-      const x4 = a.x;
-      const y4 = a.y;
-      if (bb && b.relative) {
-        x2 += b.x;
-        y2 += b.y;
+      const bb = b2.controls && b2.controls.b;
+      const aa = a2.controls && a2.controls.a;
+      const x1 = b2.x;
+      const y1 = b2.y;
+      let x2 = (bb || b2).x;
+      let y2 = (bb || b2).y;
+      let x3 = (aa || a2).x;
+      let y3 = (aa || a2).y;
+      const x4 = a2.x;
+      const y4 = a2.y;
+      if (bb && b2.relative) {
+        x2 += b2.x;
+        y2 += b2.y;
       }
-      if (aa && a.relative) {
-        x3 += a.x;
-        y3 += a.y;
+      if (aa && a2.relative) {
+        x3 += a2.x;
+        y3 += a2.y;
       }
-      const x = getComponentOnCubicBezier(t, x1, x2, x3, x4);
-      const y = getComponentOnCubicBezier(t, y1, y2, y3, y4);
-      const t1x = lerp(x1, x2, t);
-      const t1y = lerp(y1, y2, t);
-      const t2x = lerp(x2, x3, t);
-      const t2y = lerp(y2, y3, t);
-      const t3x = lerp(x3, x4, t);
-      const t3y = lerp(y3, y4, t);
-      const brx = lerp(t1x, t2x, t);
-      const bry = lerp(t1y, t2y, t);
-      const alx = lerp(t2x, t3x, t);
-      const aly = lerp(t2y, t3y, t);
-      ank.x = x;
-      ank.y = y;
+      const x5 = getComponentOnCubicBezier(t2, x1, x2, x3, x4);
+      const y5 = getComponentOnCubicBezier(t2, y1, y2, y3, y4);
+      const t1x = lerp(x1, x2, t2);
+      const t1y = lerp(y1, y2, t2);
+      const t2x = lerp(x2, x3, t2);
+      const t2y = lerp(y2, y3, t2);
+      const t3x = lerp(x3, x4, t2);
+      const t3y = lerp(y3, y4, t2);
+      const brx = lerp(t1x, t2x, t2);
+      const bry = lerp(t1y, t2y, t2);
+      const alx = lerp(t2x, t3x, t2);
+      const aly = lerp(t2y, t3y, t2);
+      ank.x = x5;
+      ank.y = y5;
       ank.controls.a.x = brx;
       ank.controls.a.y = bry;
       ank.controls.b.x = alx;
       ank.controls.b.y = aly;
       if (!(typeof ank.relative === "boolean") || ank.relative) {
-        ank.controls.a.x -= x;
-        ank.controls.a.y -= y;
-        ank.controls.b.x -= x;
-        ank.controls.b.y -= y;
+        ank.controls.a.x -= x5;
+        ank.controls.a.y -= y5;
+        ank.controls.b.x -= x5;
+        ank.controls.b.y -= y5;
       }
-      ank.t = t;
+      ank.t = t2;
       return ank;
     }
     /**
@@ -5530,8 +5858,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
         getCurveFromPoints(this.#vertices, this.closed);
         return this;
       }
-      for (let i = 0; i < this.#vertices.length; i++) {
-        this.#vertices.getAt(i).command = i === 0 ? Commands.move : Commands.line;
+      for (let i2 = 0; i2 < this.#vertices.length; i2++) {
+        this.#vertices.getAt(i2).command = i2 === 0 ? Commands.move : Commands.line;
       }
       return this;
     }
@@ -5543,48 +5871,48 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       this.update();
       const last = this.vertices.length - 1;
       const closed = this.closed || this.vertices.getAt(last).command === Commands.close;
-      let b = this.vertices.getAt(last);
+      let b2 = this.vertices.getAt(last);
       let points = [], verts;
-      this.vertices.forEach((a, i) => {
-        if (i <= 0 && !closed) {
-          b = a;
+      this.vertices.forEach((a2, i2) => {
+        if (i2 <= 0 && !closed) {
+          b2 = a2;
           return;
         }
-        if (a.command === Commands.move) {
-          points.push(new Anchor(G20.vector(b.x, b.y)));
-          if (i > 0) {
+        if (a2.command === Commands.move) {
+          points.push(new Anchor(G20.vector(b2.x, b2.y)));
+          if (i2 > 0) {
             points[points.length - 1].command = Commands.line;
           }
-          b = a;
+          b2 = a2;
           return;
         }
-        verts = getSubdivisions(a, b, limit);
+        verts = getSubdivisions(a2, b2, limit);
         points = points.concat(verts);
-        verts.forEach(function(v, i2) {
-          if (i2 <= 0 && b.command === Commands.move) {
-            v.command = Commands.move;
+        verts.forEach(function(v2, i3) {
+          if (i3 <= 0 && b2.command === Commands.move) {
+            v2.command = Commands.move;
           } else {
-            v.command = Commands.line;
+            v2.command = Commands.line;
           }
         });
-        if (i >= last) {
+        if (i2 >= last) {
           if (this.closed && this.automatic) {
-            b = a;
-            verts = getSubdivisions(a, b, limit);
+            b2 = a2;
+            verts = getSubdivisions(a2, b2, limit);
             points = points.concat(verts);
-            verts.forEach(function(v, i2) {
-              if (i2 <= 0 && b.command === Commands.move) {
-                v.command = Commands.move;
+            verts.forEach(function(v2, i3) {
+              if (i3 <= 0 && b2.command === Commands.move) {
+                v2.command = Commands.move;
               } else {
-                v.command = Commands.line;
+                v2.command = Commands.line;
               }
             });
           } else if (closed) {
-            points.push(new Anchor(G20.vector(a.x, a.y)));
+            points.push(new Anchor(G20.vector(a2.x, a2.y)));
           }
           points[points.length - 1].command = closed ? Commands.close : Commands.line;
         }
-        b = a;
+        b2 = a2;
       });
       this.automatic = false;
       this.curved = false;
@@ -5598,22 +5926,22 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       const length = this.vertices.length;
       const last = length - 1;
       const closed = false;
-      let b = this.vertices.getAt(last);
+      let b2 = this.vertices.getAt(last);
       let sum = 0;
-      this.vertices.forEach((a, i) => {
-        if (i <= 0 && !closed || a.command === Commands.move) {
-          b = a;
-          this.#lengths[i] = 0;
+      this.vertices.forEach((a2, i2) => {
+        if (i2 <= 0 && !closed || a2.command === Commands.move) {
+          b2 = a2;
+          this.#lengths[i2] = 0;
           return;
         }
-        this.#lengths[i] = getCurveLength2(a, b, limit);
-        sum += this.#lengths[i];
-        if (i >= last && closed) {
-          b = this.vertices.getAt((i + 1) % length);
-          this.#lengths[i + 1] = getCurveLength2(a, b, limit);
-          sum += this.#lengths[i + 1];
+        this.#lengths[i2] = getCurveLength2(a2, b2, limit);
+        sum += this.#lengths[i2];
+        if (i2 >= last && closed) {
+          b2 = this.vertices.getAt((i2 + 1) % length);
+          this.#lengths[i2 + 1] = getCurveLength2(a2, b2, limit);
+          sum += this.#lengths[i2 + 1];
         }
-        b = a;
+        b2 = a2;
       });
       this.#length = sum;
       this.zzz.flags[15 /* Length */] = false;
@@ -5640,35 +5968,35 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
           {
             let right;
             let prev;
-            const L = vertices.length;
-            for (let i = 0; i < L; i++) {
-              if (this.#anchors.length <= i) {
+            const L2 = vertices.length;
+            for (let i2 = 0; i2 < L2; i2++) {
+              if (this.#anchors.length <= i2) {
                 this.#anchors.push(new Anchor(G20.vector(0, 0)));
               }
-              if (i > uBound && !right) {
-                const v = this.#anchors[i].copy(vertices.getAt(i));
-                this.getPointAt(ending, v);
-                v.command = this.#anchors[i].command;
-                this.zzz.vertices.push(v);
-                right = v;
-                prev = vertices.getAt(i - 1);
+              if (i2 > uBound && !right) {
+                const v2 = this.#anchors[i2].copy(vertices.getAt(i2));
+                this.getPointAt(ending, v2);
+                v2.command = this.#anchors[i2].command;
+                this.zzz.vertices.push(v2);
+                right = v2;
+                prev = vertices.getAt(i2 - 1);
                 if (prev && prev.controls) {
-                  if (v.relative) {
-                    v.controls.b.clear();
+                  if (v2.relative) {
+                    v2.controls.b.clear();
                   } else {
-                    v.controls.b.copyVector(v.origin);
+                    v2.controls.b.copyVector(v2.origin);
                   }
                   if (prev.relative) {
-                    this.#anchors[i - 1].controls.b.copyVector(prev.controls.b).lerp(G20.zero, 1 - v.t);
+                    this.#anchors[i2 - 1].controls.b.copyVector(prev.controls.b).lerp(G20.zero, 1 - v2.t);
                   } else {
-                    this.#anchors[i - 1].controls.b.copyVector(prev.controls.b).lerp(prev.origin, 1 - v.t);
+                    this.#anchors[i2 - 1].controls.b.copyVector(prev.controls.b).lerp(prev.origin, 1 - v2.t);
                   }
                 }
-              } else if (i >= lBound && i <= uBound) {
-                const v = this.#anchors[i].copy(vertices.getAt(i));
-                this.zzz.vertices.push(v);
-                if (i === uBound && contains(this, ending)) {
-                  right = v;
+              } else if (i2 >= lBound && i2 <= uBound) {
+                const v2 = this.#anchors[i2].copy(vertices.getAt(i2));
+                this.zzz.vertices.push(v2);
+                if (i2 === uBound && contains(this, ending)) {
+                  right = v2;
                   if (!closed && right.controls) {
                     if (right.relative) {
                       right.controls.b.clear();
@@ -5676,8 +6004,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
                       right.controls.b.copyVector(right.origin);
                     }
                   }
-                } else if (i === lBound && contains(this, beginning)) {
-                  left = v;
+                } else if (i2 === lBound && contains(this, beginning)) {
+                  left = v2;
                   left.command = Commands.move;
                   if (!closed && left.controls) {
                     if (left.relative) {
@@ -5691,19 +6019,19 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
             }
           }
           if (lBound > 0 && !left) {
-            const i = lBound - 1;
-            const v = this.#anchors[i].copy(vertices.getAt(i));
-            this.getPointAt(beginning, v);
-            v.command = Commands.move;
-            this.zzz.vertices.unshift(v);
-            next = vertices.getAt(i + 1);
+            const i2 = lBound - 1;
+            const v2 = this.#anchors[i2].copy(vertices.getAt(i2));
+            this.getPointAt(beginning, v2);
+            v2.command = Commands.move;
+            this.zzz.vertices.unshift(v2);
+            next = vertices.getAt(i2 + 1);
             if (next && next.controls) {
-              v.controls.a.clear();
+              v2.controls.a.clear();
               if (next.relative) {
-                this.#anchors[i + 1].controls.a.copyVector(next.controls.a).lerp(G20.zero, v.t);
+                this.#anchors[i2 + 1].controls.a.copyVector(next.controls.a).lerp(G20.zero, v2.t);
               } else {
                 vector.copyVector(next.origin);
-                this.#anchors[i + 1].controls.a.copyVector(next.controls.a).lerp(next.origin, v.t);
+                this.#anchors[i2 + 1].controls.a.copyVector(next.controls.a).lerp(next.origin, v2.t);
               }
             }
           }
@@ -5736,11 +6064,11 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
         return;
       }
       this.#automatic = !!automatic;
-      this.vertices.forEach(function(v) {
+      this.vertices.forEach(function(v2) {
         if (automatic) {
-          v.ignore();
+          v2.ignore();
         } else {
-          v.listen();
+          v2.listen();
         }
       });
     }
@@ -5888,9 +6216,9 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
         this.#vertices = new Collection(vertices || []);
       }
       this.#vertices_insert = this.vertices.insert$.subscribe((inserts) => {
-        let i = inserts.length;
-        while (i--) {
-          const anchor = inserts[i];
+        let i2 = inserts.length;
+        while (i2--) {
+          const anchor = inserts[i2];
           const subscription = anchor.change$.subscribe(() => {
             this.zzz.flags[31 /* Vertices */] = true;
           });
@@ -5899,9 +6227,9 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
         this.zzz.flags[31 /* Vertices */] = true;
       });
       this.#vertices_remove = this.vertices.remove$.subscribe((removes) => {
-        let i = removes.length;
-        while (i--) {
-          const anchor = removes[i];
+        let i2 = removes.length;
+        while (i2--) {
+          const anchor = removes[i2];
           const subscription = this.#anchor_change_map.get(anchor);
           subscription.dispose();
           this.#anchor_change_map.delete(anchor);
@@ -5984,10 +6312,10 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
      * @see {@link ArcSegment#outerRadius}
      */
     _outerRadius = 0;
-    constructor(board, x = 0, y = 0, ir = 0, or = 0, sa = 0, ea = 2 * Math.PI, res = 24) {
+    constructor(board, x2 = 0, y2 = 0, ir = 0, or = 0, sa = 0, ea = 2 * Math.PI, res = 24) {
       const amount = res || Constants.Resolution * 3;
       const points = [];
-      for (let i = 0; i < amount; i++) {
+      for (let i2 = 0; i2 < amount; i2++) {
         points.push(new Anchor(G20.vector(0, 0)));
       }
       super(board, points, true, false, true);
@@ -6004,11 +6332,11 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
         this.endAngle = ea;
       }
       this.update();
-      if (typeof x === "number") {
-        this.position.x = x;
+      if (typeof x2 === "number") {
+        this.position.x = x2;
       }
-      if (typeof y === "number") {
-        this.position.y = y;
+      if (typeof y2 === "number") {
+        this.position.y = y2;
       }
     }
     static Properties = ["startAngle", "endAngle", "innerRadius", "outerRadius"];
@@ -6023,42 +6351,42 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
         const vertices = this.vertices;
         let length = punctured ? vertices.length / 2 : vertices.length;
         let command, id = 0;
-        let i, last, pct, v, theta, step, x, y, amp;
+        let i2, last, pct, v2, theta, step, x2, y2, amp;
         if (connected) {
           length--;
         } else if (!punctured) {
           length -= 2;
         }
-        for (i = 0, last = length - 1; i < length; i++) {
-          pct = i / last;
-          v = vertices.getAt(id);
+        for (i2 = 0, last = length - 1; i2 < length; i2++) {
+          pct = i2 / last;
+          v2 = vertices.getAt(id);
           theta = pct * (ea - sa) + sa;
           step = (ea - sa) / length;
-          x = or * Math.cos(theta);
-          y = or * Math.sin(theta);
-          switch (i) {
+          x2 = or * Math.cos(theta);
+          y2 = or * Math.sin(theta);
+          switch (i2) {
             case 0:
               command = Commands.move;
               break;
             default:
               command = Commands.curve;
           }
-          v.command = command;
-          v.x = x;
-          v.y = y;
-          v.controls.a.clear();
-          v.controls.b.clear();
-          if (v.command === Commands.curve) {
+          v2.command = command;
+          v2.x = x2;
+          v2.y = y2;
+          v2.controls.a.clear();
+          v2.controls.b.clear();
+          if (v2.command === Commands.curve) {
             amp = or * step / Math.PI;
-            v.controls.a.x = amp * Math.cos(theta - HALF_PI);
-            v.controls.a.y = amp * Math.sin(theta - HALF_PI);
-            v.controls.b.x = amp * Math.cos(theta + HALF_PI);
-            v.controls.b.y = amp * Math.sin(theta + HALF_PI);
-            if (i === 1) {
-              v.controls.a.scale(2);
+            v2.controls.a.x = amp * Math.cos(theta - HALF_PI);
+            v2.controls.a.y = amp * Math.sin(theta - HALF_PI);
+            v2.controls.b.x = amp * Math.cos(theta + HALF_PI);
+            v2.controls.b.y = amp * Math.sin(theta + HALF_PI);
+            if (i2 === 1) {
+              v2.controls.a.scale(2);
             }
-            if (i === last) {
-              v.controls.b.scale(2);
+            if (i2 === last) {
+              v2.controls.b.scale(2);
             }
           }
           id++;
@@ -6071,33 +6399,33 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
             length--;
             last = length - 1;
           }
-          for (i = 0; i < length; i++) {
-            pct = i / last;
-            v = vertices.getAt(id);
+          for (i2 = 0; i2 < length; i2++) {
+            pct = i2 / last;
+            v2 = vertices.getAt(id);
             theta = (1 - pct) * (ea - sa) + sa;
             step = (ea - sa) / length;
-            x = ir * Math.cos(theta);
-            y = ir * Math.sin(theta);
+            x2 = ir * Math.cos(theta);
+            y2 = ir * Math.sin(theta);
             command = Commands.curve;
-            if (i <= 0) {
+            if (i2 <= 0) {
               command = connected ? Commands.move : Commands.line;
             }
-            v.command = command;
-            v.x = x;
-            v.y = y;
-            v.controls.a.clear();
-            v.controls.b.clear();
-            if (v.command === Commands.curve) {
+            v2.command = command;
+            v2.x = x2;
+            v2.y = y2;
+            v2.controls.a.clear();
+            v2.controls.b.clear();
+            if (v2.command === Commands.curve) {
               amp = ir * step / Math.PI;
-              v.controls.a.x = amp * Math.cos(theta + HALF_PI);
-              v.controls.a.y = amp * Math.sin(theta + HALF_PI);
-              v.controls.b.x = amp * Math.cos(theta - HALF_PI);
-              v.controls.b.y = amp * Math.sin(theta - HALF_PI);
-              if (i === 1) {
-                v.controls.a.scale(2);
+              v2.controls.a.x = amp * Math.cos(theta + HALF_PI);
+              v2.controls.a.y = amp * Math.sin(theta + HALF_PI);
+              v2.controls.b.x = amp * Math.cos(theta - HALF_PI);
+              v2.controls.b.y = amp * Math.sin(theta - HALF_PI);
+              if (i2 === 1) {
+                v2.controls.a.scale(2);
               }
-              if (i === last) {
-                v.controls.b.scale(2);
+              if (i2 === last) {
+                v2.controls.b.scale(2);
               }
             }
             id++;
@@ -6124,29 +6452,29 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     get startAngle() {
       return this._startAngle;
     }
-    set startAngle(v) {
-      this._startAngle = v;
+    set startAngle(v2) {
+      this._startAngle = v2;
       this._flagStartAngle = true;
     }
     get endAngle() {
       return this._endAngle;
     }
-    set endAngle(v) {
-      this._endAngle = v;
+    set endAngle(v2) {
+      this._endAngle = v2;
       this._flagEndAngle = true;
     }
     get innerRadius() {
       return this._innerRadius;
     }
-    set innerRadius(v) {
-      this._innerRadius = v;
+    set innerRadius(v2) {
+      this._innerRadius = v2;
       this._flagInnerRadius = true;
     }
     get outerRadius() {
       return this._outerRadius;
     }
-    set outerRadius(v) {
-      this._outerRadius = v;
+    set outerRadius(v2) {
+      this._outerRadius = v2;
       this._flagOuterRadius = true;
     }
   };
@@ -6273,15 +6601,14 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
 
   // src/lib/shapes/Circle.ts
   var Circle = class extends Path {
-    #radius = variable(1);
+    #radius = G(1);
     constructor(board, options = {}) {
       const amount = options.resolution ? Math.max(options.resolution, 2) : 4;
       const points = [];
-      for (let i = 0; i < amount; i++) {
+      for (let i2 = 0; i2 < amount; i2++) {
         points.push(new Anchor(G20.vector(0, 0)));
       }
       super(board, points, true, true, true, path_attributes(options));
-      this.zzz.radius$ = this.#radius.asObservable();
       if (typeof options.radius === "number") {
         this.#radius.set(options.radius);
       }
@@ -6297,25 +6624,25 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
         if (!this.closed && length > 2) {
           length -= 1;
         }
-        const c = 4 / 3 * Math.tan(Math.PI / (length * 2));
+        const c2 = 4 / 3 * Math.tan(Math.PI / (length * 2));
         const radius = this.radius;
-        const rc = radius * c;
+        const rc = radius * c2;
         const cos3 = Math.cos;
         const sin3 = Math.sin;
-        for (let i = 0; i < this.vertices.length; i++) {
-          const pct = i / length;
+        for (let i2 = 0; i2 < this.vertices.length; i2++) {
+          const pct = i2 / length;
           const theta = pct * TWO_PI;
-          const x = radius * cos3(theta);
-          const y = radius * sin3(theta);
+          const x2 = radius * cos3(theta);
+          const y2 = radius * sin3(theta);
           const lx = rc * cos3(theta - HALF_PI);
           const ly = rc * sin3(theta - HALF_PI);
           const rx = rc * cos3(theta + HALF_PI);
           const ry = rc * sin3(theta + HALF_PI);
-          const v = this.vertices.getAt(i);
-          v.command = i === 0 ? Commands.move : Commands.curve;
-          v.origin.set(x, y);
-          v.controls.a.set(lx, ly);
-          v.controls.b.set(rx, ry);
+          const v2 = this.vertices.getAt(i2);
+          v2.command = i2 === 0 ? Commands.move : Commands.curve;
+          v2.origin.set(x2, y2);
+          v2.controls.a.set(lx, ly);
+          v2.controls.b.set(rx, ry);
         }
       }
       super.update();
@@ -6339,6 +6666,11 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
         }
       }
     }
+    /*
+    get radius$(): Observable<number> {
+        return this.zzz.radius$;
+    }
+    */
   };
   function path_attributes(attributes) {
     const retval = {
@@ -6364,7 +6696,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     constructor(board, attributes = {}) {
       const amount = attributes.resolution ? Math.max(attributes.resolution, 2) : 4;
       const points = [];
-      for (let i = 0; i < amount; i++) {
+      for (let i2 = 0; i2 < amount; i2++) {
         points.push(new Anchor(G20.vector(0, 0)));
       }
       super(board, points, true, true, true, path_attribs_from_ellipse_attribs(attributes));
@@ -6388,23 +6720,23 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
         if (!this.closed && length > 2) {
           length -= 1;
         }
-        const c = 4 / 3 * Math.tan(Math.PI / (this.vertices.length * 2));
+        const c2 = 4 / 3 * Math.tan(Math.PI / (this.vertices.length * 2));
         const radiusX = this._width / 2;
         const radiusY = this._height / 2;
-        for (let i = 0; i < this.vertices.length; i++) {
-          const pct = i / length;
+        for (let i2 = 0; i2 < this.vertices.length; i2++) {
+          const pct = i2 / length;
           const theta = pct * TWO_PI;
-          const x = radiusX * cos2(theta);
-          const y = radiusY * sin2(theta);
-          const lx = radiusX * c * cos2(theta - HALF_PI);
-          const ly = radiusY * c * sin2(theta - HALF_PI);
-          const rx = radiusX * c * cos2(theta + HALF_PI);
-          const ry = radiusY * c * sin2(theta + HALF_PI);
-          const v = this.vertices.getAt(i);
-          v.command = i === 0 ? Commands.move : Commands.curve;
-          v.origin.set(x, y);
-          v.controls.a.set(lx, ly);
-          v.controls.b.set(rx, ry);
+          const x2 = radiusX * cos2(theta);
+          const y2 = radiusY * sin2(theta);
+          const lx = radiusX * c2 * cos2(theta - HALF_PI);
+          const ly = radiusY * c2 * sin2(theta - HALF_PI);
+          const rx = radiusX * c2 * cos2(theta + HALF_PI);
+          const ry = radiusY * c2 * sin2(theta + HALF_PI);
+          const v2 = this.vertices.getAt(i2);
+          v2.command = i2 === 0 ? Commands.move : Commands.curve;
+          v2.origin.set(x2, y2);
+          v2.controls.a.set(lx, ly);
+          v2.controls.b.set(rx, ry);
         }
       }
       super.update();
@@ -6419,15 +6751,15 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     get height() {
       return this._height;
     }
-    set height(v) {
-      this._height = v;
+    set height(v2) {
+      this._height = v2;
       this._flagHeight = true;
     }
     get width() {
       return this._width;
     }
-    set width(v) {
-      this._width = v;
+    set width(v2) {
+      this._width = v2;
       this._flagWidth = true;
     }
   };
@@ -6622,18 +6954,18 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     return retval;
   }
   function update_rectangle_vertices(sizeX, sizeY, origin, closed, vertices) {
-    const x = sizeX / 2;
-    const y = sizeY / 2;
+    const x2 = sizeX / 2;
+    const y2 = sizeY / 2;
     if (!closed && vertices.length === 4) {
       vertices.push(new Anchor(G20.vector(0, 0)));
     }
-    vertices.getAt(0).origin.set(-x, -y).sub(origin);
-    vertices.getAt(1).origin.set(x, -y).sub(origin);
-    vertices.getAt(2).origin.set(x, y).sub(origin);
-    vertices.getAt(3).origin.set(-x, y).sub(origin);
+    vertices.getAt(0).origin.set(-x2, -y2).sub(origin);
+    vertices.getAt(1).origin.set(x2, -y2).sub(origin);
+    vertices.getAt(2).origin.set(x2, y2).sub(origin);
+    vertices.getAt(3).origin.set(-x2, y2).sub(origin);
     const anchor = vertices.getAt(4);
     if (anchor) {
-      anchor.origin.set(-x, -y).sub(origin);
+      anchor.origin.set(-x2, -y2).sub(origin);
       anchor.command = "L";
     }
   }
@@ -7075,17 +7407,17 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     get dashes() {
       return this.#dashes;
     }
-    set dashes(v) {
-      if (typeof get_dashes_offset(v) !== "number") {
-        set_dashes_offset(v, this.dashes && get_dashes_offset(this.#dashes) || 0);
+    set dashes(v2) {
+      if (typeof get_dashes_offset(v2) !== "number") {
+        set_dashes_offset(v2, this.dashes && get_dashes_offset(this.#dashes) || 0);
       }
-      this.#dashes = v;
+      this.#dashes = v2;
     }
     get decoration() {
       return this.#decoration.get();
     }
-    set decoration(v) {
-      this.#decoration.set(v);
+    set decoration(v2) {
+      this.#decoration.set(v2);
     }
     get direction() {
       return this.#direction.get();
@@ -7327,9 +7659,9 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       const TB = top - bottom;
       const sx = \u0394x / RL;
       const sy = \u0394y / TB;
-      const x = -left * \u0394x / RL;
-      const y = -bottom * \u0394y / TB;
-      this.#viewBox.position.set(x, y);
+      const x2 = -left * \u0394x / RL;
+      const y2 = -bottom * \u0394y / TB;
+      this.#viewBox.position.set(x2, y2);
       if (!this.goofy) {
         this.#viewBox.attitude.rotorFromAngle(Math.PI / 2);
       }
@@ -7466,8 +7798,8 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       this.add(curve);
       return curve;
     }
-    arc(x, y, innerRadius, outerRadius, startAngle, endAngle, resolution = Constants.Resolution) {
-      const arcSegment = new ArcSegment(this, x, y, innerRadius, outerRadius, startAngle, endAngle, resolution);
+    arc(x2, y2, innerRadius, outerRadius, startAngle, endAngle, resolution = Constants.Resolution) {
+      const arcSegment = new ArcSegment(this, x2, y2, innerRadius, outerRadius, startAngle, endAngle, resolution);
       this.add(arcSegment);
       return arcSegment;
     }
@@ -7673,14 +8005,14 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     const board = new Board("my-board", {
       boundingBox: { left: -5, top: 5, right: 5, bottom: -5 }
     });
-    const A = board.point([0, 0], { id: "A", visibility: "visible", fill: "red", stroke: "red" });
+    const A = board.point([0, 0], { id: "A", visibility: "collapse", fill: "red", stroke: "red" });
     const B = board.point([8, 0], { id: "B", visibility: "hidden" });
-    const C = board.point([8, 4], { id: "C", visibility: "hidden" });
+    const C2 = board.point([8, 4], { id: "C", visibility: "hidden" });
     const AB = B.position.__sub__(A.position);
-    const AC = C.position.__sub__(A.position);
-    const S = AC.normalize();
-    const N = S.__mul__(G20.I);
-    const ramp = board.polygon([A, B, C], { id: "ramp", opacity: 0.8 });
+    const AC = C2.position.__sub__(A.position);
+    const S2 = AC.normalize();
+    const N2 = S2.__mul__(G20.I);
+    const ramp = board.polygon([A, B, C2], { id: "ramp", opacity: 0.8 });
     ramp.fill = "rgba(0, 191, 168, 0.33)";
     ramp.stroke = "rgb(0, 191, 168)";
     ramp.strokeWidth = 2;
@@ -7690,7 +8022,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     box.fill = "rgba(255, 128, 0, 0.33)";
     box.stroke = "rgb(255, 128, 0)";
     box.strokeWidth = 2;
-    box.position.copyVector(A.position).add(AC.__mul__(0.25)).add(N.__mul__(box.height / 2));
+    box.position.copyVector(A.position).add(AC.__mul__(0.25)).add(N2.__mul__(box.height / 2));
     const textA = board.text("A", {
       id: "text-A",
       anchor: "end",
@@ -7721,7 +8053,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       fontFamily: "Lato",
       fontSize: 20,
       opacity: 0.4,
-      position: C.X
+      position: C2.X
     });
     rescale(textC, board);
     const textD = board.text("Box", {
@@ -7757,12 +8089,12 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
       strokeWidth: 2
     });
     Fg.strokeOpacity = 0.4;
-    const Fn = board.arrow(N.scale(1.5), {
+    const Fn = board.arrow(N2.scale(1.5), {
       position: box.X,
       strokeOpacity: 0.4
     });
     Fn.strokeWidth = 2;
-    const Fs = board.arrow(S.scale(1.5), {
+    const Fs = board.arrow(S2.scale(1.5), {
       position: box.X
     });
     Fs.strokeOpacity = 0.4;
@@ -7774,7 +8106,7 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     arrow.axis = G20.ey;
     arrow.headLength = 0.25;
     arrow.origin = G20.ey.scale(1 / 2);
-    box.position.copyVector(A.position).add(AC.__mul__(0.75)).add(N.__mul__(box.height / 2));
+    box.position.copyVector(A.position).add(AC.__mul__(0.75)).add(N2.__mul__(box.height / 2));
     window.onunload = function() {
       board.dispose();
     };
@@ -7784,4 +8116,27 @@ new EventSource('/esbuild').addEventListener('change', () => location.reload());
     text.scaleXY.y = 1 / board.scaleXY.y;
   }
 })();
+/**
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * @license
+ * Copyright 2024 Bloomberg Finance L.P.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 //# sourceMappingURL=main.js.map

@@ -1,4 +1,5 @@
 import { CircleProperties, Disposable, dispose, G20, variable } from "g2o";
+import { effect } from "g2o-reactive";
 
 export class CircleCircleIntersection implements Disposable {
     readonly #disposables: Disposable[] = [];
@@ -29,7 +30,7 @@ export class CircleCircleIntersection implements Disposable {
          */
         const compute = () => {
             if (R !== -1 && r !== -1) {
-                D.copy(cb).sub(ca);
+                D.copyVector(cb).sub(ca);
                 const dd = D.quaditude();
                 const rr = r * r;
                 const RR = R * R;
@@ -42,8 +43,8 @@ export class CircleCircleIntersection implements Disposable {
                     const ahat = dhat.clone().mul(G20.I);
                     const λdhat = dhat.clone().scale(λ);
                     const avec = ahat.clone().scale(a);
-                    P1.copy(ca).add(λdhat).add(avec);
-                    P2.copy(ca).add(λdhat).sub(avec);
+                    P1.copyVector(ca).add(λdhat).add(avec);
+                    P2.copyVector(ca).add(λdhat).sub(avec);
                     this.points[0] = P1;
                     this.points[1] = P2;
                 }
@@ -52,33 +53,9 @@ export class CircleCircleIntersection implements Disposable {
                 }
             }
         };
-        this.#disposables.push(circleA.X.change$.subscribe(() => {
-            ca.copy(circleA.X);
-            cb.copy(circleB.X);
-            R = circleA.radius;
-            r = circleB.radius;
-            compute();
-            this.#change.set(this.#change.get() + 1);
-        }));
-        this.#disposables.push(circleB.X.change$.subscribe(() => {
-            ca.copy(circleA.X);
-            cb.copy(circleB.X);
-            R = circleA.radius;
-            r = circleB.radius;
-            compute();
-            this.#change.set(this.#change.get() + 1);
-        }));
-        this.#disposables.push(circleA.radius$.subscribe(() => {
-            ca.copy(circleA.X);
-            cb.copy(circleB.X);
-            R = circleA.radius;
-            r = circleB.radius;
-            compute();
-            this.#change.set(this.#change.get() + 1);
-        }));
-        this.#disposables.push(circleB.radius$.subscribe(() => {
-            ca.copy(circleA.X);
-            cb.copy(circleB.X);
+        this.#disposables.push(effect(() => {
+            ca.copyVector(circleA.X);
+            cb.copyVector(circleB.X);
             R = circleA.radius;
             r = circleB.radius;
             compute();

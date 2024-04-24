@@ -1,11 +1,12 @@
-import { CircleProperties, Color, G20, variable } from "g2o";
+import { CircleProperties, Color, G20 } from "g2o";
+import { state } from "g2o-reactive";
 import { CircleCircleIntersection } from "../src/index";
 
 class MockCircle implements CircleProperties {
     readonly X = G20.zero.clone();
     readonly R = G20.one.clone();
-    readonly #radius = variable(1);
-    radius$ = this.#radius.asObservable();
+    readonly #radius = state(1);
+    // radius$ = this.#radius.asObservable();
     position: G20;
     attitude: G20;
     fill: Color;

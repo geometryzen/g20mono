@@ -58,7 +58,7 @@ const options: RollupOptions[] = [
             {
                 file: pkg.browser,
                 format: 'umd',
-                name: 'G2O',
+                name: 'REACTIVE',
                 sourcemap: true
             }
         ],
@@ -70,7 +70,7 @@ const options: RollupOptions[] = [
             typescript({ tsconfig: './tsconfig.json', exclude: ['**/*.spec.ts'], noEmitOnError: true })
         ]
     },
-    // Bundle the generated ESM type definitions.
+    // Bundle the generated type definitions.
     {
         input: './dist/esm/types/src/index.d.ts',
         output: [{ file: pkg.types, format: "esm" }],

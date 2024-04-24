@@ -62,6 +62,9 @@ export class ZZZ implements Disposable {
     image?: SVGImageElement;
     offset?: G20;
     opacity$?: Observable<number>;
+    /**
+     * Use by Circle and RadialGradient.
+     */
     radius$?: Observable<number>;
     scale?: G20;
     spreadMethod$: Observable<'pad' | 'reflect' | 'repeat'>;

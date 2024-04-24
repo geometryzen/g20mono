@@ -71,7 +71,7 @@ const options: RollupOptions[] = [
             commonjs(),
             peer_deps_external() as Plugin,
             resolve(),
-            typescript({ tsconfig: './tsconfig.json', exclude: ['**/*.spec.ts'] })
+            typescript({ tsconfig: './tsconfig.json', exclude: ['**/*.spec.ts'], noEmitOnError: true })
         ]
     },
     // Bundle the generated ESM type definitions.
