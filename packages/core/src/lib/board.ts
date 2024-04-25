@@ -325,13 +325,13 @@ export class Board implements IBoard {
         return polygon;
     }
 
-    rectangle(attributes: RectangleAttributes): Rectangle {
+    rectangle(attributes: RectangleAttributes={}): Rectangle {
         const rect = new Rectangle(this, attributes);
         this.add(rect);
         return rect;
     }
 
-    text(message: string, attributes?: Partial<TextAttributes>): Text {
+    text(message: string, attributes: TextAttributes={}): Text {
         const text = new Text(this, message, attributes);
         this.add(text);
         return text;

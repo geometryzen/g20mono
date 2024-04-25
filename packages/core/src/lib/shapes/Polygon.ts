@@ -5,13 +5,13 @@ import { Path, PathAttributes } from "../path";
 import { PositionLike, position_from_like } from "../Shape";
 
 export interface PolygonAttributes {
-    id: string;
-    opacity: number;
-    fill: Color,
-    fillOpacity: number,
-    stroke: Color,
-    strokeOpacity: number,
-    strokeWidth: number
+    id?: string;
+    opacity?: number;
+    fill?: Color,
+    fillOpacity?: number,
+    stroke?: Color,
+    strokeOpacity?: number,
+    strokeWidth?: number
 }
 
 export class Polygon extends Path implements PolygonAttributes {

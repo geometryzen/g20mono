@@ -137,44 +137,6 @@ export class Path extends ColoredShape implements PathAttributes {
          */
         this.ending = 1;
 
-        // Style properties
-
-        if (attributes.fill) {
-            this.fill = attributes.fill;
-        }
-        else {
-            this.fill = '#fff';
-        }
-
-        if (typeof attributes.fillOpacity === 'number') {
-            this.fillOpacity = attributes.fillOpacity;
-        }
-        else {
-            this.fillOpacity = 1.0;
-        }
-
-        if (attributes.stroke) {
-            this.stroke = attributes.stroke;
-        }
-        else {
-            this.stroke = '#000';
-        }
-
-        if (typeof attributes.strokeWidth === 'number') {
-            this.strokeWidth = attributes.strokeWidth;
-        }
-        else {
-            this.strokeWidth = 1;
-        }
-
-        if (typeof attributes.strokeOpacity === 'number') {
-            this.strokeOpacity = attributes.strokeOpacity;
-        }
-        else {
-            this.strokeOpacity = 1.0;
-        }
-
-
         /**
          * A class to be applied to the element to be compatible with CSS styling.
          */
@@ -255,6 +217,7 @@ export class Path extends ColoredShape implements PathAttributes {
             changed.id = this.id;
             this.zzz.elem = svg.createElement('path', changed);
             domElement.appendChild(this.zzz.elem);
+            super.render(domElement, svgElement);
 
             // The matrix is in the Shape.
             this.zzz.disposables.push(effect(() => {
@@ -302,8 +265,6 @@ export class Path extends ColoredShape implements PathAttributes {
                 this.zzz.elem.removeAttribute('clip-path');
             }
         }
-
-        super.render(domElement, svgElement);
 
         this.flagReset();
     }

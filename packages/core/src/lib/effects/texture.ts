@@ -105,8 +105,13 @@ export class Texture extends ElementBase<Group> implements ColorProvider {
 
         this.update();
     }
-
-    render(svgElement: SVGElement): this {
+    addRef(): void {
+        throw new Error('Method not implemented.');
+    }
+    release(): void {
+        throw new Error('Method not implemented.');
+    }
+    use(svgElement: SVGElement): this {
 
         const changed: SVGProperties = {};
 

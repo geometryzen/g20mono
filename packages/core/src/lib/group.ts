@@ -89,6 +89,8 @@ export class Group extends Shape {
         else {
             this.zzz.elem = svg.createElement('g', { id: this.id });
             domElement.appendChild(this.zzz.elem);
+            super.render(domElement, svgElement);
+
             this.zzz.disposables.push(effect(() => {
                 this.zzz.elem.setAttribute('transform', transform_value_of_matrix(this.matrix));
             }));
@@ -187,7 +189,6 @@ export class Group extends Shape {
             }
 
         }
-        super.render(domElement, svgElement);
 
         this.flagReset();
     }

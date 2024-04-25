@@ -1,11 +1,11 @@
 import { effect, state } from 'g2o-reactive';
 import { ColoredShape, ColoredShapeAttributes } from './ColoredShape';
-import { Color, is_color_provider, serialize_color } from './effects/ColorProvider';
+import { Color } from './effects/ColorProvider';
 import { ElementBase } from './element';
 import { Flag } from './Flag';
 import { IBoard } from './IBoard';
 import { get_dashes_offset, set_dashes_offset } from './path';
-import { get_svg_element_defs, set_defs_dirty_flag, svg, SVGAttributes, transform_value_of_matrix } from './renderers/SVGView';
+import { svg, SVGAttributes, transform_value_of_matrix } from './renderers/SVGView';
 import { PositionLike } from './Shape';
 
 const min = Math.min, max = Math.max;
@@ -166,38 +166,6 @@ export class Text extends ColoredShape implements TextProperties {
             changed.transform = transform_value_of_matrix(this.matrix);
         }
 
-        {
-            const fill = this.fill;
-            if (fill) {
-                if (is_color_provider(fill)) {
-                    this.zzz.hasFillEffect = true;
-                    fill.render(svgElement);
-                }
-                else {
-                    changed.fill = serialize_color(fill);
-                    if (this.zzz.hasFillEffect) {
-                        set_defs_dirty_flag(get_svg_element_defs(svgElement), true);
-                        delete this.zzz.hasFillEffect;
-                    }
-                }
-            }
-        }
-        {
-            const stroke = this.stroke;
-            if (stroke) {
-                if (is_color_provider(stroke)) {
-                    this.zzz.hasStrokeEffect = true;
-                    stroke.render(svgElement);
-                }
-                else {
-                    changed.stroke = serialize_color(stroke);
-                    if (this.zzz.hasStrokeEffect) {
-                        set_defs_dirty_flag(get_svg_element_defs(svgElement), true);
-                        delete this.zzz.hasFillEffect;
-                    }
-                }
-            }
-        }
         if (this.zzz.flags[Flag.ClassName]) {
             changed['class'] = this.classList.join(' ');
         }
@@ -213,6 +181,7 @@ export class Text extends ColoredShape implements TextProperties {
             changed.id = this.id;
             this.zzz.elem = svg.createElement('text', changed);
             domElement.appendChild(this.zzz.elem);
+            super.render(domElement, svgElement);
 
             this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = {};
@@ -385,8 +354,6 @@ export class Text extends ColoredShape implements TextProperties {
                 this.zzz.elem.removeAttribute('clip-path');
             }
         }
-
-        super.render(domElement, svgElement);
 
         this.flagReset();
     }

@@ -1,12 +1,16 @@
-import { Children, Disposable, ElementBase, Group, variable } from 'g2o';
+import { Children, ColorProvider, Disposable, ElementBase, Group, variable } from 'g2o';
 import { state } from 'g2o-reactive';
 import { Constants } from './constants';
 import { Stop } from './stop';
+import { get_svg_element_defs } from './svg';
 
 /**
  *
  */
-export abstract class Gradient extends ElementBase<Group> {
+export abstract class Gradient extends ElementBase<Group> implements ColorProvider {
+
+    #refCount = 0;
+    #svgElement: SVGElement | null = null;
 
     _flagStops = false;
 
@@ -30,6 +34,8 @@ export abstract class Gradient extends ElementBase<Group> {
 
     readonly _stop_subscriptions: { [id: string]: Disposable } = {};
 
+    abstract render(defs: SVGDefsElement): void;
+
     constructor(stops?: Stop[]) {
         super(Constants.Identifier + Constants.uniqueId());
         this.classList = [];
@@ -39,6 +45,25 @@ export abstract class Gradient extends ElementBase<Group> {
     override dispose(): void {
         this.#unset_children();
         super.dispose();
+    }
+
+    use(svgElement: SVGElement): this {
+        this.#svgElement = svgElement;
+        return this;
+    }
+
+    addRef(): void {
+        this.#refCount++;
+        if (this.#refCount === 1) {
+            this.render(get_svg_element_defs(this.#svgElement));
+        }
+    }
+    release(): void {
+        this.#refCount++;
+        if (this.#refCount === 0) {
+            get_svg_element_defs(this.#svgElement).removeChild(this.zzz.elem);
+            this.zzz.elem = null;
+        }
     }
 
     /**

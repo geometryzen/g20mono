@@ -2,7 +2,7 @@ import { ColorProvider, Disposable, G20 } from 'g2o';
 import { effect } from 'g2o-reactive';
 import { Gradient } from './gradient';
 import { Stop } from './stop';
-import { createElement, get_svg_element_defs, setAttributes, SVGAttributes } from './svg';
+import { createElement, setAttributes, SVGAttributes } from './svg';
 
 export class LinearGradient extends Gradient implements ColorProvider {
 
@@ -26,8 +26,7 @@ export class LinearGradient extends Gradient implements ColorProvider {
         this.left = new G20(x1, y1);
         this.right = new G20(x2, y2);
     }
-
-    render(svgElement: SVGElement): this {
+    render(defs: SVGDefsElement): this {
         const changed: SVGAttributes = {};
 
         if (this._flagEndPoints) {
@@ -59,7 +58,7 @@ export class LinearGradient extends Gradient implements ColorProvider {
         }
 
         if (this.zzz.elem.parentNode === null) {
-            get_svg_element_defs(svgElement).appendChild(this.zzz.elem);
+            defs.appendChild(this.zzz.elem);
         }
 
         if (this._flagStops) {
@@ -102,8 +101,6 @@ export class LinearGradient extends Gradient implements ColorProvider {
         }
         return this.flagReset();
     }
-
-    static Properties = ['left', 'right'];
 
     update() {
         if (this._flagEndPoints || this._flagStops) {

@@ -1,10 +1,10 @@
 import { effect, state } from "g2o-reactive";
-import { Color, is_color_provider, serialize_color } from "./effects/ColorProvider";
+import { ColorManager } from "./ColorManager";
+import { Color } from "./effects/ColorProvider";
 import { Flag } from "./Flag";
 import { IBoard } from "./IBoard";
 import { G20 } from "./math/G20";
-import { Disposable } from './reactive/Disposable';
-import { get_svg_element_defs, set_defs_dirty_flag, svg, SVGAttributes } from "./renderers/SVGView";
+import { svg, SVGAttributes } from "./renderers/SVGView";
 import { PositionLike, Shape, ShapeAttributes } from "./Shape";
 
 export interface ColoredShapeAttributes extends ShapeAttributes {
@@ -23,20 +23,47 @@ export abstract class ColoredShape extends Shape {
     /**
      * @see {@link https://developer.mozilla.org/en-US/docs/Web/CSS/color_value} for more information on CSS's colors as `String`.
      */
-    readonly #fill = state('#000000' as Color);
-    #fill_change: Disposable | null = null;
+    readonly #fill = new ColorManager('none', 'fill');
     readonly #fillOpacity = state(1.0);
 
     /**
      * @see {@link https://developer.mozilla.org/en-US/docs/Web/CSS/color_value} for more information on CSS's colors as `String`.
      */
-    readonly #stroke = state('none' as Color);
-    #stroke_change: Disposable | null = null;
+    readonly #stroke = new ColorManager('#000', 'stroke');
     readonly #strokeWidth = state(1);
     readonly #strokeOpacity = state(1.0);
 
     constructor(board: IBoard, attributes: ColoredShapeAttributes = {}) {
         super(board, shape_attribs_from_colored_attribs(attributes));
+    
+        if (attributes.fill) {
+            this.fill = attributes.fill;
+        }
+
+        if (typeof attributes.fillOpacity === 'number') {
+            this.fillOpacity = attributes.fillOpacity;
+        }
+        else {
+            this.fillOpacity = 1.0;
+        }
+
+        if (attributes.stroke) {
+            this.stroke = attributes.stroke;
+        }
+
+        if (typeof attributes.strokeWidth === 'number') {
+            this.strokeWidth = attributes.strokeWidth;
+        }
+        else {
+            this.strokeWidth = 1;
+        }
+
+        if (typeof attributes.strokeOpacity === 'number') {
+            this.strokeOpacity = attributes.strokeOpacity;
+        }
+        else {
+            this.strokeOpacity = 1.0;
+        }
     }
 
     /*
@@ -57,19 +84,8 @@ export abstract class ColoredShape extends Shape {
         return this.#fill.get();
     }
     set fill(fill: Color) {
-        if (this.#fill_change) {
-            this.#fill_change.dispose();
-            this.#fill_change = null;
-        }
-
         this.#fill.set(fill);
         this.zzz.flags[Flag.Fill] = true;
-
-        if (is_color_provider(fill)) {
-            this.#fill_change = fill.change$.subscribe(() => {
-                this.zzz.flags[Flag.Fill] = true;
-            });
-        }
     }
     get fillOpacity(): number {
         return this.#fillOpacity.get();
@@ -81,17 +97,8 @@ export abstract class ColoredShape extends Shape {
         return this.#stroke.get();
     }
     set stroke(stroke: Color) {
-        if (this.#stroke_change) {
-            this.#stroke_change.dispose();
-            this.#stroke_change = null;
-        }
         this.#stroke.set(stroke);
         this.zzz.flags[Flag.Stroke] = true;
-        if (is_color_provider(this.stroke)) {
-            this.#stroke_change = this.stroke.change$.subscribe(() => {
-                this.zzz.flags[Flag.Stroke] = true;
-            });
-        }
     }
     get strokeOpacity(): number {
         return this.#strokeOpacity.get();
@@ -125,19 +132,12 @@ export abstract class ColoredShape extends Shape {
     override render(domElement: HTMLElement | SVGElement, svgElement: SVGElement): void {
         // The derived class determines the element.
         if (this.zzz.elem) {
+            this.#fill.use(svgElement, this.zzz.elem);
+            this.#stroke.use(svgElement, this.zzz.elem);
 
             // fill
             this.zzz.disposables.push(effect(() => {
-                const fill = this.fill;
-                const change: SVGAttributes = {};
-                change.fill = serialize_color(fill);
-                svg.setAttributes(this.zzz.elem, change);
-
-                if (this.zzz.hasFillEffect && typeof fill === 'string') {
-                    set_defs_dirty_flag(get_svg_element_defs(svgElement), true);
-                    delete this.zzz.hasFillEffect;
-                }
-
+                this.#fill.update();
                 return function () {
                     // No cleanup to be done.
                 };
@@ -155,27 +155,7 @@ export abstract class ColoredShape extends Shape {
 
             // stroke
             this.zzz.disposables.push(effect(() => {
-                const stroke = this.stroke;
-                if (stroke) {
-                    if (is_color_provider(stroke)) {
-                        this.zzz.hasStrokeEffect = true;
-                        stroke.render(svgElement);
-                    }
-                    const change: SVGAttributes = {};
-                    change.stroke = serialize_color(stroke);
-                    svg.setAttributes(this.zzz.elem, change);
-
-                    if (this.zzz.hasStrokeEffect && typeof stroke === 'string') {
-                        set_defs_dirty_flag(get_svg_element_defs(svgElement), true);
-                        delete this.zzz.hasStrokeEffect;
-                    }
-                }
-                else {
-                    const change: SVGAttributes = {};
-                    change.stroke = serialize_color(stroke);
-                    svg.removeAttributes(this.zzz.elem, change);
-                }
-
+                this.#stroke.update();
                 return function () {
                     // No cleanup to be done.
                 };

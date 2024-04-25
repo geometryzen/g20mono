@@ -2,7 +2,7 @@ import { ColorProvider, G20 } from 'g2o';
 import { effect, state } from 'g2o-reactive';
 import { Gradient } from './gradient';
 import { Stop } from './stop';
-import { createElement, get_svg_element_defs, setAttributes, SVGAttributes } from './svg';
+import { createElement, setAttributes, SVGAttributes } from './svg';
 
 export class RadialGradient extends Gradient implements ColorProvider {
 
@@ -34,8 +34,7 @@ export class RadialGradient extends Gradient implements ColorProvider {
             this.focal.y = fy;
         }
     }
-
-    render(svgElement: SVGElement): this {
+    render(defs: SVGDefsElement): this {
         const changed: SVGAttributes = {};
 
         if (this.zzz.elem) {
@@ -79,7 +78,7 @@ export class RadialGradient extends Gradient implements ColorProvider {
         }
 
         if (this.zzz.elem.parentNode === null) {
-            get_svg_element_defs(svgElement).appendChild(this.zzz.elem);
+            defs.appendChild(this.zzz.elem);
         }
 
         if (this._flagStops) {

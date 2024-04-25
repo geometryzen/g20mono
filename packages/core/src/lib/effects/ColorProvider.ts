@@ -1,9 +1,12 @@
-import { Observable } from '../reactive/Observable';
 
 export interface ColorProvider {
+    /**
+     * The identifier provides a reference for the consuming colored shape.
+     */
     readonly id: string;
-    readonly change$: Observable<unknown>;
-    render(svgElement: SVGElement): this;
+    addRef(): void;
+    release(): void;
+    use(svgElement: SVGElement): this;
 }
 
 export type Color = string | ColorProvider;
