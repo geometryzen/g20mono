@@ -1,8 +1,12 @@
 import { ColorProvider, G20 } from 'g2o';
 import { effect, state } from 'g2o-reactive';
-import { Gradient } from './gradient';
+import { Gradient, GradientAttributes } from './gradient';
 import { Stop } from './stop';
 import { createElement, setAttributes, SVGAttributes } from './svg';
+
+export interface RadialGradientAttributes extends GradientAttributes {
+
+}
 
 export class RadialGradient extends Gradient implements ColorProvider {
 
@@ -18,9 +22,9 @@ export class RadialGradient extends Gradient implements ColorProvider {
      * @param fx The x position of the focal point on the radial gradient.
      * @param fy The y position of the focal point on the radial gradient.
      */
-    constructor(cx: number = 0, cy: number = 0, r: number = 1, stops: Stop[] = [], fx?: number, fy?: number) {
+    constructor(cx: number = 0, cy: number = 0, r: number = 1, stops: Stop[] = [], fx?: number, fy?: number, attributes: RadialGradientAttributes = {}) {
 
-        super(stops);
+        super(stops, attributes);
 
         this.#center = new G20(cx, cy);
 

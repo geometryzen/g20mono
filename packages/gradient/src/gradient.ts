@@ -4,6 +4,10 @@ import { Constants } from './constants';
 import { Stop } from './stop';
 import { get_svg_element_defs } from './svg';
 
+export interface GradientAttributes {
+    id?: string;
+}
+
 /**
  *
  */
@@ -36,8 +40,8 @@ export abstract class Gradient extends ElementBase<Group> implements ColorProvid
 
     abstract render(defs: SVGDefsElement): void;
 
-    constructor(stops?: Stop[]) {
-        super(Constants.Identifier + Constants.uniqueId());
+    constructor(stops?: Stop[], attributes: GradientAttributes = {}) {
+        super(ensure_identifier(attributes));
         this.classList = [];
         this.#set_children(stops);
     }
@@ -59,7 +63,7 @@ export abstract class Gradient extends ElementBase<Group> implements ColorProvid
         }
     }
     release(): void {
-        this.#refCount++;
+        this.#refCount--;
         if (this.#refCount === 0) {
             get_svg_element_defs(this.#svgElement).removeChild(this.zzz.elem);
             this.zzz.elem = null;
@@ -145,5 +149,13 @@ export abstract class Gradient extends ElementBase<Group> implements ColorProvid
     }
     set units(units: 'userSpaceOnUse' | 'objectBoundingBox') {
         this.#units.set(units);
+    }
+}
+function ensure_identifier(attributes: GradientAttributes): string {
+    if (typeof attributes.id === 'string') {
+        return attributes.id;
+    }
+    else {
+        return `${Constants.Identifier}${Constants.uniqueId()}`;
     }
 }

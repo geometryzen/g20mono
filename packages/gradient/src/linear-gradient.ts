@@ -1,8 +1,12 @@
 import { ColorProvider, Disposable, G20 } from 'g2o';
 import { effect } from 'g2o-reactive';
-import { Gradient } from './gradient';
+import { Gradient, GradientAttributes } from './gradient';
 import { Stop } from './stop';
 import { createElement, setAttributes, SVGAttributes } from './svg';
+
+export interface LinearGradientAttributes extends GradientAttributes {
+
+}
 
 export class LinearGradient extends Gradient implements ColorProvider {
 
@@ -21,8 +25,8 @@ export class LinearGradient extends Gradient implements ColorProvider {
      * @param stops A list of {@link Stop}s that contain the gradient fill pattern for the gradient.
      * The linear gradient lives within the space of the parent object's matrix space.
      */
-    constructor(x1 = 0, y1 = 0, x2 = 0, y2 = 0, stops: Stop[] = []) {
-        super(stops);
+    constructor(x1 = 0, y1 = 0, x2 = 0, y2 = 0, stops: Stop[] = [], attributes: LinearGradientAttributes = {}) {
+        super(stops, attributes);
         this.left = new G20(x1, y1);
         this.right = new G20(x2, y2);
     }
