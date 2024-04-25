@@ -1,4 +1,4 @@
-import { ColorProvider, Disposable, G20 } from 'g2o';
+import { ColorProvider, G20, PositionLike, position_from_like } from 'g2o';
 import { effect } from 'g2o-reactive';
 import { Gradient, GradientAttributes } from './gradient';
 import { Stop } from './stop';
@@ -10,35 +10,22 @@ export interface LinearGradientAttributes extends GradientAttributes {
 
 export class LinearGradient extends Gradient implements ColorProvider {
 
-    _flagEndPoints = false;
-
-    #left: G20 | null = null;
-    #left_change_subscription: Disposable | null = null;
-    #right: G20 | null = null;
-    #right_change_subscription: Disposable | null = null;
+    readonly #point1: G20;
+    readonly #point2: G20;
 
     /**
-     * @param x1 The x position of the first end point of the linear gradient.
-     * @param y1 The y position of the first end point of the linear gradient.
-     * @param x2 The x position of the second end point of the linear gradient.
-     * @param y2 The y position of the second end point of the linear gradient.
+     * @param point1 The position of the first end point of the linear gradient.
+     * @param point2 The position of the second end point of the linear gradient.
      * @param stops A list of {@link Stop}s that contain the gradient fill pattern for the gradient.
      * The linear gradient lives within the space of the parent object's matrix space.
      */
-    constructor(x1 = 0, y1 = 0, x2 = 0, y2 = 0, stops: Stop[] = [], attributes: LinearGradientAttributes = {}) {
+    constructor(point1: PositionLike, point2: PositionLike, stops: Stop[], attributes: LinearGradientAttributes = {}) {
         super(stops, attributes);
-        this.left = new G20(x1, y1);
-        this.right = new G20(x2, y2);
+        this.point1 = position_from_like(point1);
+        this.point2 = position_from_like(point2);
     }
     render(defs: SVGDefsElement): this {
         const changed: SVGAttributes = {};
-
-        if (this._flagEndPoints) {
-            changed.x1 = `${this.left.x}`;
-            changed.y1 = `${this.left.y}`;
-            changed.x2 = `${this.right.x}`;
-            changed.y2 = `${this.right.y}`;
-        }
 
         // If there is no attached DOM element yet,
         // create it with all necessary attributes.
@@ -48,6 +35,20 @@ export class LinearGradient extends Gradient implements ColorProvider {
         else {
             changed.id = this.id;
             this.zzz.elem = createElement('linearGradient', changed);
+
+            this.zzz.disposables.push(effect(() => {
+                const change: SVGAttributes = {};
+                changed.x1 = `${this.point1.x}`;
+                changed.y1 = `${this.point1.y}`;
+                setAttributes(this.zzz.elem, change);
+            }));
+
+            this.zzz.disposables.push(effect(() => {
+                const change: SVGAttributes = {};
+                changed.x2 = `${this.point2.x}`;
+                changed.y2 = `${this.point2.y}`;
+                setAttributes(this.zzz.elem, change);
+            }));
 
             this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = {};
@@ -107,43 +108,26 @@ export class LinearGradient extends Gradient implements ColorProvider {
     }
 
     update() {
-        if (this._flagEndPoints || this._flagStops) {
+        if (this._flagStops) {
             this._change.set(this);
         }
         return this;
     }
 
     override flagReset(dirtyFlag = false) {
-        this._flagEndPoints = dirtyFlag;
         super.flagReset(dirtyFlag);
         return this;
     }
-    get left() {
-        return this.#left;
+    get point1(): G20 {
+        return this.#point1;
     }
-    set left(v) {
-        if (this.#left_change_subscription) {
-            this.#left_change_subscription.dispose();
-            this.#left_change_subscription = null;
-        }
-        this.#left = v;
-        this.#left_change_subscription = this.#left.change$.subscribe(() => {
-            this._flagEndPoints = true;
-        });
-        this._flagEndPoints = true;
+    set point1(point1: G20) {
+        this.#point1.copyVector(point1);
     }
-    get right() {
-        return this.#right;
+    get point2(): G20 {
+        return this.#point2;
     }
-    set right(v) {
-        if (this.#right_change_subscription) {
-            this.#right_change_subscription.dispose();
-            this.#right_change_subscription = null;
-        }
-        this.#right = v;
-        this.#right_change_subscription = this.#right.change$.subscribe(() => {
-            this._flagEndPoints = true;
-        });
-        this._flagEndPoints = true;
+    set point2(point2: G20) {
+        this.#point2.copyVector(point2);
     }
 }
