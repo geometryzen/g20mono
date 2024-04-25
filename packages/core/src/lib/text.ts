@@ -125,8 +125,14 @@ export class Text extends ColoredShape implements TextProperties {
         if (attributes.fill) {
             this.fill = attributes.fill;
         }
+        else {
+            this.fill = "#000";
+        }
         if (attributes.strokeWidth) {
             this.strokeWidth = attributes.strokeWidth;
+        }
+        else {
+            this.strokeWidth = 1;
         }
         if (attributes.opacity) {
             this.opacity = attributes.opacity;
@@ -136,6 +142,9 @@ export class Text extends ColoredShape implements TextProperties {
         }
         if (attributes.stroke) {
             this.stroke = attributes.stroke;
+        }
+        else {
+            this.stroke = "#000";
         }
         if (attributes.fontStyle) {
             this.fontStyle = attributes.fontStyle;
