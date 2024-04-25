@@ -1,6 +1,6 @@
 {
     "name": "g2o-euclid",
-    "version": "0.9.189",
+    "version": "0.9.190",
     "description": "g2o Euclidean Geometry Utilities",
     "exports": {
         ".": {
