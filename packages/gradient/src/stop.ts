@@ -1,4 +1,5 @@
 import { ElementBase, variable } from 'g2o';
+import { state } from 'g2o-reactive';
 import { Constants } from './constants';
 import { Gradient } from './gradient';
 
@@ -8,9 +9,9 @@ export class Stop extends ElementBase<Gradient> {
     _flagOpacity = true;
     _flagColor = true;
 
-    _offset = 0;
-    _opacity = 1;
-    _color = '#fff';
+    readonly #offset = state(0);
+    readonly #opacity = state(1);
+    readonly #color = state('#fff');
 
     readonly #change = variable(this);
     readonly change$ = this.#change.asObservable();
@@ -44,10 +45,10 @@ export class Stop extends ElementBase<Gradient> {
         return this;
     }
     get color(): string {
-        return this._color;
+        return this.#color.get();
     }
-    set color(v: string) {
-        this._color = v;
+    set color(color: string) {
+        this.#color.set(color);
         this._flagColor = true;
         if (this.parent) {
             this.parent._flagStops = true;
@@ -55,10 +56,10 @@ export class Stop extends ElementBase<Gradient> {
         this.#change.set(this);
     }
     get offset(): number {
-        return this._offset;
+        return this.#offset.get();
     }
-    set offset(v: number) {
-        this._offset = v;
+    set offset(offset: number) {
+        this.#offset.set(offset);
         this._flagOffset = true;
         if (this.parent) {
             this.parent._flagStops = true;
@@ -66,10 +67,10 @@ export class Stop extends ElementBase<Gradient> {
         this.#change.set(this);
     }
     get opacity(): number {
-        return this._opacity;
+        return this.#opacity.get();
     }
-    set opacity(v: number) {
-        this._opacity = v;
+    set opacity(opacity: number) {
+        this.#opacity.set(opacity);
         this._flagOpacity = true;
         if (this.parent) {
             this.parent._flagStops = true;

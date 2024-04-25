@@ -38,7 +38,7 @@ export class RadialGradient extends Gradient implements ColorProvider {
             this.focal.y = fy;
         }
     }
-    render(defs: SVGDefsElement): this {
+    override render(defs: SVGDefsElement): this {
         const changed: SVGAttributes = {};
 
         if (this.zzz.elem) {
@@ -47,6 +47,8 @@ export class RadialGradient extends Gradient implements ColorProvider {
         else {
             changed.id = this.id;
             this.zzz.elem = createElement('radialGradient', changed);
+            super.render(defs);
+
             // center
             this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = {};
@@ -85,44 +87,6 @@ export class RadialGradient extends Gradient implements ColorProvider {
             defs.appendChild(this.zzz.elem);
         }
 
-        if (this._flagStops) {
-
-            const lengthChanged = this.zzz.elem.childNodes.length !== this.stops.length;
-
-            if (lengthChanged) {
-                while (this.zzz.elem.lastChild) {
-                    this.zzz.elem.removeChild(this.zzz.elem.lastChild);
-                }
-            }
-
-            for (let i = 0; i < this.stops.length; i++) {
-
-                const stop = this.stops[i];
-                const attrs: SVGAttributes = {};
-
-                if (stop._flagOffset) {
-                    attrs.offset = 100 * stop.offset + '%';
-                }
-                if (stop._flagColor) {
-                    attrs['stop-color'] = stop._color;
-                }
-                if (stop._flagOpacity) {
-                    attrs['stop-opacity'] = `${stop._opacity}`;
-                }
-
-                if (stop.zzz.elem) {
-                    setAttributes(stop.zzz.elem, attrs);
-                }
-                else {
-                    stop.zzz.elem = createElement('stop', attrs);
-                }
-
-                if (lengthChanged) {
-                    this.zzz.elem.appendChild(stop.zzz.elem);
-                }
-                stop.flagReset();
-            }
-        }
         return this.flagReset();
     }
 

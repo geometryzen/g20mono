@@ -73,7 +73,7 @@
         "rxjs": "^7.8.1"
     },
     "peerDependencies": {
-        "g2o-reactive": "file:../reactive"
+        "g2o-reactive": "../reactive"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^25.0.7",

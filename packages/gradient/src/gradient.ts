@@ -1,8 +1,8 @@
-import { Children, ColorProvider, Disposable, ElementBase, Group, variable } from 'g2o';
-import { state } from 'g2o-reactive';
+import { ColorProvider, ElementBase, Group, variable } from 'g2o';
+import { effect, State, state } from 'g2o-reactive';
 import { Constants } from './constants';
 import { Stop } from './stop';
-import { get_svg_element_defs } from './svg';
+import { createElement, get_svg_element_defs, setAttributes, SVGAttributes } from './svg';
 
 export interface GradientAttributes {
     id?: string;
@@ -29,31 +29,67 @@ export abstract class Gradient extends ElementBase<Group> implements ColorProvid
      */
     readonly #units = state('userSpaceOnUse' as 'userSpaceOnUse' | 'objectBoundingBox');
 
-    _stops: Children<Stop> | null = null;
-    _stops_insert: Disposable | null = null;
-    _stops_remove: Disposable | null = null;
+    readonly #stops: State<Stop[]> = state([]);
 
     readonly _change = variable(this);
     readonly change$ = this._change.asObservable();
 
-    readonly _stop_subscriptions: { [id: string]: Disposable } = {};
-
-    abstract render(defs: SVGDefsElement): void;
-
-    constructor(stops?: Stop[], attributes: GradientAttributes = {}) {
+    constructor(stops: Stop[] = [], attributes: GradientAttributes = {}) {
         super(ensure_identifier(attributes));
         this.classList = [];
-        this.#set_children(stops);
+        this.#stops = state(stops);
     }
 
     override dispose(): void {
-        this.#unset_children();
         super.dispose();
     }
 
     use(svgElement: SVGElement): this {
         this.#svgElement = svgElement;
         return this;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    render(defs: SVGDefsElement): void {
+        this.zzz.disposables.push(effect(() => {
+
+            while (this.zzz.elem.lastChild) {
+                this.zzz.elem.removeChild(this.zzz.elem.lastChild);
+            }
+
+            for (let i = 0; i < this.stops.length; i++) {
+
+                const stop = this.stops[i];
+
+                {
+                    const attrs: SVGAttributes = {};
+                    stop.zzz.elem = createElement('stop', attrs);
+                    this.zzz.elem.appendChild(stop.zzz.elem);
+                }
+                {
+                    // offset
+                    stop.zzz.disposables.push(effect(() => {
+                        const change: SVGAttributes = {};
+                        change.offset = 100 * stop.offset + '%';
+                        setAttributes(stop.zzz.elem, change);
+                    }));
+                    // stop-color
+                    stop.zzz.disposables.push(effect(() => {
+                        const change: SVGAttributes = {};
+                        change['stop-color'] = stop.color;
+                        setAttributes(stop.zzz.elem, change);
+                    }));
+                    // stop-opacity
+                    stop.zzz.disposables.push(effect(() => {
+                        const change: SVGAttributes = {};
+                        change['stop-opacity'] = `${stop.opacity}`;
+                        setAttributes(stop.zzz.elem, change);
+                    }));
+                }
+
+                stop.flagReset();
+            }
+        }));
     }
 
     addRef(): void {
@@ -70,55 +106,7 @@ export abstract class Gradient extends ElementBase<Group> implements ColorProvid
         }
     }
 
-    /**
-     * Trying to stay DRY here, but this may not be the best factoring. 
-     */
-    #set_children(children: Stop[]): void {
-        this._stops = new Children((children || []).slice(0));
-
-        this._stops_insert = this._stops.insert$.subscribe((stops: Stop[]) => {
-            let i = stops.length;
-            while (i--) {
-                const stop = stops[i];
-                this._stop_subscriptions[stop.id] = stop.change$.subscribe(() => {
-                    this._flagStops = true;
-                });
-                stop.parent = this;
-            }
-        });
-
-        this._stops_remove = this._stops.remove$.subscribe((stops: Stop[]) => {
-            let i = stops.length;
-            while (i--) {
-                const stop = stops[i];
-                const subscription = this._stop_subscriptions[stop.id];
-                subscription.dispose();
-                delete this._stop_subscriptions[stop.id];
-                delete stops[i].parent;
-            }
-        });
-
-        // Notify renderer of initial stops.
-        this._stops.ping();
-    }
-
-    #unset_children(): void {
-        if (this._stops_insert) {
-            this._stops_insert.dispose();
-            this._stops_insert = null;
-        }
-        if (this._stops_remove) {
-            this._stops_remove.dispose();
-            this._stops_remove = null;
-        }
-        if (this._stops) {
-            this._stops.dispose();
-            this._stops = null;
-        }
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    update(bubbles = false): this {
+    update(): this {
         if (this._flagStops) {
             this._change.set(this);
         }
@@ -136,13 +124,12 @@ export abstract class Gradient extends ElementBase<Group> implements ColorProvid
     set spreadMethod(spread: 'pad' | 'reflect' | 'repeat') {
         this.#spreadMethod.set(spread);
     }
-    get stops() {
+    get stops(): Stop[] {
         // TODO: Should we be returning a defensive copy?
-        return this._stops.get();
+        return this.#stops.get();
     }
     set stops(stops: Stop[]) {
-        this.#unset_children();
-        this.#set_children(stops);
+        this.#stops.set(stops);
     }
     get units(): 'userSpaceOnUse' | 'objectBoundingBox' {
         return this.#units.get();

@@ -24,7 +24,7 @@ export class LinearGradient extends Gradient implements ColorProvider {
         this.#point1 = position_from_like(point1);
         this.#point2 = position_from_like(point2);
     }
-    render(defs: SVGDefsElement): this {
+    override render(defs: SVGDefsElement): this {
 
         // If there is no attached DOM element yet,
         // create it with all necessary attributes.
@@ -37,6 +37,7 @@ export class LinearGradient extends Gradient implements ColorProvider {
                 const changed: SVGAttributes = {};
                 changed.id = this.id;
                 this.zzz.elem = createElement('linearGradient', changed);
+                super.render(defs);
             }
 
             this.zzz.disposables.push(effect(() => {
@@ -69,48 +70,10 @@ export class LinearGradient extends Gradient implements ColorProvider {
             defs.appendChild(this.zzz.elem);
         }
 
-        if (this._flagStops) {
-
-            const lengthChanged = this.zzz.elem.childNodes.length !== this.stops.length;
-
-            if (lengthChanged) {
-                while (this.zzz.elem.lastChild) {
-                    this.zzz.elem.removeChild(this.zzz.elem.lastChild);
-                }
-            }
-
-            for (let i = 0; i < this.stops.length; i++) {
-
-                const stop = this.stops[i];
-                const attrs: SVGAttributes = {};
-
-                if (stop._flagOffset) {
-                    attrs.offset = 100 * stop.offset + '%';
-                }
-                if (stop._flagColor) {
-                    attrs['stop-color'] = stop._color;
-                }
-                if (stop._flagOpacity) {
-                    attrs['stop-opacity'] = `${stop._opacity}`;
-                }
-
-                if (!stop.zzz.elem) {
-                    stop.zzz.elem = createElement('stop', attrs);
-                }
-                else {
-                    setAttributes(stop.zzz.elem, attrs);
-                }
-
-                if (lengthChanged) {
-                    this.zzz.elem.appendChild(stop.zzz.elem);
-                }
-                stop.flagReset();
-            }
-        }
         return this.flagReset();
     }
 
-    update() {
+    update(): this {
         if (this._flagStops) {
             this._change.set(this);
         }
