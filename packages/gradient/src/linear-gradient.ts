@@ -21,8 +21,8 @@ export class LinearGradient extends Gradient implements ColorProvider {
      */
     constructor(point1: PositionLike, point2: PositionLike, stops: Stop[], attributes: LinearGradientAttributes = {}) {
         super(stops, attributes);
-        this.point1 = position_from_like(point1);
-        this.point2 = position_from_like(point2);
+        this.#point1 = position_from_like(point1);
+        this.#point2 = position_from_like(point2);
     }
     render(defs: SVGDefsElement): this {
         const changed: SVGAttributes = {};
@@ -122,12 +122,16 @@ export class LinearGradient extends Gradient implements ColorProvider {
         return this.#point1;
     }
     set point1(point1: G20) {
-        this.#point1.copyVector(point1);
+        if (point1 instanceof G20) {
+            this.#point1.copyVector(point1);
+        }
     }
     get point2(): G20 {
         return this.#point2;
     }
     set point2(point2: G20) {
-        this.#point2.copyVector(point2);
+        if (point2 instanceof G20) {
+            this.#point2.copyVector(point2);
+        }
     }
 }
