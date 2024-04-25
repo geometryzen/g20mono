@@ -178,12 +178,6 @@ export class Path extends ColoredShape implements PathAttributes {
         // Collect any attribute that needs to be changed here
         const changed: SVGAttributes = {};
 
-        const flagMatrix = this.zzz.flags[Flag.Matrix];
-
-        if (flagMatrix) {
-            changed.transform = transform_value_of_matrix(this.matrix);
-        }
-
         if (this.zzz.flags[Flag.ClassName]) {
             changed['class'] = this.classList.join(' ');
         }
@@ -212,6 +206,8 @@ export class Path extends ColoredShape implements PathAttributes {
         if (this.zzz.elem) {
             // When completely reactive, this will not be needed
             svg.setAttributes(this.zzz.elem, changed);
+            // Why is this needed?
+            this.zzz.elem.setAttribute("transform", transform_value_of_matrix(this.matrix));
         }
         else {
             changed.id = this.id;

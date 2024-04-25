@@ -80,7 +80,6 @@ export class Rectangle extends Path implements RectangleProperties, Disposable {
             update_rectangle_vertices(this.width, this.height, this.origin, this.closed, this.vertices);
             // Nothing will happen if the Flag.Vertices is not set.
             this.zzz.flags[Flag.Vertices] = true;
-            this.zzz.flags[Flag.Matrix] = true;
             super.update();
         }));
 

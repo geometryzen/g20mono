@@ -10,7 +10,7 @@ import { G20 } from './math/G20';
 import { Matrix } from './matrix';
 import { Disposable } from './reactive/Disposable';
 import { variable } from './reactive/variable';
-import { svg, SVGAttributes } from './renderers/SVGView';
+import { svg, SVGAttributes, transform_value_of_matrix } from './renderers/SVGView';
 import { computed_world_matrix } from './utils/compute_world_matrix';
 
 export type PositionLike = Anchor | G20 | Shape | [x: number, y: number];
@@ -104,9 +104,7 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
      * Make the easy things easy...
      */
     readonly #scale: G20 = new G20(1, 1);
-    readonly #scale_change = this.#scale.change$.subscribe(() => {
-        this.zzz.flags[Flag.Matrix] = true;
-    });
+    readonly #scale_change: Disposable;
 
 
     readonly #skewX = variable(0);
@@ -138,7 +136,7 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
         /**
          * The transformation matrix of the shape.
          */
-        this.matrix = new Matrix();
+        this.#matrix = new Matrix();
 
         /**
          * The transformation matrix of the shape in the scene.
@@ -192,6 +190,10 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
         // Wait to bind change detection until all properties have been established.
         this.#position_change = this.#position_change_bind();
         this.#attitude_change = this.#attitude_change_bind();
+        this.#scale_change = this.#scale.change$.subscribe(() => {
+            this.#update_matrix(this.#compensate);
+        });
+
     }
 
     override dispose(): void {
@@ -203,6 +205,11 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     render(domElement: HTMLElement | SVGElement, svgElement: SVGElement): void {
+        // transform
+        this.zzz.disposables.push(effect(() => {
+            this.zzz.elem.setAttribute('transform', transform_value_of_matrix(this.matrix));
+        }));
+
         // opacity
         this.zzz.disposables.push(effect(() => {
             const opacity = this.opacity;
@@ -274,17 +281,12 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
     }
 
     update(): this {
-        if (this.zzz.flags[Flag.Matrix]) {
-            this.#update_matrix(this.#compensate);
-        }
-
         // There's no update on the super type.
         return this;
     }
 
     flagReset(dirtyFlag = false): this {
         this.zzz.flags[Flag.Vertices] = dirtyFlag;
-        this.zzz.flags[Flag.Matrix] = dirtyFlag;
         this.zzz.flags[Flag.Scale] = dirtyFlag;
         super.flagReset(dirtyFlag);
         return this;
@@ -297,7 +299,6 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
     #attitude_change_bind(): Disposable {
         return this.#attitude.change$.subscribe(() => {
             this.#update_matrix(this.#compensate);
-            this.zzz.flags[Flag.Matrix] = true;
         });
     }
     #attitude_change_unbind(): void {
@@ -314,7 +315,6 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
     #position_change_bind(): Disposable {
         return this.#position.change$.subscribe(() => {
             this.#update_matrix(this.#compensate);
-            this.zzz.flags[Flag.Matrix] = true;
         });
     }
     #position_change_unbind(): void {
@@ -368,7 +368,6 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
         this.#scale.x = scale;
         this.#scale.y = scale;
         this.#update_matrix(this.#compensate);
-        this.zzz.flags[Flag.Matrix] = true;
         this.zzz.flags[Flag.Scale] = true;
     }
     get scaleXY(): G20 {
@@ -376,7 +375,7 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
     }
     set scaleXY(scale: G20) {
         this.#scale.set(scale.x, scale.y, 0, 0);
-        this.zzz.flags[Flag.Matrix] = true;
+        this.#update_matrix(this.#compensate);
         this.zzz.flags[Flag.Scale] = true;
     }
     get skewX(): number {
@@ -384,14 +383,14 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
     }
     set skewX(skewX: number) {
         this.#skewX.set(skewX);
-        this.zzz.flags[Flag.Matrix] = true;
+        this.#update_matrix(this.#compensate);
     }
     get skewY(): number {
         return this.#skewY.get();
     }
     set skewY(skewY: number) {
         this.#skewY.set(skewY);
-        this.zzz.flags[Flag.Matrix] = true;
+        this.#update_matrix(this.#compensate);
     }
     get clipPath(): Shape | null {
         return this.#clipPath;
@@ -408,7 +407,7 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
     }
     set matrix(matrix: Matrix) {
         this.#matrix = matrix;
-        this.zzz.flags[Flag.Matrix] = true;
+        this.#update_matrix(this.#compensate);
     }
     get opacity(): number {
         return this.#opacity.get();

@@ -1,10 +1,8 @@
-import { effect } from 'g2o-reactive';
 import { Children } from './children';
 import { Flag } from './Flag';
 import { IBoard } from './IBoard';
 import { IShape } from './IShape';
-import { Disposable, dispose } from './reactive/Disposable';
-import { DomContext, svg, transform_value_of_matrix } from './renderers/SVGView';
+import { svg, transform_value_of_matrix } from './renderers/SVGView';
 import { Parent, Shape, ShapeAttributes } from './Shape';
 
 export interface IGroup extends Parent {
@@ -38,9 +36,6 @@ export class Group extends Shape {
     #length = 0;
 
     #shapes: Children<Shape>;
-    #shapes_insert: Disposable | null = null;
-    #shapes_remove: Disposable | null = null;
-    #shapes_order: Disposable | null = null;
 
     /**
      * An automatically updated list of shapes that need to be appended to the renderer's scenegraph.
@@ -56,21 +51,15 @@ export class Group extends Shape {
         super(board, shape_attributes(attributes));
 
         this.flagReset(true);
-        this.zzz.flags[Flag.Additions] = false;
-        this.zzz.flags[Flag.Subtractions] = false;
         this.zzz.flags[Flag.Beginning] = false;
         this.zzz.flags[Flag.Ending] = false;
         this.zzz.flags[Flag.Length] = false;
-        this.zzz.flags[Flag.Order] = false;
         this.zzz.flags[Flag.ClipPath] = false;
 
         this.#shapes = new Children(shapes);
-
-        this.#subscribe_to_shapes();
     }
 
     override dispose() {
-        this.#unsubscribe_from_shapes();
         this.#shapes.dispose();
         super.dispose();
     }
@@ -84,28 +73,24 @@ export class Group extends Shape {
         this.update();
 
         if (this.zzz.elem) {
-            // It's already defined.
+            // Why is this needed when Shape has already created an effect?
+            this.zzz.elem.setAttribute('transform', transform_value_of_matrix(this.matrix));
         }
         else {
             this.zzz.elem = svg.createElement('g', { id: this.id });
             domElement.appendChild(this.zzz.elem);
             super.render(domElement, svgElement);
-
-            this.zzz.disposables.push(effect(() => {
-                this.zzz.elem.setAttribute('transform', transform_value_of_matrix(this.matrix));
-            }));
         }
 
-        // _Update styles for the <g>
-        const flagMatrix = this.zzz.flags[Flag.Matrix];
+        /*
         const dom_context: DomContext = {
             domElement: domElement,
             elem: this.zzz.elem
         };
+        */
 
-        if (flagMatrix) {
-            this.zzz.elem.setAttribute('transform', transform_value_of_matrix(this.matrix));
-        }
+        // dom_context.elem.appendChild(child.zzz.elem);
+        // dom_context.elem.removeChild(child.zzz.elem);
 
         for (let i = 0; i < this.children.length; i++) {
             const child = this.children.getAt(i);
@@ -115,45 +100,6 @@ export class Group extends Shape {
 
         if (this.zzz.flags[Flag.ClassName]) {
             this.zzz.elem.setAttribute('class', this.classList.join(' '));
-        }
-
-        if (this.zzz.flags[Flag.Additions]) {
-            this.additions.forEach((shape) => {
-                const childNode = shape.zzz.elem;
-                if (!childNode) {
-                    return;
-                }
-                const tag = childNode.nodeName;
-                if (!tag || /(radial|linear)gradient/i.test(tag) || shape.zzz.clip) {
-                    return;
-                }
-                dom_context.elem.appendChild(childNode);
-            });
-        }
-
-        if (this.zzz.flags[Flag.Subtractions]) {
-            this.subtractions.forEach((shape) => {
-                const childNode = shape.zzz.elem;
-                if (!childNode || childNode.parentNode != dom_context.elem) {
-                    return;
-                }
-                const tag = childNode.nodeName;
-                if (!tag) {
-                    return;
-                }
-                // Defer subtractions while clipping.
-                if (shape.zzz.clip) {
-                    return;
-                }
-                dispose(shape.zzz.disposables);
-                dom_context.elem.removeChild(childNode);
-            });
-        }
-
-        if (this.zzz.flags[Flag.Order]) {
-            this.children.forEach((child) => {
-                dom_context.elem.appendChild(child.zzz.elem);
-            });
         }
 
         // Commented two-way functionality of clips / masks with groups and
@@ -187,43 +133,9 @@ export class Group extends Shape {
                     this.zzz.elem.removeAttribute('clip-path');
                 }
             }
-
         }
 
         this.flagReset();
-    }
-
-    #subscribe_to_shapes(): void {
-        this.#shapes_insert = this.#shapes.insert$.subscribe((inserts: Shape[]) => {
-            for (const shape of inserts) {
-                update_shape_group(shape, this);
-            }
-        });
-
-        this.#shapes_remove = this.#shapes.remove$.subscribe((removes: Shape[]) => {
-            for (const shape of removes) {
-                update_shape_group(shape, null);
-            }
-        });
-
-        this.#shapes_order = this.#shapes.order$.subscribe(() => {
-            this.zzz.flags[Flag.Order] = true;
-        });
-    }
-
-    #unsubscribe_from_shapes(): void {
-        if (this.#shapes_insert) {
-            this.#shapes_insert.dispose();
-            this.#shapes_insert = null;
-        }
-        if (this.#shapes_remove) {
-            this.#shapes_remove.dispose();
-            this.#shapes_remove = null;
-        }
-        if (this.#shapes_order) {
-            this.#shapes_order.dispose();
-            this.#shapes_order = null;
-        }
     }
 
     /**
@@ -449,19 +361,7 @@ export class Group extends Shape {
     }
 
     override flagReset(dirtyFlag = false) {
-        if (this.zzz.flags[Flag.Additions]) {
-            this.additions.length = 0;
-            this.zzz.flags[Flag.Additions] = dirtyFlag;
-        }
-
-        if (this.zzz.flags[Flag.Subtractions]) {
-            this.subtractions.length = 0;
-            this.zzz.flags[Flag.Subtractions] = false;
-        }
-
-        this.zzz.flags[Flag.Order] = dirtyFlag;
         this.zzz.flags[Flag.ClipPath] = dirtyFlag;
-
         this.zzz.flags[Flag.Beginning] = dirtyFlag;
         this.zzz.flags[Flag.Ending] = dirtyFlag;
 
@@ -499,11 +399,9 @@ export class Group extends Shape {
     }
     set children(children) {
 
-        this.#unsubscribe_from_shapes();
         this.#shapes.dispose();
 
         this.#shapes = children;
-        this.#subscribe_to_shapes();
 
         for (let i = 0; i < children.length; i++) {
             const shape = children.getAt(i);
@@ -558,15 +456,6 @@ export function update_shape_group(child: Shape, parent?: Group) {
 
     splice();
 
-    if (previous_parent && previous_parent instanceof Group) {
-        if (previous_parent.zzz.flags[Flag.Additions] && previous_parent.additions.length === 0) {
-            previous_parent.zzz.flags[Flag.Additions] = false;
-        }
-        if (previous_parent.zzz.flags[Flag.Subtractions] && previous_parent.subtractions.length === 0) {
-            previous_parent.zzz.flags[Flag.Subtractions] = false;
-        }
-    }
-
     delete child.parent;
 
     function add() {
@@ -587,7 +476,6 @@ export function update_shape_group(child: Shape, parent?: Group) {
 
         child.parent = parent;
         parent.additions.push(child);
-        parent.zzz.flags[Flag.Additions] = true;
     }
 
     function splice() {
@@ -601,7 +489,6 @@ export function update_shape_group(child: Shape, parent?: Group) {
             const indexSub = previous_parent.subtractions.indexOf(child);
             if (indexSub < 0) {
                 previous_parent.subtractions.push(child);
-                previous_parent.zzz.flags[Flag.Subtractions] = true;
             }
         }
     }
