@@ -1,5 +1,5 @@
-export { Gradient } from './gradient';
-export { LinearGradient } from './linear-gradient';
-export { RadialGradient } from './radial-gradient';
+export { Gradient, GradientAttributes } from './gradient';
+export { LinearGradient, LinearGradientAttributes } from './linear-gradient';
+export { RadialGradient, RadialGradientAttributes } from './radial-gradient';
 export { Stop } from './stop';
 

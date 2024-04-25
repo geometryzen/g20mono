@@ -25,28 +25,31 @@ export class LinearGradient extends Gradient implements ColorProvider {
         this.#point2 = position_from_like(point2);
     }
     render(defs: SVGDefsElement): this {
-        const changed: SVGAttributes = {};
 
         // If there is no attached DOM element yet,
         // create it with all necessary attributes.
         if (this.zzz.elem) {
+            const changed: SVGAttributes = {};
             setAttributes(this.zzz.elem, changed);
         }
         else {
-            changed.id = this.id;
-            this.zzz.elem = createElement('linearGradient', changed);
+            {
+                const changed: SVGAttributes = {};
+                changed.id = this.id;
+                this.zzz.elem = createElement('linearGradient', changed);
+            }
 
             this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = {};
-                changed.x1 = `${this.point1.x}`;
-                changed.y1 = `${this.point1.y}`;
+                change.x1 = `${this.point1.x}`;
+                change.y1 = `${this.point1.y}`;
                 setAttributes(this.zzz.elem, change);
             }));
 
             this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = {};
-                changed.x2 = `${this.point2.x}`;
-                changed.y2 = `${this.point2.y}`;
+                change.x2 = `${this.point2.x}`;
+                change.y2 = `${this.point2.y}`;
                 setAttributes(this.zzz.elem, change);
             }));
 
