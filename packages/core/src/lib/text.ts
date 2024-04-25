@@ -185,13 +185,8 @@ export class Text extends ColoredShape implements TextProperties {
             changed.id = this.id;
             this.zzz.elem = svg.createElement('text', changed);
             parentElement.appendChild(this.zzz.elem);
-            super.render(parentElement, svgElement);
 
-            this.zzz.disposables.push(effect(() => {
-                const change: SVGAttributes = {};
-                change.transform = transform_value_of_matrix(this.matrix);
-                svg.setAttributes(this.zzz.elem, change);
-            }));
+            super.render(parentElement, svgElement);
 
             // anchor
             this.zzz.disposables.push(effect(() => {

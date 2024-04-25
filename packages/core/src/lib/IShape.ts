@@ -17,5 +17,4 @@ export interface IShape<P> {
     // const regex = /texture|gradient/i;
     // regex.test(child._renderer.type)
     hasBoundingBox(): boolean;
-    subdivide(limit: number): this;
 }

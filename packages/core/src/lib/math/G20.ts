@@ -48,7 +48,9 @@ function isScalar(m: G20): boolean {
     return m.x === 0 && m.y === 0 && m.b === 0;
 }
 
-function equals(P: [a: number, x: number, y: number, b: number], Q: [a: number, x: number, y: number, b: number]): boolean {
+type COORDS = [a: number, x: number, y: number, b: number];
+
+function equalsCoords(P: COORDS, Q: COORDS): boolean {
     return P[0] === Q[0] && P[1] === Q[1] && P[2] === Q[2] && P[3] === Q[3];
 }
 
@@ -61,8 +63,12 @@ const COORD_B = 3;
  * A multivector for two dimensions with a Euclidean metric.
  */
 export class G20 {
-
-    readonly #coords: State<[a: number, x: number, y: number, b: number]>;
+    // Keep two arrays and flip-flop between them so that...
+    // 1. We don't tax the garbage collector.
+    // 2. The signal library can compare old and new values.
+    readonly #coords1: COORDS = [0, 0, 0, 0];
+    readonly #coords2: COORDS = [0, 0, 0, 0];
+    readonly #coords: State<COORDS> = state(this.#coords1, { equals: equalsCoords });
 
     #lock = UNLOCKED;
 
@@ -70,7 +76,7 @@ export class G20 {
     readonly change$ = this.#change.asObservable();
 
     constructor(x = 0, y = 0, a = 0, b = 0) {
-        this.#coords = state([a, x, y, b], { equals });
+        this.set(x, y, a, b);
     }
 
     static scalar(a: number): G20 {
@@ -141,8 +147,10 @@ export class G20 {
         if (typeof a === 'number') {
             if (this.a !== a) {
                 const coords = this.#coords.get();
-                coords[COORD_A] = a;
-                this.#coords.set(coords);
+                const x = coords[COORD_X];
+                const y = coords[COORD_Y];
+                const b = coords[COORD_B];
+                this.set(x, y, a, b);
                 this.#change.set(this);
             }
         }
@@ -156,8 +164,10 @@ export class G20 {
         if (typeof x === 'number') {
             if (this.x !== x) {
                 const coords = this.#coords.get();
-                coords[COORD_X] = x;
-                this.#coords.set(coords);
+                const a = coords[COORD_A];
+                const b = coords[COORD_B];
+                const y = coords[COORD_Y];
+                this.set(x, y, a, b);
                 this.#change.set(this);
             }
         }
@@ -171,8 +181,10 @@ export class G20 {
         if (typeof y === 'number') {
             if (this.y !== y) {
                 const coords = this.#coords.get();
-                coords[COORD_Y] = y;
-                this.#coords.set(coords);
+                const x = coords[COORD_X];
+                const a = coords[COORD_A];
+                const b = coords[COORD_B];
+                this.set(x, y, a, b);
                 this.#change.set(this);
             }
         }
@@ -186,8 +198,10 @@ export class G20 {
         if (typeof b === 'number') {
             if (this.b !== b) {
                 const coords = this.#coords.get();
-                coords[COORD_B] = b;
-                this.#coords.set(coords);
+                const x = coords[COORD_X];
+                const y = coords[COORD_Y];
+                const a = coords[COORD_A];
+                this.set(x, y, a, b);
                 this.#change.set(this);
             }
         }
@@ -778,6 +792,18 @@ export class G20 {
         return this.set(x, y, a, b);
     }
 
+    #newCoords(oldCoords: COORDS): COORDS {
+        if (oldCoords === this.#coords1) {
+            return this.#coords2;
+        }
+        else if (oldCoords === this.#coords2) {
+            return this.#coords1;
+        }
+        else {
+            throw new Error();
+        }
+    }
+
     /**
      * Sets the coordinates of `this` multivector.
      * Requires `this` multivector to be mutable.
@@ -788,15 +814,17 @@ export class G20 {
      */
     set(x: number, y: number, a = 0, b = 0): this {
         if (this.isMutable()) {
-            // Take special care to only fire changed event if necessary.
-            const changed = (this.x !== x || this.y !== y || this.a !== a || this.b != b);
-            if (changed) {
-                const coords = this.#coords.get();
-                coords[COORD_A] = a;
-                coords[COORD_X] = x;
-                coords[COORD_Y] = y;
-                coords[COORD_B] = b;
-                this.#coords.set(coords);
+            const oldCoords = this.#coords.get();
+            const newCoords = this.#newCoords(oldCoords);
+            newCoords[COORD_A] = a;
+            newCoords[COORD_B] = b;
+            newCoords[COORD_X] = x;
+            newCoords[COORD_Y] = y;
+            if (equalsCoords(newCoords, oldCoords)) {
+                // Do nothing
+            }
+            else {
+                this.#coords.set(newCoords);
                 this.#change.set(this);
             }
             return this;

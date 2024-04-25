@@ -1,4 +1,4 @@
-import { effect, state } from 'g2o-reactive';
+import { computed, effect, Readable, state } from 'g2o-reactive';
 import { Anchor } from './anchor';
 import { Constants } from './constants';
 import { ElementBase } from './element';
@@ -8,8 +8,7 @@ import { IShape } from './IShape';
 import { compose_2d_3x3_transform } from './math/compose_2d_3x3_transform';
 import { G20 } from './math/G20';
 import { Matrix } from './matrix';
-import { Disposable } from './reactive/Disposable';
-import { variable } from './reactive/variable';
+import { Disposable, dispose } from './reactive/Disposable';
 import { svg, SVGAttributes, transform_value_of_matrix } from './renderers/SVGView';
 import { computed_world_matrix } from './utils/compute_world_matrix';
 
@@ -82,21 +81,20 @@ function ensure_identifier(attributes: ShapeAttributes): string {
 
 export abstract class Shape extends ElementBase<unknown> implements IShape<unknown>, ShapeProperties {
 
+    readonly #disposables: Disposable[] = [];
+
     /**
      * The matrix value of the shape's position, rotation, and scale.
      */
-    #matrix: Matrix = null;
+    readonly #matrix: Readable<Matrix>;
 
     /**
      * The matrix value of the shape's position, rotation, and scale in the scene.
      */
     #worldMatrix: Matrix = null;
 
-    #position: G20;
-    #position_change: Disposable;
-
-    #attitude: G20;
-    #attitude_change: Disposable;
+    readonly #position: G20;
+    readonly #attitude: G20;
 
     /**
      * The scale supports non-uniform scaling.
@@ -104,12 +102,10 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
      * Make the easy things easy...
      */
     readonly #scale: G20 = new G20(1, 1);
-    readonly #scale_change: Disposable;
 
+    readonly #skewX = state(0);
 
-    readonly #skewX = variable(0);
-
-    readonly #skewY = variable(0);
+    readonly #skewY = state(0);
 
     readonly #opacity = state(1);
     readonly #visibility = state('visible' as 'visible' | 'hidden' | 'collapse');
@@ -125,18 +121,12 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
     abstract length: number;
     abstract getBoundingBox(shallow?: boolean): { top?: number; left?: number; right?: number; bottom?: number };
     abstract hasBoundingBox(): boolean;
-    abstract subdivide(limit: number): this;
 
     constructor(readonly board: IBoard, attributes: ShapeAttributes = {}) {
 
         super(ensure_identifier(attributes));
 
         this.flagReset(true);
-
-        /**
-         * The transformation matrix of the shape.
-         */
-        this.#matrix = new Matrix();
 
         /**
          * The transformation matrix of the shape in the scene.
@@ -175,7 +165,7 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
         /**
          * The value for how much the shape is scaled relative to its parent.
          */
-        this.scale = 1;
+        this.scale = 1.0;
 
         /**
          * Skew the shape by an angle in the x axis direction.
@@ -186,24 +176,23 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
          * Skew the shape by an angle in the y axis direction.
          */
         this.skewY = 0;
+        /**
+         * 
+         */
+        this.#matrix = computed(() => update_matrix(this.#position, this.#attitude, this.#scale, this.skewX, this.skewY, this.#compensate, this.board.goofy));
 
-        // Wait to bind change detection until all properties have been established.
-        this.#position_change = this.#position_change_bind();
-        this.#attitude_change = this.#attitude_change_bind();
-        this.#scale_change = this.#scale.change$.subscribe(() => {
+        /*
+        this.#disposables.push(effect(()=>{
             this.#update_matrix(this.#compensate);
-        });
-
+        }));
+        */
     }
 
     override dispose(): void {
-        this.#scale_change.dispose();
-        this.#position_change_unbind();
-        this.#attitude_change_unbind();
+        dispose(this.#disposables);
         super.dispose();
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     render(parentElement: HTMLElement | SVGElement, svgElement: SVGElement): void {
         // clip-path
         this.zzz.disposables.push(effect(() => {
@@ -257,10 +246,12 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
             };
         }));
     }
-
+    /*
     #update_matrix(compensate: boolean): void {
         // For performance, the matrix product has been pre-computed.
         // M = T * S * R * skewX * skewY
+        // const M = untrack(() => this.matrix);
+        const M = this.matrix;
         const position = this.position;
         const x = position.x;
         const y = position.y;
@@ -271,7 +262,7 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
         if (this.board.goofy) {
             const cos_φ = attitude.a;
             const sin_φ = attitude.b;
-            compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, this.skewX, this.skewY, this.matrix);
+            compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, this.skewX, this.skewY, M);
         }
         else {
             if (compensate) {
@@ -283,16 +274,16 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
                 const b = attitude.b;
                 const cos_φ = (a - b) / Math.SQRT2;
                 const sin_φ = (a + b) / Math.SQRT2;
-                compose_2d_3x3_transform(y, x, sy, sx, cos_φ, sin_φ, this.skewY, this.skewX, this.matrix);
+                compose_2d_3x3_transform(y, x, sy, sx, cos_φ, sin_φ, this.skewY, this.skewX, M);
             }
             else {
                 const cos_φ = attitude.a;
                 const sin_φ = attitude.b;
-                compose_2d_3x3_transform(y, x, sy, sx, cos_φ, sin_φ, this.skewY, this.skewX, this.matrix);
+                compose_2d_3x3_transform(y, x, sy, sx, cos_φ, sin_φ, this.skewY, this.skewX, M);
             }
         }
     }
-
+    */
     update(): this {
         // There's no update on the super type.
         return this;
@@ -303,38 +294,6 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
         this.zzz.flags[Flag.Scale] = dirtyFlag;
         super.flagReset(dirtyFlag);
         return this;
-    }
-    useAttitude(attitude: G20): void {
-        this.#attitude_change_unbind();
-        this.#attitude = attitude;
-        this.#attitude_change = this.#attitude_change_bind();
-    }
-    #attitude_change_bind(): Disposable {
-        return this.#attitude.change$.subscribe(() => {
-            this.#update_matrix(this.#compensate);
-        });
-    }
-    #attitude_change_unbind(): void {
-        if (this.#attitude_change) {
-            this.#attitude_change.dispose();
-            this.#attitude_change = null;
-        }
-    }
-    usePosition(position: G20): void {
-        this.#position_change_unbind();
-        this.#position = position;
-        this.#position_change = this.#position_change_bind();
-    }
-    #position_change_bind(): Disposable {
-        return this.#position.change$.subscribe(() => {
-            this.#update_matrix(this.#compensate);
-        });
-    }
-    #position_change_unbind(): void {
-        if (this.#position_change) {
-            this.#position_change.dispose();
-            this.#position_change = null;
-        }
     }
     get X(): G20 {
         return this.#position;
@@ -380,7 +339,7 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
     set scale(scale: number) {
         this.#scale.x = scale;
         this.#scale.y = scale;
-        this.#update_matrix(this.#compensate);
+        // this.#update_matrix(this.#compensate);
         this.zzz.flags[Flag.Scale] = true;
     }
     get scaleXY(): G20 {
@@ -388,7 +347,7 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
     }
     set scaleXY(scale: G20) {
         this.#scale.set(scale.x, scale.y, 0, 0);
-        this.#update_matrix(this.#compensate);
+        // this.#update_matrix(this.#compensate);
         this.zzz.flags[Flag.Scale] = true;
     }
     get skewX(): number {
@@ -396,14 +355,14 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
     }
     set skewX(skewX: number) {
         this.#skewX.set(skewX);
-        this.#update_matrix(this.#compensate);
+        // this.#update_matrix(this.#compensate);
     }
     get skewY(): number {
         return this.#skewY.get();
     }
     set skewY(skewY: number) {
         this.#skewY.set(skewY);
-        this.#update_matrix(this.#compensate);
+        // this.#update_matrix(this.#compensate);
     }
     get clipPath(): Shape | null {
         return this.#clipPath.get();
@@ -416,11 +375,7 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
         }
     }
     get matrix(): Matrix {
-        return this.#matrix;
-    }
-    set matrix(matrix: Matrix) {
-        this.#matrix = matrix;
-        this.#update_matrix(this.#compensate);
+        return this.#matrix.get();
     }
     get opacity(): number {
         return this.#opacity.get();
@@ -464,4 +419,49 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
     set worldMatrix(worldMatrix: Matrix) {
         this.#worldMatrix = worldMatrix;
     }
+}
+
+/**
+ * This implementation
+ * @param position 
+ * @param attitude 
+ * @param scale 
+ * @param skewX 
+ * @param skewY 
+ * @param compensate 
+ * @param goofy 
+ * @returns 
+ */
+export function update_matrix(position: G20, attitude: G20, scale: G20, skewX: number, skewY: number, compensate: boolean, goofy: boolean): Matrix {
+    // For performance, the matrix product has been pre-computed.
+    // M = T * S * R * skewX * skewY
+    const M = new Matrix();
+    const x = position.x;
+    const y = position.y;
+    const sx = scale.x;
+    const sy = scale.y;
+    if (goofy) {
+        const cos_φ = attitude.a;
+        const sin_φ = attitude.b;
+        compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, skewX, skewY, M);
+    }
+    else {
+        if (compensate) {
+            // Text needs an additional rotation of -π/2 (i.e. clockwise 90 degrees) to compensate for 
+            // the use of a right-handed coordinate frame. The rotor for this is cos(π/4)+sin(π/4)*I.
+            // Here we compute the effective rotator (which is obtained by multiplying the two rotors),
+            // and use that to compose the transformation matrix.
+            const a = attitude.a;
+            const b = attitude.b;
+            const cos_φ = (a - b) / Math.SQRT2;
+            const sin_φ = (a + b) / Math.SQRT2;
+            compose_2d_3x3_transform(y, x, sy, sx, cos_φ, sin_φ, skewY, skewX, M);
+        }
+        else {
+            const cos_φ = attitude.a;
+            const sin_φ = attitude.b;
+            compose_2d_3x3_transform(y, x, sy, sx, cos_φ, sin_φ, skewY, skewX, M);
+        }
+    }
+    return M;
 }

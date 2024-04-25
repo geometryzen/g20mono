@@ -1,4 +1,4 @@
-import { Collection } from './collection';
+import { State, state } from 'g2o-reactive';
 import { Flag } from './Flag';
 import { IBoard } from './IBoard';
 import { IShape } from './IShape';
@@ -25,17 +25,17 @@ export class Group extends Shape {
      * Number between zero and one to state the beginning of where the path is rendered.
      * a percentage value that represents at what percentage into all child shapes should the renderer start drawing.
      */
-    #beginning = 0.0;
+    readonly #beginning = state(0.0);
 
     /**
      * Number between zero and one to state the ending of where the path is rendered.
      * a percentage value that represents at what percentage into all child shapes should the renderer start drawing.
      */
-    #ending = 1.0;
+    readonly #ending = state(1.0);
 
     #length = 0;
 
-    #shapes: Collection<Shape>;
+    readonly #shapes: State<Shape[]>;
 
     constructor(board: IBoard, shapes: Shape[] = [], attributes: Partial<GroupAttributes> = {}) {
 
@@ -47,7 +47,7 @@ export class Group extends Shape {
         this.zzz.flags[Flag.Length] = false;
         this.zzz.flags[Flag.ClipPath] = false;
 
-        this.#shapes = new Collection(shapes);
+        this.#shapes = state(shapes);
     }
 
     override dispose() {
@@ -82,8 +82,10 @@ export class Group extends Shape {
         // dom_context.elem.appendChild(child.zzz.elem);
         // dom_context.elem.removeChild(child.zzz.elem);
 
-        for (let i = 0; i < this.children.length; i++) {
-            const child = this.children.getAt(i);
+        const children = this.children;
+        const N = children.length;
+        for (let i = 0; i < N; i++) {
+            const child = children[i];
             const elem = this.zzz.elem;
             child.render(elem, svgElement);
         }
@@ -135,8 +137,10 @@ export class Group extends Shape {
     corner(): this {
         const bbox = this.getBoundingBox(true);
 
-        for (let i = 0; i < this.children.length; i++) {
-            const child = this.children.getAt(i);
+        const children = this.children;
+        const N = children.length;
+        for (let i = 0; i < N; i++) {
+            const child = children[i];
             child.position.x -= bbox.left;
             child.position.y -= bbox.top;
         }
@@ -156,8 +160,10 @@ export class Group extends Shape {
         const bbox = this.getBoundingBox(true);
         const cx = (bbox.left + bbox.right) / 2 - this.position.x;
         const cy = (bbox.top + bbox.bottom) / 2 - this.position.y;
-        for (let i = 0; i < this.children.length; i++) {
-            const child = this.children.getAt(i);
+        const children = this.children;
+        const N = children.length;
+        for (let i = 0; i < N; i++) {
+            const child = children[i];
             child.position.x -= cx;
             child.position.y -= cy;
         }
@@ -176,7 +182,7 @@ export class Group extends Shape {
             }
             else if (node instanceof Group && node.children) {
                 for (let i = 0; i < node.children.length; i++) {
-                    found = search(node.children.getAt(i));
+                    found = search(node.children[i]);
                     if (found) {
                         return found;
                     }
@@ -195,7 +201,7 @@ export class Group extends Shape {
             }
             if (node instanceof Group && node.children) {
                 for (let i = 0; i < node.children.length; i++) {
-                    const child = node.children.getAt(i);
+                    const child = node.children[i];
                     search(child);
                 }
             }
@@ -213,7 +219,7 @@ export class Group extends Shape {
             }
             if (node instanceof Group && node.children) {
                 for (let i = 0; i < node.children.length; i++) {
-                    const child = node.children.getAt(i);
+                    const child = node.children[i];
                     search(child);
                 }
             }
@@ -223,27 +229,29 @@ export class Group extends Shape {
     }
 
     add(...shapes: Shape[]) {
+        const children = this.children;
         for (let i = 0; i < shapes.length; i++) {
             const child = shapes[i];
             if (!(child && child.id)) {
                 continue;
             }
-            const index = this.children.indexOf(child);
+            const index = children.indexOf(child);
             if (index >= 0) {
-                this.children.splice(index, 1);
+                children.splice(index, 1);
             }
-            this.children.push(child);
+            children.push(child);
         }
         return this;
     }
 
     remove(...shapes: Shape[]) {
+        const children = this.children;
         for (let i = 0; i < shapes.length; i++) {
             const shape = shapes[i];
             shape.dispose();
-            const index = this.children.indexOf(shape);
+            const index = children.indexOf(shape);
             if (index >= 0) {
-                this.children.splice(index, 1);
+                children.splice(index, 1);
             }
         }
         return this;
@@ -261,7 +269,7 @@ export class Group extends Shape {
 
         for (let i = 0; i < this.children.length; i++) {
 
-            const child = this.children.getAt(i);
+            const child = this.children[i];
 
             if (!(child.visibility === 'visible') || child.hasBoundingBox()) {
                 continue;
@@ -300,16 +308,6 @@ export class Group extends Shape {
         return { top, left, right, bottom };
     }
 
-    /**
-     * Apply `subdivide` method to all child shapes.
-     */
-    subdivide(limit: number) {
-        this.children.forEach(function (child) {
-            child.subdivide(limit);
-        });
-        return this;
-    }
-
     update(): this {
         if (this.zzz.flags[Flag.Beginning] || this.zzz.flags[Flag.Ending]) {
 
@@ -322,7 +320,7 @@ export class Group extends Shape {
             const ed = ending * length;
 
             for (let i = 0; i < this.children.length; i++) {
-                const child = this.children.getAt(i);
+                const child = this.children[i];
                 const l = child.length;
 
                 if (bd > sum + l) {
@@ -367,45 +365,41 @@ export class Group extends Shape {
     set automatic(automatic: boolean) {
         this.#automatic = automatic;
         for (let i = 0; i < this.children.length; i++) {
-            const child = this.children.getAt(i);
+            const child = this.children[i];
             child.automatic = automatic;
         }
     }
     get beginning(): number {
-        return this.#beginning;
+        return this.#beginning.get();
     }
     set beginning(beginning: number) {
         if (typeof beginning === 'number') {
-            if (this.beginning !== beginning) {
-                this.#beginning = beginning;
-                this.zzz.flags[Flag.Beginning] = true;
-            }
+            this.#beginning.set(beginning);
+            this.zzz.flags[Flag.Beginning] = true;
         }
     }
     /**
      * A list of all the children in the scenegraph.
      */
-    get children(): Collection<Shape> {
-        return this.#shapes;
+    get children(): Shape[] {
+        return this.#shapes.get();
     }
-    set children(children: Collection<Shape>) {
+    set children(children: Shape[]) {
 
-        this.#shapes = children;
+        this.#shapes.set(children);
 
         for (let i = 0; i < children.length; i++) {
-            const shape = children.getAt(i);
+            const shape = children[i];
             update_shape_group(shape, this);
         }
     }
     get ending(): number {
-        return this.#ending;
+        return this.#ending.get();
     }
     set ending(ending: number) {
         if (typeof ending === 'number') {
-            if (this.ending !== ending) {
-                this.#ending = ending;
-                this.zzz.flags[Flag.Ending] = true;
-            }
+            this.#ending.set(ending);
+            this.zzz.flags[Flag.Ending] = true;
         }
     }
     get length(): number {
@@ -415,7 +409,7 @@ export class Group extends Shape {
                 return this.#length;
             }
             for (let i = 0; i < this.children.length; i++) {
-                const child = this.children.getAt(i);
+                const child = this.children[i];
                 this.#length += child.length;
             }
         }
