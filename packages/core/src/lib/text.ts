@@ -162,7 +162,7 @@ export class Text extends ColoredShape implements TextProperties {
         this.flagReset(true);
     }
 
-    render(domElement: HTMLElement | SVGElement, svgElement: SVGElement): void {
+    render(parentElement: HTMLElement | SVGElement, svgElement: SVGElement): void {
 
         this.update();
 
@@ -184,8 +184,8 @@ export class Text extends ColoredShape implements TextProperties {
         else {
             changed.id = this.id;
             this.zzz.elem = svg.createElement('text', changed);
-            domElement.appendChild(this.zzz.elem);
-            super.render(domElement, svgElement);
+            parentElement.appendChild(this.zzz.elem);
+            super.render(parentElement, svgElement);
 
             this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = {};
@@ -351,7 +351,7 @@ export class Text extends ColoredShape implements TextProperties {
 
         if (this.zzz.flags[Flag.ClipPath]) {
             if (this.clipPath) {
-                this.clipPath.render(domElement, svgElement);
+                this.clipPath.render(parentElement, svgElement);
                 this.zzz.elem.setAttribute('clip-path', 'url(#' + this.clipPath.id + ')');
             }
             else {

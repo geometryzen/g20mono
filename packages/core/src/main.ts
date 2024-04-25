@@ -125,7 +125,13 @@ document.addEventListener('DOMContentLoaded', function () {
     // Now move the box
     box.position.copyVector(A.position).add(AC.__mul__(0.75)).add(N.__mul__(box.height / 2));
 
+    // Why do we need an update to move the box?
     board.update();
+
+    box.fillOpacity = 0.3;
+    box.strokeOpacity = 0.5;
+
+    // board.update();
 
     window.onunload = function () {
         board.dispose();

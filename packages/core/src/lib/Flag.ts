@@ -13,7 +13,6 @@ export enum Flag {
     Index,
     Join,
     Length,
-    Miter,
     Rows,
     Scale,
     Sides,

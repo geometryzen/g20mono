@@ -73,7 +73,7 @@ export class Path extends ColoredShape implements PathAttributes {
     /**
      * stroke-miterlimit
      */
-    readonly #miter = variable(4);
+    readonly #miterLimit = variable(4);
 
     readonly #closed = state(true);
     #curved = false;
@@ -155,7 +155,7 @@ export class Path extends ColoredShape implements PathAttributes {
         /**
          * @see {@link https://www.w3.org/TR/SVG11/painting.html#StrokeMiterlimitProperty}
          */
-        this.miter = 4;         // Default of Adobe Illustrator
+        this.miterLimit = 4;         // Default of Adobe Illustrator
 
         this.vertices = new Collection(vertices);
 
@@ -171,7 +171,7 @@ export class Path extends ColoredShape implements PathAttributes {
         set_dashes_offset(this.dashes, 0);
     }
 
-    render(domElement: HTMLElement | SVGElement, svgElement: SVGElement): void {
+    render(parentElement: HTMLElement | SVGElement, svgElement: SVGElement): void {
 
         this.update();
 
@@ -194,10 +194,6 @@ export class Path extends ColoredShape implements PathAttributes {
             changed['stroke-linejoin'] = this.join;
         }
 
-        if (this.zzz.flags[Flag.Miter]) {
-            changed['stroke-miterlimit'] = `${this.miter}`;
-        }
-
         if (this.dashes && this.dashes.length > 0) {
             changed['stroke-dasharray'] = this.dashes.join(' ');
             changed['stroke-dashoffset'] = `${get_dashes_offset(this.dashes) || 0}`;
@@ -212,14 +208,16 @@ export class Path extends ColoredShape implements PathAttributes {
         else {
             changed.id = this.id;
             this.zzz.elem = svg.createElement('path', changed);
-            domElement.appendChild(this.zzz.elem);
-            super.render(domElement, svgElement);
+            parentElement.appendChild(this.zzz.elem);
+            super.render(parentElement, svgElement);
 
-            // The matrix is in the Shape.
             this.zzz.disposables.push(effect(() => {
-                const change: SVGAttributes = {};
-                change.transform = transform_value_of_matrix(this.matrix);
-                svg.setAttributes(this.zzz.elem, change);
+                if (this.miterLimit !== 4) {
+                    this.zzz.elem.setAttribute('stroke-miterlimit', `${this.miterLimit}`);
+                }
+                else {
+                    this.zzz.elem.removeAttribute('stroke-miterlimit');
+                }
             }));
 
             this.zzz.disposables.push(this.zzz.vertices$.subscribe(() => {
@@ -254,7 +252,7 @@ export class Path extends ColoredShape implements PathAttributes {
         // https://developer.mozilla.org/en-US/docs/Web/SVG/Element/mask
         if (this.zzz.flags[Flag.ClipPath]) {
             if (this.clipPath) {
-                this.clipPath.render(domElement, svgElement);
+                this.clipPath.render(parentElement, svgElement);
                 this.zzz.elem.setAttribute('clip-path', 'url(#' + this.clipPath.id + ')');
             }
             else {
@@ -832,7 +830,6 @@ export class Path extends ColoredShape implements PathAttributes {
         this.zzz.flags[Flag.Join] = dirtyFlag;
         this.zzz.flags[Flag.Length] = dirtyFlag;
         this.zzz.flags[Flag.ClipPath] = dirtyFlag;
-        this.zzz.flags[Flag.Miter] = dirtyFlag;
         this.zzz.flags[Flag.VectorEffect] = dirtyFlag;
         this.zzz.flags[Flag.Vertices] = dirtyFlag;
 
@@ -924,12 +921,11 @@ export class Path extends ColoredShape implements PathAttributes {
     get lengths(): number[] {
         return this.#lengths;
     }
-    get miter(): number {
-        return this.#miter.get();
+    get miterLimit(): number {
+        return this.#miterLimit.get();
     }
-    set miter(miter: number) {
-        this.#miter.set(miter);
-        this.zzz.flags[Flag.Miter] = true;
+    set miterLimit(miterlimit: number) {
+        this.#miterLimit.set(miterlimit);
     }
     get vertices(): Collection<Anchor> {
         return this.#vertices;

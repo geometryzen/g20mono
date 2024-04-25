@@ -116,7 +116,7 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
 
     readonly #compensate: boolean;
 
-    #clipPath: Shape | null = null;
+    readonly #clipPath = state(null as Shape | null);
 
     abstract automatic: boolean;
     abstract beginning: number;
@@ -204,7 +204,19 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    render(domElement: HTMLElement | SVGElement, svgElement: SVGElement): void {
+    render(parentElement: HTMLElement | SVGElement, svgElement: SVGElement): void {
+        // clip-path
+        this.zzz.disposables.push(effect(() => {
+            const clipPath = this.clipPath;
+            if (clipPath) {
+                this.clipPath.render(parentElement, svgElement);
+                this.zzz.elem.setAttribute('clip-path', 'url(#' + this.clipPath.id + ')');
+            }
+            else {
+                this.zzz.elem.removeAttribute('clip-path');
+            }
+        }));
+
         // transform
         this.zzz.disposables.push(effect(() => {
             this.zzz.elem.setAttribute('transform', transform_value_of_matrix(this.matrix));
@@ -224,6 +236,7 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
                 // No cleanup to be done.
             };
         }));
+
         // visibility
         this.zzz.disposables.push(effect(() => {
             const visibility = this.visibility;
@@ -393,10 +406,10 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
         this.#update_matrix(this.#compensate);
     }
     get clipPath(): Shape | null {
-        return this.#clipPath;
+        return this.#clipPath.get();
     }
     set clipPath(clipPath: Shape | null) {
-        this.#clipPath = clipPath;
+        this.#clipPath.set(clipPath);
         this.zzz.flags[Flag.ClipPath] = true;
         if (clipPath instanceof Shape && !clipPath.zzz.clip) {
             clipPath.zzz.clip = true;

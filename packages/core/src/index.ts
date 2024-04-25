@@ -1,6 +1,5 @@
 export { Anchor } from './lib/anchor';
 export { Board, BoardAttributes, PointAttributes } from './lib/board';
-export { Child, Children } from './lib/children';
 export { Collection } from './lib/collection';
 export { Color, ColorProvider } from './lib/effects/ColorProvider';
 export { ElementBase } from './lib/element';

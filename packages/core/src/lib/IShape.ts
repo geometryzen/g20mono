@@ -1,10 +1,10 @@
-import { Child } from "./children";
 import { G20 } from "./math/G20";
 
 /**
  * TODO: rename to Shape when the hierarchy has been flattened.
  */
-export interface IShape<P> extends Child {
+export interface IShape<P> {
+    id: string;
     automatic: boolean;
     beginning: number;
     classList: string[];

@@ -1,4 +1,4 @@
-import { Children } from './children';
+import { Collection } from './collection';
 import { Flag } from './Flag';
 import { IBoard } from './IBoard';
 import { IShape } from './IShape';
@@ -35,16 +35,7 @@ export class Group extends Shape {
 
     #length = 0;
 
-    #shapes: Children<Shape>;
-
-    /**
-     * An automatically updated list of shapes that need to be appended to the renderer's scenegraph.
-     */
-    readonly additions: Shape[] = [];
-    /**
-     * An automatically updated list of children that need to be removed from the renderer's scenegraph.
-     */
-    readonly subtractions: Shape[] = [];
+    #shapes: Collection<Shape>;
 
     constructor(board: IBoard, shapes: Shape[] = [], attributes: Partial<GroupAttributes> = {}) {
 
@@ -56,11 +47,10 @@ export class Group extends Shape {
         this.zzz.flags[Flag.Length] = false;
         this.zzz.flags[Flag.ClipPath] = false;
 
-        this.#shapes = new Children(shapes);
+        this.#shapes = new Collection(shapes);
     }
 
     override dispose() {
-        this.#shapes.dispose();
         super.dispose();
     }
 
@@ -68,7 +58,7 @@ export class Group extends Shape {
         return false;
     }
 
-    render(domElement: HTMLElement | SVGElement, svgElement: SVGElement): void {
+    render(parentElement: HTMLElement | SVGElement, svgElement: SVGElement): void {
 
         this.update();
 
@@ -78,8 +68,8 @@ export class Group extends Shape {
         }
         else {
             this.zzz.elem = svg.createElement('g', { id: this.id });
-            domElement.appendChild(this.zzz.elem);
-            super.render(domElement, svgElement);
+            parentElement.appendChild(this.zzz.elem);
+            super.render(parentElement, svgElement);
         }
 
         /*
@@ -124,9 +114,10 @@ export class Group extends Shape {
 
             // }
 
+            // This code is a candidate for being put in Shape?
             if (this.zzz.flags[Flag.ClipPath]) {
                 if (this.clipPath) {
-                    this.clipPath.render(domElement, svgElement);
+                    this.clipPath.render(parentElement, svgElement);
                     this.zzz.elem.setAttribute('clip-path', 'url(#' + this.clipPath.id + ')');
                 }
                 else {
@@ -394,12 +385,10 @@ export class Group extends Shape {
     /**
      * A list of all the children in the scenegraph.
      */
-    get children(): Children<Shape> {
+    get children(): Collection<Shape> {
         return this.#shapes;
     }
-    set children(children) {
-
-        this.#shapes.dispose();
+    set children(children: Collection<Shape>) {
 
         this.#shapes = children;
 
@@ -439,59 +428,20 @@ export function update_shape_group(child: Shape, parent?: Group) {
     const previous_parent = child.parent;
 
     if (previous_parent === parent) {
-        add();
         return;
     }
 
-    if (previous_parent && previous_parent instanceof Group && previous_parent.children.ids[child.id]) {
-        const index = Array.prototype.indexOf.call(previous_parent.children, child);
+    if (previous_parent && previous_parent instanceof Group) {
+        const index = previous_parent.children.indexOf(child);
         previous_parent.children.splice(index, 1);
-        splice();
     }
 
     if (parent) {
-        add();
+        child.parent = parent;
         return;
     }
 
-    splice();
-
     delete child.parent;
-
-    function add() {
-
-        if (parent.subtractions.length > 0) {
-            const index = Array.prototype.indexOf.call(parent.subtractions, child);
-            if (index >= 0) {
-                parent.subtractions.splice(index, 1);
-            }
-        }
-
-        if (parent.additions.length > 0) {
-            const index = Array.prototype.indexOf.call(parent.additions, child);
-            if (index >= 0) {
-                parent.additions.splice(index, 1);
-            }
-        }
-
-        child.parent = parent;
-        parent.additions.push(child);
-    }
-
-    function splice() {
-
-        if (previous_parent && previous_parent instanceof Group) {
-            const indexAdd = previous_parent.additions.indexOf(child);
-            if (indexAdd >= 0) {
-                previous_parent.additions.splice(indexAdd, 1);
-            }
-
-            const indexSub = previous_parent.subtractions.indexOf(child);
-            if (indexSub < 0) {
-                previous_parent.subtractions.push(child);
-            }
-        }
-    }
 }
 
 function shape_attributes(attributes: Partial<GroupAttributes>): ShapeAttributes {

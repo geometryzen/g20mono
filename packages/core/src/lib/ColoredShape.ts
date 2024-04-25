@@ -4,7 +4,6 @@ import { Color } from "./effects/ColorProvider";
 import { Flag } from "./Flag";
 import { IBoard } from "./IBoard";
 import { G20 } from "./math/G20";
-import { svg, SVGAttributes } from "./renderers/SVGView";
 import { PositionLike, Shape, ShapeAttributes } from "./Shape";
 
 export interface ColoredShapeAttributes extends ShapeAttributes {
@@ -35,7 +34,7 @@ export abstract class ColoredShape extends Shape {
 
     constructor(board: IBoard, attributes: ColoredShapeAttributes = {}) {
         super(board, shape_attribs_from_colored_attribs(attributes));
-    
+
         if (attributes.fill) {
             this.fill = attributes.fill;
         }
@@ -145,9 +144,13 @@ export abstract class ColoredShape extends Shape {
 
             // fill-opacity
             this.zzz.disposables.push(effect(() => {
-                const change: SVGAttributes = {};
-                change['fill-opacity'] = `${this.fillOpacity}`;
-                svg.setAttributes(this.zzz.elem, change);
+                const fillOpacity = this.fillOpacity;
+                if (fillOpacity !== 1) {
+                    this.zzz.elem.setAttribute('fill-opacity', `${fillOpacity}`);
+                }
+                else {
+                    this.zzz.elem.removeAttribute('fill-opacity');
+                }
                 return function () {
                     // No cleanup to be done.
                 };
@@ -163,9 +166,13 @@ export abstract class ColoredShape extends Shape {
 
             // stroke-opacity
             this.zzz.disposables.push(effect(() => {
-                const change: SVGAttributes = {};
-                change['stroke-opacity'] = `${this.strokeOpacity}`;
-                svg.setAttributes(this.zzz.elem, change);
+                const strokeOpacity = this.strokeOpacity;
+                if (strokeOpacity !== 1) {
+                    this.zzz.elem.setAttribute('stroke-opacity', `${strokeOpacity}`);
+                }
+                else {
+                    this.zzz.elem.removeAttribute('stroke-opacity');
+                }
                 return function () {
                     // No cleanup to be done.
                 };
@@ -173,9 +180,13 @@ export abstract class ColoredShape extends Shape {
 
             // stroke-width
             this.zzz.disposables.push(effect(() => {
-                const change: SVGAttributes = {};
-                change['stroke-width'] = `${this.strokeWidth}`;
-                svg.setAttributes(this.zzz.elem, change);
+                const strokeWidth = this.strokeWidth;
+                if (strokeWidth !== 1) {
+                    this.zzz.elem.setAttribute('stroke-width', `${strokeWidth}`);
+                }
+                else {
+                    this.zzz.elem.removeAttribute('stroke-width');
+                }
                 return function () {
                     // No cleanup to be done.
                 };
