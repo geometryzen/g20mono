@@ -154,11 +154,6 @@ export class Board implements IBoard {
      * introducing a 90 degree rotation if the coordinate system is right-handed (a.k.a regular or not goofy).
      */
     #update_view_box(): void {
-        // The computation here defines a viewbox transformation that should be the identity
-        // when...
-        // width  = right - left, and
-        // height = bottom - top.
-        //
         const { left, top, right, bottom } = this.getBoundingBox();
         const Δx = this.width;
         const Δy = this.height;
@@ -171,7 +166,7 @@ export class Board implements IBoard {
         this.#viewBox.position.set(x, y);
         if (this.goofy) {
             if (this.crazy) {
-                this.#viewBox.scaleXY.set(-sx, -sy);    
+                this.#viewBox.scaleXY.set(-sx, -sy);
                 this.#viewBox.attitude.rotorFromAngle(-Math.PI);
             }
             else {
@@ -179,11 +174,12 @@ export class Board implements IBoard {
             }
         }
         else {
-            this.#viewBox.scaleXY.set(sx, -sy);
             if (this.crazy) {
+                this.#viewBox.scaleXY.set(sx, -sy);
                 this.#viewBox.attitude.rotorFromAngle(-Math.PI / 2);
             }
             else {
+                this.#viewBox.scaleXY.set(sx, -sy);
                 this.#viewBox.attitude.rotorFromAngle(+Math.PI / 2);
             }
         }

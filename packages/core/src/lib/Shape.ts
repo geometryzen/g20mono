@@ -402,18 +402,18 @@ export function update_matrix(position: G20, attitude: G20, scale: G20, skewX: n
             if (crazy) {
                 const cos_φ = attitude.b;
                 const sin_φ = attitude.a;
-                compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, skewX, skewY, M);        
+                compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, skewX, skewY, M);
             }
             else {
                 const cos_φ = attitude.a;
                 const sin_φ = attitude.b;
-                compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, skewX, skewY, M);        
+                compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, skewX, skewY, M);
             }
         }
         else {
             const cos_φ = attitude.a;
             const sin_φ = attitude.b;
-            compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, skewX, skewY, M);    
+            compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, skewX, skewY, M);
         }
     }
     else {
@@ -422,9 +422,9 @@ export function update_matrix(position: G20, attitude: G20, scale: G20, skewX: n
                 // Text needs an additional rotation of +π/2 (i.e. counter-clockwise 90 degrees). 
                 const a = attitude.a;
                 const b = attitude.b;
-                const cos_φ = (b + a) / Math.SQRT2;
-                const sin_φ = (b - a) / Math.SQRT2;
-                compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, skewX, skewY, M);
+                const cos_φ = (a + b) / Math.SQRT2;
+                const sin_φ = (a - b) / Math.SQRT2;
+                compose_2d_3x3_transform(y, x, sy, sx, cos_φ, sin_φ, skewY, skewX, M);
             }
             else {
                 // Text needs an additional rotation of -π/2 (i.e. clockwise 90 degrees) to compensate for 
