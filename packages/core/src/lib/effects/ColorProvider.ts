@@ -4,9 +4,8 @@ export interface ColorProvider {
      * The identifier provides a reference for the consuming colored shape.
      */
     readonly id: string;
-    addRef(): void;
-    release(): void;
-    use(svgElement: SVGElement): this;
+    addRef(defs: SVGDefsElement): void;
+    release(defs: SVGDefsElement): void;
 }
 
 export type Color = string | ColorProvider;

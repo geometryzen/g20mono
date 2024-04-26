@@ -2,7 +2,7 @@ import { ColorProvider, ElementBase, Group, variable } from 'g2o';
 import { effect, State, state } from 'g2o-reactive';
 import { Constants } from './constants';
 import { Stop } from './stop';
-import { createElement, get_svg_element_defs, setAttributes, SVGAttributes } from './svg';
+import { createElement, setAttributes, SVGAttributes } from './svg';
 
 export interface GradientAttributes {
     id?: string;
@@ -14,7 +14,6 @@ export interface GradientAttributes {
 export abstract class Gradient extends ElementBase<Group> implements ColorProvider {
 
     #refCount = 0;
-    #svgElement: SVGElement | null = null;
 
     _flagStops = false;
 
@@ -44,11 +43,6 @@ export abstract class Gradient extends ElementBase<Group> implements ColorProvid
         super.dispose();
     }
 
-    use(svgElement: SVGElement): this {
-        this.#svgElement = svgElement;
-        return this;
-    }
-
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     render(defs: SVGDefsElement): void {
         this.zzz.disposables.push(effect(() => {
@@ -57,10 +51,10 @@ export abstract class Gradient extends ElementBase<Group> implements ColorProvid
                 this.zzz.elem.removeChild(this.zzz.elem.lastChild);
             }
 
-            for (let i = 0; i < this.stops.length; i++) {
-
-                const stop = this.stops[i];
-
+            const stops = this.stops;
+            const N = stops.length;
+            for (let i = 0; i < N; i++) {
+                const stop = stops[i];
                 {
                     const attrs: SVGAttributes = {};
                     stop.zzz.elem = createElement('stop', attrs);
@@ -86,22 +80,21 @@ export abstract class Gradient extends ElementBase<Group> implements ColorProvid
                         setAttributes(stop.zzz.elem, change);
                     }));
                 }
-
                 stop.flagReset();
             }
         }));
     }
 
-    addRef(): void {
+    addRef(defs: SVGDefsElement): void {
         this.#refCount++;
         if (this.#refCount === 1) {
-            this.render(get_svg_element_defs(this.#svgElement));
+            this.render(defs);
         }
     }
-    release(): void {
+    release(defs: SVGDefsElement): void {
         this.#refCount--;
         if (this.#refCount === 0) {
-            get_svg_element_defs(this.#svgElement).removeChild(this.zzz.elem);
+            defs.removeChild(this.zzz.elem);
             this.zzz.elem = null;
         }
     }
@@ -138,6 +131,7 @@ export abstract class Gradient extends ElementBase<Group> implements ColorProvid
         this.#units.set(units);
     }
 }
+
 function ensure_identifier(attributes: GradientAttributes): string {
     if (typeof attributes.id === 'string') {
         return attributes.id;
