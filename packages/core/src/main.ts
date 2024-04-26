@@ -3,16 +3,15 @@ import { Board, Shape } from './index';
 document.addEventListener('DOMContentLoaded', function () {
 
     const board = new Board("my-board", {
-        // viewFactory: new CanvasViewFactory(),
-        boundingBox: { left: -2, top: 2, right: 2, bottom: -2 } // regular (y increases upwards)
+        // boundingBox: { left: -2, top: 2, right: 2, bottom: -2 } // regular (y increases upwards)
         // boundingBox: { left: -2, top: -2, right: 2, bottom: 2 } // goofy (y increases downwards)
         // boundingBox: { left: 2, top: 2, right: -2, bottom: -2 } // regular, crazy (x increases leftwards)
         // boundingBox: { left: 2, top: -2, right: -2, bottom: 2 } // goofy, crazy (x increases leftwards)
     });
 
-    const origin = board.point([0.0, 0.0], { id: 'origin' });
-    const unitX = board.point([1.0, 0.0], { id: 'unitX' });
-    const unitY = board.point([0.0, 1.0], { id: 'unitY' });
+    const origin = board.point([0.0, 0.0], { id: 'origin', visibility: 'hidden' });
+    const unitX = board.point([1.0, 0.0], { id: 'unitX', visibility: 'hidden' });
+    const unitY = board.point([0.0, 1.0], { id: 'unitY', visibility: 'hidden' });
 
     const ex = board.arrow(unitX, {
         id: 'ex',
@@ -28,30 +27,38 @@ document.addEventListener('DOMContentLoaded', function () {
         strokeWidth: 4
     });
 
-    const textX = board.text("ex (red)", {
-        id: 'text-ex',
+    const textX = board.text("ex", {
+        id: 'text-A',
+        anchor: 'middle',
+        baseline: 'middle',
         position: ex.axis,
         opacity: 0.5,
         fillOpacity: 0.5,
+        fontSize: 20,
         strokeOpacity: 0.5,
-        strokeWidth: 1
+        strokeWidth: 1,
+        dx: 20
     });
     rescale(textX, board);
 
-    const textY = board.text("ey (blue)", {
-        id: 'text-ey',
+    const textY = board.text("ey", {
+        id: 'text-B',
+        anchor: 'middle',
+        baseline: 'middle',
         position: ey.axis,
         opacity: 0.5,
         fillOpacity: 0.5,
+        fontSize: 20,
         strokeOpacity: 0.5,
-        strokeWidth: 1
+        strokeWidth: 1,
+        dy: 20
     });
     rescale(textY, board);
 
     // board.update(); // Needed for CanvasView
 
     function rescale(shape: Shape, board: Board): void {
-        shape.scaleXY.set(2 / board.scaleXY.x, 2 / board.scaleXY.y);
+        shape.scaleXY.set(1 / board.scaleXY.x, 1 / board.scaleXY.y);
     }
 
     window.onunload = function () {

@@ -252,12 +252,23 @@ export class Text extends ColoredShape implements TextProperties {
 
             // dx
             this.zzz.disposables.push(effect(() => {
+                this.board.crazy;
                 const dx = this.dx;
                 if (typeof dx === 'number' && dx === 0) {
                     svg.removeAttributes(this.zzz.elem, { dx: "" });
                 }
                 else {
-                    svg.setAttributes(this.zzz.elem, { dx: `${dx}` });
+                    if (typeof dx === 'number') {
+                        if (this.board.crazy) {
+                            svg.setAttributes(this.zzz.elem, { dx: `${-dx}` });
+                        }
+                        else {
+                            svg.setAttributes(this.zzz.elem, { dx: `${dx}` });
+                        }
+                    }
+                    else {
+                        svg.setAttributes(this.zzz.elem, { dx: `${dx}` });
+                    }
                 }
                 return function () {
                     // No cleanup to be done.
@@ -271,7 +282,17 @@ export class Text extends ColoredShape implements TextProperties {
                     svg.removeAttributes(this.zzz.elem, { dy: "" });
                 }
                 else {
-                    svg.setAttributes(this.zzz.elem, { dy: `${dy}` });
+                    if (typeof dy === 'number') {
+                        if (this.board.goofy) {
+                            svg.setAttributes(this.zzz.elem, { dy: `${dy}` });
+                        }
+                        else {
+                            svg.setAttributes(this.zzz.elem, { dy: `${-dy}` });
+                        }
+                    }
+                    else {
+                        svg.setAttributes(this.zzz.elem, { dy: `${dy}` });
+                    }
                 }
                 return function () {
                     // No cleanup to be done.
