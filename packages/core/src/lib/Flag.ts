@@ -9,7 +9,6 @@ export enum Flag {
     Ending,
     Fill,
     FrameRate,
-    Height,
     Index,
     Join,
     Length,
@@ -22,6 +21,5 @@ export enum Flag {
     Stroke,
     Units,
     Vertices,
-    VectorEffect,
-    Width
+    VectorEffect
 }

@@ -64,31 +64,27 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     rescale(textC, board);
 
-    const textD = board.text("Box", {
-        id: 'text-D',
+    const textBox = board.text("Box", {
+        id: 'text-Box',
         anchor: 'middle',
         baseline: 'middle',
         fontFamily: 'Lato',
         fontSize: 20,
         position: box.X
     });
-    textD.attitude.rotorFromDirections(AB, AC);
-    rescale(textD, board);
+    textBox.attitude.rotorFromDirections(AB, AC);
+    rescale(textBox, board);
 
-    const textE = board.text("Ramp", {
-        id: 'text-E',
+    const textRamp = board.text("Ramp", {
+        id: 'text-Ramp',
         anchor: 'middle',
         baseline: 'hanging',
         fontFamily: 'Lato',
         fontSize: 20,
         position: ramp.X
     });
-    textE.attitude.rotorFromDirections(AB, AC);
-    rescale(textE, board);
-    board.update();
-
-    board.point([box.position.x, box.position.y], { id: 'D', visibility: 'hidden' });
-    board.update();
+    textRamp.attitude.rotorFromDirections(AB, AC);
+    rescale(textRamp, board);
 
     box.stroke = "#FFCC00";
     box.strokeWidth = 4;
@@ -97,18 +93,21 @@ document.addEventListener('DOMContentLoaded', function () {
     box.fillOpacity = 0.3;
 
     const Fg = board.arrow(G20.ey.scale(-2), {
+        id: 'Fg',
         position: box.X,
         strokeWidth: 2
     });
     Fg.strokeOpacity = 0.4;
 
     const Fn = board.arrow(N.scale(1.5), {
+        id: 'Fn',
         position: box.X,
         strokeOpacity: 0.4
     });
     Fn.strokeWidth = 2;
 
     const Fs = board.arrow(S.scale(1.5), {
+        id: 'Fs',
         position: box.X
     });
     Fs.strokeOpacity = 0.4;
@@ -122,27 +121,23 @@ document.addEventListener('DOMContentLoaded', function () {
     arrow.headLength = 0.25;
     arrow.origin = G20.ey.scale(1 / 2);
 
-    // Now move the box
-    box.position.copyVector(A.position).add(AC.__mul__(0.75)).add(N.__mul__(box.height / 2));
-
-    board.update();
-
     window.onunload = function () {
         board.dispose();
     };
 
-    /*
+
     function animate() {
+        const temp = G20.fromVector(box.X);
+        temp.copyVector(A.position).add(AC.__mul__(0.75)).add(N.__mul__(box.height / 2));
+        box.X.copyVector(temp);
         // board.update()
-        window.requestAnimationFrame(animate)
+        // window.requestAnimationFrame(animate)
     }
 
-    window.requestAnimationFrame(animate)
-    */
+    window.requestAnimationFrame(animate);
 });
 
 function rescale(text: Text, board: Board): void {
-    text.scaleXY.x = 1 / board.scaleXY.x;
-    text.scaleXY.y = 1 / board.scaleXY.y;
+    text.scaleXY.set(1 / board.scaleXY.x, 1 / board.scaleXY.y);
 }
 

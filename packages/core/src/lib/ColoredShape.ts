@@ -4,6 +4,7 @@ import { Color } from "./effects/ColorProvider";
 import { Flag } from "./Flag";
 import { IBoard } from "./IBoard";
 import { G20 } from "./math/G20";
+import { get_svg_element_defs } from "./renderers/SVGView";
 import { PositionLike, Shape, ShapeAttributes } from "./Shape";
 
 export interface ColoredShapeAttributes extends ShapeAttributes {
@@ -22,13 +23,13 @@ export abstract class ColoredShape extends Shape {
     /**
      * @see {@link https://developer.mozilla.org/en-US/docs/Web/CSS/color_value} for more information on CSS's colors as `String`.
      */
-    readonly #fill = new ColorManager('none', 'fill');
+    readonly #fillColor = new ColorManager('none', 'fill');
     readonly #fillOpacity = state(1.0);
 
     /**
      * @see {@link https://developer.mozilla.org/en-US/docs/Web/CSS/color_value} for more information on CSS's colors as `String`.
      */
-    readonly #stroke = new ColorManager('#000', 'stroke');
+    readonly #strokeColor = new ColorManager('#000', 'stroke');
     readonly #strokeWidth = state(1);
     readonly #strokeOpacity = state(1.0);
 
@@ -80,10 +81,10 @@ export abstract class ColoredShape extends Shape {
     stroke: Color;
     */
     get fill(): Color {
-        return this.#fill.get();
+        return this.#fillColor.get();
     }
     set fill(fill: Color) {
-        this.#fill.set(fill);
+        this.#fillColor.set(fill);
         this.zzz.flags[Flag.Fill] = true;
     }
     get fillOpacity(): number {
@@ -93,10 +94,10 @@ export abstract class ColoredShape extends Shape {
         this.#fillOpacity.set(fillOpacity);
     }
     get stroke(): Color {
-        return this.#stroke.get();
+        return this.#strokeColor.get();
     }
     set stroke(stroke: Color) {
-        this.#stroke.set(stroke);
+        this.#strokeColor.set(stroke);
         this.zzz.flags[Flag.Stroke] = true;
     }
     get strokeOpacity(): number {
@@ -131,12 +132,14 @@ export abstract class ColoredShape extends Shape {
     override render(domElement: HTMLElement | SVGElement, svgElement: SVGElement): void {
         // The derived class determines the element.
         if (this.zzz.elem) {
-            this.#fill.use(svgElement, this.zzz.elem);
-            this.#stroke.use(svgElement, this.zzz.elem);
+            // TODO: We really only need the defs element for the ColorManager.
+            get_svg_element_defs(svgElement);
+            this.#fillColor.use(svgElement, this.zzz.elem);
+            this.#strokeColor.use(svgElement, this.zzz.elem);
 
             // fill
             this.zzz.disposables.push(effect(() => {
-                this.#fill.update();
+                this.#fillColor.update();
                 return function () {
                     // No cleanup to be done.
                 };
@@ -158,7 +161,7 @@ export abstract class ColoredShape extends Shape {
 
             // stroke
             this.zzz.disposables.push(effect(() => {
-                this.#stroke.update();
+                this.#strokeColor.update();
                 return function () {
                     // No cleanup to be done.
                 };

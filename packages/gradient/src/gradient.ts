@@ -2,7 +2,7 @@ import { ColorProvider, ElementBase, Group, variable } from 'g2o';
 import { effect, State, state } from 'g2o-reactive';
 import { Constants } from './constants';
 import { Stop } from './stop';
-import { createElement, setAttributes, SVGAttributes } from './svg';
+import { createElement, SVGAttributes } from './svg';
 
 export interface GradientAttributes {
     id?: string;
@@ -56,30 +56,19 @@ export abstract class Gradient extends ElementBase<Group> implements ColorProvid
             for (let i = 0; i < N; i++) {
                 const stop = stops[i];
                 {
-                    const attrs: SVGAttributes = {};
+                    const attrs: SVGAttributes = { id: stop.id };
                     stop.zzz.elem = createElement('stop', attrs);
                     this.zzz.elem.appendChild(stop.zzz.elem);
                 }
-                {
-                    // offset
-                    stop.zzz.disposables.push(effect(() => {
-                        const change: SVGAttributes = {};
-                        change.offset = 100 * stop.offset + '%';
-                        setAttributes(stop.zzz.elem, change);
-                    }));
-                    // stop-color
-                    stop.zzz.disposables.push(effect(() => {
-                        const change: SVGAttributes = {};
-                        change['stop-color'] = stop.color;
-                        setAttributes(stop.zzz.elem, change);
-                    }));
-                    // stop-opacity
-                    stop.zzz.disposables.push(effect(() => {
-                        const change: SVGAttributes = {};
-                        change['stop-opacity'] = `${stop.opacity}`;
-                        setAttributes(stop.zzz.elem, change);
-                    }));
-                }
+                stop.zzz.disposables.push(effect(() => {
+                    stop.zzz.elem.setAttribute('offset', 100 * stop.offset + '%');
+                }));
+                stop.zzz.disposables.push(effect(() => {
+                    stop.zzz.elem.setAttribute('stop-color', stop.color);
+                }));
+                stop.zzz.disposables.push(effect(() => {
+                    stop.zzz.elem.setAttribute('stop-opacity', `${stop.opacity}`);
+                }));
                 stop.flagReset();
             }
         }));
@@ -118,7 +107,6 @@ export abstract class Gradient extends ElementBase<Group> implements ColorProvid
         this.#spreadMethod.set(spread);
     }
     get stops(): Stop[] {
-        // TODO: Should we be returning a defensive copy?
         return this.#stops.get();
     }
     set stops(stops: Stop[]) {

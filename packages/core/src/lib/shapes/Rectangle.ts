@@ -72,19 +72,11 @@ export class Rectangle extends Path implements RectangleProperties, Disposable {
             this.height = attributes.height;
         }
 
-        this.#disposables.push(this.#origin.change$.subscribe(() => {
-            this.zzz.flags[Flag.Vertices] = true;
-        }));
-
         this.#disposables.push(effect(() => {
-            update_rectangle_vertices(this.width, this.height, this.origin, this.closed, this.vertices);
-            // Nothing will happen if the Flag.Vertices is not set.
-            this.zzz.flags[Flag.Vertices] = true;
-            super.update();
+            this.update();
         }));
 
         this.flagReset(true);
-        this.update();
     }
 
     override dispose(): void {
@@ -93,18 +85,13 @@ export class Rectangle extends Path implements RectangleProperties, Disposable {
     }
 
     override update(): this {
-        if (this.zzz.flags[Flag.Vertices] || this.zzz.flags[Flag.Width] || this.zzz.flags[Flag.Height]) {
-            update_rectangle_vertices(this.width, this.height, this.origin, this.closed, this.vertices);
-        }
-
+        update_rectangle_vertices(this.width, this.height, this.origin, this.closed, this.vertices);
+        this.zzz.flags[Flag.Vertices] = true;
         super.update();
-
         return this;
     }
 
     override flagReset(dirtyFlag = false): this {
-        this.zzz.flags[Flag.Width] = dirtyFlag;
-        this.zzz.flags[Flag.Height] = dirtyFlag;
         super.flagReset(dirtyFlag);
         return this;
     }
@@ -114,7 +101,6 @@ export class Rectangle extends Path implements RectangleProperties, Disposable {
     set height(height: number) {
         if (typeof height === 'number') {
             this.#height.set(height);
-            this.zzz.flags[Flag.Height] = true;
         }
     }
     get origin(): G20 {
@@ -122,7 +108,6 @@ export class Rectangle extends Path implements RectangleProperties, Disposable {
     }
     set origin(origin: G20) {
         this.#origin.copyVector(origin);
-        this.zzz.flags[Flag.Vertices] = true;
     }
     get width(): number {
         return this.#width.get();
@@ -130,7 +115,6 @@ export class Rectangle extends Path implements RectangleProperties, Disposable {
     set width(width: number) {
         if (typeof width === 'number') {
             this.#width.set(width);
-            this.zzz.flags[Flag.Width] = true;
         }
     }
 }

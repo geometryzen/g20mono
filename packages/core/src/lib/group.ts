@@ -90,8 +90,14 @@ export class Group extends Shape {
             child.render(elem, svgElement);
         }
 
+        // TODO: Why are we doing this here and why isn't it reactive?
         if (this.zzz.flags[Flag.ClassName]) {
-            this.zzz.elem.setAttribute('class', this.classList.join(' '));
+            if (this.classList.length > 0) {
+                this.zzz.elem.setAttribute('class', this.classList.join(' '));
+            }
+            else {
+                this.zzz.elem.removeAttribute('class');
+            }
         }
 
         // Commented two-way functionality of clips / masks with groups and

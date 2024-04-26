@@ -1,20 +1,32 @@
 import { state, State } from "g2o-reactive";
 import { Color, ColorProvider, is_color_provider, serialize_color } from "./effects/ColorProvider";
-import { get_svg_element_defs, svg, SVGAttributes } from "./renderers/SVGView";
+import { get_svg_element_defs } from "./renderers/SVGView";
 
+/**
+ * Helps to keep fillColor and strokeColor code DRY as well as defining the protocol
+ * fo interacting with ColorProvider(s).
+ */
 export class ColorManager {
     /**
-     * Keep track of color providers that must be informed
+     * Keep track of color providers that have pending addRef.
      */
     readonly #news: ColorProvider[] = [];
     /**
-     * Keep track of color providers that must be release.
+     * Keep track of color providers that have pending release.
      */
     readonly #olds: ColorProvider[] = [];
     readonly #color: State<Color>;
     #svg: SVGElement | null = null;
-    #elem: HTMLElement | SVGElement;
-    constructor(initialValue: Color, readonly which: 'fill' | 'stroke') {
+    /**
+     * The SVG element with the 'fill' or 'stroke' property.
+     */
+    #hostElement: HTMLElement | SVGElement;
+    /**
+     * 
+     * @param initialValue 
+     * @param qualifiedName 
+     */
+    constructor(initialValue: Color, readonly qualifiedName: 'fill' | 'stroke') {
         this.#color = state(initialValue);
     }
     get(): Color {
@@ -25,8 +37,7 @@ export class ColorManager {
         if (newColor !== oldColor) {
             if (is_color_provider(oldColor)) {
                 if (this.#svg) {
-                    const defs: SVGDefsElement = get_svg_element_defs(this.#svg);
-                    oldColor.release(defs);
+                    oldColor.release(get_svg_element_defs(this.#svg));
                 }
                 else {
                     this.#olds.push(oldColor);
@@ -34,8 +45,7 @@ export class ColorManager {
             }
             if (is_color_provider(newColor)) {
                 if (this.#svg) {
-                    const defs: SVGDefsElement = get_svg_element_defs(this.#svg);
-                    newColor.addRef(defs);
+                    newColor.addRef(get_svg_element_defs(this.#svg));
                 }
                 else {
                     this.#news.push(newColor);
@@ -44,9 +54,9 @@ export class ColorManager {
             this.#color.set(newColor);
         }
     }
-    use(svgElement: SVGElement, elem: HTMLElement | SVGElement): void {
+    use(svgElement: SVGElement, hostElement: HTMLElement | SVGElement): void {
         this.#svg = svgElement;
-        this.#elem = elem;
+        this.#hostElement = hostElement;
         const defs: SVGDefsElement = get_svg_element_defs(svgElement);
         for (const newColor of this.#news) {
             newColor.addRef(defs);
@@ -60,14 +70,10 @@ export class ColorManager {
     update(): void {
         const color = this.#color.get();
         if (color) {
-            const change: SVGAttributes = {};
-            change[this.which] = serialize_color(color);
-            svg.setAttributes(this.#elem, change);
+            this.#hostElement.setAttribute(this.qualifiedName, serialize_color(color));
         }
         else {
-            const change: SVGAttributes = {};
-            change[this.which] = serialize_color(color);
-            svg.removeAttributes(this.#elem, change);
+            this.#hostElement.removeAttribute(this.qualifiedName);
         }
     }
 }
