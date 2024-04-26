@@ -1,4 +1,4 @@
-import { computed, effect, state } from 'g2o-reactive';
+import { computed, effect, Readable, state } from 'g2o-reactive';
 import { Anchor } from './anchor';
 import { Constants } from './constants';
 import { Color } from './effects/ColorProvider';
@@ -73,11 +73,11 @@ export class Board implements IBoard {
     /**
      * 'goofy' is actually regular SVG coordinates where the y coordinate increases downwards.
      */
-    readonly #goofy = computed(() => {
+    readonly #goofy: Readable<boolean> = computed(() => {
         const bbox = this.getBoundingBox();
         return bbox.bottom > bbox.top;
     });
-    readonly #crazy = computed(() => {
+    readonly #crazy: Readable<boolean> = computed(() => {
         const bbox = this.getBoundingBox();
         return bbox.left > bbox.right;
     });
@@ -334,8 +334,8 @@ export class Board implements IBoard {
 
     point(position: PositionLike, attributes: PointAttributes = {}): Shape {
         const { left, top, right, bottom } = this.getBoundingBox();
-        const sx = this.width / (top - left);
-        const sy = this.height / (bottom - right);
+        const sx = this.width / Math.abs(right - left);
+        const sy = this.height / Math.abs(bottom - top);
         const rx = 4 / sx;
         const ry = 4 / sy;
         const ellipse_attribs = ellipse_attribs_from_point_attribs(attributes);

@@ -35,7 +35,7 @@ export class Ellipse extends Path {
 
     constructor(board: IBoard, attributes: EllipseAttributes = {}) {
 
-        // At least 2 vertices are required for proper circlage
+        // At least 2 vertices are required for proper circle
         const amount = attributes.resolution ? Math.max(attributes.resolution, 2) : 4;
         const points = [];
         for (let i = 0; i < amount; i++) {

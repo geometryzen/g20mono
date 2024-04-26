@@ -6,12 +6,12 @@ document.addEventListener('DOMContentLoaded', function () {
         // boundingBox: { left: -2, top: 2, right: 2, bottom: -2 } // regular (y increases upwards)
         // boundingBox: { left: -2, top: -2, right: 2, bottom: 2 } // goofy (y increases downwards)
         // boundingBox: { left: 2, top: 2, right: -2, bottom: -2 } // regular, crazy (x increases leftwards)
-        // boundingBox: { left: 2, top: -2, right: -2, bottom: 2 } // goofy, crazy (x increases leftwards)
+        boundingBox: { left: 2, top: -2, right: -2, bottom: 2 } // goofy, crazy (x increases leftwards)
     });
 
-    const origin = board.point([0.0, 0.0], { id: 'origin', visibility: 'hidden' });
-    const unitX = board.point([1.0, 0.0], { id: 'unitX', visibility: 'hidden' });
-    const unitY = board.point([0.0, 1.0], { id: 'unitY', visibility: 'hidden' });
+    const origin = board.point([0.0, 0.0], { id: 'origin', visibility: 'visible' });
+    const unitX = board.point([1.0, 0.0], { id: 'unitX', visibility: 'visible' });
+    const unitY = board.point([0.0, 1.0], { id: 'unitY', visibility: 'visible' });
 
     const ex = board.arrow(unitX, {
         id: 'ex',
