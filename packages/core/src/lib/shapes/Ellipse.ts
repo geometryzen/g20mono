@@ -1,9 +1,12 @@
+import { effect } from 'g2o-reactive';
 import { Anchor } from '../anchor.js';
+import { Collection } from '../collection.js';
 import { Color } from '../effects/ColorProvider.js';
 import { Flag } from '../Flag.js';
 import { IBoard } from '../IBoard.js';
 import { G20 } from '../math/G20.js';
 import { Path, PathAttributes } from '../path.js';
+import { Disposable, dispose } from '../reactive/Disposable.js';
 import { PositionLike } from '../Shape.js';
 import { HALF_PI, TWO_PI } from '../utils/math.js';
 import { Commands } from '../utils/path-commands.js';
@@ -27,15 +30,12 @@ export interface EllipseAttributes {
 
 export class Ellipse extends Path {
 
-    _flagWidth = false;
-    _flagHeight = false;
+    readonly #disposables: Disposable[] = [];
 
-    _width = 0;
-    _height = 0;
+    readonly #radius = G20.vector(1, 1);
 
     constructor(board: IBoard, attributes: EllipseAttributes = {}) {
 
-        // At least 2 vertices are required for proper circle
         const amount = attributes.resolution ? Math.max(attributes.resolution, 2) : 4;
         const points = [];
         for (let i = 0; i < amount; i++) {
@@ -45,86 +45,92 @@ export class Ellipse extends Path {
         super(board, points, true, true, true, path_attribs_from_ellipse_attribs(attributes));
 
         if (typeof attributes.rx === 'number') {
-            this.width = attributes.rx * 2;
-        }
-        else {
-            this.width = 1;
+            this.rx = attributes.rx;
         }
 
         if (typeof attributes.ry === 'number') {
             this.height = attributes.ry * 2;
         }
-        else {
-            this.height = 1;
-        }
+
+        this.#disposables.push(effect(() => {
+            this.update();
+        }));
 
         this.flagReset(true);
-
-        this.update();
+    }
+    override dispose(): void {
+        dispose(this.#disposables);
+        super.dispose();
     }
 
-    static Properties = ['width', 'height'];
-
     override update(): this {
-        if (this.zzz.flags[Flag.Vertices] || this._flagWidth || this._flagHeight) {
-
-            let length = this.vertices.length;
-
-            if (!this.closed && length > 2) {
-                length -= 1;
-            }
-
-            // Coefficient for approximating circular arcs with Bezier curves
-            const c = (4 / 3) * Math.tan(Math.PI / (this.vertices.length * 2));
-            const radiusX = this._width / 2;
-            const radiusY = this._height / 2;
-
-            for (let i = 0; i < this.vertices.length; i++) {
-                const pct = i / length;
-                const theta = pct * TWO_PI;
-
-                const x = radiusX * cos(theta);
-                const y = radiusY * sin(theta);
-
-                const lx = radiusX * c * cos(theta - HALF_PI);
-                const ly = radiusY * c * sin(theta - HALF_PI);
-
-                const rx = radiusX * c * cos(theta + HALF_PI);
-                const ry = radiusY * c * sin(theta + HALF_PI);
-
-                const v = this.vertices.getAt(i);
-
-                v.command = i === 0 ? Commands.move : Commands.curve;
-                v.origin.set(x, y);
-                v.controls.a.set(lx, ly);
-                v.controls.b.set(rx, ry);
-            }
-        }
-
+        update_ellipse_vertices(this.width / 2, this.height / 2, this.closed, this.vertices);
+        // Nothing will happen if the Flag.Vertices is not set.
+        this.zzz.flags[Flag.Vertices] = true;
         super.update();
         return this;
-
     }
 
     override flagReset(dirtyFlag = false): this {
-        this._flagWidth = dirtyFlag;
-        this._flagHeight = dirtyFlag;
         super.flagReset(dirtyFlag);
         return this;
     }
-    get height() {
-        return this._height;
+    get rx(): number {
+        return this.#radius.x;
     }
-    set height(v) {
-        this._height = v;
-        this._flagHeight = true;
+    set rx(rx: number) {
+        this.#radius.x = rx;
     }
-    get width() {
-        return this._width;
+    get ry(): number {
+        return this.#radius.y;
     }
-    set width(v) {
-        this._width = v;
-        this._flagWidth = true;
+    set ry(ry: number) {
+        this.#radius.y = ry;
+    }
+    get height(): number {
+        return this.#radius.y * 2;
+    }
+    set height(height: number) {
+        this.#radius.y = height / 2;
+    }
+    get width(): number {
+        return this.#radius.x * 2;
+    }
+    set width(width: number) {
+        this.#radius.x = width / 2;
+    }
+}
+
+function update_ellipse_vertices(radiusX: number, radiusY: number, closed: boolean, vertices: Collection<Anchor>): void {
+
+    let length = vertices.length;
+
+    if (!closed && length > 2) {
+        length -= 1;
+    }
+
+    // Coefficient for approximating circular arcs with Bezier curves
+    const c = (4 / 3) * Math.tan(Math.PI / (vertices.length * 2));
+
+    for (let i = 0; i < vertices.length; i++) {
+        const pct = i / length;
+        const theta = pct * TWO_PI;
+
+        const x = radiusX * cos(theta);
+        const y = radiusY * sin(theta);
+
+        const ax = radiusX * c * cos(theta - HALF_PI);
+        const ay = radiusY * c * sin(theta - HALF_PI);
+
+        const bx = radiusX * c * cos(theta + HALF_PI);
+        const by = radiusY * c * sin(theta + HALF_PI);
+
+        const v = vertices.getAt(i);
+
+        v.command = (i === 0) ? Commands.move : Commands.curve;
+        v.origin.set(x, y);
+        v.controls.a.set(ax, ay);
+        v.controls.b.set(bx, by);
     }
 }
 

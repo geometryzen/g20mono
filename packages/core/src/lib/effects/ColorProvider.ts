@@ -25,6 +25,12 @@ export function is_color_provider(x: Color): x is ColorProvider {
     if (typeof x === 'string') {
         return false;
     }
+    else if (x === null) {
+        return false;
+    }
+    else if (Array.isArray(x)) {
+        return false;
+    }
     else if (typeof x === 'object') {
         return true;
     }

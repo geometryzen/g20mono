@@ -23,13 +23,13 @@ export abstract class ColoredShape extends Shape {
     /**
      * @see {@link https://developer.mozilla.org/en-US/docs/Web/CSS/color_value} for more information on CSS's colors as `String`.
      */
-    readonly #fillColor = new ColorManager('none', 'fill');
+    readonly #fillColor = new ColorManager(null, 'fill');
     readonly #fillOpacity = state(1.0);
 
     /**
      * @see {@link https://developer.mozilla.org/en-US/docs/Web/CSS/color_value} for more information on CSS's colors as `String`.
      */
-    readonly #strokeColor = new ColorManager('#000', 'stroke');
+    readonly #strokeColor = new ColorManager(null, 'stroke');
     readonly #strokeWidth = state(1);
     readonly #strokeOpacity = state(1.0);
 

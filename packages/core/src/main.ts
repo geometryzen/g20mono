@@ -3,15 +3,25 @@ import { Board, Shape } from './index';
 document.addEventListener('DOMContentLoaded', function () {
 
     const board = new Board("my-board", {
-        // boundingBox: { left: -2, top: 2, right: 2, bottom: -2 } // regular (y increases upwards)
+        boundingBox: { left: -2, top: 2, right: 2, bottom: -2 } // regular (y increases upwards)
         // boundingBox: { left: -2, top: -2, right: 2, bottom: 2 } // goofy (y increases downwards)
         // boundingBox: { left: 2, top: 2, right: -2, bottom: -2 } // regular, crazy (x increases leftwards)
-        boundingBox: { left: 2, top: -2, right: -2, bottom: 2 } // goofy, crazy (x increases leftwards)
+        // boundingBox: { left: 2, top: -2, right: -2, bottom: 2 } // goofy, crazy (x increases leftwards)
     });
 
-    const origin = board.point([0.0, 0.0], { id: 'origin', visibility: 'visible' });
-    const unitX = board.point([1.0, 0.0], { id: 'unitX', visibility: 'visible' });
-    const unitY = board.point([0.0, 1.0], { id: 'unitY', visibility: 'visible' });
+    const ellipse = board.ellipse({
+        id: 'ellipse',
+        rx: 1.0,
+        ry: 0.5,
+        stroke: 'lightgreen',
+        strokeWidth: 4
+    });
+    ellipse.attitude.rotorFromAngle(Math.PI / 4);
+    ellipse.position.x += 1.0;
+
+    const origin = board.point([0.0, 0.0], { id: 'origin', visibility: 'hidden' });
+    const unitX = board.point([1.0, 0.0], { id: 'unitX', visibility: 'hidden' });
+    const unitY = board.point([0.0, 1.0], { id: 'unitY', visibility: 'hidden' });
 
     const ex = board.arrow(unitX, {
         id: 'ex',
@@ -55,7 +65,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     rescale(textY, board);
 
-    // board.update(); // Needed for CanvasView
+    ellipse.rx = 1;
+    ellipse.ry = 1;
 
     function rescale(shape: Shape, board: Board): void {
         shape.scaleXY.set(1 / board.scaleXY.x, 1 / board.scaleXY.y);
