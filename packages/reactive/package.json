@@ -1,6 +1,6 @@
 {
     "name": "g2o-reactive",
-    "version": "0.9.195",
+    "version": "0.9.196",
     "description": "Wrapper around signal-polyfill to support different module formats",
     "exports": {
         ".": {
