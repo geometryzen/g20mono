@@ -1,4 +1,4 @@
-import { effect, state } from 'g2o-reactive';
+import { computed, effect, state } from 'g2o-reactive';
 import { Anchor } from './anchor';
 import { Constants } from './constants';
 import { Color } from './effects/ColorProvider';
@@ -70,7 +70,17 @@ export class Board implements IBoard {
     #prev_now: number | null = null;
 
     readonly #boundingBox: { left: number, top: number, right: number, bottom: number } = { left: -5, top: 5, right: 5, bottom: -5 };
-    readonly goofy: boolean;
+    /**
+     * 'goofy' is actually regular SVG coordinates where the y coordinate increases downwards.
+     */
+    readonly #goofy = computed(() => {
+        const bbox = this.getBoundingBox();
+        return bbox.bottom > bbox.top;
+    });
+    readonly #crazy = computed(() => {
+        const bbox = this.getBoundingBox();
+        return bbox.left > bbox.right;
+    });
 
     constructor(elementOrId: string | HTMLElement, options: BoardAttributes = {}) {
 
@@ -88,10 +98,6 @@ export class Board implements IBoard {
             this.#boundingBox.top = top;
             this.#boundingBox.right = right;
             this.#boundingBox.bottom = bottom;
-            this.goofy = bottom > top;
-        }
-        else {
-            this.goofy = false;
         }
 
         if (options.scene instanceof Group) {
@@ -112,7 +118,6 @@ export class Board implements IBoard {
         const config: BoardConfig = config_from_options(container, options);
 
         this.#fitter = new Fitter(this, this.#view);
-
 
         if (container instanceof HTMLElement) {
             this.#fitter.set_target(container as HTMLElement);
@@ -149,20 +154,47 @@ export class Board implements IBoard {
      * introducing a 90 degree rotation if the coordinate system is right-handed (a.k.a regular or not goofy).
      */
     #update_view_box(): void {
+        // The computation here defines a viewbox transformation that should be the identity
+        // when...
+        // width  = right - left, and
+        // height = bottom - top.
+        //
         const { left, top, right, bottom } = this.getBoundingBox();
         const Δx = this.width;
         const Δy = this.height;
-        const RL = right - left;
-        const TB = top - bottom;
-        const sx = Δx / RL;
+        const LR = right - left;
+        const TB = bottom - top;
+        const sx = Δx / LR;
         const sy = Δy / TB;
-        const x = -left * Δx / RL;
-        const y = -bottom * Δy / TB;
+        const x = -left * Δx / LR;
+        const y = -top * Δy / TB;
         this.#viewBox.position.set(x, y);
-        if (!this.goofy) {
-            this.#viewBox.attitude.rotorFromAngle(Math.PI / 2);
+        if (this.goofy) {
+            if (this.crazy) {
+                this.#viewBox.scaleXY.set(-sx, -sy);    
+                this.#viewBox.attitude.rotorFromAngle(-Math.PI);
+            }
+            else {
+                this.#viewBox.scaleXY.set(sx, sy);
+            }
         }
-        this.#viewBox.scaleXY.set(sx, sy);
+        else {
+            this.#viewBox.scaleXY.set(sx, -sy);
+            if (this.crazy) {
+                this.#viewBox.attitude.rotorFromAngle(-Math.PI / 2);
+            }
+            else {
+                this.#viewBox.attitude.rotorFromAngle(+Math.PI / 2);
+            }
+        }
+    }
+
+    get goofy(): boolean {
+        return this.#goofy.get();
+    }
+
+    get crazy(): boolean {
+        return this.#crazy.get();
     }
 
     get frameCount(): number {
@@ -325,13 +357,13 @@ export class Board implements IBoard {
         return polygon;
     }
 
-    rectangle(attributes: RectangleAttributes={}): Rectangle {
+    rectangle(attributes: RectangleAttributes = {}): Rectangle {
         const rect = new Rectangle(this, attributes);
         this.add(rect);
         return rect;
     }
 
-    text(message: string, attributes: TextAttributes={}): Text {
+    text(message: string, attributes: TextAttributes = {}): Text {
         const text = new Text(this, message, attributes);
         this.add(text);
         return text;

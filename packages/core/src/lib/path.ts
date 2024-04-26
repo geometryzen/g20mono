@@ -186,14 +186,6 @@ export class Path extends ColoredShape implements PathAttributes {
             changed['vector-effect'] = this.vectorEffect;
         }
 
-        if (this.zzz.flags[Flag.Cap]) {
-            changed['stroke-linecap'] = this.cap;
-        }
-
-        if (this.zzz.flags[Flag.Join]) {
-            changed['stroke-linejoin'] = this.join;
-        }
-
         if (this.dashes && this.dashes.length > 0) {
             changed['stroke-dasharray'] = this.dashes.join(' ');
             changed['stroke-dashoffset'] = `${get_dashes_offset(this.dashes) || 0}`;
@@ -211,6 +203,27 @@ export class Path extends ColoredShape implements PathAttributes {
             parentElement.appendChild(this.zzz.elem);
             super.render(parentElement, svgElement);
 
+            // stroke-linecap
+            this.zzz.disposables.push(effect(() => {
+                if (this.cap && this.cap !== "butt") {
+                    this.zzz.elem.setAttribute('stroke-linecap', this.cap);
+                }
+                else {
+                    this.zzz.elem.removeAttribute('stroke-linecap');
+                }
+            }));
+
+            // stroke-linejoin
+            this.zzz.disposables.push(effect(() => {
+                if (this.join && this.join !== "miter") {
+                    this.zzz.elem.setAttribute('stroke-linejoin', this.join);
+                }
+                else {
+                    this.zzz.elem.removeAttribute('stroke-linejoin');
+                }
+            }));
+
+            // stroke-miterlimit
             this.zzz.disposables.push(effect(() => {
                 if (this.miterLimit !== 4) {
                     this.zzz.elem.setAttribute('stroke-miterlimit', `${this.miterLimit}`);
@@ -825,9 +838,7 @@ export class Path extends ColoredShape implements PathAttributes {
 
     override flagReset(dirtyFlag = false): this {
 
-        this.zzz.flags[Flag.Cap] = dirtyFlag;
         this.zzz.flags[Flag.ClipFlag] = dirtyFlag;
-        this.zzz.flags[Flag.Join] = dirtyFlag;
         this.zzz.flags[Flag.Length] = dirtyFlag;
         this.zzz.flags[Flag.ClipPath] = dirtyFlag;
         this.zzz.flags[Flag.VectorEffect] = dirtyFlag;
@@ -871,7 +882,6 @@ export class Path extends ColoredShape implements PathAttributes {
     }
     set cap(cap: 'butt' | 'round' | 'square') {
         this.#cap.set(cap);
-        this.zzz.flags[Flag.Cap] = true;
     }
     get closed(): boolean {
         return this.#closed.get();
@@ -910,7 +920,6 @@ export class Path extends ColoredShape implements PathAttributes {
     }
     set join(join: 'arcs' | 'bevel' | 'miter' | 'miter-clip' | 'round') {
         this.#join.set(join);
-        this.zzz.flags[Flag.Join] = true;
     }
     get length(): number {
         if (this.zzz.flags[Flag.Length]) {

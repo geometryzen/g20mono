@@ -69,7 +69,7 @@ export class ColorManager {
     }
     update(): void {
         const color = this.#color.get();
-        if (color) {
+        if (color/* && color != defaultValue(this.qualifiedName)*/) {
             this.#hostElement.setAttribute(this.qualifiedName, serialize_color(color));
         }
         else {
@@ -77,3 +77,11 @@ export class ColorManager {
         }
     }
 }
+/*
+function defaultValue(qualifiedName: 'fill' | 'stroke'): 'black' | 'none' {
+    switch (qualifiedName) {
+        case 'fill': return 'black';    // Applies to <path> and <text>.
+        case 'stroke': return 'none';
+    }
+}
+*/

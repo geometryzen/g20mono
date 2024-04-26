@@ -1,5 +1,6 @@
 import { Anchor } from "../anchor";
 import { Collection } from "../collection";
+import { Color } from "../effects/ColorProvider";
 import { Flag } from "../Flag";
 import { IBoard } from "../IBoard";
 import { G20 } from "../math/G20";
@@ -12,6 +13,7 @@ export interface ArrowAttributes {
     id?: string;
     headLength?: number;
     position?: PositionLike;
+    stroke?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
 }
@@ -23,6 +25,7 @@ export interface ArrowProperties {
     attitude: G20;
     axis: G20;
     headLength: number;
+    stroke: Color;
     strokeOpacity: number;
     strokeWidth: number;
 }
@@ -159,7 +162,7 @@ function path_attribs_from_arrow_attribs(attributes: ArrowAttributes): PathAttri
         // visibility: attributes.visibility,
         // fill: attributes.fill,
         // fillOpacity: attributes.fillOpacity,
-        // stroke: attributes.stroke,
+        stroke: attributes.stroke,
         strokeOpacity: attributes.strokeOpacity,
         strokeWidth: attributes.strokeWidth
     };

@@ -10,7 +10,6 @@ export enum Flag {
     Fill,
     FrameRate,
     Index,
-    Join,
     Length,
     Rows,
     Scale,

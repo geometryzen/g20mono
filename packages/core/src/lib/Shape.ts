@@ -179,7 +179,7 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
         /**
          * 
          */
-        this.#matrix = computed(() => update_matrix(this.#position, this.#attitude, this.#scale, this.skewX, this.skewY, this.#compensate, this.board.goofy));
+        this.#matrix = computed(() => update_matrix(this.#position, this.#attitude, this.#scale, this.skewX, this.skewY, this.#compensate, this.board.goofy, this.board.crazy));
 
         /*
         this.#disposables.push(effect(()=>{
@@ -246,44 +246,6 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
             };
         }));
     }
-    /*
-    #update_matrix(compensate: boolean): void {
-        // For performance, the matrix product has been pre-computed.
-        // M = T * S * R * skewX * skewY
-        // const M = untrack(() => this.matrix);
-        const M = this.matrix;
-        const position = this.position;
-        const x = position.x;
-        const y = position.y;
-        const attitude = this.attitude;
-        const scale = this.scaleXY;
-        const sx = scale.x;
-        const sy = scale.y;
-        if (this.board.goofy) {
-            const cos_φ = attitude.a;
-            const sin_φ = attitude.b;
-            compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, this.skewX, this.skewY, M);
-        }
-        else {
-            if (compensate) {
-                // Text needs an additional rotation of -π/2 (i.e. clockwise 90 degrees) to compensate for 
-                // the use of a right-handed coordinate frame. The rotor for this is cos(π/4)+sin(π/4)*I.
-                // Here we compute the effective rotator (which is obtained by multiplying the two rotors),
-                // and use that to compose the transformation matrix.
-                const a = attitude.a;
-                const b = attitude.b;
-                const cos_φ = (a - b) / Math.SQRT2;
-                const sin_φ = (a + b) / Math.SQRT2;
-                compose_2d_3x3_transform(y, x, sy, sx, cos_φ, sin_φ, this.skewY, this.skewX, M);
-            }
-            else {
-                const cos_φ = attitude.a;
-                const sin_φ = attitude.b;
-                compose_2d_3x3_transform(y, x, sy, sx, cos_φ, sin_φ, this.skewY, this.skewX, M);
-            }
-        }
-    }
-    */
     update(): this {
         // There's no update on the super type.
         return this;
@@ -339,7 +301,6 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
     set scale(scale: number) {
         this.#scale.x = scale;
         this.#scale.y = scale;
-        // this.#update_matrix(this.#compensate);
         this.zzz.flags[Flag.Scale] = true;
     }
     get scaleXY(): G20 {
@@ -347,7 +308,6 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
     }
     set scaleXY(scale: G20) {
         this.#scale.set(scale.x, scale.y, 0, 0);
-        // this.#update_matrix(this.#compensate);
         this.zzz.flags[Flag.Scale] = true;
     }
     get skewX(): number {
@@ -355,14 +315,12 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
     }
     set skewX(skewX: number) {
         this.#skewX.set(skewX);
-        // this.#update_matrix(this.#compensate);
     }
     get skewY(): number {
         return this.#skewY.get();
     }
     set skewY(skewY: number) {
         this.#skewY.set(skewY);
-        // this.#update_matrix(this.#compensate);
     }
     get clipPath(): Shape | null {
         return this.#clipPath.get();
@@ -422,17 +380,16 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
 }
 
 /**
- * This implementation
  * @param position 
  * @param attitude 
  * @param scale 
  * @param skewX 
  * @param skewY 
  * @param compensate 
- * @param goofy 
- * @returns 
+ * @param goofy
+ * @param crazy 
  */
-export function update_matrix(position: G20, attitude: G20, scale: G20, skewX: number, skewY: number, compensate: boolean, goofy: boolean): Matrix {
+export function update_matrix(position: G20, attitude: G20, scale: G20, skewX: number, skewY: number, compensate: boolean, goofy: boolean, crazy: boolean): Matrix {
     // For performance, the matrix product has been pre-computed.
     // M = T * S * R * skewX * skewY
     const M = new Matrix();
@@ -441,21 +398,45 @@ export function update_matrix(position: G20, attitude: G20, scale: G20, skewX: n
     const sx = scale.x;
     const sy = scale.y;
     if (goofy) {
-        const cos_φ = attitude.a;
-        const sin_φ = attitude.b;
-        compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, skewX, skewY, M);
+        if (compensate) {
+            if (crazy) {
+                const cos_φ = attitude.b;
+                const sin_φ = attitude.a;
+                compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, skewX, skewY, M);        
+            }
+            else {
+                const cos_φ = attitude.a;
+                const sin_φ = attitude.b;
+                compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, skewX, skewY, M);        
+            }
+        }
+        else {
+            const cos_φ = attitude.a;
+            const sin_φ = attitude.b;
+            compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, skewX, skewY, M);    
+        }
     }
     else {
         if (compensate) {
-            // Text needs an additional rotation of -π/2 (i.e. clockwise 90 degrees) to compensate for 
-            // the use of a right-handed coordinate frame. The rotor for this is cos(π/4)+sin(π/4)*I.
-            // Here we compute the effective rotator (which is obtained by multiplying the two rotors),
-            // and use that to compose the transformation matrix.
-            const a = attitude.a;
-            const b = attitude.b;
-            const cos_φ = (a - b) / Math.SQRT2;
-            const sin_φ = (a + b) / Math.SQRT2;
-            compose_2d_3x3_transform(y, x, sy, sx, cos_φ, sin_φ, skewY, skewX, M);
+            if (crazy) {
+                // Text needs an additional rotation of +π/2 (i.e. counter-clockwise 90 degrees). 
+                const a = attitude.a;
+                const b = attitude.b;
+                const cos_φ = (b + a) / Math.SQRT2;
+                const sin_φ = (b - a) / Math.SQRT2;
+                compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, skewX, skewY, M);
+            }
+            else {
+                // Text needs an additional rotation of -π/2 (i.e. clockwise 90 degrees) to compensate for 
+                // the use of a right-handed coordinate frame. The rotor for this is cos(π/4)+sin(π/4)*I.
+                // Here we compute the effective rotator (which is obtained by multiplying the two rotors),
+                // and use that to compose the transformation matrix.
+                const a = attitude.a;
+                const b = attitude.b;
+                const cos_φ = (a - b) / Math.SQRT2;
+                const sin_φ = (a + b) / Math.SQRT2;
+                compose_2d_3x3_transform(y, x, sy, sx, cos_φ, sin_φ, skewY, skewX, M);
+            }
         }
         else {
             const cos_φ = attitude.a;

@@ -6,6 +6,7 @@ export interface IBoard {
      * rotation of 90 degrees moves the x-axis into alignment with the y-axis. 
      */
     get goofy(): boolean;
+    get crazy(): boolean;
     width: number;
     height: number;
 }
