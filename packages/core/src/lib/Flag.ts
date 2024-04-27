@@ -19,6 +19,5 @@ export enum Flag {
     Stops,
     Stroke,
     Units,
-    Vertices,
-    VectorEffect
+    Vertices
 }

@@ -37,7 +37,7 @@ export interface CircleProperties {
     strokeWidth: number;
 }
 
-export class Circle extends Path implements CircleProperties {
+export class CircularPath extends Path implements CircleProperties {
 
     readonly #disposables: Disposable[] = [];
 

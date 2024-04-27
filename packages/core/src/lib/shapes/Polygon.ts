@@ -15,7 +15,7 @@ export interface PolygonAttributes {
 }
 
 export class Polygon extends Path implements PolygonAttributes {
-    constructor(board: IBoard, points: PositionLike[] = [], attributes: Partial<PolygonAttributes> = {}) {
+    constructor(board: IBoard, points: PositionLike[] = [], attributes: PolygonAttributes = {}) {
 
         const vertices = points
             .map((point) => position_from_like(point))
@@ -28,7 +28,7 @@ export class Polygon extends Path implements PolygonAttributes {
     }
 }
 
-function path_attributes(attributes: Partial<PolygonAttributes>): PathAttributes {
+function path_attributes(attributes: PolygonAttributes): PathAttributes {
     const retval: PathAttributes = {
         id: attributes.id,
         opacity: attributes.opacity,

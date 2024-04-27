@@ -56,7 +56,6 @@ export interface TextProperties {
 }
 
 export class Text extends ColoredShape implements TextProperties {
-    automatic: boolean;
     beginning: number;
     ending: number;
     length: number;

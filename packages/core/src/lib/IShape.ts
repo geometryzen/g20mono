@@ -5,11 +5,7 @@ import { G20 } from "./math/G20";
  */
 export interface IShape<P> {
     id: string;
-    automatic: boolean;
-    beginning: number;
     classList: string[];
-    ending: number;
-    length: number;
     parent: P;
     position: G20;
     visibility: 'visible' | 'hidden' | 'collapse';

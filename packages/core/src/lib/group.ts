@@ -15,26 +15,6 @@ export interface GroupAttributes {
 
 export class Group extends Shape {
 
-    /**
-     * Determines whether Path plots coordinates base don "closed" and "curved" flags.
-     * The presence in Group seems unnecessary.
-     */
-    #automatic = true;
-
-    /**
-     * Number between zero and one to state the beginning of where the path is rendered.
-     * a percentage value that represents at what percentage into all child shapes should the renderer start drawing.
-     */
-    readonly #beginning = state(0.0);
-
-    /**
-     * Number between zero and one to state the ending of where the path is rendered.
-     * a percentage value that represents at what percentage into all child shapes should the renderer start drawing.
-     */
-    readonly #ending = state(1.0);
-
-    #length = 0;
-
     readonly #shapes: State<Shape[]>;
 
     constructor(board: IBoard, shapes: Shape[] = [], attributes: Partial<GroupAttributes> = {}) {
@@ -315,43 +295,6 @@ export class Group extends Shape {
     }
 
     update(): this {
-        if (this.zzz.flags[Flag.Beginning] || this.zzz.flags[Flag.Ending]) {
-
-            const beginning = Math.min(this.beginning, this.ending);
-            const ending = Math.max(this.beginning, this.ending);
-            const length = this.length;
-            let sum = 0;
-
-            const bd = beginning * length;
-            const ed = ending * length;
-
-            for (let i = 0; i < this.children.length; i++) {
-                const child = this.children[i];
-                const l = child.length;
-
-                if (bd > sum + l) {
-                    child.beginning = 1;
-                    child.ending = 1;
-                }
-                else if (ed < sum) {
-                    child.beginning = 0;
-                    child.ending = 0;
-                }
-                else if (bd > sum && bd < sum + l) {
-                    child.beginning = (bd - sum) / l;
-                    child.ending = 1;
-                }
-                else if (ed > sum && ed < sum + l) {
-                    child.beginning = 0;
-                    child.ending = (ed - sum) / l;
-                }
-                else {
-                    child.beginning = 0;
-                    child.ending = 1;
-                }
-                sum += l;
-            }
-        }
         return super.update();
     }
 
@@ -364,25 +307,6 @@ export class Group extends Shape {
 
         return this;
 
-    }
-    get automatic(): boolean {
-        return this.#automatic;
-    }
-    set automatic(automatic: boolean) {
-        this.#automatic = automatic;
-        for (let i = 0; i < this.children.length; i++) {
-            const child = this.children[i];
-            child.automatic = automatic;
-        }
-    }
-    get beginning(): number {
-        return this.#beginning.get();
-    }
-    set beginning(beginning: number) {
-        if (typeof beginning === 'number') {
-            this.#beginning.set(beginning);
-            this.zzz.flags[Flag.Beginning] = true;
-        }
     }
     /**
      * A list of all the children in the scenegraph.
@@ -398,28 +322,6 @@ export class Group extends Shape {
             const shape = children[i];
             update_shape_group(shape, this);
         }
-    }
-    get ending(): number {
-        return this.#ending.get();
-    }
-    set ending(ending: number) {
-        if (typeof ending === 'number') {
-            this.#ending.set(ending);
-            this.zzz.flags[Flag.Ending] = true;
-        }
-    }
-    get length(): number {
-        if (this.zzz.flags[Flag.Length] || this.#length <= 0) {
-            this.#length = 0;
-            if (!this.children) {
-                return this.#length;
-            }
-            for (let i = 0; i < this.children.length; i++) {
-                const child = this.children[i];
-                this.#length += child.length;
-            }
-        }
-        return this.#length;
     }
 }
 

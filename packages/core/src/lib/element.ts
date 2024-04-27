@@ -1,3 +1,4 @@
+import { State, state } from 'g2o-reactive';
 import { Flag } from './Flag';
 import { Disposable } from './reactive/Disposable';
 import { ZZZ } from './renderers/ZZZ';
@@ -16,14 +17,14 @@ export abstract class ElementBase<P> implements Disposable {
      */
     readonly zzz: ZZZ = new ZZZ();
 
-    readonly #id: string;
+    readonly #id: State<string>;
 
     #className = '';
 
     classList: string[] = [];
 
     constructor(id: string) {
-        this.#id = id;
+        this.#id = state(id);
         this.flagReset(false);
     }
 
@@ -36,7 +37,10 @@ export abstract class ElementBase<P> implements Disposable {
         return this;
     }
     get id(): string {
-        return this.#id;
+        return this.#id.get();
+    }
+    set id(id: string) {
+        this.#id.set(id);
     }
     get className(): string {
         return this.#className;

@@ -6,7 +6,6 @@ import { lerp } from '../utils/math.js';
 import { dateTime } from '../utils/performance.js';
 import { Texture } from './texture.js';
 
-
 export interface SpriteOptions {
     position?: G20;
     attitude?: G20;

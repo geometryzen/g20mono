@@ -114,11 +114,7 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
 
     readonly #clipPath = state(null as Shape | null);
 
-    abstract automatic: boolean;
-    abstract beginning: number;
-    abstract ending: number;
     // TODO: Remove the properties that don't generally apply
-    abstract length: number;
     abstract getBoundingBox(shallow?: boolean): { top?: number; left?: number; right?: number; bottom?: number };
     abstract hasBoundingBox(): boolean;
 
@@ -206,9 +202,9 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
             }
         }));
 
-        // transform
+        // id
         this.zzz.disposables.push(effect(() => {
-            this.zzz.elem.setAttribute('transform', transform_value_of_matrix(this.matrix));
+            this.zzz.elem.setAttribute('id', this.id);
         }));
 
         // opacity
@@ -224,6 +220,11 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
             return function () {
                 // No cleanup to be done.
             };
+        }));
+
+        // transform
+        this.zzz.disposables.push(effect(() => {
+            this.zzz.elem.setAttribute('transform', transform_value_of_matrix(this.matrix));
         }));
 
         // visibility
@@ -246,6 +247,7 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
             };
         }));
     }
+
     update(): this {
         // There's no update on the super type.
         return this;
@@ -400,37 +402,39 @@ export function update_matrix(position: G20, attitude: G20, scale: G20, skewX: n
     if (goofy) {
         if (compensate) {
             if (crazy) {
-                const cos_φ = attitude.b;
-                const sin_φ = attitude.a;
-                compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, skewX, skewY, M);
+                const a = attitude.a;
+                const b = -attitude.b;
+                const cos_φ = (b - a) / Math.SQRT2;
+                const sin_φ = (a + b) / Math.SQRT2;
+                compose_2d_3x3_transform(y, x, sy, sx, cos_φ, sin_φ, skewY, skewX, M);
             }
             else {
                 const cos_φ = attitude.a;
-                const sin_φ = attitude.b;
+                const sin_φ = -attitude.b;
                 compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, skewX, skewY, M);
             }
         }
         else {
-            const cos_φ = attitude.a;
-            const sin_φ = attitude.b;
-            compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, skewX, skewY, M);
+            if (crazy) {
+                const cos_φ = attitude.a;
+                const sin_φ = attitude.b;
+                compose_2d_3x3_transform(y, x, sy, sx, cos_φ, sin_φ, skewY, skewX, M);    
+            }
+            else {
+                const cos_φ = attitude.a;
+                const sin_φ = -attitude.b;
+                compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, skewX, skewY, M);    
+            }
         }
     }
     else {
         if (compensate) {
             if (crazy) {
-                // Text needs an additional rotation of +π/2 (i.e. counter-clockwise 90 degrees). 
-                const a = attitude.a;
-                const b = attitude.b;
-                const cos_φ = (a + b) / Math.SQRT2;
-                const sin_φ = (a - b) / Math.SQRT2;
-                compose_2d_3x3_transform(y, x, sy, sx, cos_φ, sin_φ, skewY, skewX, M);
+                const cos_φ = attitude.b;
+                const sin_φ = attitude.a;
+                compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, skewX, skewY, M);
             }
             else {
-                // Text needs an additional rotation of -π/2 (i.e. clockwise 90 degrees) to compensate for 
-                // the use of a right-handed coordinate frame. The rotor for this is cos(π/4)+sin(π/4)*I.
-                // Here we compute the effective rotator (which is obtained by multiplying the two rotors),
-                // and use that to compose the transformation matrix.
                 const a = attitude.a;
                 const b = attitude.b;
                 const cos_φ = (a - b) / Math.SQRT2;
@@ -439,9 +443,16 @@ export function update_matrix(position: G20, attitude: G20, scale: G20, skewX: n
             }
         }
         else {
-            const cos_φ = attitude.a;
-            const sin_φ = attitude.b;
-            compose_2d_3x3_transform(y, x, sy, sx, cos_φ, sin_φ, skewY, skewX, M);
+            if (crazy) {
+                const cos_φ = attitude.a;
+                const sin_φ = -attitude.b;
+                compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, skewX, skewY, M);    
+            }
+            else {
+                const cos_φ = attitude.a;
+                const sin_φ = attitude.b;
+                compose_2d_3x3_transform(y, x, sy, sx, cos_φ, sin_φ, skewY, skewX, M);    
+            }
         }
     }
     return M;

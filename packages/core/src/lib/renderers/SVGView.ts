@@ -465,13 +465,25 @@ export function transform_value_of_matrix(m: Matrix): string {
  * If the bounding box is oriented such that y increases in the upwards direction,
  * exchange the x and y coordinates because we will be applying a 90 degree rotation.
  */
-function screen_functions(board: IBoard) {
+export function screen_functions(board: IBoard) {
     if (board.goofy) {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        return [(x: number, y: number): number => x, (x: number, y: number): number => y];
+        if (board.crazy) {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            return [(x: number, y: number): number => y, (x: number, y: number): number => x];
+        }
+        else {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            return [(x: number, y: number): number => x, (x: number, y: number): number => y];
+        }
     }
     else {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        return [(x: number, y: number): number => y, (x: number, y: number): number => x];
+        if (board.crazy) {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            return [(x: number, y: number): number => x, (x: number, y: number): number => y];
+        }
+        else {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            return [(x: number, y: number): number => y, (x: number, y: number): number => x];
+        }
     }
 }

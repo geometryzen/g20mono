@@ -33,6 +33,8 @@ export abstract class ColoredShape extends Shape {
     readonly #strokeWidth = state(1);
     readonly #strokeOpacity = state(1.0);
 
+    #vectorEffect: 'none' | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position' = 'non-scaling-stroke';
+
     constructor(board: IBoard, attributes: ColoredShapeAttributes = {}) {
         super(board, shape_attribs_from_colored_attribs(attributes));
 
@@ -114,6 +116,12 @@ export abstract class ColoredShape extends Shape {
             this.#strokeWidth.set(strokeWidth);
         }
     }
+    get vectorEffect(): 'none' | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position' {
+        return this.#vectorEffect;
+    }
+    set vectorEffect(vectorEffect: 'none' | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position') {
+        this.#vectorEffect = vectorEffect;
+    }
     /**
      * A convenience method for setting the `fill` attribute to "none".
      */
@@ -189,6 +197,20 @@ export abstract class ColoredShape extends Shape {
                 }
                 else {
                     this.zzz.elem.removeAttribute('stroke-width');
+                }
+                return function () {
+                    // No cleanup to be done.
+                };
+            }));
+
+            // vector-effect
+            this.zzz.disposables.push(effect(() => {
+                const vectorEffect = this.vectorEffect;
+                if (vectorEffect !== 'none') {
+                    this.zzz.elem.setAttribute('vector-effect', `${vectorEffect}`);
+                }
+                else {
+                    this.zzz.elem.removeAttribute('vector-effect');
                 }
                 return function () {
                     // No cleanup to be done.

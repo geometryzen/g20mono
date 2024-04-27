@@ -58,8 +58,6 @@ export class Path extends ColoredShape implements PathAttributes {
 
     readonly #lengths: number[] = [];
 
-    #vectorEffect: 'none' | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position' = 'non-scaling-stroke';
-
     /**
      * stroke-linecap
      */
@@ -180,10 +178,6 @@ export class Path extends ColoredShape implements PathAttributes {
 
         if (this.zzz.flags[Flag.ClassName]) {
             changed['class'] = this.classList.join(' ');
-        }
-
-        if (this.zzz.flags[Flag.VectorEffect]) {
-            changed['vector-effect'] = this.vectorEffect;
         }
 
         if (this.dashes && this.dashes.length > 0) {
@@ -841,7 +835,6 @@ export class Path extends ColoredShape implements PathAttributes {
         this.zzz.flags[Flag.ClipFlag] = dirtyFlag;
         this.zzz.flags[Flag.Length] = dirtyFlag;
         this.zzz.flags[Flag.ClipPath] = dirtyFlag;
-        this.zzz.flags[Flag.VectorEffect] = dirtyFlag;
         this.zzz.flags[Flag.Vertices] = dirtyFlag;
 
         super.flagReset(dirtyFlag);
@@ -990,13 +983,6 @@ export class Path extends ColoredShape implements PathAttributes {
             });
             this.#anchor_change_map.set(anchor, subscription);
         });
-    }
-    get vectorEffect(): 'none' | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position' {
-        return this.#vectorEffect;
-    }
-    set vectorEffect(vectorEffect: 'none' | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position') {
-        this.#vectorEffect = vectorEffect;
-        this.zzz.flags[Flag.VectorEffect] = true;
     }
 }
 

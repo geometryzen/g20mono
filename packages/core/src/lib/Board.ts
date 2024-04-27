@@ -14,13 +14,15 @@ import { ViewFactory } from './renderers/ViewFactory';
 import { PositionLike, Shape } from './Shape';
 import { ArcSegment } from './shapes/ArcSegment';
 import { Arrow, ArrowAttributes } from './shapes/Arrow';
-import { Circle, CircleAttributes } from './shapes/Circle';
-import { EllipticalPath, EllipseAttributes } from './shapes/EllipticalPath';
-import { Line, LineAttributes } from './shapes/Line';
+import { CircleAttributes, CircularPath } from './shapes/Circle';
+import { EllipseAttributes, EllipticalPath } from './shapes/EllipticalPath';
+import { LinearPath, LineAttributes } from './shapes/Line';
 import { Polygon, PolygonAttributes } from './shapes/Polygon';
-import { Rectangle, RectangleAttributes } from './shapes/Rectangle';
+import { Rectangle, RectangleAttributes, RectangleProperties, RectangularPath } from './shapes/Rectangle';
 import { Text, TextAttributes } from './text';
 import { dateTime } from './utils/performance';
+
+const native = true;
 
 export type BoundingBox = { left: number, top: number, right: number, bottom: number };
 
@@ -40,6 +42,23 @@ export interface PointAttributes {
     strokeOpacity?: number;
     strokeWidth?: number;
     visibility?: 'visible' | 'hidden' | 'collapse';
+}
+
+/**
+ * Initialize a new board.
+ * @param elementOrId HTML identifier (id) of element in which the board is rendered.
+ * @param attributes An object that sets some of the board properties.
+ */
+export function initBoard(elementOrId: string | HTMLElement, attributes: BoardAttributes = {}): IBoard {
+    return new Board(elementOrId, attributes);
+}
+
+/**
+ * Dispose of a board and free all of its resources.
+ * @param board 
+ */
+export function freeBoard(board: IBoard): void {
+    board.dispose();
 }
 
 export class Board implements IBoard {
@@ -158,27 +177,32 @@ export class Board implements IBoard {
         const Δy = this.height;
         const LR = right - left;
         const TB = bottom - top;
-        const sx = Δx / LR;
-        const sy = Δy / TB;
+        // By computing the absolute values it is manifest that we are not introducing inversions.
+        const sx = Δx / Math.abs(LR);
+        const sy = Δy / Math.abs(TB);
         const x = -left * Δx / LR;
         const y = -top * Δy / TB;
         this.#viewBox.position.set(x, y);
+        this.#viewBox.scaleXY.set(sx, sy);
         if (this.goofy) {
             if (this.crazy) {
-                this.#viewBox.scaleXY.set(-sx, -sy);
-                this.#viewBox.attitude.rotorFromAngle(-Math.PI);
+                // crazy and goofy Coordinate System.
+                // TODO: This looks wrong s/b -Math.PI/2
+                this.#viewBox.attitude.rotorFromAngle(-Math.PI / 2);
             }
             else {
-                this.#viewBox.scaleXY.set(sx, sy);
+                // SVG Coordinate System.
             }
         }
         else {
             if (this.crazy) {
-                this.#viewBox.scaleXY.set(sx, -sy);
-                this.#viewBox.attitude.rotorFromAngle(-Math.PI / 2);
+                // crazy but not goofy Coordinate System.
+                // This looks wrong s/b Math.PI
+                // this.#viewBox.attitude.rotorFromAngle(+Math.PI / 2);    // original
+                this.#viewBox.attitude.rotorFromAngle(Math.PI);
             }
             else {
-                this.#viewBox.scaleXY.set(sx, -sy);
+                // Cartesian Coordinate System.
                 this.#viewBox.attitude.rotorFromAngle(+Math.PI / 2);
             }
         }
@@ -339,8 +363,8 @@ export class Board implements IBoard {
         return this;
     }
 
-    circle(options: CircleAttributes = {}): Circle {
-        const circle = new Circle(this, options);
+    circle(options: CircleAttributes = {}): CircularPath {
+        const circle = new CircularPath(this, options);
         this.add(circle);
         return circle;
     }
@@ -351,14 +375,8 @@ export class Board implements IBoard {
         return ellipse;
     }
 
-    ellipticalPath(attributes: EllipseAttributes = {}): EllipticalPath {
-        const ellipse = new EllipticalPath(this, attributes);
-        this.add(ellipse);
-        return ellipse;
-    }
-
-    line(point1: PositionLike, point2: PositionLike, attributes: LineAttributes = {}): Line {
-        const line = new Line(this, point1, point2, attributes);
+    line(point1: PositionLike, point2: PositionLike, attributes: LineAttributes = {}): LinearPath {
+        const line = new LinearPath(this, point1, point2, attributes);
         this.add(line);
         return line;
     }
@@ -389,16 +407,23 @@ export class Board implements IBoard {
         return ellipse;
     }
 
-    polygon(points: PositionLike[] = [], attributes: Partial<PolygonAttributes> = {}): Polygon {
+    polygon(points: PositionLike[] = [], attributes: PolygonAttributes = {}): Polygon {
         const polygon = new Polygon(this, points, attributes);
         this.add(polygon);
         return polygon;
     }
 
-    rectangle(attributes: RectangleAttributes = {}): Rectangle {
-        const rect = new Rectangle(this, attributes);
-        this.add(rect);
-        return rect;
+    rectangle(attributes: RectangleAttributes = {}): RectangleProperties {
+        if (native) {
+            const shape = new Rectangle(this, attributes);
+            this.add(shape);
+            return shape;
+        }
+        else {
+            const shape = new RectangularPath(this, attributes);
+            this.add(shape);
+            return shape;
+        }
     }
 
     text(message: string, attributes: TextAttributes = {}): Text {
