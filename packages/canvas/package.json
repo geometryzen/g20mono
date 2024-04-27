@@ -1,6 +1,6 @@
 {
     "name": "g2o-canvas",
-    "version": "0.9.200",
+    "version": "0.9.201",
     "description": "g2o Canvas View",
     "exports": {
         ".": {
