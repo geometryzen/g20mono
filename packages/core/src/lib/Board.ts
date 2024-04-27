@@ -185,7 +185,6 @@ class Board implements IBoard {
         if (this.goofy) {
             if (this.crazy) {
                 // crazy and goofy Coordinate System.
-                // TODO: This looks wrong s/b -Math.PI/2
                 this.#viewBox.attitude.rotorFromAngle(-Math.PI / 2);
             }
             else {
@@ -195,8 +194,6 @@ class Board implements IBoard {
         else {
             if (this.crazy) {
                 // crazy but not goofy Coordinate System.
-                // This looks wrong s/b Math.PI
-                // this.#viewBox.attitude.rotorFromAngle(+Math.PI / 2);    // original
                 this.#viewBox.attitude.rotorFromAngle(Math.PI);
             }
             else {

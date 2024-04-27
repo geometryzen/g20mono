@@ -21,8 +21,10 @@ export interface IBoard extends Disposable {
     text(message: string, attributes?: TextAttributes): Text;
 
     getBoundingBox(): { left: number, top: number, right: number, bottom: number };
-    get goofy(): boolean;
+    update(): void;
     get crazy(): boolean;
+    get goofy(): boolean;
+    get frameCount(): number;
     width: number;
     height: number;
     scaleXY: G20;
