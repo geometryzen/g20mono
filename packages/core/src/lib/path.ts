@@ -2,7 +2,7 @@ import { effect, state } from 'g2o-reactive';
 import { Anchor } from './anchor';
 import { Collection } from './collection';
 import { ColoredShape, ColoredShapeAttributes } from './ColoredShape';
-import { Color } from './effects/ColorProvider';
+import { Color, is_color_provider } from './effects/ColorProvider';
 import { ElementBase } from './element';
 import { Flag } from './Flag';
 import { IBoard } from './IBoard';
@@ -106,7 +106,7 @@ export class Path extends ColoredShape implements PathAttributes {
      */
     constructor(board: IBoard, vertices: Anchor[] = [], closed?: boolean, curved?: boolean, manual?: boolean, attributes: PathAttributes = {}) {
 
-        super(board, attributes);
+        super(board, colored_shape_attribs_from_path_attribs(attributes));
 
         this.flagReset(true);
         this.zzz.flags[Flag.ClipPath] = false;
@@ -997,5 +997,35 @@ export class Path extends ColoredShape implements PathAttributes {
     set vectorEffect(vectorEffect: 'none' | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position') {
         this.#vectorEffect = vectorEffect;
         this.zzz.flags[Flag.VectorEffect] = true;
+    }
+}
+
+
+function colored_shape_attribs_from_path_attribs(attributes: PathAttributes): ColoredShapeAttributes {
+    const retval: ColoredShapeAttributes = {
+        id: attributes.id,
+        // attitude: attributes.attitude,
+        // opacity: attributes.opacity,
+        position: attributes.position,
+        // visibility: attributes.visibility,
+        fill: defaultColor(attributes.fill, null),
+        // fillOpacity: attributes.fillOpacity,
+        stroke: defaultColor(attributes.stroke, 'black'),
+        strokeOpacity: attributes.strokeOpacity,
+        strokeWidth: attributes.strokeWidth,
+        visibility: attributes.visibility
+    };
+    return retval;
+}
+
+function defaultColor(color: Color, defaultValue: Color): Color {
+    if (typeof color === 'string') {
+        return color;
+    }
+    else if (is_color_provider(color)) {
+        return color;
+    }
+    else {
+        return defaultValue;
     }
 }

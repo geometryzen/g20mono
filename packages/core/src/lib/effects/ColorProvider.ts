@@ -35,7 +35,7 @@ export function is_color_provider(x: Color): x is ColorProvider {
         return true;
     }
     else {
-        throw new Error();
+        return false;
     }
 }
 

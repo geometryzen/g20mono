@@ -26,7 +26,7 @@ export { Parent, PositionLike, position_from_like, Shape, ShapeAttributes, Shape
 export { ArcSegment } from './lib/shapes/ArcSegment';
 export { Arrow, ArrowAttributes, ArrowProperties } from './lib/shapes/Arrow';
 export { Circle, CircleAttributes, CircleProperties } from './lib/shapes/Circle';
-export { Ellipse, EllipseAttributes } from './lib/shapes/Ellipse';
+export { EllipticalPath as Ellipse, EllipseAttributes } from './lib/shapes/EllipticalPath';
 export { Line, LineAttributes, LineProperties } from './lib/shapes/Line';
 export { Polygon, PolygonAttributes } from './lib/shapes/Polygon';
 export { Rectangle, RectangleAttributes, RectangleProperties } from './lib/shapes/Rectangle';

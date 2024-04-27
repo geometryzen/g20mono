@@ -1,4 +1,4 @@
-import { computed, effect, Readable, state } from 'g2o-reactive';
+import { computed, effect, Readable, state, State } from 'g2o-reactive';
 import { Anchor } from './anchor';
 import { Constants } from './constants';
 import { Color } from './effects/ColorProvider';
@@ -15,12 +15,14 @@ import { PositionLike, Shape } from './Shape';
 import { ArcSegment } from './shapes/ArcSegment';
 import { Arrow, ArrowAttributes } from './shapes/Arrow';
 import { Circle, CircleAttributes } from './shapes/Circle';
-import { Ellipse, EllipseAttributes } from './shapes/Ellipse';
+import { EllipticalPath, EllipseAttributes } from './shapes/EllipticalPath';
 import { Line, LineAttributes } from './shapes/Line';
 import { Polygon, PolygonAttributes } from './shapes/Polygon';
 import { Rectangle, RectangleAttributes } from './shapes/Rectangle';
 import { Text, TextAttributes } from './text';
 import { dateTime } from './utils/performance';
+
+export type BoundingBox = { left: number, top: number, right: number, bottom: number };
 
 export interface BoardAttributes {
     boundingBox?: { left: number, top: number, right: number, bottom: number };
@@ -69,7 +71,7 @@ export class Board implements IBoard {
     #curr_now: number | null = null;
     #prev_now: number | null = null;
 
-    readonly #boundingBox: { left: number, top: number, right: number, bottom: number } = { left: -5, top: 5, right: 5, bottom: -5 };
+    readonly #boundingBox: State<BoundingBox> = state({ left: -5, top: 5, right: 5, bottom: -5 });
     /**
      * 'goofy' is actually regular SVG coordinates where the y coordinate increases downwards.
      */
@@ -94,10 +96,7 @@ export class Board implements IBoard {
             const top = options.boundingBox.top;
             const right = options.boundingBox.right;
             const bottom = options.boundingBox.bottom;
-            this.#boundingBox.left = left;
-            this.#boundingBox.top = top;
-            this.#boundingBox.right = right;
-            this.#boundingBox.bottom = bottom;
+            this.#boundingBox.set({ left, top, right, bottom });
         }
 
         if (options.scene instanceof Group) {
@@ -188,10 +187,47 @@ export class Board implements IBoard {
     get goofy(): boolean {
         return this.#goofy.get();
     }
-
+    /*
+    set goofy(goofy: boolean) {
+        if (typeof goofy === 'boolean') {
+            if (goofy) {
+                if (!this.goofy) {
+                    const bbox = this.getBoundingBox();
+                    const left = bbox.left;
+                    const top = bbox.top;
+                    const right = bbox.right;
+                    const bottom = bbox.bottom;
+                    this.#boundingBox.set({ left, top: bottom, right, bottom: top });
+                }
+            }
+            else {
+                if (this.goofy) {
+                    const bbox = this.getBoundingBox();
+                    const left = bbox.left;
+                    const top = bbox.top;
+                    const right = bbox.right;
+                    const bottom = bbox.bottom;
+                    this.#boundingBox.set({ left, top: bottom, right, bottom: top });
+                }
+            }
+        }
+    }
+    */
     get crazy(): boolean {
         return this.#crazy.get();
     }
+    /*
+    set crazy(crazy: boolean) {
+        if (typeof crazy === 'boolean') {
+            if (crazy) {
+
+            }
+            else {
+
+            }
+        }
+    }
+    */
 
     get frameCount(): number {
         return this.#frameCount.get();
@@ -250,8 +286,8 @@ export class Board implements IBoard {
         return this;
     }
 
-    getBoundingBox(): { left: number, top: number, right: number, bottom: number } {
-        return this.#boundingBox;
+    getBoundingBox(): Readonly<{ left: number, top: number, right: number, bottom: number }> {
+        return this.#boundingBox.get();
     }
 
     /**
@@ -309,8 +345,14 @@ export class Board implements IBoard {
         return circle;
     }
 
-    ellipse(attributes: EllipseAttributes = {}): Ellipse {
-        const ellipse = new Ellipse(this, attributes);
+    ellipse(attributes: EllipseAttributes = {}): EllipticalPath {
+        const ellipse = new EllipticalPath(this, attributes);
+        this.add(ellipse);
+        return ellipse;
+    }
+
+    ellipticalPath(attributes: EllipseAttributes = {}): EllipticalPath {
+        const ellipse = new EllipticalPath(this, attributes);
         this.add(ellipse);
         return ellipse;
     }
@@ -342,7 +384,7 @@ export class Board implements IBoard {
         ellipse_attribs.position = position;
         ellipse_attribs.rx = rx;
         ellipse_attribs.ry = ry;
-        const ellipse = new Ellipse(this, ellipse_attribs);
+        const ellipse = new EllipticalPath(this, ellipse_attribs);
         this.add(ellipse);
         return ellipse;
     }

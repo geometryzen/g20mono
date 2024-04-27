@@ -16,6 +16,7 @@ export interface ArrowAttributes {
     stroke?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
+    visibility?: 'hidden' | 'visible' | 'collapse';
 }
 
 export interface ArrowProperties {
@@ -164,7 +165,8 @@ function path_attribs_from_arrow_attribs(attributes: ArrowAttributes): PathAttri
         // fillOpacity: attributes.fillOpacity,
         stroke: attributes.stroke,
         strokeOpacity: attributes.strokeOpacity,
-        strokeWidth: attributes.strokeWidth
+        strokeWidth: attributes.strokeWidth,
+        visibility: attributes.visibility
     };
     return retval;
 }
