@@ -28,7 +28,7 @@ export interface EllipseAttributes {
     visibility?: 'visible' | 'hidden' | 'collapse';
 }
 
-export class EllipticalPath extends Path {
+export class Ellipse extends Path {
 
     readonly #disposables: Disposable[] = [];
 

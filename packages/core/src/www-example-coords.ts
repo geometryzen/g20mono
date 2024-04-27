@@ -1,8 +1,8 @@
-import { Board, Shape } from './index';
+import { IBoard, initBoard, Shape } from './index';
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    const board = new Board("my-board", {
+    const board = initBoard("my-board", {
         // viewFactory: new CanvasViewFactory(),
         boundingBox: { left: -2, top: 2, right: 2, bottom: -2 } // regular (y increases upwards)
         // boundingBox: { left: -2, top: -2, right: 2, bottom: 2 } // SVG (y increases downwards)
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // board.update(); // Needed for CanvasView
 
-    function rescale(shape: Shape, board: Board): void {
+    function rescale(shape: Shape, board: IBoard): void {
         shape.scaleXY.set(2 / board.scaleXY.x, 2 / board.scaleXY.y);
     }
 

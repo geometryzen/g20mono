@@ -1,8 +1,8 @@
-import { Board, G20, Text } from './index';
+import { G20, IBoard, initBoard, Text } from './index';
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    const board = new Board("my-board", {
+    const board = initBoard("my-board", {
         boundingBox: { left: -5, top: 5, right: 5, bottom: -5 },
     });
 
@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function () {
     window.requestAnimationFrame(animate);
 });
 
-function rescale(text: Text, board: Board): void {
+function rescale(text: Text, board: IBoard): void {
     text.scaleXY.set(1 / board.scaleXY.x, 1 / board.scaleXY.y);
 }
 

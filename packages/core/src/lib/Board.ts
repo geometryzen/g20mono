@@ -14,15 +14,13 @@ import { ViewFactory } from './renderers/ViewFactory';
 import { PositionLike, Shape } from './Shape';
 import { ArcSegment } from './shapes/ArcSegment';
 import { Arrow, ArrowAttributes } from './shapes/Arrow';
-import { CircleAttributes, CircularPath } from './shapes/Circle';
-import { EllipseAttributes, EllipticalPath } from './shapes/EllipticalPath';
-import { LinearPath, LineAttributes } from './shapes/Line';
+import { Circle, CircleAttributes } from './shapes/Circle';
+import { Ellipse, EllipseAttributes } from './shapes/Ellipse';
+import { Line, LineAttributes } from './shapes/Line';
 import { Polygon, PolygonAttributes } from './shapes/Polygon';
-import { Rectangle, RectangleAttributes, RectangleProperties, RectangularPath } from './shapes/Rectangle';
+import { Rectangle, RectangleAttributes } from './shapes/Rectangle';
 import { Text, TextAttributes } from './text';
 import { dateTime } from './utils/performance';
-
-const native = true;
 
 export type BoundingBox = { left: number, top: number, right: number, bottom: number };
 
@@ -61,7 +59,7 @@ export function freeBoard(board: IBoard): void {
     board.dispose();
 }
 
-export class Board implements IBoard {
+class Board implements IBoard {
 
     readonly #disposables: Disposable[] = [];
 
@@ -363,20 +361,20 @@ export class Board implements IBoard {
         return this;
     }
 
-    circle(options: CircleAttributes = {}): CircularPath {
-        const circle = new CircularPath(this, options);
+    circle(attributes: CircleAttributes = {}): Circle {
+        const circle = new Circle(this, attributes);
         this.add(circle);
         return circle;
     }
 
-    ellipse(attributes: EllipseAttributes = {}): EllipticalPath {
-        const ellipse = new EllipticalPath(this, attributes);
+    ellipse(attributes: EllipseAttributes = {}): Ellipse {
+        const ellipse = new Ellipse(this, attributes);
         this.add(ellipse);
         return ellipse;
     }
 
-    line(point1: PositionLike, point2: PositionLike, attributes: LineAttributes = {}): LinearPath {
-        const line = new LinearPath(this, point1, point2, attributes);
+    line(point1: PositionLike, point2: PositionLike, attributes: LineAttributes = {}): Line {
+        const line = new Line(this, point1, point2, attributes);
         this.add(line);
         return line;
     }
@@ -402,7 +400,7 @@ export class Board implements IBoard {
         ellipse_attribs.position = position;
         ellipse_attribs.rx = rx;
         ellipse_attribs.ry = ry;
-        const ellipse = new EllipticalPath(this, ellipse_attribs);
+        const ellipse = new Ellipse(this, ellipse_attribs);
         this.add(ellipse);
         return ellipse;
     }
@@ -413,17 +411,10 @@ export class Board implements IBoard {
         return polygon;
     }
 
-    rectangle(attributes: RectangleAttributes = {}): RectangleProperties {
-        if (native) {
-            const shape = new Rectangle(this, attributes);
-            this.add(shape);
-            return shape;
-        }
-        else {
-            const shape = new RectangularPath(this, attributes);
-            this.add(shape);
-            return shape;
-        }
+    rectangle(attributes: RectangleAttributes = {}): Rectangle {
+        const shape = new Rectangle(this, attributes);
+        this.add(shape);
+        return shape;
     }
 
     text(message: string, attributes: TextAttributes = {}): Text {

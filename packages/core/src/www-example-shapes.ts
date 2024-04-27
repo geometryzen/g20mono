@@ -1,8 +1,8 @@
-import { Board, G20 } from './index';
+import { G20, initBoard } from './index';
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    const board = new Board('my-board', { boundingBox: { left: -300, top: 300, right: 300, bottom: -300 } });
+    const board = initBoard('my-board', { boundingBox: { left: -300, top: 300, right: 300, bottom: -300 } });
 
     const circle = board.circle({ radius: 50 });
     circle.radius = 100;

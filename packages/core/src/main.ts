@@ -4,7 +4,7 @@ import { freeBoard, initBoard } from './lib/Board';
 document.addEventListener('DOMContentLoaded', function () {
 
     const board = initBoard("my-board", {
-        boundingBox: { left: -5, top: 5, right: 5, bottom: -5 }, // Cartesian
+        // boundingBox: { left: -5, top: 5, right: 5, bottom: -5 }, // Cartesian
         // boundingBox: { left: -5, top: -5, right: 5, bottom: 5 }, // goofy only (SVG)
         // boundingBox: { left: 5, top: 5, right: -5, bottom: -5 }, // crazy
         // boundingBox: { left: 5, top: -5, right: -5, bottom: 5 }, // crazy and goofy

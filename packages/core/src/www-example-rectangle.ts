@@ -1,8 +1,8 @@
-import { Board } from './index';
+import { initBoard } from './index';
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    const board = new Board("my-board", {
+    const board = initBoard("my-board", {
         boundingBox: { left: -5, top: 5, right: 5, bottom: -5 } // Cartesian
         // boundingBox: { left: -5, top: -5, right: 5, bottom: 5 } // goofy (SVG)
         // boundingBox: { left: 5, top: 5, right: -5, bottom: -5 } // crazy

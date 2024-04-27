@@ -1,8 +1,8 @@
-import { Board, G20 } from './index';
+import { G20, initBoard } from './index';
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    const board = new Board("my-board", {
+    const board = initBoard("my-board", {
         boundingBox: { left: -2, top: 2, right: 2, bottom: -2 }
     });
 

@@ -1,8 +1,8 @@
-import { Board, Shape } from './index';
+import { IBoard, initBoard, Shape } from './index';
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    const board = new Board("my-board", {
+    const board = initBoard("my-board", {
         boundingBox: { left: -2, top: 2, right: 2, bottom: -2 } // regular (y increases upwards)
         // boundingBox: { left: -2, top: -2, right: 2, bottom: 2 } // goofy (y increases downwards)
         // boundingBox: { left: 2, top: 2, right: -2, bottom: -2 } // regular, crazy (x increases leftwards)
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
     ellipse.rx = 1;
     ellipse.ry = 1;
 
-    function rescale(shape: Shape, board: Board): void {
+    function rescale(shape: Shape, board: IBoard): void {
         shape.scaleXY.set(1 / board.scaleXY.x, 1 / board.scaleXY.y);
     }
 

@@ -20,7 +20,7 @@ export interface LineProperties {
     visibility?: 'visible' | 'hidden' | 'collapse';
 }
 
-export class LinearPath extends Path implements LineProperties {
+export class Line extends Path implements LineProperties {
     constructor(board: IBoard, point1: PositionLike, point2: PositionLike, attributes: LineAttributes = {}) {
         super(board, [
             new Anchor(position_from_like(point1), 'M'),
