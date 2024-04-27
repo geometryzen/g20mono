@@ -3,7 +3,7 @@ import { Anchor } from './anchor';
 import { Constants } from './constants';
 import { ElementBase } from './element';
 import { Flag } from './Flag';
-import { IBoard } from './IBoard';
+import { Board } from './IBoard';
 import { IShape } from './IShape';
 import { compose_2d_3x3_transform } from './math/compose_2d_3x3_transform';
 import { G20 } from './math/G20';
@@ -118,7 +118,7 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
     abstract getBoundingBox(shallow?: boolean): { top?: number; left?: number; right?: number; bottom?: number };
     abstract hasBoundingBox(): boolean;
 
-    constructor(readonly board: IBoard, attributes: ShapeAttributes = {}) {
+    constructor(readonly board: Board, attributes: ShapeAttributes = {}) {
 
         super(ensure_identifier(attributes));
 

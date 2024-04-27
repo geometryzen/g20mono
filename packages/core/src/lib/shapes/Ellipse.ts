@@ -3,7 +3,7 @@ import { Anchor } from '../anchor.js';
 import { Collection } from '../collection.js';
 import { Color } from '../effects/ColorProvider.js';
 import { Flag } from '../Flag.js';
-import { IBoard } from '../IBoard.js';
+import { Board } from '../IBoard.js';
 import { G20 } from '../math/G20.js';
 import { Path, PathAttributes } from '../path.js';
 import { Disposable, dispose } from '../reactive/Disposable.js';
@@ -34,7 +34,7 @@ export class Ellipse extends Path {
 
     readonly #radius = G20.vector(1, 1);
 
-    constructor(board: IBoard, attributes: EllipseAttributes = {}) {
+    constructor(board: Board, attributes: EllipseAttributes = {}) {
 
         const amount = attributes.resolution ? Math.max(attributes.resolution, 2) : 4;
         const points = [];

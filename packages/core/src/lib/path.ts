@@ -5,7 +5,7 @@ import { ColoredShape, ColoredShapeAttributes } from './ColoredShape';
 import { Color, is_color_provider } from './effects/ColorProvider';
 import { ElementBase } from './element';
 import { Flag } from './Flag';
-import { IBoard } from './IBoard';
+import { Board } from './IBoard';
 import { G20 } from './math/G20.js';
 import { Disposable } from './reactive/Disposable';
 import { variable } from './reactive/variable';
@@ -102,7 +102,7 @@ export class Path extends ColoredShape implements PathAttributes {
      * @param curved Describes whether the path automatically calculates bezier handles for each vertex.
      * @param manual Describes whether the developer controls how vertices are plotted.
      */
-    constructor(board: IBoard, vertices: Anchor[] = [], closed?: boolean, curved?: boolean, manual?: boolean, attributes: PathAttributes = {}) {
+    constructor(board: Board, vertices: Anchor[] = [], closed?: boolean, curved?: boolean, manual?: boolean, attributes: PathAttributes = {}) {
 
         super(board, colored_shape_attribs_from_path_attribs(attributes));
 

@@ -10,7 +10,7 @@ import { Polygon, PolygonAttributes } from './shapes/Polygon';
 import { Rectangle, RectangleAttributes } from './shapes/Rectangle';
 import { Text, TextAttributes } from './text';
 
-export interface IBoard extends Disposable {
+export interface Board extends Disposable {
     arrow(axis: PositionLike, attributes?: ArrowAttributes): Arrow;
     circle(attributes?: CircleAttributes): Circle;
     ellipse(attributes?: EllipseAttributes): Ellipse;

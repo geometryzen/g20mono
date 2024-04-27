@@ -1,4 +1,4 @@
-import { IBoard, initBoard, Shape } from './index';
+import { Board, initBoard, Shape } from './index';
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // board.update(); // Needed for CanvasView
 
-    function rescale(shape: Shape, board: IBoard): void {
+    function rescale(shape: Shape, board: Board): void {
         shape.scaleXY.set(2 / board.scaleXY.x, 2 / board.scaleXY.y);
     }
 

@@ -1,4 +1,4 @@
-import { IBoard, initBoard, Shape } from './index';
+import { Board, initBoard, Shape } from './index';
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
     ellipse.rx = 1;
     ellipse.ry = 1;
 
-    function rescale(shape: Shape, board: IBoard): void {
+    function rescale(shape: Shape, board: Board): void {
         shape.scaleXY.set(1 / board.scaleXY.x, 1 / board.scaleXY.y);
     }
 

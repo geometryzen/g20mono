@@ -1,5 +1,5 @@
 import { Flag } from '../Flag.js';
-import { IBoard } from '../IBoard.js';
+import { Board } from '../IBoard.js';
 import { G20 } from '../math/G20.js';
 import { Rectangle } from '../shapes/Rectangle.js';
 import { lerp } from '../utils/math.js';
@@ -46,7 +46,7 @@ export class Sprite extends Rectangle {
      * @param frameRate The frame rate at which the partitions of the image should playback at.
      * A convenient package to display still or animated images through a tiled image source. For more information on the principals of animated imagery through tiling see [Texture Atlas](https://en.wikipedia.org/wiki/Texture_atlas) on Wikipedia.
      */
-    constructor(board: IBoard, path: string | Texture, ox = 0, oy = 0, cols = 1, rows = 1, frameRate = 0) {
+    constructor(board: Board, path: string | Texture, ox = 0, oy = 0, cols = 1, rows = 1, frameRate = 0) {
 
         super(board, { position: new G20(ox, oy), width: 0, height: 0 });
 

@@ -3,7 +3,7 @@ import { Anchor } from '../anchor';
 import { Collection } from '../collection';
 import { Color } from '../effects/ColorProvider';
 import { Flag } from '../Flag';
-import { IBoard } from '../IBoard';
+import { Board } from '../IBoard';
 import { G20 } from '../math/G20';
 import { Path, PathAttributes } from '../path';
 import { Disposable, dispose } from '../reactive/Disposable';
@@ -43,7 +43,7 @@ export class Circle extends Path implements CircleProperties {
 
     readonly #radius = state(1);
 
-    constructor(board: IBoard, options: CircleAttributes = {}) {
+    constructor(board: Board, options: CircleAttributes = {}) {
 
         // At least 2 vertices are required for proper circle.
         const N = options.resolution ? Math.max(options.resolution, 2) : 4;

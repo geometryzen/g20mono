@@ -1,5 +1,5 @@
-import { G20, IBoard, Shape } from './index';
-import { freeBoard, initBoard } from './lib/Board';
+import { Board, G20, Shape } from './index';
+import { initBoard } from './lib/Board';
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function () {
     arrow.origin = G20.ey.scale(1 / 2);
 
     window.onunload = function () {
-        freeBoard(board);
+        board.dispose();
     };
 
 
@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function () {
     window.requestAnimationFrame(animate);
 });
 
-function rescale(text: Shape, board: IBoard): void {
+function rescale(text: Shape, board: Board): void {
     text.scaleXY.set(1 / board.scaleXY.x, 1 / board.scaleXY.y);
 }
 

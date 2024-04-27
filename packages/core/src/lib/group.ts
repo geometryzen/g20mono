@@ -1,6 +1,6 @@
 import { State, state } from 'g2o-reactive';
 import { Flag } from './Flag';
-import { IBoard } from './IBoard';
+import { Board } from './IBoard';
 import { IShape } from './IShape';
 import { svg, transform_value_of_matrix } from './renderers/SVGView';
 import { Parent, Shape, ShapeAttributes } from './Shape';
@@ -17,7 +17,7 @@ export class Group extends Shape {
 
     readonly #shapes: State<Shape[]>;
 
-    constructor(board: IBoard, shapes: Shape[] = [], attributes: Partial<GroupAttributes> = {}) {
+    constructor(board: Board, shapes: Shape[] = [], attributes: Partial<GroupAttributes> = {}) {
 
         super(board, shape_attributes(attributes));
 

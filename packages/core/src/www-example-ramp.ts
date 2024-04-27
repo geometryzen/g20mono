@@ -1,4 +1,4 @@
-import { G20, IBoard, initBoard, Text } from './index';
+import { G20, Board, initBoard, Text } from './index';
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function () {
     window.requestAnimationFrame(animate);
 });
 
-function rescale(text: Text, board: IBoard): void {
+function rescale(text: Text, board: Board): void {
     text.scaleXY.set(1 / board.scaleXY.x, 1 / board.scaleXY.y);
 }
 

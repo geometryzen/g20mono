@@ -2,7 +2,7 @@ import { effect, state } from "g2o-reactive";
 import { ColorManager } from "./ColorManager";
 import { Color } from "./effects/ColorProvider";
 import { Flag } from "./Flag";
-import { IBoard } from "./IBoard";
+import { Board } from "./IBoard";
 import { G20 } from "./math/G20";
 import { get_svg_element_defs } from "./renderers/SVGView";
 import { PositionLike, Shape, ShapeAttributes } from "./Shape";
@@ -35,7 +35,7 @@ export abstract class ColoredShape extends Shape {
 
     #vectorEffect: 'none' | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position' = 'non-scaling-stroke';
 
-    constructor(board: IBoard, attributes: ColoredShapeAttributes = {}) {
+    constructor(board: Board, attributes: ColoredShapeAttributes = {}) {
         super(board, shape_attribs_from_colored_attribs(attributes));
 
         if (attributes.fill) {

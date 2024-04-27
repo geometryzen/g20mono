@@ -2,7 +2,7 @@ import { Anchor } from "../anchor";
 import { Collection } from "../collection";
 import { Color } from "../effects/ColorProvider";
 import { Flag } from "../Flag";
-import { IBoard } from "../IBoard";
+import { Board } from "../IBoard";
 import { G20 } from "../math/G20";
 import { Path, PathAttributes } from "../path";
 import { Disposable, dispose } from '../reactive/Disposable';
@@ -36,7 +36,7 @@ export class Arrow extends Path implements ArrowProperties {
     readonly #axis: G20;
     readonly #headLength: G20;
     readonly #origin: G20;
-    constructor(board: IBoard, axis: PositionLike, attributes: ArrowAttributes = {}) {
+    constructor(board: Board, axis: PositionLike, attributes: ArrowAttributes = {}) {
 
         const vertices = [
             new Anchor(G20.vector(0, 0), Commands.move),    // tail

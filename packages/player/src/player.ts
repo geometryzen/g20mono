@@ -1,14 +1,14 @@
-import { Disposable, IBoard } from "g2o";
+import { Board, Disposable } from "g2o";
 import { effect } from "g2o-reactive";
 
 export class Player {
-    readonly #board: IBoard;
+    readonly #board: Board;
     readonly #frameCount: Disposable;
     /**
      * The handle of the last frame requested.
      */
     #handle: number | null = null;
-    constructor(board: IBoard, callback: (frameCount: number) => void) {
+    constructor(board: Board, callback: (frameCount: number) => void) {
         this.#board = board;
         this.#frameCount = effect(() => {
             callback(board.frameCount);

@@ -1,7 +1,7 @@
 import { state } from 'g2o-reactive';
 import { Anchor } from '../anchor';
 import { Group } from '../group';
-import { IBoard } from '../IBoard';
+import { Board } from '../IBoard';
 import { G20 } from '../math/G20';
 import { Matrix } from '../matrix';
 import { Shape } from '../Shape';
@@ -206,7 +206,7 @@ export const svg = {
         return this;
     },
 
-    path_from_anchors: function (board: IBoard, position: G20, attitude: G20, anchors: Anchor[], closed: boolean): string {
+    path_from_anchors: function (board: Board, position: G20, attitude: G20, anchors: Anchor[], closed: boolean): string {
 
         // The anchors are user coordinates and don't include the position and attitude of the body.
         // By switching x amd y here we handle a 90 degree coordinate rotation.
@@ -465,7 +465,7 @@ export function transform_value_of_matrix(m: Matrix): string {
  * If the bounding box is oriented such that y increases in the upwards direction,
  * exchange the x and y coordinates because we will be applying a 90 degree rotation.
  */
-export function screen_functions(board: IBoard) {
+export function screen_functions(board: Board) {
     if (board.goofy) {
         if (board.crazy) {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -1,6 +1,6 @@
 import { Anchor } from '../anchor';
 import { Color } from '../effects/ColorProvider';
-import { IBoard } from '../IBoard';
+import { Board } from '../IBoard';
 import { Path, PathAttributes } from '../path';
 import { PositionLike, position_from_like } from '../Shape';
 
@@ -21,7 +21,7 @@ export interface LineProperties {
 }
 
 export class Line extends Path implements LineProperties {
-    constructor(board: IBoard, point1: PositionLike, point2: PositionLike, attributes: LineAttributes = {}) {
+    constructor(board: Board, point1: PositionLike, point2: PositionLike, attributes: LineAttributes = {}) {
         super(board, [
             new Anchor(position_from_like(point1), 'M'),
             new Anchor(position_from_like(point2), 'L')],

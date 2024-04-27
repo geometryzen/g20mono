@@ -3,7 +3,7 @@ import { Anchor } from './anchor';
 import { Constants } from './constants';
 import { Color } from './effects/ColorProvider';
 import { Group } from './group';
-import { IBoard } from './IBoard';
+import { Board } from './IBoard';
 import { G20 } from './math/G20';
 import { Path } from './path';
 import { Disposable, disposableFromFunction, dispose } from './reactive/Disposable';
@@ -47,19 +47,11 @@ export interface PointAttributes {
  * @param elementOrId HTML identifier (id) of element in which the board is rendered.
  * @param attributes An object that sets some of the board properties.
  */
-export function initBoard(elementOrId: string | HTMLElement, attributes: BoardAttributes = {}): IBoard {
-    return new Board(elementOrId, attributes);
+export function initBoard(elementOrId: string | HTMLElement, attributes: BoardAttributes = {}): Board {
+    return new GraphicsBoard(elementOrId, attributes);
 }
 
-/**
- * Dispose of a board and free all of its resources.
- * @param board 
- */
-export function freeBoard(board: IBoard): void {
-    board.dispose();
-}
-
-class Board implements IBoard {
+class GraphicsBoard implements Board {
 
     readonly #disposables: Disposable[] = [];
 
@@ -449,12 +441,12 @@ class Board implements IBoard {
 }
 
 class Fitter {
-    readonly #board: Board;
+    readonly #board: GraphicsBoard;
     readonly #view: View;
     readonly #domElement: HTMLElement | SVGElement;
     #target: Element | null = null;
     #target_resize: Disposable | null = null;
-    constructor(board: Board, view: View) {
+    constructor(board: GraphicsBoard, view: View) {
         this.#board = board;
         this.#view = view;
         this.#domElement = view.domElement;

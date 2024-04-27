@@ -3,7 +3,7 @@ import { ColoredShape, ColoredShapeAttributes } from './ColoredShape';
 import { Color } from './effects/ColorProvider';
 import { ElementBase } from './element';
 import { Flag } from './Flag';
-import { IBoard } from './IBoard';
+import { Board } from './IBoard';
 import { get_dashes_offset, set_dashes_offset } from './path';
 import { svg, SVGAttributes, transform_value_of_matrix } from './renderers/SVGView';
 import { PositionLike } from './Shape';
@@ -87,7 +87,7 @@ export class Text extends ColoredShape implements TextProperties {
 
     #dashes: number[] | null = null;
 
-    constructor(board: IBoard, content: string, attributes: Partial<TextAttributes> = {}) {
+    constructor(board: Board, content: string, attributes: Partial<TextAttributes> = {}) {
 
         super(board, shape_attributes_from_text_attributes(attributes));
 

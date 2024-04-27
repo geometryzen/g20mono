@@ -1,10 +1,10 @@
 export { Anchor } from './lib/anchor';
-export { BoardAttributes, freeBoard, initBoard, PointAttributes } from './lib/Board';
+export { BoardAttributes, initBoard, PointAttributes } from './lib/Board';
 export { Collection } from './lib/collection';
 export { Color, ColorProvider } from './lib/effects/ColorProvider';
 export { ElementBase } from './lib/element';
 export { Group, GroupAttributes } from './lib/group';
-export { IBoard } from './lib/IBoard';
+export { Board } from './lib/IBoard';
 export { IShape } from './lib/IShape';
 export { Bivector } from './lib/math/Bivector';
 export { G20 } from './lib/math/G20';

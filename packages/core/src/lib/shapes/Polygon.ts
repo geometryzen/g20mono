@@ -1,6 +1,6 @@
 import { Anchor } from "../anchor";
 import { Color } from "../effects/ColorProvider";
-import { IBoard } from "../IBoard";
+import { Board } from "../IBoard";
 import { Path, PathAttributes } from "../path";
 import { PositionLike, position_from_like } from "../Shape";
 
@@ -15,7 +15,7 @@ export interface PolygonAttributes {
 }
 
 export class Polygon extends Path implements PolygonAttributes {
-    constructor(board: IBoard, points: PositionLike[] = [], attributes: PolygonAttributes = {}) {
+    constructor(board: Board, points: PositionLike[] = [], attributes: PolygonAttributes = {}) {
 
         const vertices = points
             .map((point) => position_from_like(point))

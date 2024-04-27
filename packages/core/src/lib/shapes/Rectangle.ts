@@ -1,7 +1,7 @@
 import { effect, state } from 'g2o-reactive';
 import { ColoredShape, ColoredShapeAttributes } from '../ColoredShape';
 import { Color } from '../effects/ColorProvider';
-import { IBoard } from '../IBoard';
+import { Board } from '../IBoard';
 import { G20 } from '../math/G20';
 import { Disposable, dispose } from '../reactive/Disposable';
 import { svg, SVGAttributes } from '../renderers/SVGView';
@@ -48,7 +48,7 @@ export class Rectangle extends ColoredShape implements RectangleProperties, Disp
     readonly #disposables: Disposable[] = [];
     readonly #width = state(1);
     readonly #height = state(1);
-    constructor(board: IBoard, attributes: RectangleAttributes = {}) {
+    constructor(board: Board, attributes: RectangleAttributes = {}) {
         super(board, colored_shape_attribs_from_rectangle_attribs(attributes));
 
         if (typeof attributes.width === 'number') {
