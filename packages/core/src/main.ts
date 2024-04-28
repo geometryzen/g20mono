@@ -1,13 +1,9 @@
-import { Board, G20, Shape } from './index';
-import { initBoard } from './lib/Board';
+import { Board, G20, initBoard, Text } from './index';
 
 document.addEventListener('DOMContentLoaded', function () {
 
     const board = initBoard("my-board", {
-        // boundingBox: { left: -5, top: 5, right: 5, bottom: -5 }, // Cartesian
-        // boundingBox: { left: -5, top: -5, right: 5, bottom: 5 }, // goofy only (SVG)
-        // boundingBox: { left: 5, top: 5, right: -5, bottom: -5 }, // crazy
-        // boundingBox: { left: 5, top: -5, right: -5, bottom: 5 }, // crazy and goofy
+        boundingBox: { left: -5, top: 5, right: 5, bottom: -5 },
     });
 
     const A = board.point([0.0, 0.0], { id: 'A', visibility: 'collapse', fill: 'red', stroke: 'red' });
@@ -27,16 +23,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const box = board.rectangle({ id: 'box', width: 2, height: 1 });
     box.attitude.rotorFromDirections(AB, AC);
+    box.fill = 'rgba(255, 128, 0, 0.33)';
+    box.stroke = 'rgb(255, 128, 0)';
+    box.strokeWidth = 2;
     box.position.copyVector(A.position).add(AC.__mul__(0.25)).add(N.__mul__(box.height / 2));
-    box.stroke = "#FFCC00";
-    box.strokeWidth = 4;
-    box.strokeOpacity = 0.6;
-    box.fill = "#FFFF00";
-    box.fillOpacity = 0.3;
 
     const textA = board.text("A", {
         id: 'text-A',
-        anchor: board.crazy ? 'start' : 'end',
+        anchor: 'end',
         baseline: 'middle',
         dx: -5,
         fontFamily: 'Lato',
@@ -48,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const textB = board.text("B", {
         id: 'text-B',
-        anchor: board.crazy ? 'end' : 'start',
+        anchor: 'start',
         baseline: 'middle',
         dx: 5,
         fontFamily: 'Lato',
@@ -60,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const textC = board.text("C", {
         id: 'text-C',
-        anchor: board.crazy ? 'end' : 'start',
+        anchor: 'start',
         baseline: 'middle',
         dx: 5,
         fontFamily: 'Lato',
@@ -84,13 +78,19 @@ document.addEventListener('DOMContentLoaded', function () {
     const textRamp = board.text("Ramp", {
         id: 'text-Ramp',
         anchor: 'middle',
-        baseline: board.goofy ? 'auto' : 'hanging',
+        baseline: 'hanging',
         fontFamily: 'Lato',
         fontSize: 20,
         position: ramp.X
     });
     textRamp.attitude.rotorFromDirections(AB, AC);
     rescale(textRamp, board);
+
+    box.stroke = "#FFCC00";
+    box.strokeWidth = 4;
+    box.strokeOpacity = 0.6;
+    box.fill = "#FFFF00";
+    box.fillOpacity = 0.3;
 
     const Fg = board.arrow(G20.ey.scale(-2), {
         id: 'Fg',
@@ -113,11 +113,11 @@ document.addEventListener('DOMContentLoaded', function () {
     Fs.strokeOpacity = 0.4;
     Fs.strokeWidth = 2;
 
-    const arrow = board.arrow(G20.ey.scale(-1), {
+    const arrow = board.arrow(G20.ex.scale(1), {
         id: 'arrow',
         strokeWidth: 4
     });
-    // arrow.axis = G20.ey.scale(-1);
+    arrow.axis = G20.ey;
     arrow.headLength = 0.25;
     arrow.origin = G20.ey.scale(1 / 2);
 
@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function () {
     window.requestAnimationFrame(animate);
 });
 
-function rescale(text: Shape, board: Board): void {
-    text.scaleXY.set(1 / board.scaleXY.x, 1 / board.scaleXY.y);
+function rescale(text: Text, board: Board): void {
+    text.scaleXY.set(1 / board.sx, 1 / board.sy);
 }
 

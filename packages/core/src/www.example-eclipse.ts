@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
     ellipse.ry = 1;
 
     function rescale(shape: Shape, board: Board): void {
-        shape.scaleXY.set(1 / board.scaleXY.x, 1 / board.scaleXY.y);
+        shape.scaleXY.set(1 / board.sx, 1 / board.sy);
     }
 
     window.onunload = function () {

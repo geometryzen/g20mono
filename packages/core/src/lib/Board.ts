@@ -4,7 +4,6 @@ import { Constants } from './constants';
 import { Color } from './effects/ColorProvider';
 import { Group } from './group';
 import { Board } from './IBoard';
-import { G20 } from './math/G20';
 import { Path } from './path';
 import { Disposable, disposableFromFunction, dispose } from './reactive/Disposable';
 import { sizeEquals } from './renderers/Size';
@@ -244,8 +243,18 @@ class GraphicsBoard implements Board {
         return this.#frameCount.get();
     }
 
-    get scaleXY(): G20 {
-        return this.#viewBox.scaleXY.clone();
+    get sx(): number {
+        return this.#viewBox.scaleXY.x;
+    }
+    set sx(sx: number) {
+        this.#viewBox.scaleXY.x = sx;
+    }
+
+    get sy(): number {
+        return this.#viewBox.scaleXY.y;
+    }
+    set sy(sy: number) {
+        this.#viewBox.scaleXY.y = sy;
     }
 
     get scene(): Group {

@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // board.update(); // Needed for CanvasView
 
     function rescale(shape: Shape, board: Board): void {
-        shape.scaleXY.set(2 / board.scaleXY.x, 2 / board.scaleXY.y);
+        shape.scaleXY.set(2 / board.sx, 2 / board.sy);
     }
 
     window.onunload = function () {

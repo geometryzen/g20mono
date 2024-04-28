@@ -111,10 +111,11 @@ export class Rectangle extends ColoredShape implements RectangleProperties, Disp
                 else {
                     if (crazy) {
                         this.zzz.elem.setAttribute("x", `${-width / 2}`);
-                        this.zzz.elem.setAttribute("y", `${height / 2 - width / 2}`);
+                        this.zzz.elem.setAttribute("y", `${-height / 2}`);
                     }
                     else {
-                        this.zzz.elem.setAttribute("x", `${height / 2 - width / 2}`);
+                        // Cartesian Coordinate System
+                        this.zzz.elem.setAttribute("x", `${-height / 2}`);
                         this.zzz.elem.setAttribute("y", `${-width / 2}`);
                     }
                 }

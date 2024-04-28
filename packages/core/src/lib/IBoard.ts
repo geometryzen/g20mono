@@ -1,5 +1,4 @@
 import { PointAttributes } from './Board';
-import { G20 } from './math/G20';
 import { Disposable } from './reactive/Disposable';
 import { PositionLike, Shape } from './Shape';
 import { Arrow, ArrowAttributes } from './shapes/Arrow';
@@ -30,5 +29,6 @@ export interface Board extends Disposable {
     get frameCount(): number;
     width: number;
     height: number;
-    scaleXY: G20;
+    sx: number;
+    sy: number;
 }

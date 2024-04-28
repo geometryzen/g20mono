@@ -138,6 +138,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function rescale(text: Text, board: Board): void {
-    text.scaleXY.set(1 / board.scaleXY.x, 1 / board.scaleXY.y);
+    text.scaleXY.set(1 / board.sx, 1 / board.sy);
 }
 

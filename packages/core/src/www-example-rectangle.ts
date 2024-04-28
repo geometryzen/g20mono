@@ -1,26 +1,22 @@
-import { initBoard } from './index';
+import { G20, initBoard } from './index';
 
 document.addEventListener('DOMContentLoaded', function () {
 
     const board = initBoard("my-board", {
-        boundingBox: { left: -5, top: 5, right: 5, bottom: -5 } // Cartesian
-        // boundingBox: { left: -5, top: -5, right: 5, bottom: 5 } // goofy (SVG)
-        // boundingBox: { left: 5, top: 5, right: -5, bottom: -5 } // crazy
-        // boundingBox: { left: 5, top: -5, right: -5, bottom: 5 } // crazy, goofy
+        // boundingBox: { left: -2, top: 2, right: 2, bottom: -2 } // Cartesian
+        // boundingBox: { left: -2, top: -2, right: 2, bottom: 2 } // SVG
+        // boundingBox: { left: 2, top: -2, right: -2, bottom: 2 } // crazy
+        boundingBox: { left: 2, top: 2, right: -2, bottom: -2 } // crazy and goofy
     });
 
-    //    const A = board.point(G20.zero);
-    //    const B = board.point(G20.ex);
-    //    const C = board.point(G20.ey);
+    const A = board.point(G20.zero);
+    const B = board.point(G20.ex);
+    const C = board.point(G20.ey);
 
-    const rect = board.rectangle({
-        id: 'rectangle',
-        fill: 'red'
-    });
-    rect.width = 2;
-    rect.height = 1;
-    rect.attitude.rotorFromAngle(Math.PI / 4);
-    rect.position.x += 1;
+    board.line(A, B);
+    board.line(A, C);
+
+    board.rectangle({ fill: 'none', stroke: 'black', width: 1.5, position: [0.75, 0.5] });
 
     /*
     function animate() {
