@@ -229,7 +229,7 @@ export abstract class ColoredShape extends Shape {
 function shape_attribs_from_colored_attribs(attributes: ColoredShapeAttributes): Partial<ShapeAttributes> {
     const retval: Partial<ShapeAttributes> = {
         id: attributes.id,
-        compensate: attributes.compensate,
+        plumb: attributes.plumb,
         attitude: attributes.attitude,
         position: attributes.position,
         visibility: attributes.visibility

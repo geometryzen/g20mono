@@ -583,7 +583,7 @@ export class Text extends ColoredShape implements TextProperties {
 function shape_attributes_from_text_attributes(attributes: Partial<TextAttributes>): Partial<ColoredShapeAttributes> {
     const retval: Partial<ColoredShapeAttributes> = {
         id: attributes.id,
-        compensate: true,
+        plumb: true,
         position: attributes.position,
     };
     return retval;

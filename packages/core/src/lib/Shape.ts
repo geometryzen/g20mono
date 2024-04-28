@@ -51,7 +51,7 @@ export interface ShapeAttributes {
     position?: PositionLike;
     attitude?: G20;
     visibility?: 'visible' | 'hidden' | 'collapse';
-    compensate?: boolean;
+    plumb?: boolean;
 }
 
 export interface ShapeProperties {
@@ -110,7 +110,7 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
     readonly #opacity = state(1);
     readonly #visibility = state('visible' as 'visible' | 'hidden' | 'collapse');
 
-    readonly #compensate: boolean;
+    readonly #plumb = state(false);
 
     readonly #clipPath = state(null as Shape | null);
 
@@ -143,11 +143,8 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
             this.#attitude = new G20(0, 0, 1, 0);
         }
 
-        if (attributes.compensate) {
-            this.#compensate = attributes.compensate;
-        }
-        else {
-            this.#compensate = false;
+        if (typeof attributes.plumb === 'boolean') {
+            this.#plumb.set(attributes.plumb);
         }
 
         if (typeof attributes.opacity === 'number') {
@@ -175,13 +172,7 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
         /**
          * 
          */
-        this.#matrix = computed(() => update_matrix(this.#position, this.#attitude, this.#scale, this.skewX, this.skewY, this.#compensate, this.board.goofy, this.board.crazy));
-
-        /*
-        this.#disposables.push(effect(()=>{
-            this.#update_matrix(this.#compensate);
-        }));
-        */
+        this.#matrix = computed(() => update_matrix(this.#position, this.#attitude, this.#scale, this.skewX, this.skewY, this.plumb, this.board.goofy, this.board.crazy));
     }
 
     override dispose(): void {
@@ -266,6 +257,12 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
         if (pos instanceof G20) {
             this.#position.copyVector(pos);
         }
+    }
+    get plumb(): boolean {
+        return this.#plumb.get();
+    }
+    set plumb(plumb: boolean) {
+        this.#plumb.set(plumb);
     }
     get position(): G20 {
         return this.#position;
@@ -387,11 +384,11 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
  * @param scale 
  * @param skewX 
  * @param skewY 
- * @param compensate 
+ * @param plumb 
  * @param goofy
  * @param crazy 
  */
-export function update_matrix(position: G20, attitude: G20, scale: G20, skewX: number, skewY: number, compensate: boolean, goofy: boolean, crazy: boolean): Matrix {
+export function update_matrix(position: G20, attitude: G20, scale: G20, skewX: number, skewY: number, plumb: boolean, goofy: boolean, crazy: boolean): Matrix {
     // For performance, the matrix product has been pre-computed.
     // M = T * S * R * skewX * skewY
     const M = new Matrix();
@@ -400,7 +397,7 @@ export function update_matrix(position: G20, attitude: G20, scale: G20, skewX: n
     const sx = scale.x;
     const sy = scale.y;
     if (goofy) {
-        if (compensate) {
+        if (plumb) {
             if (crazy) {
                 const a = attitude.a;
                 const b = -attitude.b;
@@ -418,17 +415,17 @@ export function update_matrix(position: G20, attitude: G20, scale: G20, skewX: n
             if (crazy) {
                 const cos_φ = attitude.a;
                 const sin_φ = attitude.b;
-                compose_2d_3x3_transform(y, x, sy, sx, cos_φ, sin_φ, skewY, skewX, M);    
+                compose_2d_3x3_transform(y, x, sy, sx, cos_φ, sin_φ, skewY, skewX, M);
             }
             else {
                 const cos_φ = attitude.a;
                 const sin_φ = -attitude.b;
-                compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, skewX, skewY, M);    
+                compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, skewX, skewY, M);
             }
         }
     }
     else {
-        if (compensate) {
+        if (plumb) {
             if (crazy) {
                 const cos_φ = attitude.b;
                 const sin_φ = attitude.a;
@@ -446,12 +443,12 @@ export function update_matrix(position: G20, attitude: G20, scale: G20, skewX: n
             if (crazy) {
                 const cos_φ = attitude.a;
                 const sin_φ = -attitude.b;
-                compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, skewX, skewY, M);    
+                compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, skewX, skewY, M);
             }
             else {
                 const cos_φ = attitude.a;
                 const sin_φ = attitude.b;
-                compose_2d_3x3_transform(y, x, sy, sx, cos_φ, sin_φ, skewY, skewX, M);    
+                compose_2d_3x3_transform(y, x, sy, sx, cos_φ, sin_φ, skewY, skewX, M);
             }
         }
     }

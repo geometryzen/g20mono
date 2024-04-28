@@ -20,6 +20,9 @@ export interface Board extends Disposable {
     rectangle(attributes?: RectangleAttributes): Rectangle;
     text(message: string, attributes?: TextAttributes): Text;
 
+    add(...shapes: Shape[]): this;
+    remove(...shapes: Shape[]): this;
+
     getBoundingBox(): { left: number, top: number, right: number, bottom: number };
     update(): void;
     get crazy(): boolean;
