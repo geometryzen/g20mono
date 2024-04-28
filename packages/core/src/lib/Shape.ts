@@ -1,4 +1,4 @@
-import { computed, effect, Readable, state } from 'g2o-reactive';
+import { effect, state } from 'g2o-reactive';
 import { Anchor } from './anchor';
 import { Constants } from './constants';
 import { ElementBase } from './element';
@@ -86,7 +86,7 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
     /**
      * The matrix value of the shape's position, rotation, and scale.
      */
-    readonly #matrix: Readable<Matrix>;
+    readonly #matrix: Matrix = new Matrix();
 
     /**
      * The matrix value of the shape's position, rotation, and scale in the scene.
@@ -103,9 +103,10 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
      */
     readonly #scale: G20 = new G20(1, 1);
 
-    readonly #skewX = state(0);
-
-    readonly #skewY = state(0);
+    /**
+     * Using a G20 for the skewX and skewY gives us the #skew.change$ observable.
+     */
+    readonly #skew: G20 = new G20(0, 0);
 
     readonly #opacity = state(1);
     readonly #visibility = state('visible' as 'visible' | 'hidden' | 'collapse');
@@ -169,12 +170,19 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
          * Skew the shape by an angle in the y axis direction.
          */
         this.skewY = 0;
-        /**
-         * 
-         */
-        this.#matrix = computed(() => {
-            return update_matrix(this.#position, this.#attitude, this.#scale, this.skewX, this.skewY, this.plumb, this.board.goofy, this.board.crazy);
-        });
+
+        this.#disposables.push(this.#position.change$.subscribe(() => {
+            update_matrix(this.#position, this.#attitude, this.#scale, this.skewX, this.skewY, this.plumb, this.board.goofy, this.board.crazy, this.#matrix);
+        }));
+        this.#disposables.push(this.#attitude.change$.subscribe(() => {
+            update_matrix(this.#position, this.#attitude, this.#scale, this.skewX, this.skewY, this.plumb, this.board.goofy, this.board.crazy, this.#matrix);
+        }));
+        this.#disposables.push(this.#scale.change$.subscribe(() => {
+            update_matrix(this.#position, this.#attitude, this.#scale, this.skewX, this.skewY, this.plumb, this.board.goofy, this.board.crazy, this.#matrix);
+        }));
+        this.#disposables.push(this.#skew.change$.subscribe(() => {
+            update_matrix(this.#position, this.#attitude, this.#scale, this.skewX, this.skewY, this.plumb, this.board.goofy, this.board.crazy, this.#matrix);
+        }));
     }
 
     override dispose(): void {
@@ -309,16 +317,16 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
         this.#scale.set(scale.x, scale.y, 0, 0);
     }
     get skewX(): number {
-        return this.#skewX.get();
+        return this.#skew.x;
     }
     set skewX(skewX: number) {
-        this.#skewX.set(skewX);
+        this.#skew.x = skewX;
     }
     get skewY(): number {
-        return this.#skewY.get();
+        return this.#skew.y;
     }
     set skewY(skewY: number) {
-        this.#skewY.set(skewY);
+        this.#skew.y = skewY;
     }
     get clipPath(): Shape | null {
         return this.#clipPath.get();
@@ -331,7 +339,8 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
         }
     }
     get matrix(): Matrix {
-        return this.#matrix.get();
+        return this.#matrix;
+        // return this.#matrix.get();
     }
     get opacity(): number {
         return this.#opacity.get();
@@ -376,21 +385,17 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
         this.#worldMatrix = worldMatrix;
     }
 }
+/*
+function compute_matrix(position: G20, attitude: G20, scale: G20, skewX: number, skewY: number, plumb: boolean, goofy: boolean, crazy: boolean): Matrix {
+    const M = new Matrix();
+    update_matrix(position, attitude, scale, skewX, skewY, plumb, goofy, crazy, M);
+    return M;
+}
+*/
 
-/**
- * @param position 
- * @param attitude 
- * @param scale 
- * @param skewX 
- * @param skewY 
- * @param plumb 
- * @param goofy
- * @param crazy 
- */
-export function update_matrix(position: G20, attitude: G20, scale: G20, skewX: number, skewY: number, plumb: boolean, goofy: boolean, crazy: boolean): Matrix {
+function update_matrix(position: G20, attitude: G20, scale: G20, skewX: number, skewY: number, plumb: boolean, goofy: boolean, crazy: boolean, M: Matrix): void {
     // For performance, the matrix product has been pre-computed.
     // M = T * S * R * skewX * skewY
-    const M = new Matrix();
     const x = position.x;
     const y = position.y;
     const sx = scale.x;
@@ -451,5 +456,4 @@ export function update_matrix(position: G20, attitude: G20, scale: G20, skewX: n
             }
         }
     }
-    return M;
 }

@@ -190,14 +190,28 @@ export class Text extends ColoredShape implements TextProperties {
             // anchor
             this.zzz.disposables.push(effect(() => {
                 const anchor = this.anchor;
+                const crazy = this.board.crazy;
                 switch (anchor) {
                     case 'start': {
-                        svg.removeAttributes(this.zzz.elem, { 'text-anchor': anchor });
+                        if (crazy) {
+                            this.zzz.elem.setAttribute('text-anchor', 'end');
+                        }
+                        else {
+                            this.zzz.elem.removeAttribute('text-anchor');
+                        }
                         break;
                     }
-                    case 'middle':
+                    case 'middle': {
+                        this.zzz.elem.setAttribute('text-anchor', anchor);
+                        break;
+                    }
                     case 'end': {
-                        svg.setAttributes(this.zzz.elem, { 'text-anchor': anchor });
+                        if (crazy) {
+                            this.zzz.elem.removeAttribute('text-anchor');
+                        }
+                        else {
+                            this.zzz.elem.setAttribute('text-anchor', anchor);
+                        }
                         break;
                     }
                 }
@@ -234,13 +248,32 @@ export class Text extends ColoredShape implements TextProperties {
             // dominant-baseline
             this.zzz.disposables.push(effect(() => {
                 const baseline = this.baseline;
+                const goofy = this.board.goofy;
                 switch (baseline) {
                     case 'auto': {
-                        svg.removeAttributes(this.zzz.elem, { 'dominant-baseline': baseline });
+                        if (goofy) {
+                            this.zzz.elem.setAttribute('dominant-baseline', 'hanging');
+                        }
+                        else {
+                            this.zzz.elem.removeAttribute('dominant-baseline');
+                        }
+                        break;
+                    }
+                    case 'middle': {
+                        this.zzz.elem.setAttribute('dominant-baseline', baseline);
+                        break;
+                    }
+                    case 'hanging': {
+                        if (goofy) {
+                            this.zzz.elem.setAttribute('dominant-baseline', 'auto');
+                        }
+                        else {
+                            this.zzz.elem.setAttribute('dominant-baseline', baseline);
+                        }
                         break;
                     }
                     default: {
-                        svg.setAttributes(this.zzz.elem, { 'dominant-baseline': baseline });
+                        this.zzz.elem.setAttribute('dominant-baseline', baseline);
                         break;
                     }
                 }
@@ -251,14 +284,14 @@ export class Text extends ColoredShape implements TextProperties {
 
             // dx
             this.zzz.disposables.push(effect(() => {
-                this.board.crazy;
                 const dx = this.dx;
+                const crazy = this.board.crazy;
                 if (typeof dx === 'number' && dx === 0) {
                     svg.removeAttributes(this.zzz.elem, { dx: "" });
                 }
                 else {
                     if (typeof dx === 'number') {
-                        if (this.board.crazy) {
+                        if (crazy) {
                             svg.setAttributes(this.zzz.elem, { dx: `${-dx}` });
                         }
                         else {
@@ -277,12 +310,13 @@ export class Text extends ColoredShape implements TextProperties {
             // dy
             this.zzz.disposables.push(effect(() => {
                 const dy = this.dy;
+                const goofy = this.board.goofy;
                 if (typeof dy === 'number' && dy === 0) {
                     svg.removeAttributes(this.zzz.elem, { dy: "" });
                 }
                 else {
                     if (typeof dy === 'number') {
-                        if (this.board.goofy) {
+                        if (goofy) {
                             svg.setAttributes(this.zzz.elem, { dy: `${dy}` });
                         }
                         else {

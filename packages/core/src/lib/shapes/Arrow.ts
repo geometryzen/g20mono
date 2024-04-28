@@ -66,39 +66,26 @@ export class Arrow extends Path implements ArrowProperties {
         this.join = 'round';
 
         this.#disposables.push(this.#axis.change$.subscribe(() => {
-            this.#updateVertices();
+            this.update();
         }));
         this.#disposables.push(this.#headLength.change$.subscribe(() => {
-            this.#updateVertices();
+            this.update();
         }));
         this.#disposables.push(this.#origin.change$.subscribe(() => {
-            this.#updateVertices();
+            this.update();
         }));
     }
-
     override dispose(): void {
         dispose(this.#disposables);
         super.dispose();
     }
-
-    #updateVertices(): void {
+    override update(): this {
         update_arrow_vertices(this.axis, this.headLength, this.origin, this.vertices);
         this.zzz.flags[Flag.Vertices] = true;
         super.update();
-    }
-
-    override update(): this {
-        if (this.zzz.flags[Flag.Vertices]) {
-            // console.lg("Arrow.update")
-            // update_arrow_vertices(this.axis, this.headLength, this.vertices);
-        }
-        super.update();
         return this;
     }
-
     override flagReset(dirtyFlag = false): this {
-        // this.zzz.flags[Flag.Width] = dirtyFlag;
-        // this.zzz.flags[Flag.Height] = dirtyFlag;
         super.flagReset(dirtyFlag);
         return this;
     }
@@ -142,8 +129,6 @@ function update_arrow_vertices(axis: G20, headLength: number, origin: G20, verti
     const stbd_head = vertices.getAt(4);
     const stbd_tail = vertices.getAt(5);
 
-    // In the current design, the tail of the arrow is origin for rotations.
-    // In future we might allow the origin to be e.g. half way along the shaft so that the arrow could spin?
     tail.origin.set(0, 0).sub(origin);
     head.origin.copyVector(axis).sub(origin);
 
