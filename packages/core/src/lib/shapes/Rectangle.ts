@@ -1,10 +1,12 @@
 import { effect, state } from 'g2o-reactive';
-import { ColoredShape, ColoredShapeAttributes } from '../ColoredShape';
+import { Anchor } from '../anchor';
+import { Collection } from '../collection';
 import { Color } from '../effects/ColorProvider';
+import { Flag } from '../Flag';
 import { Board } from '../IBoard';
 import { G20 } from '../math/G20';
+import { Path, PathAttributes } from '../path';
 import { Disposable, dispose } from '../reactive/Disposable';
-import { svg, SVGAttributes } from '../renderers/SVGView';
 import { PositionLike } from '../Shape';
 
 export interface RectangleAPI<X> {
@@ -44,6 +46,7 @@ export interface RectangleProperties extends RectangleAPI<G20> {
     R: G20;
 }
 
+/*
 export class Rectangle extends ColoredShape implements RectangleProperties, Disposable {
     readonly #disposables: Disposable[] = [];
     readonly #width = state(1);
@@ -133,7 +136,6 @@ export class Rectangle extends ColoredShape implements RectangleProperties, Disp
                         this.zzz.elem.setAttribute("height", `${width}`);
                     }
                     else {
-                        // SVG Coordinate System
                         this.zzz.elem.setAttribute("width", `${width}`);
                         this.zzz.elem.setAttribute("height", `${height}`);
                     }
@@ -144,7 +146,6 @@ export class Rectangle extends ColoredShape implements RectangleProperties, Disp
                         this.zzz.elem.setAttribute("height", `${height}`);
                     }
                     else {
-                        // Cartesian Coordinate System.
                         this.zzz.elem.setAttribute("width", `${height}`);
                         this.zzz.elem.setAttribute("height", `${width}`);
                     }
@@ -161,7 +162,8 @@ export class Rectangle extends ColoredShape implements RectangleProperties, Disp
         throw new Error('Method not implemented.');
     }
 }
-
+*/
+/*
 function colored_shape_attribs_from_rectangle_attribs(attributes: RectangleAttributes): ColoredShapeAttributes {
     const retval: ColoredShapeAttributes = {
         id: attributes.id,
@@ -176,4 +178,117 @@ function colored_shape_attribs_from_rectangle_attribs(attributes: RectangleAttri
         strokeWidth: attributes.strokeWidth
     };
     return retval;
+}
+*/
+
+export class Rectangle extends Path implements RectangleProperties, Disposable {
+
+    readonly #disposables: Disposable[] = [];
+
+    readonly #width = state(1);
+    readonly #height = state(1);
+
+    readonly #origin = G20.zero.clone();
+
+    constructor(board: Board, attributes: RectangleAttributes = {}) {
+
+        const points = [
+            new Anchor(G20.vector(0, 0), 'M'),
+            new Anchor(G20.vector(0, 0), 'L'),
+            new Anchor(G20.vector(0, 0), 'L'),
+            new Anchor(G20.vector(0, 0), 'L')
+        ];
+
+        super(board, points, true, false, true, path_attribs_from_rectangle_attribs(attributes));
+
+        if (typeof attributes.width === 'number') {
+            this.width = attributes.width;
+        }
+
+        if (typeof attributes.height === 'number') {
+            this.height = attributes.height;
+        }
+
+        this.#disposables.push(effect(() => {
+            this.update();
+        }));
+
+        this.flagReset(true);
+    }
+
+    override dispose(): void {
+        dispose(this.#disposables);
+        super.dispose();
+    }
+
+    override update(): this {
+        update_rectangle_vertices(this.width, this.height, this.origin, this.closed, this.vertices);
+        this.zzz.flags[Flag.Vertices] = true;
+        super.update();
+        return this;
+    }
+
+    override flagReset(dirtyFlag = false): this {
+        super.flagReset(dirtyFlag);
+        return this;
+    }
+    get height(): number {
+        return this.#height.get();
+    }
+    set height(height: number) {
+        if (typeof height === 'number') {
+            this.#height.set(height);
+        }
+    }
+    get origin(): G20 {
+        return this.#origin;
+    }
+    set origin(origin: G20) {
+        this.#origin.copyVector(origin);
+    }
+    get width(): number {
+        return this.#width.get();
+    }
+    set width(width: number) {
+        if (typeof width === 'number') {
+            this.#width.set(width);
+        }
+    }
+}
+
+function path_attribs_from_rectangle_attribs(attributes: RectangleAttributes): PathAttributes {
+    const retval: PathAttributes = {
+        id: attributes.id,
+        attitude: attributes.attitude,
+        opacity: attributes.opacity,
+        position: attributes.position,
+        visibility: attributes.visibility,
+        fill: attributes.fill,
+        fillOpacity: attributes.fillOpacity,
+        stroke: attributes.stroke,
+        strokeOpacity: attributes.strokeOpacity,
+        strokeWidth: attributes.strokeWidth
+    };
+    return retval;
+}
+
+function update_rectangle_vertices(sizeX: number, sizeY: number, origin: G20, closed: boolean, vertices: Collection<Anchor>): void {
+
+    const x = sizeX / 2;
+    const y = sizeY / 2;
+
+    if (!closed && vertices.length === 4) {
+        vertices.push(new Anchor(G20.vector(0, 0)));
+    }
+
+    vertices.getAt(0).origin.set(-x, -y).sub(origin);
+    vertices.getAt(1).origin.set(x, -y).sub(origin);
+    vertices.getAt(2).origin.set(x, y).sub(origin);
+    vertices.getAt(3).origin.set(-x, y).sub(origin);
+
+    const anchor = vertices.getAt(4);
+    if (anchor) {
+        anchor.origin.set(-x, -y).sub(origin);
+        anchor.command = 'L';
+    }
 }

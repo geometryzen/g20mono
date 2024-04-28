@@ -1,4 +1,5 @@
 import { PointAttributes } from './Board';
+import { Group } from './group';
 import { Disposable } from './reactive/Disposable';
 import { PositionLike, Shape } from './Shape';
 import { Arrow, ArrowAttributes } from './shapes/Arrow';
@@ -27,8 +28,9 @@ export interface Board extends Disposable {
     get crazy(): boolean;
     get goofy(): boolean;
     get frameCount(): number;
+    get scene(): Group;
     width: number;
     height: number;
-    sx: number;
-    sy: number;
+    get sx(): number;
+    get sy(): number;
 }
