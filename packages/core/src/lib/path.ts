@@ -990,15 +990,15 @@ export class Path extends ColoredShape implements PathAttributes {
 function colored_shape_attribs_from_path_attribs(attributes: PathAttributes): ColoredShapeAttributes {
     const retval: ColoredShapeAttributes = {
         id: attributes.id,
-        // attitude: attributes.attitude,
-        // opacity: attributes.opacity,
         position: attributes.position,
-        // visibility: attributes.visibility,
+        attitude: attributes.attitude,
         fill: defaultColor(attributes.fill, null),
-        // fillOpacity: attributes.fillOpacity,
+        fillOpacity: attributes.fillOpacity,
         stroke: defaultColor(attributes.stroke, 'black'),
         strokeOpacity: attributes.strokeOpacity,
         strokeWidth: attributes.strokeWidth,
+        opacity: attributes.opacity,
+        plumb: attributes.plumb,
         visibility: attributes.visibility
     };
     return retval;

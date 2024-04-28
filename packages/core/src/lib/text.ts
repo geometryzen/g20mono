@@ -12,7 +12,7 @@ const min = Math.min, max = Math.max;
 
 export type TextDecoration = 'none' | 'underline' | 'overline' | 'line-through';
 
-export interface TextAttributes {
+export interface TextAttributes extends ColoredShapeAttributes {
     anchor?: 'start' | 'middle' | 'end';
     baseline?: 'auto' | 'text-bottom' | 'alphabetic' | 'ideographic' | 'middle' | 'central' | 'mathematical' | 'hanging' | 'text-top';
     decoration?: TextDecoration[];
@@ -581,10 +581,13 @@ export class Text extends ColoredShape implements TextProperties {
 }
 
 function shape_attributes_from_text_attributes(attributes: Partial<TextAttributes>): Partial<ColoredShapeAttributes> {
+
     const retval: Partial<ColoredShapeAttributes> = {
         id: attributes.id,
-        plumb: true,
+        plumb: true,//attributes.plumb,
         position: attributes.position,
     };
     return retval;
 }
+
+

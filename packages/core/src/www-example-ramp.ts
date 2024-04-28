@@ -1,9 +1,12 @@
-import { G20, Board, initBoard, Text } from './index';
+import { Board, G20, initBoard, Text } from './index';
 
 document.addEventListener('DOMContentLoaded', function () {
 
     const board = initBoard("my-board", {
-        boundingBox: { left: -5, top: 5, right: 5, bottom: -5 },
+        // boundingBox: { left: -5, top: 5, right: 5, bottom: -5 },    // Cartesian
+        // boundingBox: { left: -5, top: -5, right: 5, bottom: 5 },     // SVG
+        // boundingBox: { left: 5, top: 5, right: -5, bottom: -5 },     // crazy     
+        // boundingBox: { left: 5, top: -5, right: -5, bottom: 5 },     // crazy and goofy       
     });
 
     const A = board.point([0.0, 0.0], { id: 'A', visibility: 'collapse', fill: 'red', stroke: 'red' });
@@ -30,19 +33,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const textA = board.text("A", {
         id: 'text-A',
-        anchor: 'end',
+        anchor: board.crazy ? 'start' : 'end',
         baseline: 'middle',
         dx: -5,
         fontFamily: 'Lato',
         fontSize: 20,
         opacity: 0.4,
-        position: A.X
+        position: A.X,
     });
     rescale(textA, board);
 
     const textB = board.text("B", {
         id: 'text-B',
-        anchor: 'start',
+        anchor: board.crazy ? 'end' : 'start',
         baseline: 'middle',
         dx: 5,
         fontFamily: 'Lato',
@@ -54,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const textC = board.text("C", {
         id: 'text-C',
-        anchor: 'start',
+        anchor: board.crazy ? 'end' : 'start',
         baseline: 'middle',
         dx: 5,
         fontFamily: 'Lato',
@@ -78,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const textRamp = board.text("Ramp", {
         id: 'text-Ramp',
         anchor: 'middle',
-        baseline: 'hanging',
+        baseline: board.goofy ? 'auto' : 'hanging',
         fontFamily: 'Lato',
         fontSize: 20,
         position: ramp.X

@@ -172,7 +172,9 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
         /**
          * 
          */
-        this.#matrix = computed(() => update_matrix(this.#position, this.#attitude, this.#scale, this.skewX, this.skewY, this.plumb, this.board.goofy, this.board.crazy));
+        this.#matrix = computed(() => {
+            return update_matrix(this.#position, this.#attitude, this.#scale, this.skewX, this.skewY, this.plumb, this.board.goofy, this.board.crazy);
+        });
     }
 
     override dispose(): void {
@@ -246,7 +248,6 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
 
     flagReset(dirtyFlag = false): this {
         this.zzz.flags[Flag.Vertices] = dirtyFlag;
-        this.zzz.flags[Flag.Scale] = dirtyFlag;
         super.flagReset(dirtyFlag);
         return this;
     }
@@ -300,14 +301,12 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
     set scale(scale: number) {
         this.#scale.x = scale;
         this.#scale.y = scale;
-        this.zzz.flags[Flag.Scale] = true;
     }
     get scaleXY(): G20 {
         return this.#scale;
     }
     set scaleXY(scale: G20) {
         this.#scale.set(scale.x, scale.y, 0, 0);
-        this.zzz.flags[Flag.Scale] = true;
     }
     get skewX(): number {
         return this.#skewX.get();
