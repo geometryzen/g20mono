@@ -1,7 +1,7 @@
 {
-    "name": "g2o-graphics",
+    "name": "g2o-grid",
     "version": "0.9.216",
-    "description": "g2o Graphics",
+    "description": "g2o Grid",
     "exports": {
         ".": {
             "types": "./dist/index.d.ts",
@@ -54,7 +54,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/geometryzen/g2o-graphics.git"
+        "url": "git+https://github.com/geometryzen/g2o-grid.git"
     },
     "author": {
         "name": "David Geo Holmes",
@@ -62,9 +62,9 @@
     },
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/geometryzen/g2o-graphics/issues"
+        "url": "https://github.com/geometryzen/g2o-grid/issues"
     },
-    "homepage": "https://github.com/geometryzen/g2o-graphics#readme",
+    "homepage": "https://github.com/geometryzen/g2o-grid#readme",
     "peerDependencies": {
         "g2o": "file:../core",
         "g2o-reactive": "file:../reactive"

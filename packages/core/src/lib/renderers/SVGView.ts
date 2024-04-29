@@ -200,10 +200,15 @@ export const svg = {
 
     // Remove attributes from an svg element.
     removeAttributes: function (elem: Element, attrs: SVGAttributes) {
-        for (const key in attrs) {
-            elem.removeAttribute(key);
+        if (elem) {
+            for (const key in attrs) {
+                elem.removeAttribute(key);
+            }
+            return this;
         }
-        return this;
+        else {
+            throw new Error("elem MUST be defined.");
+        }
     },
 
     path_from_anchors: function (board: Board, position: G20, attitude: G20, anchors: Anchor[], closed: boolean): string {

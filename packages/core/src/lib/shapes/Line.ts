@@ -29,6 +29,8 @@ export class Line extends Path implements LineProperties {
             false,
             false,
             path_attribs_from_line_attribs(attributes));
+        
+            this.update();
     }
     get point1(): Anchor {
         return this.vertices.getAt(0);

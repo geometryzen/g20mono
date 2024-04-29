@@ -118,7 +118,12 @@ export class Arrow extends Path implements ArrowProperties {
 function update_arrow_vertices(axis: G20, headLength: number, origin: G20, vertices: Collection<Anchor>): void {
 
     const θ = Math.atan2(axis.y, axis.x);
-    const φ = Math.PI / 6;
+    // This angle gives an arrow head that is an equilateral triangle.
+    // const φ = Math.PI / 6;
+    // This design gives an arrow head that fits into a golden ratio box.
+    const golden = (1 + Math.sqrt(5)) / 2;
+    const φ = Math.atan2(0.5, golden);
+
 
     const tail = vertices.getAt(0);
     const head = vertices.getAt(1);

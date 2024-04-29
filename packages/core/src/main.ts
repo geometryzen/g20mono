@@ -1,6 +1,4 @@
-import { RegularPolygon } from '../../graphics/src/lib/RegularPolygon';
-import { RoundedRectangle } from '../../graphics/src/lib/RoundedRectangle';
-import { Star } from '../../graphics/src/lib/Star';
+import { Grid } from '../../grid/src/lib/Grid';
 import { Disposable, dispose, initBoard, Path } from './index';
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -8,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const disposables: Disposable[] = [];
 
     const board = initBoard("my-board", {
-        boundingBox: { left: -5, top: 5, right: 5, bottom: -5 },    // Cartesian
+        boundingBox: { left: -200, top: 200, right: 200, bottom: -200 },    // Cartesian
         // boundingBox: { left: -5, top: -5, right: 5, bottom: 5 },     // SVG
         // boundingBox: { left: 5, top: 5, right: -5, bottom: -5 },     // crazy     
         // boundingBox: { left: 5, top: -5, right: -5, bottom: 5 },     // crazy and goofy       
@@ -17,51 +15,25 @@ document.addEventListener('DOMContentLoaded', function () {
     // Unfortunately, some casting required because TypeScript is getting hung up on private (#) properties.
     // Here it's not the Board itself, but the classes that it refers to.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const rectangle = new RoundedRectangle(board as any, {
-        id: 'rectangle',
-        position: [-2, 2],
-        fill: "#FFFF00",
-        fillOpacity: 0.3,
-        stroke: "#FFCC00",
-        strokeOpacity: 0.6,
-        strokeWidth: 4
+    const gridA = new Grid(board as any, {
+        id: 'gridA'
     });
-    board.add(rectangle as unknown as Path);
-
-    // Unfortunately, some casting required because TypeScript is getting hung up on private (#) properties.
-    // Here it's not the Board itself, but the classes that it refers to.
+    board.add(gridA as unknown as Path);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const polygon = new RegularPolygon(board as any, {
-        id: 'polygon',
-        position: [2, 2],
-        fill: "#FFFF00",
-        fillOpacity: 0.3,
-        radius: 1,
-        sides: 3,
-        stroke: "#FFCC00",
-        strokeOpacity: 0.6,
-        strokeWidth: 4,
-        twist: Math.PI / 2
+    const gridB = new Grid(board as any, {
+        id: 'gridB'
     });
+    board.add(gridB as unknown as Path);
+    gridB.xAxis.strokeOpacity = 0.5;
+    gridB.xAxis.stroke = 'blue';
+    gridB.xLabel.strokeOpacity = 1;
+    gridB.xLabel.stroke = 'blue';
+    gridB.yAxis.strokeOpacity = 0.5;
+    gridB.yAxis.stroke = 'blue';
+    gridB.yLabel.strokeOpacity = 1;
+    gridB.yLabel.stroke = 'blue';
 
-    board.add(polygon as unknown as Path);
-
-    // Unfortunately, some casting required because TypeScript is getting hung up on private (#) properties.
-    // Here it's not the Board itself, but the classes that it refers to.
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const star = new Star(board as any, {
-        id: 'star',
-        points: 6,
-        innerRadius: 0.5,
-        position: [-2, -2],
-        fill: "#FFFF00",
-        fillOpacity: 0.3,
-        stroke: "#FFCC00",
-        strokeOpacity: 0.6,
-        strokeWidth: 4,
-        twist: Math.PI / 2
-    });
-    board.add(star as unknown as Path);
+    gridB.attitude.rotorFromAngle(Math.PI / 12);
 
     window.onunload = function () {
         dispose(disposables);

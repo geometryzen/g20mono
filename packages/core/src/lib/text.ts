@@ -64,7 +64,7 @@ export class Text extends ColoredShape implements TextProperties {
 
     readonly #fontFamily = state('sans-serif');
 
-    readonly #fontSize = state(13);
+    readonly #fontSize = state(18);
 
     readonly #anchor = state('start' as 'start' | 'middle' | 'end');
 
