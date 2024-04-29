@@ -1,4 +1,4 @@
-import { G20, initBoard } from '../index';
+import { G20, initBoard } from './index';
 
 document.addEventListener('DOMContentLoaded', function () {
 

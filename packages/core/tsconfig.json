@@ -30,6 +30,6 @@
     "exclude": [
         "node_modules",
         "./src/main.ts",
-        "./src/www/*.ts",
+        "./src/www*.ts",
     ]
 }

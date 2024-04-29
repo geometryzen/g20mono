@@ -232,7 +232,7 @@ function shape_attribs_from_colored_attribs(attributes: ColoredShapeAttributes):
         plumb: attributes.plumb,
         attitude: attributes.attitude,
         position: attributes.position,
-        visibility: attributes.visibility
+        visibility: attributes.visibility,
     };
     return retval;
 }

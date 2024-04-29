@@ -1,4 +1,4 @@
-import { Board, initBoard, Shape } from '../index';
+import { Board, initBoard, Shape } from './index';
 
 document.addEventListener('DOMContentLoaded', function () {
 

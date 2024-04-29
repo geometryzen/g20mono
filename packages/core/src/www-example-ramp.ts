@@ -1,4 +1,4 @@
-import { Board, Disposable, dispose, G20, initBoard, Text } from '../index';
+import { Board, Disposable, dispose, G20, initBoard, Text } from './index';
 
 document.addEventListener('DOMContentLoaded', function () {
 

@@ -29,8 +29,8 @@ export class RoundedRectangle extends Path {
 
     readonly #trash: Disposable[] = [];
 
-    readonly #width = state(1);
-    readonly #height = state(1);
+    readonly #width = state(Math.SQRT2);
+    readonly #height = state(Math.SQRT2);
 
     readonly #radius = state(0.2);
 

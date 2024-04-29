@@ -26,6 +26,7 @@ export interface RegularPolygonAttributes {
     stroke?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
+    twist?: number;
     visibility?: 'visible' | 'hidden' | 'collapse';
 }
 
@@ -34,6 +35,7 @@ export class RegularPolygon extends Path {
     readonly #trash: Disposable[] = [];
 
     readonly #radius = state(1);
+    readonly #twist = state(0);
     readonly #sides = state(6);
 
     constructor(board: Board, attributes: RegularPolygonAttributes = {}) {
@@ -50,6 +52,10 @@ export class RegularPolygon extends Path {
             this.sides = Math.min(Math.max(attributes.sides, MIN), MAX);
         }
 
+        if (typeof attributes.twist === 'number') {
+            this.twist = attributes.twist;
+        }
+
         this.#trash.push(effect(() => {
             this.update();
         }));
@@ -63,7 +69,7 @@ export class RegularPolygon extends Path {
     }
 
     override update(): this {
-        update_vertices(this.radius, this.sides, this.vertices);
+        update_vertices(this.radius, this.sides, this.twist, this.vertices);
         super.update();
         return this;
     }
@@ -85,6 +91,12 @@ export class RegularPolygon extends Path {
     set sides(sides: number) {
         this.#sides.set(sides);
     }
+    get twist(): number {
+        return this.#twist.get();
+    }
+    set twist(twist: number) {
+        this.#twist.set(twist);
+    }
 }
 
 function path_attribs_from_regular_polygon_attribs(attributes: RegularPolygonAttributes): PathAttributes {
@@ -98,18 +110,15 @@ function path_attribs_from_regular_polygon_attribs(attributes: RegularPolygonAtt
         fillOpacity: attributes.fillOpacity,
         stroke: attributes.stroke,
         strokeOpacity: attributes.strokeOpacity,
-        strokeWidth: attributes.strokeWidth
+        strokeWidth: attributes.strokeWidth,
+        // plumb: attributes.plumb
     };
     return retval;
 }
 
-function update_vertices(radius: number, sides: number, vertices: Collection<Anchor>): void {
+function update_vertices(radius: number, sides: number, twist: number, vertices: Collection<Anchor>): void {
 
-    /**
-     * The number of vertices.
-     */
     const N = sides + 1;
-
     if (vertices.length > N) {
         vertices.splice(N, vertices.length - N);
     }
@@ -119,13 +128,11 @@ function update_vertices(radius: number, sides: number, vertices: Collection<Anc
 
     for (let i = 0; i < N; i++) {
 
-        const pct = (i + 0.5) / sides;
-        const theta = 2 * Math.PI * pct + Math.PI / 2;
+        const theta = (2 * Math.PI * i / sides) + twist;
         const x = radius * cos(theta);
         const y = radius * sin(theta);
-
-        vertices.getAt(i).origin.set(x, y);
-
-        vertices.getAt(i).command = (i === 0) ? 'M' : 'L';
+        const vertex = vertices.getAt(i);
+        vertex.origin.set(x, y);
+        vertex.command = (i === 0) ? 'M' : 'L';
     }
 }
