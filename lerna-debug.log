@@ -1,0 +1,18 @@
+0 silly argv { _: [ 'run' ], lernaVersion: '8.1.2', '$0': 'lerna', script: 'build' }
+1 notice cli v8.1.2
+2 verbose packageConfigs Resolving packages based on package.json "workspaces" configuration.
+3 verbose rootPath /home/david/Development/g20
+4 error Failed to process project graph.
+4 error   ProjectsWithConflictingNamesError: The following projects are defined in multiple locations:
+4 error   - g2o-parser:
+4 error     - packages/graphics
+4 error     - packages/parser
+4 error
+4 error   To fix this, set a unique name for each project in a project.json inside the project's root. If the project does not currently have a project.json, you can create one that contains only a name.
+4 error       at readProjectConfigurationsFromRootMap (/home/david/Development/g20/node_modules/nx/src/project-graph/utils/project-configuration-utils.js:373:15)
+4 error       at /home/david/Development/g20/node_modules/nx/src/project-graph/utils/project-configuration-utils.js:301:13
+4 error       at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+4 error       at async buildProjectGraphAndSourceMapsWithoutDaemon (/home/david/Development/g20/node_modules/nx/src/project-graph/project-graph.js:77:31)
+4 error       at async createProjectGraphAndSourceMapsAsync (/home/david/Development/g20/node_modules/nx/src/project-graph/project-graph.js:201:25)
+4 error       at async createProjectGraphAsync (/home/david/Development/g20/node_modules/nx/src/project-graph/project-graph.js:190:39)
+4 error       at async detectProjects (/home/david/Development/g20/node_modules/lerna/dist/index.js:1563:25)

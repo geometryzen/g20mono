@@ -1,5 +1,6 @@
 export enum Flag {
-    Beginning = 1,
+    Vertices = 1,
+    Beginning,
     Cap,
     ClassName,
     ClipFlag,
@@ -18,5 +19,4 @@ export enum Flag {
     Stops,
     Stroke,
     Units,
-    Vertices
 }
