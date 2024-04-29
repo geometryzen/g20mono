@@ -3,6 +3,7 @@ export { BoardAttributes, initBoard, PointAttributes } from './lib/Board';
 export { Collection } from './lib/collection';
 export { Color, ColorProvider } from './lib/effects/ColorProvider';
 export { ElementBase } from './lib/element';
+export { Flag } from './lib/Flag';
 export { Group, GroupAttributes } from './lib/group';
 export { Board } from './lib/IBoard';
 export { IShape } from './lib/IShape';

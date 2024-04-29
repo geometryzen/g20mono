@@ -1,4 +1,4 @@
-import { Anchor, Board, Collection, Disposable, dispose, G20, Path } from 'g2o';
+import { Anchor, Board, Collection, Disposable, dispose, Flag, G20, Path } from 'g2o';
 import { effect, state } from 'g2o-reactive';
 
 const cos = Math.cos, sin = Math.sin;
@@ -56,7 +56,7 @@ export class RegularPolygon extends Path {
     override update(): this {
         update_vertices(this.radius, this.sides, this.vertices);
         // Need Flag
-        this.zzz.flags[1] = true;
+        this.zzz.flags[Flag.Vertices] = true;
         super.update();
         return this;
     }
@@ -81,28 +81,27 @@ export class RegularPolygon extends Path {
 
 function update_vertices(radius: number, sides: number, vertices: Collection<Anchor>): void {
 
-    const amount = sides + 1;
-    let length = vertices.length;
+    /**
+     * The number of vertices.
+     */
+    const N = sides + 1;
 
-    if (length > sides) {
-        vertices.splice(sides - 1, length - sides);
-        length = sides;
+    if (vertices.length > N) {
+        vertices.splice(N, vertices.length - N);
+    }
+    while (vertices.length < N) {
+        vertices.push(new Anchor(G20.vector(0, 0)));
     }
 
-    for (let i = 0; i < amount; i++) {
+    for (let i = 0; i < N; i++) {
 
         const pct = (i + 0.5) / sides;
         const theta = 2 * Math.PI * pct + Math.PI / 2;
         const x = radius * cos(theta);
         const y = radius * sin(theta);
 
-        if (i >= length) {
-            vertices.push(new Anchor(G20.vector(x, y)));
-        }
-        else {
-            vertices.getAt(i).origin.set(x, y);
-        }
+        vertices.getAt(i).origin.set(x, y);
 
-        vertices.getAt(i).command = i === 0 ? 'M' : 'L';
+        vertices.getAt(i).command = (i === 0) ? 'M' : 'L';
     }
 }
