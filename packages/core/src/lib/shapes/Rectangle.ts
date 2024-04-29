@@ -232,6 +232,7 @@ export class Rectangle extends Path implements RectangleProperties, Disposable {
         super.flagReset(dirtyFlag);
         return this;
     }
+
     get height(): number {
         return this.#height.get();
     }

@@ -1,11 +1,13 @@
 import { Anchor, Board, Collection, Disposable, dispose, Flag, G20, Path } from 'g2o';
 import { effect, state } from 'g2o-reactive';
 
-const cos = Math.cos, sin = Math.sin;
+const cos = Math.cos;
+const sin = Math.sin;
 
 export class RegularPolygon extends Path {
 
     readonly #disposables: Disposable[] = [];
+
     readonly #radius = state(0);
     readonly #sides = state(0);
 
@@ -16,8 +18,9 @@ export class RegularPolygon extends Path {
      * @param sides The number of vertices used to construct the polygon.
      */
     constructor(board: Board, x = 0, y = 0, radius = 0, sides = 12) {
-
-        sides = Math.max(sides || 0, 3);
+        const MIN = 3;
+        const MAX = 24;
+        sides = Math.min(Math.max(sides, MIN), MAX);
 
         super(board);
 
@@ -31,8 +34,6 @@ export class RegularPolygon extends Path {
         if (typeof sides === 'number') {
             this.sides = sides;
         }
-
-        this.update();
 
         if (typeof x === 'number') {
             this.position.x = x;
@@ -55,16 +56,17 @@ export class RegularPolygon extends Path {
 
     override update(): this {
         update_vertices(this.radius, this.sides, this.vertices);
-        // Need Flag
         this.zzz.flags[Flag.Vertices] = true;
+        this.zzz.flags[Flag.Length] = true;
         super.update();
         return this;
     }
 
-    override flagReset(dirtyFlag = false) {
+    override flagReset(dirtyFlag = false): this {
         super.flagReset(dirtyFlag);
         return this;
     }
+
     get radius(): number {
         return this.#radius.get();
     }
