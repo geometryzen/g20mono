@@ -2,10 +2,9 @@ import { effect } from 'g2o-reactive';
 import { Anchor } from '../anchor.js';
 import { Collection } from '../collection.js';
 import { Color } from '../effects/ColorProvider.js';
-import { Flag } from '../Flag.js';
 import { Board } from '../IBoard.js';
 import { G20 } from '../math/G20.js';
-import { Path, PathAttributes } from '../path.js';
+import { Path, PathAttributes } from '../Path.js';
 import { Disposable, dispose } from '../reactive/Disposable.js';
 import { PositionLike } from '../Shape.js';
 import { HALF_PI, TWO_PI } from '../utils/math.js';
@@ -65,8 +64,6 @@ export class Ellipse extends Path {
 
     override update(): this {
         update_ellipse_vertices(this.width / 2, this.height / 2, this.closed, this.vertices);
-        // Nothing will happen if the Flag.Vertices is not set.
-        this.zzz.flags[Flag.Vertices] = true;
         super.update();
         return this;
     }

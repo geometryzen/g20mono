@@ -1,6 +1,6 @@
 import { Anchor } from '../anchor.js';
 import { G20 } from '../math/G20.js';
-import { Path } from '../path.js';
+import { Path } from '../Path.js';
 import { getCurveLength as gcl, subdivide } from './curves.js';
 
 export function contains(path: Path, t: number): boolean {

@@ -2,10 +2,9 @@ import { effect, state } from 'g2o-reactive';
 import { Anchor } from '../anchor';
 import { Collection } from '../collection';
 import { Color } from '../effects/ColorProvider';
-import { Flag } from '../Flag';
 import { Board } from '../IBoard';
 import { G20 } from '../math/G20';
-import { Path, PathAttributes } from '../path';
+import { Path, PathAttributes } from '../Path';
 import { Disposable, dispose } from '../reactive/Disposable';
 import { PositionLike } from '../Shape';
 
@@ -223,7 +222,6 @@ export class Rectangle extends Path implements RectangleProperties, Disposable {
 
     override update(): this {
         update_rectangle_vertices(this.width, this.height, this.origin, this.closed, this.vertices);
-        this.zzz.flags[Flag.Vertices] = true;
         super.update();
         return this;
     }

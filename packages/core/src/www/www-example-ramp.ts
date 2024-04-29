@@ -1,6 +1,8 @@
-import { Board, G20, initBoard, Text } from './index';
+import { Board, Disposable, dispose, G20, initBoard, Text } from '../index';
 
 document.addEventListener('DOMContentLoaded', function () {
+
+    const disposables: Disposable[] = [];
 
     const board = initBoard("my-board", {
         // boundingBox: { left: -5, top: 5, right: 5, bottom: -5 },    // Cartesian
@@ -24,16 +26,22 @@ document.addEventListener('DOMContentLoaded', function () {
     ramp.strokeWidth = 2;
     ramp.center();
 
-    const box = board.rectangle({ id: 'box', width: 2, height: 1 });
+    const box = board.rectangle({
+        id: 'box',
+        fill: "#FFFF00",
+        fillOpacity: 0.3,
+        stroke: "#FFCC00",
+        strokeOpacity: 0.6,
+        strokeWidth: 4,
+        width: 2,
+        height: 1
+    });
     box.attitude.rotorFromDirections(AB, AC);
-    box.fill = 'rgba(255, 128, 0, 0.33)';
-    box.stroke = 'rgb(255, 128, 0)';
-    box.strokeWidth = 2;
     box.position.copyVector(A.position).add(AC.__mul__(0.25)).add(N.__mul__(box.height / 2));
 
     const textA = board.text("A", {
         id: 'text-A',
-        anchor: board.crazy ? 'start' : 'end',
+        anchor: 'end',
         baseline: 'middle',
         dx: -5,
         fontFamily: 'Lato',
@@ -45,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const textB = board.text("B", {
         id: 'text-B',
-        anchor: board.crazy ? 'end' : 'start',
+        anchor: 'start',
         baseline: 'middle',
         dx: 5,
         fontFamily: 'Lato',
@@ -57,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const textC = board.text("C", {
         id: 'text-C',
-        anchor: board.crazy ? 'end' : 'start',
+        anchor: 'start',
         baseline: 'middle',
         dx: 5,
         fontFamily: 'Lato',
@@ -81,19 +89,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const textRamp = board.text("Ramp", {
         id: 'text-Ramp',
         anchor: 'middle',
-        baseline: board.goofy ? 'auto' : 'hanging',
+        baseline: 'hanging',
         fontFamily: 'Lato',
         fontSize: 20,
         position: ramp.X
     });
     textRamp.attitude.rotorFromDirections(AB, AC);
     rescale(textRamp, board);
-
-    box.stroke = "#FFCC00";
-    box.strokeWidth = 4;
-    box.strokeOpacity = 0.6;
-    box.fill = "#FFFF00";
-    box.fillOpacity = 0.3;
 
     const Fg = board.arrow(G20.ey.scale(-2), {
         id: 'Fg',
@@ -108,6 +110,19 @@ document.addEventListener('DOMContentLoaded', function () {
         strokeOpacity: 0.4
     });
     Fn.strokeWidth = 2;
+    const textFn = board.text("Fn", {
+        id: 'text-Fn',
+        anchor: 'middle',
+        baseline: 'auto',
+        fontFamily: 'Lato',
+        fontSize: 20
+    });
+    rescale(textFn, board);
+    textFn.attitude.rotorFromDirections(AB, AC);
+
+    disposables.push(box.X.change$.subscribe(() => {
+        textFn.position.copyVector(box.X).add(N.scale(1.6));
+    }));
 
     const Fs = board.arrow(S.scale(1.5), {
         id: 'Fs',
@@ -125,16 +140,15 @@ document.addEventListener('DOMContentLoaded', function () {
     arrow.origin = G20.ey.scale(1 / 2);
 
     window.onunload = function () {
+        dispose(disposables);
         board.dispose();
     };
-
 
     function animate() {
         const temp = G20.fromVector(box.X);
         temp.copyVector(A.position).add(AC.__mul__(0.75)).add(N.__mul__(box.height / 2));
         box.X.copyVector(temp);
-        // board.update()
-        // window.requestAnimationFrame(animate)
+        //window.requestAnimationFrame(animate)
     }
 
     window.requestAnimationFrame(animate);

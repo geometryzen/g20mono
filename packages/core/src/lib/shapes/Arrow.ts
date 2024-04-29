@@ -1,10 +1,9 @@
 import { Anchor } from "../anchor";
 import { Collection } from "../collection";
 import { Color } from "../effects/ColorProvider";
-import { Flag } from "../Flag";
 import { Board } from "../IBoard";
 import { G20 } from "../math/G20";
-import { Path, PathAttributes } from "../path";
+import { Path, PathAttributes } from "../Path";
 import { Disposable, dispose } from '../reactive/Disposable';
 import { PositionLike, position_from_like } from "../Shape";
 import { Commands } from "../utils/path-commands";
@@ -81,7 +80,6 @@ export class Arrow extends Path implements ArrowProperties {
     }
     override update(): this {
         update_arrow_vertices(this.axis, this.headLength, this.origin, this.vertices);
-        this.zzz.flags[Flag.Vertices] = true;
         super.update();
         return this;
     }

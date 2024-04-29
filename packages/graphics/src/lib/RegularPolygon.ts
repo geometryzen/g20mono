@@ -1,48 +1,56 @@
-import { Anchor, Board, Collection, Disposable, dispose, Flag, G20, Path } from 'g2o';
+import {
+    Anchor,
+    Board,
+    Collection,
+    Color,
+    Disposable,
+    dispose, G20,
+    Path,
+    PathAttributes,
+    PositionLike
+} from 'g2o';
 import { effect, state } from 'g2o-reactive';
 
 const cos = Math.cos;
 const sin = Math.sin;
 
+export interface RegularPolygonAttributes {
+    id?: string;
+    fill?: Color;
+    fillOpacity?: number;
+    opacity?: number;
+    position?: PositionLike,
+    attitude?: G20,
+    radius?: number;
+    sides?: number;
+    stroke?: Color;
+    strokeOpacity?: number;
+    strokeWidth?: number;
+    visibility?: 'visible' | 'hidden' | 'collapse';
+}
+
 export class RegularPolygon extends Path {
 
-    readonly #disposables: Disposable[] = [];
+    readonly #trash: Disposable[] = [];
 
-    readonly #radius = state(0);
-    readonly #sides = state(0);
+    readonly #radius = state(1);
+    readonly #sides = state(6);
 
-    /**
-     * @param x The x position of the polygon.
-     * @param y The y position of the polygon.
-     * @param radius The radius value of the polygon.
-     * @param sides The number of vertices used to construct the polygon.
-     */
-    constructor(board: Board, x = 0, y = 0, radius = 0, sides = 12) {
-        const MIN = 3;
-        const MAX = 24;
-        sides = Math.min(Math.max(sides, MIN), MAX);
+    constructor(board: Board, attributes: RegularPolygonAttributes = {}) {
 
-        super(board);
+        super(board, [], true, false, true, path_attribs_from_regular_polygon_attribs(attributes));
 
-        this.closed = true;
-        this.automatic = false;
-
-        if (typeof radius === 'number') {
-            this.#radius.set(radius);
+        if (typeof attributes.radius === 'number') {
+            this.radius = attributes.radius;
         }
 
-        if (typeof sides === 'number') {
-            this.sides = sides;
+        if (typeof attributes.sides === 'number') {
+            const MIN = 3;
+            const MAX = 24;
+            this.sides = Math.min(Math.max(attributes.sides, MIN), MAX);
         }
 
-        if (typeof x === 'number') {
-            this.position.x = x;
-        }
-        if (typeof y === 'number') {
-            this.position.y = y;
-        }
-
-        this.#disposables.push(effect(() => {
+        this.#trash.push(effect(() => {
             this.update();
         }));
 
@@ -50,14 +58,12 @@ export class RegularPolygon extends Path {
     }
 
     override dispose(): void {
-        dispose(this.#disposables);
+        dispose(this.#trash);
         super.dispose();
     }
 
     override update(): this {
         update_vertices(this.radius, this.sides, this.vertices);
-        this.zzz.flags[Flag.Vertices] = true;
-        this.zzz.flags[Flag.Length] = true;
         super.update();
         return this;
     }
@@ -79,6 +85,21 @@ export class RegularPolygon extends Path {
     set sides(sides: number) {
         this.#sides.set(sides);
     }
+}
+function path_attribs_from_regular_polygon_attribs(attributes: RegularPolygonAttributes): PathAttributes {
+    const retval: PathAttributes = {
+        id: attributes.id,
+        attitude: attributes.attitude,
+        opacity: attributes.opacity,
+        position: attributes.position,
+        visibility: attributes.visibility,
+        fill: attributes.fill,
+        fillOpacity: attributes.fillOpacity,
+        stroke: attributes.stroke,
+        strokeOpacity: attributes.strokeOpacity,
+        strokeWidth: attributes.strokeWidth
+    };
+    return retval;
 }
 
 function update_vertices(radius: number, sides: number, vertices: Collection<Anchor>): void {

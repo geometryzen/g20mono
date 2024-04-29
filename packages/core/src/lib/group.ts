@@ -24,7 +24,6 @@ export class Group extends Shape {
         this.flagReset(true);
         this.zzz.flags[Flag.Beginning] = false;
         this.zzz.flags[Flag.Ending] = false;
-        this.zzz.flags[Flag.Length] = false;
         this.zzz.flags[Flag.ClipPath] = false;
 
         this.#shapes = state(shapes);

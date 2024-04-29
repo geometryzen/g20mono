@@ -255,7 +255,6 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
     }
 
     flagReset(dirtyFlag = false): this {
-        this.zzz.flags[Flag.Vertices] = dirtyFlag;
         super.flagReset(dirtyFlag);
         return this;
     }

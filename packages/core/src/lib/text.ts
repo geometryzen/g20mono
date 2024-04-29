@@ -4,7 +4,7 @@ import { Color } from './effects/ColorProvider';
 import { ElementBase } from './element';
 import { Flag } from './Flag';
 import { Board } from './IBoard';
-import { get_dashes_offset, set_dashes_offset } from './path';
+import { get_dashes_offset, set_dashes_offset } from './Path';
 import { svg, SVGAttributes, transform_value_of_matrix } from './renderers/SVGView';
 import { PositionLike } from './Shape';
 

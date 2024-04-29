@@ -1,5 +1,4 @@
 export enum Flag {
-    Vertices = 1,
     Beginning,
     Cap,
     ClassName,
@@ -11,7 +10,6 @@ export enum Flag {
     Fill,
     FrameRate,
     Index,
-    Length,
     Rows,
     Sides,
     Spread,

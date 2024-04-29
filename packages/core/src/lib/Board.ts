@@ -4,7 +4,7 @@ import { Constants } from './constants';
 import { Color } from './effects/ColorProvider';
 import { Group } from './group';
 import { Board } from './IBoard';
-import { Path } from './path';
+import { Path } from './Path';
 import { Disposable, disposableFromFunction, dispose } from './reactive/Disposable';
 import { sizeEquals } from './renderers/Size';
 import { SVGViewFactory } from './renderers/SVGViewFactory';

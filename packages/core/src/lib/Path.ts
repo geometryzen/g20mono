@@ -171,8 +171,6 @@ export class Path extends ColoredShape implements PathAttributes {
 
     render(parentElement: HTMLElement | SVGElement, svgElement: SVGElement): void {
 
-        this.update();
-
         // Collect any attribute that needs to be changed here
         const changed: SVGAttributes = {};
 
@@ -677,155 +675,150 @@ export class Path extends ColoredShape implements PathAttributes {
         });
 
         this.#length = sum;
-        this.zzz.flags[Flag.Length] = false;
 
         return this;
     }
 
     override update(): this {
-        if (this.zzz.flags[Flag.Vertices]) {
 
-            if (this.automatic) {
-                this.plot();
-            }
-
-            if (this.zzz.flags[Flag.Length]) {
-                this.#updateLength(undefined, true);
-            }
-
-            const closed = this.closed;
-
-            const beginning = min(this.beginning, this.ending);
-            const ending = max(this.beginning, this.ending);
-
-            const lBound = Math.ceil(getIdByLength(this, beginning * this.length));
-            const uBound = Math.floor(getIdByLength(this, ending * this.length));
-
-            {
-                /**
-                 * Assigned in the for loop, used after the for loop.
-                 */
-                let left: Anchor;
-                /**
-                 * Assigned in the for loop, used after the for loop.
-                 */
-                let next: Anchor;
-
-                /**
-                 * The source for the updates are the vertices maintained by derived classes that specialize Path.
-                 */
-                const vertices = this.vertices;
-                this.zzz.vertices.length = 0;
-                {
-                    let right: Anchor;
-                    let prev: Anchor;
-                    const L = vertices.length;
-                    for (let i = 0; i < L; i++) {
-
-                        if (this.#anchors.length <= i) {
-                            // Expected to be `relative` anchor points.
-                            this.#anchors.push(new Anchor(G20.vector(0, 0)));
-                        }
-
-                        if (i > uBound && !right) {
-
-                            const v = this.#anchors[i].copy(vertices.getAt(i));
-                            this.getPointAt(ending, v);
-                            v.command = this.#anchors[i].command;
-                            this.zzz.vertices.push(v);
-
-                            right = v;
-                            prev = vertices.getAt(i - 1);
-
-                            // Project control over the percentage `t`
-                            // of the in-between point
-                            if (prev && prev.controls) {
-
-                                if (v.relative) {
-                                    v.controls.b.clear();
-                                }
-                                else {
-                                    v.controls.b.copyVector(v.origin);
-                                }
-
-                                if (prev.relative) {
-                                    this.#anchors[i - 1].controls.b
-                                        .copyVector(prev.controls.b)
-                                        .lerp(G20.zero, 1 - v.t);
-                                }
-                                else {
-                                    this.#anchors[i - 1].controls.b
-                                        .copyVector(prev.controls.b)
-                                        .lerp(prev.origin, 1 - v.t);
-                                }
-                            }
-                        }
-                        else if (i >= lBound && i <= uBound) {
-
-                            const v = this.#anchors[i].copy(vertices.getAt(i));
-                            this.zzz.vertices.push(v);
-
-                            if (i === uBound && contains(this, ending)) {
-                                right = v;
-                                if (!closed && right.controls) {
-                                    if (right.relative) {
-                                        right.controls.b.clear();
-                                    }
-                                    else {
-                                        right.controls.b.copyVector(right.origin);
-                                    }
-                                }
-                            }
-                            else if (i === lBound && contains(this, beginning)) {
-                                left = v;
-                                left.command = Commands.move;
-                                if (!closed && left.controls) {
-                                    if (left.relative) {
-                                        left.controls.a.clear();
-                                    }
-                                    else {
-                                        left.controls.a.copyVector(left.origin);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                // Prepend the trimmed point if necessary.
-                if (lBound > 0 && !left) {
-
-                    const i = lBound - 1;
-
-                    const v = this.#anchors[i].copy(vertices.getAt(i));
-                    this.getPointAt(beginning, v);
-                    v.command = Commands.move;
-                    this.zzz.vertices.unshift(v);
-
-                    next = vertices.getAt(i + 1);
-
-                    // Project control over the percentage `t`
-                    // of the in-between point
-                    if (next && next.controls) {
-
-                        v.controls.a.clear();
-
-                        if (next.relative) {
-                            this.#anchors[i + 1].controls.a
-                                .copyVector(next.controls.a)
-                                .lerp(G20.zero, v.t);
-                        }
-                        else {
-                            vector.copyVector(next.origin);
-                            this.#anchors[i + 1].controls.a
-                                .copyVector(next.controls.a)
-                                .lerp(next.origin, v.t);
-                        }
-                    }
-                }
-            }
-            this.zzz.vertices_subject.set(this.zzz.vertices_subject.get() + 1);
+        if (this.automatic) {
+            this.plot();
         }
+
+        this.#updateLength(undefined, true);
+
+        const closed = this.closed;
+
+        const beginning = min(this.beginning, this.ending);
+        const ending = max(this.beginning, this.ending);
+
+        const lBound = Math.ceil(getIdByLength(this, beginning * this.length));
+        const uBound = Math.floor(getIdByLength(this, ending * this.length));
+
+        {
+            /**
+             * Assigned in the for loop, used after the for loop.
+             */
+            let left: Anchor;
+            /**
+             * Assigned in the for loop, used after the for loop.
+             */
+            let next: Anchor;
+
+            /**
+             * The source for the updates are the vertices maintained by derived classes that specialize Path.
+             */
+            const vertices = this.vertices;
+            this.zzz.vertices.length = 0;
+            {
+                let right: Anchor;
+                let prev: Anchor;
+                const L = vertices.length;
+                for (let i = 0; i < L; i++) {
+
+                    if (this.#anchors.length <= i) {
+                        // Expected to be `relative` anchor points.
+                        this.#anchors.push(new Anchor(G20.vector(0, 0)));
+                    }
+
+                    if (i > uBound && !right) {
+
+                        const v = this.#anchors[i].copy(vertices.getAt(i));
+                        this.getPointAt(ending, v);
+                        v.command = this.#anchors[i].command;
+                        this.zzz.vertices.push(v);
+
+                        right = v;
+                        prev = vertices.getAt(i - 1);
+
+                        // Project control over the percentage `t`
+                        // of the in-between point
+                        if (prev && prev.controls) {
+
+                            if (v.relative) {
+                                v.controls.b.clear();
+                            }
+                            else {
+                                v.controls.b.copyVector(v.origin);
+                            }
+
+                            if (prev.relative) {
+                                this.#anchors[i - 1].controls.b
+                                    .copyVector(prev.controls.b)
+                                    .lerp(G20.zero, 1 - v.t);
+                            }
+                            else {
+                                this.#anchors[i - 1].controls.b
+                                    .copyVector(prev.controls.b)
+                                    .lerp(prev.origin, 1 - v.t);
+                            }
+                        }
+                    }
+                    else if (i >= lBound && i <= uBound) {
+
+                        const v = this.#anchors[i].copy(vertices.getAt(i));
+                        this.zzz.vertices.push(v);
+
+                        if (i === uBound && contains(this, ending)) {
+                            right = v;
+                            if (!closed && right.controls) {
+                                if (right.relative) {
+                                    right.controls.b.clear();
+                                }
+                                else {
+                                    right.controls.b.copyVector(right.origin);
+                                }
+                            }
+                        }
+                        else if (i === lBound && contains(this, beginning)) {
+                            left = v;
+                            left.command = Commands.move;
+                            if (!closed && left.controls) {
+                                if (left.relative) {
+                                    left.controls.a.clear();
+                                }
+                                else {
+                                    left.controls.a.copyVector(left.origin);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Prepend the trimmed point if necessary.
+            if (lBound > 0 && !left) {
+
+                const i = lBound - 1;
+
+                const v = this.#anchors[i].copy(vertices.getAt(i));
+                this.getPointAt(beginning, v);
+                v.command = Commands.move;
+                this.zzz.vertices.unshift(v);
+
+                next = vertices.getAt(i + 1);
+
+                // Project control over the percentage `t`
+                // of the in-between point
+                if (next && next.controls) {
+
+                    v.controls.a.clear();
+
+                    if (next.relative) {
+                        this.#anchors[i + 1].controls.a
+                            .copyVector(next.controls.a)
+                            .lerp(G20.zero, v.t);
+                    }
+                    else {
+                        vector.copyVector(next.origin);
+                        this.#anchors[i + 1].controls.a
+                            .copyVector(next.controls.a)
+                            .lerp(next.origin, v.t);
+                    }
+                }
+            }
+        }
+        this.zzz.vertices_subject.set(this.zzz.vertices_subject.get() + 1);
         super.update();
         return this;
     }
@@ -833,9 +826,7 @@ export class Path extends ColoredShape implements PathAttributes {
     override flagReset(dirtyFlag = false): this {
 
         this.zzz.flags[Flag.ClipFlag] = dirtyFlag;
-        this.zzz.flags[Flag.Length] = dirtyFlag;
         this.zzz.flags[Flag.ClipPath] = dirtyFlag;
-        this.zzz.flags[Flag.Vertices] = dirtyFlag;
 
         super.flagReset(dirtyFlag);
 
@@ -864,7 +855,6 @@ export class Path extends ColoredShape implements PathAttributes {
     }
     set beginning(beginning: number) {
         this.#beginning = beginning;
-        this.zzz.flags[Flag.Vertices] = true;
     }
     /**
      * Defines the shape to be used at the end of open subpaths when they are stroked.
@@ -882,7 +872,6 @@ export class Path extends ColoredShape implements PathAttributes {
     set closed(closed: boolean) {
         if (typeof closed === 'boolean') {
             this.#closed.set(closed);
-            this.zzz.flags[Flag.Vertices] = true;
         }
     }
     get curved(): boolean {
@@ -890,7 +879,6 @@ export class Path extends ColoredShape implements PathAttributes {
     }
     set curved(curved: boolean) {
         this.#curved = !!curved;
-        this.zzz.flags[Flag.Vertices] = true;
     }
     get dashes(): number[] {
         return this.#dashes;
@@ -906,7 +894,6 @@ export class Path extends ColoredShape implements PathAttributes {
     }
     set ending(ending: number) {
         this.#ending = ending;
-        this.zzz.flags[Flag.Vertices] = true;
     }
     get join(): 'arcs' | 'bevel' | 'miter' | 'miter-clip' | 'round' {
         return this.#join.get();
@@ -915,9 +902,6 @@ export class Path extends ColoredShape implements PathAttributes {
         this.#join.set(join);
     }
     get length(): number {
-        if (this.zzz.flags[Flag.Length]) {
-            this.#updateLength();
-        }
         return this.#length;
     }
     get lengths(): number[] {
@@ -958,12 +942,10 @@ export class Path extends ColoredShape implements PathAttributes {
             while (i--) {
                 const anchor = inserts[i];
                 const subscription = anchor.change$.subscribe(() => {
-                    this.zzz.flags[Flag.Vertices] = true;
                 });
                 // TODO: Check that we are not already mapped?
                 this.#anchor_change_map.set(anchor, subscription);
             }
-            this.zzz.flags[Flag.Vertices] = true;
         });
 
         this.#vertices_remove = this.vertices.remove$.subscribe((removes: Anchor[]) => {
@@ -974,12 +956,10 @@ export class Path extends ColoredShape implements PathAttributes {
                 subscription.dispose();
                 this.#anchor_change_map.delete(anchor);
             }
-            this.zzz.flags[Flag.Vertices] = true;
         });
 
         this.vertices.forEach((anchor: Anchor) => {
             const subscription = anchor.change$.subscribe(() => {
-                this.zzz.flags[Flag.Vertices] = true;
             });
             this.#anchor_change_map.set(anchor, subscription);
         });
