@@ -86,6 +86,7 @@ export class RegularPolygon extends Path {
         this.#sides.set(sides);
     }
 }
+
 function path_attribs_from_regular_polygon_attribs(attributes: RegularPolygonAttributes): PathAttributes {
     const retval: PathAttributes = {
         id: attributes.id,
