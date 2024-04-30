@@ -102,17 +102,13 @@ export class Path extends ColoredShape implements PathAttributes {
      * @param curved Describes whether the path automatically calculates bezier handles for each vertex.
      * @param manual Describes whether the developer controls how vertices are plotted.
      */
-    constructor(board: Board, vertices: Anchor[] = [], closed?: boolean, curved?: boolean, manual?: boolean, attributes: PathAttributes = {}) {
+    constructor(owner: Board, vertices: Anchor[] = [], closed?: boolean, curved?: boolean, manual?: boolean, attributes: PathAttributes = {}) {
 
-        super(board, colored_shape_attribs_from_path_attribs(attributes));
+        super(owner, colored_shape_attribs_from_path_attribs(attributes));
 
         this.flagReset(true);
         this.zzz.flags[Flag.ClipPath] = false;
         this.zzz.flags[Flag.ClipFlag] = false;
-
-        this.zzz.vertices = [];
-        this.zzz.vertices_subject = variable(0);
-        this.zzz.vertices$ = this.zzz.vertices_subject.asObservable();
 
         /**
          * Determines whether a final line is drawn between the final point in the `vertices` array and the first point.
@@ -517,15 +513,17 @@ export class Path extends ColoredShape implements PathAttributes {
     }
 
     /**
-     * Based on closed / curved and sorting of vertices plot where all points should be and where the respective handles should be too.
+     * Based on closed / curved and sorting of vertices, plot where all points should be and where the respective handles should be too.
      */
     plot(): this {
         if (this.curved) {
             getCurveFromPoints(this.#vertices, this.closed);
             return this;
         }
-        for (let i = 0; i < this.#vertices.length; i++) {
-            this.#vertices.getAt(i).command = (i === 0) ? Commands.move : Commands.line;
+        const vertices = this.#vertices;
+        const N = vertices.length;
+        for (let i = 0; i < N; i++) {
+            vertices.getAt(i).command = (i === 0) ? Commands.move : Commands.line;
         }
         return this;
     }
@@ -916,6 +914,7 @@ export class Path extends ColoredShape implements PathAttributes {
             while (i--) {
                 const anchor = inserts[i];
                 const subscription = anchor.change$.subscribe(() => {
+                    this.update();
                 });
                 // TODO: Check that we are not already mapped?
                 this.#anchor_change_map.set(anchor, subscription);

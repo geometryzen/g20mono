@@ -35,7 +35,7 @@ export class Arrow extends Path implements ArrowProperties {
     readonly #axis: G20;
     readonly #headLength: G20;
     readonly #origin: G20;
-    constructor(board: Board, axis: PositionLike, attributes: ArrowAttributes = {}) {
+    constructor(owner: Board, axis: PositionLike, attributes: ArrowAttributes = {}) {
 
         const vertices = [
             new Anchor(G20.vector(0, 0), Commands.move),    // tail
@@ -46,7 +46,7 @@ export class Arrow extends Path implements ArrowProperties {
             new Anchor(G20.vector(0, 0), Commands.line),    // stbd tail
         ];
 
-        super(board, vertices, false, false, true, path_attribs_from_arrow_attribs(attributes));
+        super(owner, vertices, false, false, true, path_attribs_from_arrow_attribs(attributes));
 
         this.#origin = G20.zero.clone();
 

@@ -42,7 +42,7 @@ export class Circle extends Path implements CircleProperties {
 
     readonly #radius = state(1);
 
-    constructor(board: Board, options: CircleAttributes = {}) {
+    constructor(owner: Board, options: CircleAttributes = {}) {
 
         // At least 2 vertices are required for proper circle.
         const N = options.resolution ? Math.max(options.resolution, 2) : 4;
@@ -52,7 +52,7 @@ export class Circle extends Path implements CircleProperties {
             points.push(new Anchor(G20.vector(0, 0)));
         }
 
-        super(board, points, true, true, true, path_attributes(options));
+        super(owner, points, true, true, true, path_attributes(options));
 
         if (typeof options.radius === 'number') {
             this.#radius.set(options.radius);

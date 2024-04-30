@@ -17,7 +17,7 @@ export class ArcSegment extends Path {
     _innerRadius = 0;
     _outerRadius = 0;
 
-    constructor(board: Board, x = 0, y = 0, ir = 0, or = 0, sa = 0, ea = 2 * Math.PI, res = 24) {
+    constructor(owner: Board, x = 0, y = 0, ir = 0, or = 0, sa = 0, ea = 2 * Math.PI, res = 24) {
 
         const amount = res || (Constants.Resolution * 3);
         const points: Anchor[] = [];
@@ -25,7 +25,7 @@ export class ArcSegment extends Path {
             points.push(new Anchor(G20.vector(0, 0)));
         }
 
-        super(board, points, true, false, true);
+        super(owner, points, true, false, true);
 
         if (typeof ir === 'number') {
             this.innerRadius = ir;

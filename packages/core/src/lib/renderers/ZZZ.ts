@@ -49,13 +49,14 @@ export class ZZZ implements Disposable {
     image?: SVGImageElement;
     offset?: G20;
 
-    vertices?: Anchor[];
-    vertices_subject?: Variable<number>;
-    vertices$?: Observable<number>;
+    readonly vertices: Anchor[] = [];
+    readonly vertices_subject?: Variable<number> = variable(0);
+    readonly vertices$?: Observable<number> = this.vertices_subject.asObservable();
 
     dispose(): void {
         dispose(this.disposables);
     }
+
     get clip(): boolean {
         return this.#clip.get();
     }
