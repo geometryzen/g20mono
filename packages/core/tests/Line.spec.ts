@@ -1,33 +1,43 @@
 import { Arrow, ArrowAttributes, Board, Circle, CircleAttributes, Ellipse, EllipseAttributes, Group, Line, LineAttributes, PointAttributes, Polygon, PolygonAttributes, PositionLike, Rectangle, RectangleAttributes, Shape, Text, TextAttributes } from "../src/index";
 
 class MockBoard implements Board {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     arrow(axis: PositionLike, attributes?: ArrowAttributes): Arrow {
         throw new Error("Method not implemented.");
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     circle(attributes?: CircleAttributes): Circle {
         throw new Error("Method not implemented.");
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ellipse(attributes?: EllipseAttributes): Ellipse {
         throw new Error("Method not implemented.");
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     line(point1: PositionLike, point2: PositionLike, attributes?: LineAttributes): Line {
         throw new Error("Method not implemented.");
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     point(position: PositionLike, attributes?: PointAttributes): Shape {
         throw new Error("Method not implemented.");
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     polygon(points: PositionLike[], attributes?: PolygonAttributes): Polygon {
         throw new Error("Method not implemented.");
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     rectangle(attributes?: RectangleAttributes): Rectangle {
         throw new Error("Method not implemented.");
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     text(message: string, attributes?: TextAttributes): Text {
         throw new Error("Method not implemented.");
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     add(...shapes: Shape[]): this {
         throw new Error("Method not implemented.");
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     remove(...shapes: Shape[]): this {
         throw new Error("Method not implemented.");
     }
@@ -41,7 +51,7 @@ class MockBoard implements Board {
         throw new Error("Method not implemented.");
     }
     get goofy(): boolean {
-        throw new Error("Method not implemented.");
+        return false;
     }
     get frameCount(): number {
         throw new Error("Method not implemented.");
