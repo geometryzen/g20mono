@@ -2,6 +2,7 @@ import { Anchor } from '../anchor';
 import { Color } from '../effects/ColorProvider';
 import { Board } from '../IBoard';
 import { Path, PathAttributes } from '../Path';
+import { Disposable, dispose } from '../reactive/Disposable';
 import { PositionLike, position_from_like } from '../Shape';
 
 export interface LineAttributes {
@@ -21,16 +22,28 @@ export interface LineProperties {
 }
 
 export class Line extends Path implements LineProperties {
+    readonly #disposables: Disposable[] = [];
     constructor(board: Board, point1: PositionLike, point2: PositionLike, attributes: LineAttributes = {}) {
+        const vertex1 = new Anchor(position_from_like(point1), 'M');
+        const vertex2 = new Anchor(position_from_like(point2), 'L');
         super(board, [
-            new Anchor(position_from_like(point1), 'M'),
-            new Anchor(position_from_like(point2), 'L')],
+            vertex1,
+            vertex2],
             false,
             false,
             false,
             path_attribs_from_line_attribs(attributes));
-        
+
+        this.#disposables.push(vertex1.change$.subscribe(() => {
             this.update();
+        }));
+        this.#disposables.push(vertex2.change$.subscribe(() => {
+            this.update();
+        }));
+    }
+    override dispose(): void {
+        dispose(this.#disposables);
+        super.dispose();
     }
     get point1(): Anchor {
         return this.vertices.getAt(0);

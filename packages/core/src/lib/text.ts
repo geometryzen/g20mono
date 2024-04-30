@@ -87,9 +87,9 @@ export class Text extends ColoredShape implements TextProperties {
 
     #dashes: number[] | null = null;
 
-    constructor(board: Board, content: string, attributes: Partial<TextAttributes> = {}) {
+    constructor(owner: Board, content: string, attributes: Partial<TextAttributes> = {}) {
 
-        super(board, shape_attributes_from_text_attributes(attributes));
+        super(owner, shape_attributes_from_text_attributes(attributes));
 
         this.content = content;
 

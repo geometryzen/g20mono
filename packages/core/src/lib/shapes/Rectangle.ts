@@ -189,7 +189,7 @@ export class Rectangle extends Path implements RectangleProperties, Disposable {
 
     readonly #origin = G20.zero.clone();
 
-    constructor(board: Board, attributes: RectangleAttributes = {}) {
+    constructor(owner: Board, attributes: RectangleAttributes = {}) {
 
         const points = [
             new Anchor(G20.vector(0, 0), 'M'),
@@ -198,7 +198,7 @@ export class Rectangle extends Path implements RectangleProperties, Disposable {
             new Anchor(G20.vector(0, 0), 'L')
         ];
 
-        super(board, points, true, false, true, path_attribs_from_rectangle_attribs(attributes));
+        super(owner, points, true, false, true, path_attribs_from_rectangle_attribs(attributes));
 
         if (typeof attributes.width === 'number') {
             this.width = attributes.width;

@@ -15,13 +15,13 @@ export interface PolygonAttributes {
 }
 
 export class Polygon extends Path implements PolygonAttributes {
-    constructor(board: Board, points: PositionLike[] = [], attributes: PolygonAttributes = {}) {
+    constructor(owner: Board, points: PositionLike[] = [], attributes: PolygonAttributes = {}) {
 
         const vertices = points
             .map((point) => position_from_like(point))
             .map((position, index) => new Anchor(position, index === 0 ? 'M' : 'L'));
 
-        super(board, vertices, true, false, false, path_attributes(attributes));
+        super(owner, vertices, true, false, false, path_attributes(attributes));
 
         this.flagReset(true);
         this.update();

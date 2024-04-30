@@ -33,7 +33,7 @@ export class Ellipse extends Path {
 
     readonly #radius = G20.vector(1, 1);
 
-    constructor(board: Board, attributes: EllipseAttributes = {}) {
+    constructor(owner: Board, attributes: EllipseAttributes = {}) {
 
         const amount = attributes.resolution ? Math.max(attributes.resolution, 2) : 4;
         const points = [];
@@ -41,7 +41,7 @@ export class Ellipse extends Path {
             points.push(new Anchor(G20.vector(0, 0)));
         }
 
-        super(board, points, true, true, true, path_attribs_from_ellipse_attribs(attributes));
+        super(owner, points, true, true, true, path_attribs_from_ellipse_attribs(attributes));
 
         if (typeof attributes.rx === 'number') {
             this.rx = attributes.rx;
