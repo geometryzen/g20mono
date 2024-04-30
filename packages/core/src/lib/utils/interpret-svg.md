@@ -1131,8 +1131,7 @@ export const read = {
 
         applySvgAttributes.call(this, node, rect, parentStyles);
 
-        // For rectangles, (x, y) is the center of the shape rather than the top
-        // left corner.
+        // For rectangles, (x, y) is the center of the shape rather than the top left corner.
         rect.translation.x += w2;
         rect.translation.y += h2;
 
@@ -1157,8 +1156,7 @@ export const read = {
 
         applySvgAttributes.call(this, node, rect, parentStyles);
 
-        // For rectangles, (x, y) is the center of the shape rather than the top
-        // left corner.
+        // For rectangles, (x, y) is the center of the shape rather than the top left corner.
         rect.translation.x += w2;
         rect.translation.y += h2;
 

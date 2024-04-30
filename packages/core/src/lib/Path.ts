@@ -268,49 +268,23 @@ export class Path extends ColoredShape implements PathAttributes {
         this.flagReset();
     }
 
-    corner(): this {
-        const bbox = this.getBoundingBox(true);
-        const hw = (bbox.right - bbox.left) / 2;
-        const hh = (bbox.bottom - bbox.top) / 2;
-        const cx = (bbox.left + bbox.right) / 2;
-        const cy = (bbox.top + bbox.bottom) / 2;
-
-        for (let i = 0; i < this.vertices.length; i++) {
-            const v = this.vertices.getAt(i);
-            v.x -= cx;
-            v.y -= cy;
-            v.x += hw;
-            v.y += hh;
-        }
-
-        if (this.clipPath) {
-            this.clipPath.position.x -= cx;
-            this.clipPath.position.x += hw;
-            this.clipPath.position.y -= cy;
-            this.clipPath.position.y += hh;
-        }
-        return this;
-    }
-
     center(): this {
         const bbox = this.getBoundingBox(true);
-
         const cx = (bbox.left + bbox.right) / 2 - this.position.x;
         const cy = (bbox.top + bbox.bottom) / 2 - this.position.y;
-
-        for (let i = 0; i < this.vertices.length; i++) {
-            const v = this.vertices.getAt(i);
+        const vertices = this.vertices;
+        const N = vertices.length;
+        for (let i = 0; i < N; i++) {
+            const v = vertices.getAt(i);
             v.x -= cx;
             v.y -= cy;
         }
-
         if (this.clipPath) {
             this.clipPath.position.x -= cx;
             this.clipPath.position.y -= cy;
         }
-
+        this.update();
         return this;
-
     }
 
     getBoundingBox(shallow?: boolean): { top?: number; left?: number; right?: number; bottom?: number } {

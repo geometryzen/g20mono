@@ -117,28 +117,6 @@ export class Group extends Shape {
     }
 
     /**
-     * Orient the children of the group to the upper left-hand corner of that group.
-     */
-    corner(): this {
-        const bbox = this.getBoundingBox(true);
-
-        const children = this.children;
-        const N = children.length;
-        for (let i = 0; i < N; i++) {
-            const child = children[i];
-            child.position.x -= bbox.left;
-            child.position.y -= bbox.top;
-        }
-
-        if (this.clipPath) {
-            this.clipPath.position.x -= bbox.left;
-            this.clipPath.position.y -= bbox.top;
-        }
-
-        return this;
-    }
-
-    /**
      * Orient the children of the group to the center of that group.
      */
     center(): this {
