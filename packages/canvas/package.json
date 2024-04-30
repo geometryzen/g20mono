@@ -1,6 +1,6 @@
 {
     "name": "g2o-canvas",
-    "version": "0.9.217",
+    "version": "0.9.218",
     "description": "g2o Canvas View",
     "exports": {
         ".": {
@@ -70,6 +70,5 @@
     "peerDependencies": {
         "g2o": "file:../core"
     },
-    "devDependencies": {},
     "gitHead": "140e6f0a2366598efa2623600d4127a567883c4c"
 }

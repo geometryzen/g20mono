@@ -1,6 +1,6 @@
 {
     "name": "g2o",
-    "version": "0.9.217",
+    "version": "0.9.218",
     "description": "Geometric Algebra 2D Graphics Library",
     "exports": {
         ".": {
@@ -74,34 +74,6 @@
     },
     "peerDependencies": {
         "g2o-reactive": "file:../reactive"
-    },
-    "devDependencies": {
-        "@rollup/plugin-commonjs": "^25.0.7",
-        "@rollup/plugin-node-resolve": "^15.2.3",
-        "@rollup/plugin-terser": "^0.4.4",
-        "@rollup/plugin-typescript": "^11.1.6",
-        "@skypack/package-check": "^0.2.2",
-        "@types/jest": "^29.5.12",
-        "@types/rollup-plugin-peer-deps-external": "^2.2.5",
-        "@typescript-eslint/eslint-plugin": "^7.7.1",
-        "@typescript-eslint/parser": "^7.7.1",
-        "esbuild": "^0.20.2",
-        "esbuild-plugin-tsc": "^0.4.0",
-        "eslint": "^9.1.1",
-        "gh-pages": "^6.1.1",
-        "jest": "^29.7.0",
-        "open-cli": "^8.0.0",
-        "release-it": "^17.2.0",
-        "rollup": "^4.16.4",
-        "rollup-plugin-dts": "^6.1.0",
-        "rollup-plugin-peer-deps-external": "^2.2.4",
-        "ts-jest": "^29.1.2",
-        "ts-jest-resolver": "^2.0.1",
-        "ts-node": "^10.9.2",
-        "tslib": "^2.6.2",
-        "typedoc": "^0.25.13",
-        "typescript": "^5.4.5",
-        "typescript-eslint": "^7.7.1"
     },
     "gitHead": "140e6f0a2366598efa2623600d4127a567883c4c"
 }
