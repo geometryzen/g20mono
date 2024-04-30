@@ -169,7 +169,7 @@ export class Path extends ColoredShape implements PathAttributes {
         set_dashes_offset(this.dashes, 0);
     }
 
-    render(parentElement: HTMLElement | SVGElement, svgElement: SVGElement): void {
+    override render(parentElement: HTMLElement | SVGElement, svgElement: SVGElement): void {
 
         // Collect any attribute that needs to be changed here
         const changed: SVGAttributes = {};
@@ -934,6 +934,7 @@ export class Path extends ColoredShape implements PathAttributes {
 
         this.vertices.forEach((anchor: Anchor) => {
             const subscription = anchor.change$.subscribe(() => {
+                this.update();
             });
             this.#anchor_change_map.set(anchor, subscription);
         });
