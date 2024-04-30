@@ -3,7 +3,7 @@ import { Anchor } from '../anchor';
 import { Group } from '../group';
 import { Board } from '../IBoard';
 import { G20 } from '../math/G20';
-import { Matrix } from '../matrix';
+import { Matrix } from '../math/Matrix';
 import { Shape } from '../Shape';
 import { mod, toFixed } from '../utils/math';
 import { Commands } from '../utils/path-commands';

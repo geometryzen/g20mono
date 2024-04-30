@@ -6,9 +6,11 @@ import { PositionLike, position_from_like } from '../Shape';
 
 export interface LineAttributes {
     id?: string,
+    dashes?: number[],
     stroke?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
+    vectorEffect?: 'none';
     visibility?: 'visible' | 'hidden' | 'collapse';
 }
 
@@ -66,10 +68,12 @@ export class Line extends Path implements LineProperties {
 function path_attribs_from_line_attribs(attributes: LineAttributes): PathAttributes {
     const retval: PathAttributes = {
         id: attributes.id,
-        visibility: attributes.visibility,
+        dashes: attributes.dashes,
         stroke: attributes.stroke,
         strokeOpacity: attributes.strokeOpacity,
-        strokeWidth: attributes.strokeWidth
+        strokeWidth: attributes.strokeWidth,
+        vectorEffect: attributes.vectorEffect,
+        visibility: attributes.visibility
     };
     return retval;
 }

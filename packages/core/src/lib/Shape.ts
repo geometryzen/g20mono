@@ -7,7 +7,7 @@ import { Board } from './IBoard';
 import { IShape } from './IShape';
 import { compose_2d_3x3_transform } from './math/compose_2d_3x3_transform';
 import { G20 } from './math/G20';
-import { Matrix } from './matrix';
+import { Matrix } from './math/Matrix';
 import { Disposable, dispose } from './reactive/Disposable';
 import { svg, SVGAttributes, transform_value_of_matrix } from './renderers/SVGView';
 import { computed_world_matrix } from './utils/compute_world_matrix';

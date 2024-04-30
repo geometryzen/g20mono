@@ -23,7 +23,7 @@ export interface RectangleAPI<X> {
     strokeWidth: number;
 }
 
-export interface RectangleAttributes extends Partial<RectangleAPI<PositionLike>> {
+export interface RectangleAttributes extends Partial<RectangleAPI<PositionLike>>, PathAttributes {
     id?: string;
     opacity?: number;
     position?: PositionLike;

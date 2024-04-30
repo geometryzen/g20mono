@@ -1,4 +1,4 @@
-import { effect, state } from "g2o-reactive";
+import { effect, State, state } from "g2o-reactive";
 import { ColorManager } from "./ColorManager";
 import { Color } from "./effects/ColorProvider";
 import { Flag } from "./Flag";
@@ -11,11 +11,13 @@ export interface ColoredShapeAttributes extends ShapeAttributes {
     attitude?: G20;
     position?: PositionLike,
     id?: string;
+    dashes?: number[],
     fill?: Color;
     fillOpacity?: number;
     stroke?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
+    vectorEffect?: 'none';
     visibility?: 'visible' | 'hidden' | 'collapse';
 }
 
@@ -33,10 +35,16 @@ export abstract class ColoredShape extends Shape {
     readonly #strokeWidth = state(1);
     readonly #strokeOpacity = state(1.0);
 
-    #vectorEffect: 'none' | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position' = 'non-scaling-stroke';
+    readonly #dashes: State<number[]> = state([]);
+
+    readonly #vectorEffect: State<'none' | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position'> = state('non-scaling-stroke');
 
     constructor(board: Board, attributes: ColoredShapeAttributes = {}) {
         super(board, shape_attribs_from_colored_attribs(attributes));
+
+        if (Array.isArray(attributes.dashes)) {
+            this.dashes = attributes.dashes;
+        }
 
         if (attributes.fill) {
             this.fill = attributes.fill;
@@ -66,22 +74,24 @@ export abstract class ColoredShape extends Shape {
         else {
             this.strokeOpacity = 1.0;
         }
-    }
 
-    /*
-    automatic: boolean;
-    beginning: number;
-    cap: "butt" | "round" | "square";
-    closed: boolean;
-    curved: boolean;
-    ending: number;
-    fill: Color;
-    join: "round" | "arcs" | "bevel" | "miter" | "miter-clip";
-    length: number;
-    strokeWidth: number;
-    miter: number;
-    stroke: Color;
-    */
+        if (typeof attributes.vectorEffect === 'string') {
+            this.vectorEffect = attributes.vectorEffect;
+        }
+    }
+    /**
+     * Array of numbers. Odd indices represent dash length. Even indices represent dash space.
+     * A list of numbers that represent the repeated dash length and dash space applied to the stroke of the text.
+     * @see {@link https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray} for more information on the SVG stroke-dasharray attribute.
+     */
+    get dashes(): number[] {
+        return this.#dashes.get();
+    }
+    set dashes(dashes: number[]) {
+        if (Array.isArray(dashes)) {
+            this.#dashes.set(dashes);
+        }
+    }
     get fill(): Color {
         return this.#fillColor.get();
     }
@@ -117,10 +127,10 @@ export abstract class ColoredShape extends Shape {
         }
     }
     get vectorEffect(): 'none' | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position' {
-        return this.#vectorEffect;
+        return this.#vectorEffect.get();
     }
     set vectorEffect(vectorEffect: 'none' | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position') {
-        this.#vectorEffect = vectorEffect;
+        this.#vectorEffect.set(vectorEffect);
     }
     /**
      * A convenience method for setting the `fill` attribute to "none".
@@ -144,6 +154,20 @@ export abstract class ColoredShape extends Shape {
             get_svg_element_defs(svgElement);
             this.#fillColor.use(svgElement, this.zzz.elem);
             this.#strokeColor.use(svgElement, this.zzz.elem);
+
+            // dashes
+            this.zzz.disposables.push(effect(() => {
+                const dashes = this.dashes;
+                if (Array.isArray(dashes) && dashes.length > 0) {
+                    this.zzz.elem.setAttribute('stroke-dasharray', this.dashes.join(' '));
+                }
+                else {
+                    this.zzz.elem.removeAttribute('stroke-dasharray');
+                }
+                return function () {
+                    // No cleanup to be done.
+                };
+            }));
 
             // fill
             this.zzz.disposables.push(effect(() => {

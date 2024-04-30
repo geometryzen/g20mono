@@ -1,5 +1,5 @@
 import { Group } from "../group";
-import { Matrix } from "../matrix";
+import { Matrix } from "../math/Matrix";
 import { Shape } from "../Shape";
 
 export function computed_world_matrix(shape: Shape, matrix: Matrix): void {

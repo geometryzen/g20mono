@@ -48,8 +48,6 @@ export class Arrow extends Path implements ArrowProperties {
 
         super(owner, vertices, false, false, true, path_attribs_from_arrow_attribs(attributes));
 
-        this.#origin = G20.zero.clone();
-
         this.#axis = position_from_like(axis);
 
         if (typeof attributes.headLength === 'number') {
@@ -60,11 +58,13 @@ export class Arrow extends Path implements ArrowProperties {
             this.#headLength = G20.scalar(0.25);
         }
 
+        this.#origin = G20.zero.clone();
+
         this.noFill();
         this.cap = 'round';
         this.join = 'round';
 
-        this.#disposables.push(this.#axis.change$.subscribe(() => {
+        this.#disposables.push(this.axis.change$.subscribe(() => {
             this.update();
         }));
         this.#disposables.push(this.#headLength.change$.subscribe(() => {

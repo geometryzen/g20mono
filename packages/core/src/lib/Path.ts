@@ -16,16 +16,6 @@ import { lerp, mod } from './utils/math';
 import { Commands } from './utils/path-commands';
 import { contains, getCurveLength, getIdByLength, getSubdivisions } from './utils/shape';
 
-export function get_dashes_offset(dashes: number[]): number | undefined {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return (dashes as any)['offset'];
-}
-
-export function set_dashes_offset(dashes: number[], offset: number): void {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (dashes as any)['offset'] = offset;
-}
-
 const min = Math.min;
 const max = Math.max;
 
@@ -34,8 +24,10 @@ const vector = new G20();
 export interface PathAttributes extends ColoredShapeAttributes {
     attitude?: G20;
     id?: string,
+    dashes?: number[],
     opacity?: number;
     position?: PositionLike;
+    vectorEffect?: 'none';
     visibility?: 'visible' | 'hidden' | 'collapse';
     /**
      * The value of what the path should be filled in with.
@@ -52,7 +44,7 @@ export interface PathAttributes extends ColoredShapeAttributes {
     strokeWidth?: number;
 }
 
-export class Path extends ColoredShape implements PathAttributes {
+export class Path extends ColoredShape {
 
     #length = 0;
 
@@ -78,8 +70,6 @@ export class Path extends ColoredShape implements PathAttributes {
     #automatic = true;
     #beginning = 0.0;
     #ending = 1.0;
-
-    #dashes: number[] = null;
 
     /**
      * The hidden variable behind the `vertices` property.
@@ -154,15 +144,6 @@ export class Path extends ColoredShape implements PathAttributes {
         this.vertices = new Collection(vertices);
 
         this.automatic = !manual;
-
-        /**
-         * Array of numbers. Odd indices represent dash length. Even indices represent dash space.
-         * A list of numbers that represent the repeated dash length and dash space applied to the stroke of the text.
-         * @see {@link https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray} for more information on the SVG stroke-dasharray attribute.
-         */
-        this.dashes = [];
-
-        set_dashes_offset(this.dashes, 0);
     }
 
     override render(parentElement: HTMLElement | SVGElement, svgElement: SVGElement): void {
@@ -172,11 +153,6 @@ export class Path extends ColoredShape implements PathAttributes {
 
         if (this.zzz.flags[Flag.ClassName]) {
             changed['class'] = this.classList.join(' ');
-        }
-
-        if (this.dashes && this.dashes.length > 0) {
-            changed['stroke-dasharray'] = this.dashes.join(' ');
-            changed['stroke-dashoffset'] = `${get_dashes_offset(this.dashes) || 0}`;
         }
 
         if (this.zzz.elem) {
@@ -610,49 +586,7 @@ export class Path extends ColoredShape implements PathAttributes {
         return this;
     }
 
-    #updateLength(limit?: number, silent = false): this {
-        // TODO: DRYness (function above)
-        if (!silent) {
-            this.update();
-        }
-
-        const length = this.vertices.length;
-        const last = length - 1;
-        const closed = false;//this.closed || this.vertices[last]._command === Commands.close;
-
-        let b = this.vertices.getAt(last);
-        let sum = 0;
-
-        this.vertices.forEach((a: Anchor, i: number) => {
-
-            if ((i <= 0 && !closed) || a.command === Commands.move) {
-                b = a;
-                this.#lengths[i] = 0;
-                return;
-            }
-
-            this.#lengths[i] = getCurveLength(a, b, limit);
-            sum += this.#lengths[i];
-
-            if (i >= last && closed) {
-
-                b = this.vertices.getAt((i + 1) % length);
-
-                this.#lengths[i + 1] = getCurveLength(a, b, limit);
-                sum += this.#lengths[i + 1];
-
-            }
-
-            b = a;
-        });
-
-        this.#length = sum;
-
-        return this;
-    }
-
-    override update(): this {
-
+    #updateVertices(): this {
         if (this.automatic) {
             this.plot();
         }
@@ -791,6 +725,52 @@ export class Path extends ColoredShape implements PathAttributes {
             }
         }
         this.zzz.vertices_subject.set(this.zzz.vertices_subject.get() + 1);
+        return this;
+    }
+
+    #updateLength(limit?: number, silent = false): this {
+        // TODO: DRYness (function above)
+        if (!silent) {
+            this.update();
+        }
+
+        const length = this.vertices.length;
+        const last = length - 1;
+        const closed = false;//this.closed || this.vertices[last]._command === Commands.close;
+
+        let b = this.vertices.getAt(last);
+        let sum = 0;
+
+        this.vertices.forEach((a: Anchor, i: number) => {
+
+            if ((i <= 0 && !closed) || a.command === Commands.move) {
+                b = a;
+                this.#lengths[i] = 0;
+                return;
+            }
+
+            this.#lengths[i] = getCurveLength(a, b, limit);
+            sum += this.#lengths[i];
+
+            if (i >= last && closed) {
+
+                b = this.vertices.getAt((i + 1) % length);
+
+                this.#lengths[i + 1] = getCurveLength(a, b, limit);
+                sum += this.#lengths[i + 1];
+
+            }
+
+            b = a;
+        });
+
+        this.#length = sum;
+
+        return this;
+    }
+
+    override update(): this {
+        this.#updateVertices();
         super.update();
         return this;
     }
@@ -852,15 +832,6 @@ export class Path extends ColoredShape implements PathAttributes {
     set curved(curved: boolean) {
         this.#curved = !!curved;
     }
-    get dashes(): number[] {
-        return this.#dashes;
-    }
-    set dashes(dashes: number[]) {
-        if (typeof get_dashes_offset(dashes) !== 'number') {
-            set_dashes_offset(dashes, (this.dashes && get_dashes_offset(this.dashes)) || 0);
-        }
-        this.#dashes = dashes;
-    }
     get ending(): number {
         return this.#ending;
     }
@@ -914,7 +885,8 @@ export class Path extends ColoredShape implements PathAttributes {
             while (i--) {
                 const anchor = inserts[i];
                 const subscription = anchor.change$.subscribe(() => {
-                    this.update();
+                    this.#updateVertices();
+                    // this.update();
                 });
                 // TODO: Check that we are not already mapped?
                 this.#anchor_change_map.set(anchor, subscription);
@@ -933,7 +905,8 @@ export class Path extends ColoredShape implements PathAttributes {
 
         this.vertices.forEach((anchor: Anchor) => {
             const subscription = anchor.change$.subscribe(() => {
-                this.update();
+                this.#updateVertices();
+                // this.update();
             });
             this.#anchor_change_map.set(anchor, subscription);
         });
@@ -944,6 +917,7 @@ export class Path extends ColoredShape implements PathAttributes {
 function colored_shape_attribs_from_path_attribs(attributes: PathAttributes): ColoredShapeAttributes {
     const retval: ColoredShapeAttributes = {
         id: attributes.id,
+        dashes: attributes.dashes,
         position: attributes.position,
         attitude: attributes.attitude,
         fill: defaultColor(attributes.fill, null),
@@ -953,6 +927,7 @@ function colored_shape_attribs_from_path_attribs(attributes: PathAttributes): Co
         strokeWidth: attributes.strokeWidth,
         opacity: attributes.opacity,
         plumb: attributes.plumb,
+        vectorEffect: attributes.vectorEffect,
         visibility: attributes.visibility
     };
     return retval;

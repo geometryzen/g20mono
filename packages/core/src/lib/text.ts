@@ -4,7 +4,6 @@ import { Color } from './effects/ColorProvider';
 import { ElementBase } from './element';
 import { Flag } from './Flag';
 import { Board } from './IBoard';
-import { get_dashes_offset, set_dashes_offset } from './Path';
 import { svg, SVGAttributes, transform_value_of_matrix } from './renderers/SVGView';
 import { PositionLike } from './Shape';
 
@@ -85,20 +84,11 @@ export class Text extends ColoredShape implements TextProperties {
     readonly #dx = state(0 as number | string);
     readonly #dy = state(0 as number | string);
 
-    #dashes: number[] | null = null;
-
     constructor(owner: Board, content: string, attributes: Partial<TextAttributes> = {}) {
 
         super(owner, shape_attributes_from_text_attributes(attributes));
 
         this.content = content;
-
-        /**
-         * @see {@link https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray} for more information on the SVG stroke-dasharray attribute.
-         */
-        this.dashes = [];
-
-        set_dashes_offset(this.dashes, 0);
 
         if (attributes.anchor) {
             this.anchor = attributes.anchor;
@@ -170,10 +160,6 @@ export class Text extends ColoredShape implements TextProperties {
 
         if (this.zzz.flags[Flag.ClassName]) {
             changed['class'] = this.classList.join(' ');
-        }
-        if (this.dashes && this.dashes.length > 0) {
-            changed['stroke-dasharray'] = this.dashes.join(' ');
-            changed['stroke-dashoffset'] = `${get_dashes_offset(this.dashes) || 0}`;
         }
 
         if (this.zzz.elem) {
@@ -533,15 +519,6 @@ export class Text extends ColoredShape implements TextProperties {
             }
         }
     }
-    get dashes() {
-        return this.#dashes;
-    }
-    set dashes(v) {
-        if (typeof get_dashes_offset(v) !== 'number') {
-            set_dashes_offset(v, (this.dashes && get_dashes_offset(this.#dashes)) || 0);
-        }
-        this.#dashes = v;
-    }
     get decoration(): TextDecoration[] {
         return this.#decoration.get();
     }
@@ -618,8 +595,18 @@ function shape_attributes_from_text_attributes(attributes: Partial<TextAttribute
 
     const retval: Partial<ColoredShapeAttributes> = {
         id: attributes.id,
+        dashes: attributes.dashes,
         plumb: true,//attributes.plumb,
         position: attributes.position,
+        attitude: attributes.attitude,
+        fill: attributes.fill,
+        fillOpacity: attributes.fillOpacity,
+        opacity: attributes.opacity,
+        stroke: attributes.stroke,
+        strokeOpacity: attributes.strokeOpacity,
+        strokeWidth: attributes.strokeWidth,
+        vectorEffect: attributes.vectorEffect,
+        visibility: attributes.visibility
     };
     return retval;
 }

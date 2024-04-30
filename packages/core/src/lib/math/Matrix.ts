@@ -1,4 +1,4 @@
-import { State, state } from 'g2o-reactive';
+import { signal, State } from 'g2o-reactive';
 
 const cos = Math.cos;
 const sin = Math.sin;
@@ -6,7 +6,7 @@ const tan = Math.tan;
 
 type ELEMENTS = [a11: number, a12: number, a13: number, a21: number, a22: number, a23: number, a31: number, a32: number, a33: number];
 
-function equals(P: ELEMENTS, Q: ELEMENTS): boolean {
+function equalsValue(P: ELEMENTS, Q: ELEMENTS): boolean {
     return P[0] === Q[0] &&
         P[1] === Q[1] &&
         P[2] === Q[2] &&
@@ -22,81 +22,80 @@ function equals(P: ELEMENTS, Q: ELEMENTS): boolean {
  * 1st row is [a11,a12,a13], 2nd row is [a21,a22,a23], 3rd row is [a31,a32,a33]
  */
 export class Matrix {
-    // Keep two arrays and flip-flop between them so that...
-    // 1. We don't tax the garbage collector.
-    // 2. The signal library can compare old and new values.
-    readonly #elements1: ELEMENTS = [1, 0, 0, 0, 1, 0, 0, 0, 1];
-    readonly #elements2: ELEMENTS = [1, 0, 0, 0, 1, 0, 0, 0, 1];
+    /**
+     * Contains the value that is currently stored in the signal (in the zeroth index of this array).
+     * This backing store exists because 1) the signal implementation we are using does not support
+     * mutation, and 2) we (may) want this multivector to also be observable with events that only happen on
+     * changes, and 3) we want to avoid taxing the Garbage Collector.
+     */
+    readonly #signalValue: [ELEMENTS, ELEMENTS] = [[1, 0, 0, 0, 1, 0, 0, 0, 1], [1, 0, 0, 0, 1, 0, 0, 0, 1]];
 
     /**
      * 1st row is [0,1,2], 2nd row is [3,4,5], 3rd row is [6,7,8]
+     * The underlying data that makes this multivector into a signal.
+     * The get method fo this signal MUST be called when accessing the coordinates (a, x, y, and b),
+     * and MUST NOT be called when mutating this multivector.
      */
-    readonly #elements: State<ELEMENTS> = state(this.#elements1, { equals });
+    readonly #signal: State<ELEMENTS> = signal(this.#signalValue[0], { equals: equalsValue });
+
+    // readonly #change = variable(this);
+    // readonly change$ = this.#change.asObservable();
 
     constructor(a11 = 1, a12 = 0, a13 = 0, a21 = 0, a22 = 1, a23 = 0, a31 = 0, a32 = 0, a33 = 1) {
         this.set(a11, a12, a13, a21, a22, a23, a31, a32, a33);
     }
     get a(): number {
-        return this.#elements.get()[0];
+        return this.#signal.get()[0];   // a11
     }
     get b(): number {
-        return this.#elements.get()[3];
+        return this.#signal.get()[3];   // a21
     }
     get c(): number {
-        return this.#elements.get()[1];
+        return this.#signal.get()[1];   // a12
     }
     get d(): number {
-        return this.#elements.get()[4];
+        return this.#signal.get()[4];   // a22
     }
     get e(): number {
-        return this.#elements.get()[2];
+        return this.#signal.get()[2];   // a13
     }
     get f(): number {
-        return this.#elements.get()[5];
+        return this.#signal.get()[5];   // a23
     }
     get a11(): number {
-        return this.#elements.get()[0];
+        return this.#signal.get()[0];
     }
     get a12(): number {
-        return this.#elements.get()[1];
+        return this.#signal.get()[1];
     }
     get a13(): number {
-        return this.#elements.get()[2];
+        return this.#signal.get()[2];
     }
     get a21(): number {
-        return this.#elements.get()[3];
+        return this.#signal.get()[3];
     }
     get a22(): number {
-        return this.#elements.get()[4];
+        return this.#signal.get()[4];
     }
     get a23(): number {
-        return this.#elements.get()[5];
+        return this.#signal.get()[5];
     }
     get a31(): number {
-        return this.#elements.get()[6];
+        return this.#signal.get()[6];
     }
     get a32(): number {
-        return this.#elements.get()[7];
+        return this.#signal.get()[7];
     }
     get a33(): number {
-        return this.#elements.get()[8];
+        return this.#signal.get()[8];
     }
-
-    #newElements(olds: ELEMENTS): ELEMENTS {
-        if (olds === this.#elements1) {
-            return this.#elements2;
-        }
-        else if (olds === this.#elements2) {
-            return this.#elements1;
-        }
-        else {
-            throw new Error();
-        }
+    toString(): string {
+        return JSON.stringify([[this.a11, this.a12, this.a13], [this.a21, this.a22, this.a23], [this.a31, this.a32, this.a33]]);
     }
 
     set(a11: number, a12: number, a13: number, a21: number, a22: number, a23: number, a31: number, a32: number, a33: number): this {
-        const olds = this.#elements.get();
-        const news = this.#newElements(olds);
+        const olds: ELEMENTS = this.#signalValue[0];
+        const news: ELEMENTS = this.#signalValue[1];
         news[0] = a11;
         news[1] = a12;
         news[2] = a13;
@@ -106,7 +105,15 @@ export class Matrix {
         news[6] = a31;
         news[7] = a32;
         news[8] = a33;
-        this.#elements.set(news);
+        if (equalsValue(news, olds)) {
+            // Do nothing
+        }
+        else {
+            this.#signalValue[0] = news;
+            this.#signalValue[1] = olds;
+            this.#signal.set(news);
+            // this.#change.set(this);
+        }
         return this;
     }
 
@@ -114,8 +121,7 @@ export class Matrix {
      * Copy the matrix of one to the current instance.
      */
     copy(m: Matrix): this {
-        const s = m.#elements.get();
-        return this.set(s[0], s[1], s[2], s[3], s[4], s[5], s[6], s[7], s[8]);
+        return this.set(m.a11, m.a12, m.a13, m.a21, m.a22, m.a23, m.a31, m.a32, m.a33);
     }
 
     /**
@@ -127,7 +133,7 @@ export class Matrix {
 
     multiply(b11: number, b12: number, b13: number, b21: number, b22: number, b23: number, b31: number, b32: number, b33: number): this {
 
-        const elements = this.#elements.get();
+        const elements: ELEMENTS = this.#signalValue[0];
 
         const a11 = elements[0];
         const a12 = elements[1];
@@ -164,7 +170,7 @@ export class Matrix {
     }
 
     multiply_by_scalar(s: number): this {
-        const elements = this.#elements.get();
+        const elements: ELEMENTS = this.#signalValue[0];
         const a11 = elements[0] * s;
         const a12 = elements[1] * s;
         const a13 = elements[2] * s;
@@ -177,52 +183,11 @@ export class Matrix {
         return this.set(a11, a12, a13, a21, a22, a23, a31, a32, a33);
     }
 
-    /**
-     * @param out The optional matrix to apply the inversion to.
-     * Return an inverted version of the matrix. If no optional one is passed a new matrix is created and returned.
-     */
-    inverse(out?: Matrix): Matrix {
-
-        const a = this.#elements.get();
-        out = out || new Matrix();
-
-        const a00 = a[0], a01 = a[1], a02 = a[2];
-        const a10 = a[3], a11 = a[4], a12 = a[5];
-        const a20 = a[6], a21 = a[7], a22 = a[8];
-
-        const b01 = a22 * a11 - a12 * a21;
-        const b11 = -a22 * a10 + a12 * a20;
-        const b21 = a21 * a10 - a11 * a20;
-
-        // Calculate the determinant
-        let det = a00 * b01 + a01 * b11 + a02 * b21;
-
-        if (!det) {
-            return null;
-        }
-
-        det = 1.0 / det;
-
-        const c11 = b01 * det;
-        const c12 = (-a22 * a01 + a02 * a21) * det;
-        const c13 = (a12 * a01 - a02 * a11) * det;
-        const c21 = b11 * det;
-        const c22 = (a22 * a00 - a02 * a20) * det;
-        const c23 = (-a12 * a00 + a02 * a10) * det;
-        const c31 = b21 * det;
-        const c32 = (-a21 * a00 + a01 * a20) * det;
-        const c33 = (a11 * a00 - a01 * a10) * det;
-        out.set(c11, c12, c13, c21, c22, c23, c31, c32, c33);
-
-        return out;
-    }
-
     scale(sx: number, sy: number): this {
         if (sx === 1 && sy === 1) {
             return this;
         }
         else {
-            // console.lg("Matrix.scale", "sx", sx, "sy", sy);
             return this.multiply(sx, 0, 0, 0, sy, 0, 0, 0, 1);
         }
     }
@@ -238,7 +203,6 @@ export class Matrix {
             return this;
         }
         else {
-            // console.lg("Matrix.rotate", "angle", angle, "cos", c, "sin", s);
             return this.multiply(c, -s, 0, s, c, 0, 0, 0, 1);
         }
     }
@@ -248,7 +212,6 @@ export class Matrix {
             return this;
         }
         else {
-            // console.lg("Matrix.translate", translation.x, translation.y);
             return this.multiply(1, 0, translation.x, 0, 1, translation.y, 0, 0, 1);
         }
     }
@@ -264,7 +227,6 @@ export class Matrix {
         }
         else {
             const a = tan(skewX);
-            // console.lg("Matrix.skewX", "angle", angle, "a", a);
             return this.multiply(1, a, 0, 0, 1, 0, 0, 0, 1);
         }
     }
@@ -280,57 +242,49 @@ export class Matrix {
         }
         else {
             const a = tan(skewY);
-            // console.lg("Matrix.skewY", "angle", angle, "a", a);
             return this.multiply(1, 0, 0, a, 1, 0, 0, 0, 1);
         }
 
     }
 }
-// TODO
-/*
-export function multiply(A: Matrix, B, C) {
 
-    if (B.length <= 3) { // Multiply G20
+export function inverse(m: Matrix, out: Matrix): Matrix | null {
 
-        const e = A;
-        let x, y, z;
+    // Changing notation here because it makes the Laplacian
+    // development of determinants by minors manifest.
+    const a1 = m.a11;
+    const b1 = m.a12;
+    const c1 = m.a13;
+    const a2 = m.a21;
+    const b2 = m.a22;
+    const c2 = m.a23;
+    const a3 = m.a31;
+    const b3 = m.a32;
+    const c3 = m.a33;
 
-        const a = B[0] || 0,
-            b = B[1] || 0,
-            c = B[2] || 0;
+    const b01 = c3 * b2 - c2 * b3;
+    const b11 = -c3 * a2 + c2 * a3;
+    const b21 = b3 * a2 - b2 * a3;
 
-        // Go down rows first
-        // a, d, g, b, e, h, c, f, i
+    /**
+     * Determinant.
+     */
+    const D = a1 * b01 + b1 * b11 + c1 * b21;
 
-        x = e[0] * a + e[1] * b + e[2] * c;
-        y = e[3] * a + e[4] * b + e[5] * c;
-        z = e[6] * a + e[7] * b + e[8] * c;
-
-        return [x, y, z];
-
+    if (!D) {
+        return null;
     }
 
-    const A0 = A[0], A1 = A[1], A2 = A[2];
-    const A3 = A[3], A4 = A[4], A5 = A[5];
-    const A6 = A[6], A7 = A[7], A8 = A[8];
-
-    const B0 = B[0], B1 = B[1], B2 = B[2];
-    const B3 = B[3], B4 = B[4], B5 = B[5];
-    const B6 = B[6], B7 = B[7], B8 = B[8];
-
-    C = C || new Array<number>(9);
-
-    C[0] = A0 * B0 + A1 * B3 + A2 * B6;
-    C[1] = A0 * B1 + A1 * B4 + A2 * B7;
-    C[2] = A0 * B2 + A1 * B5 + A2 * B8;
-    C[3] = A3 * B0 + A4 * B3 + A5 * B6;
-    C[4] = A3 * B1 + A4 * B4 + A5 * B7;
-    C[5] = A3 * B2 + A4 * B5 + A5 * B8;
-    C[6] = A6 * B0 + A7 * B3 + A8 * B6;
-    C[7] = A6 * B1 + A7 * B4 + A8 * B7;
-    C[8] = A6 * B2 + A7 * B5 + A8 * B8;
-
-    return C;
-
+    const c11 = b01 / D;
+    const c12 = (-c3 * b1 + c1 * b3) / D;
+    const c13 = (c2 * b1 - c1 * b2) / D;
+    const c21 = b11 / D;
+    const c22 = (c3 * a1 - c1 * a3) / D;
+    const c23 = (-c2 * a1 + c1 * a2) / D;
+    const c31 = b21 / D;
+    const c32 = (-b3 * a1 + b1 * a3) / D;
+    const c33 = (b2 * a1 - b1 * a2) / D;
+    out.set(c11, c12, c13, c21, c22, c23, c31, c32, c33);
+    return out;
 }
-*/
+

@@ -49,8 +49,11 @@ function isScalar(m: G20): boolean {
 
 type COORDS = [a: number, x: number, y: number, b: number];
 
-function equalsCoords(P: COORDS, Q: COORDS): boolean {
-    return P[0] === Q[0] && P[1] === Q[1] && P[2] === Q[2] && P[3] === Q[3];
+function equalsValue(P: COORDS, Q: COORDS): boolean {
+    return P[0] === Q[0] &&
+        P[1] === Q[1] &&
+        P[2] === Q[2] &&
+        P[3] === Q[3];
 }
 
 const COORD_A = 0;
@@ -68,13 +71,13 @@ export class G20 {
      * mutation, and 2) we want this multivector to also be observable with events that only happen on
      * changes, and 3) we want to avoid taxing the Garbage Collector.
      */
-    readonly #coordsValue: [COORDS, COORDS] = [[0, 0, 0, 0], [0, 0, 0, 0]];
+    readonly #signalValue: [COORDS, COORDS] = [[0, 0, 0, 0], [0, 0, 0, 0]];
     /**
      * The underlying data that makes this multivector into a signal.
      * The get method fo this signal MUST be called when accessing the coordinates (a, x, y, and b),
      * and MUST NOT be called when mutating this multivector.
      */
-    readonly #coords: State<COORDS> = signal(this.#coordsValue[0], { equals: equalsCoords });
+    readonly #signal: State<COORDS> = signal(this.#signalValue[0], { equals: equalsValue });
 
     #lock = UNLOCKED;
 
@@ -146,73 +149,69 @@ export class G20 {
     }
 
     get a(): number {
-        return this.#coords.get()[COORD_A];
+        return this.#signal.get()[COORD_A];
     }
 
     set a(a: number) {
         if (typeof a === 'number') {
-            const coords: COORDS = this.#coordsValue[0];
+            const coords: COORDS = this.#signalValue[0];
             const old_a: number = coords[COORD_A];
             if (a !== old_a) {
                 const x: number = coords[COORD_X];
                 const y: number = coords[COORD_Y];
                 const b: number = coords[COORD_B];
                 this.set(x, y, a, b);
-                this.#change.set(this);
             }
         }
     }
 
     get x(): number {
-        return this.#coords.get()[COORD_X];
+        return this.#signal.get()[COORD_X];
     }
 
     set x(x: number) {
         if (typeof x === 'number') {
-            const coords: COORDS = this.#coordsValue[0];
+            const coords: COORDS = this.#signalValue[0];
             const old_x: number = coords[COORD_X];
             if (x !== old_x) {
                 const a: number = coords[COORD_A];
                 const b: number = coords[COORD_B];
                 const y: number = coords[COORD_Y];
                 this.set(x, y, a, b);
-                this.#change.set(this);
             }
         }
     }
 
     get y(): number {
-        return this.#coords.get()[COORD_Y];
+        return this.#signal.get()[COORD_Y];
     }
 
     set y(y: number) {
         if (typeof y === 'number') {
-            const coords: COORDS = this.#coordsValue[0];
+            const coords: COORDS = this.#signalValue[0];
             const old_y: number = coords[COORD_Y];
             if (y !== old_y) {
                 const x: number = coords[COORD_X];
                 const a: number = coords[COORD_A];
                 const b: number = coords[COORD_B];
                 this.set(x, y, a, b);
-                this.#change.set(this);
             }
         }
     }
 
     get b(): number {
-        return this.#coords.get()[COORD_B];
+        return this.#signal.get()[COORD_B];
     }
 
     set b(b: number) {
         if (typeof b === 'number') {
-            const coords: COORDS = this.#coordsValue[0];
+            const coords: COORDS = this.#signalValue[0];
             const old_b: number = coords[COORD_B];
             if (b !== old_b) {
                 const x: number = coords[COORD_X];
                 const y: number = coords[COORD_Y];
                 const a: number = coords[COORD_A];
                 this.set(x, y, a, b);
-                this.#change.set(this);
             }
         }
     }
@@ -812,19 +811,19 @@ export class G20 {
      */
     set(x: number, y: number, a = 0, b = 0): this {
         if (this.isMutable()) {
-            const oldCoords: COORDS = this.#coordsValue[0];
-            const newCoords: COORDS = this.#coordsValue[1];
+            const oldCoords: COORDS = this.#signalValue[0];
+            const newCoords: COORDS = this.#signalValue[1];
             newCoords[COORD_A] = a;
             newCoords[COORD_B] = b;
             newCoords[COORD_X] = x;
             newCoords[COORD_Y] = y;
-            if (equalsCoords(newCoords, oldCoords)) {
+            if (equalsValue(newCoords, oldCoords)) {
                 // Do nothing
             }
             else {
-                this.#coordsValue[0] = newCoords;
-                this.#coordsValue[1] = oldCoords;
-                this.#coords.set(newCoords);
+                this.#signalValue[0] = newCoords;
+                this.#signalValue[1] = oldCoords;
+                this.#signal.set(newCoords);
                 this.#change.set(this);
             }
             return this;

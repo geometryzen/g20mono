@@ -1,4 +1,4 @@
-import { Matrix } from "../matrix";
+import { Matrix } from "./Matrix";
 
 /**
  * @see https://frederic-wang.fr/decomposition-of-2d-transform-matrices.html
