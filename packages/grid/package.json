@@ -1,6 +1,6 @@
 {
     "name": "g2o-grid",
-    "version": "0.9.220",
+    "version": "0.9.221",
     "description": "g2o Grid",
     "exports": {
         ".": {
