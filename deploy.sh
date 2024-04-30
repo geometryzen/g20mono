@@ -1,8 +1,8 @@
 #!/bin/sh
 echo "Please enter a commit message"
 read message
-npm install --force
-npm update --force
+npm install
+npm update
 lerna run build
 lerna run lint
 lerna run test
