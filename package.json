@@ -10,7 +10,8 @@
         "packages/graphics",
         "packages/grid",
         "packages/player",
-        "packages/reactive"
+        "packages/reactive",
+        "packages/texture"
     ],
     "dependencies": {},
     "devDependencies": {

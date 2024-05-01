@@ -259,6 +259,34 @@ export class Path extends ColoredShape {
         return this;
     }
 
+    corner() {
+
+        const rect = this.getBoundingBox(true);
+        const hw = (rect.right - rect.left) / 2;
+        const hh = (rect.bottom - rect.top) / 2;
+        const cx = (rect.left + rect.right) / 2;
+        const cy = (rect.top + rect.bottom) / 2;
+
+        for (let i = 0; i < this.vertices.length; i++) {
+            const v = this.vertices.getAt(i);
+            v.x -= cx;
+            v.y -= cy;
+            v.x += hw;
+            v.y += hh;
+        }
+
+        /*
+        if (this.mask) {
+          this.mask.translation.x -= cx;
+          this.mask.translation.x += hw;
+          this.mask.translation.y -= cy;
+          this.mask.translation.y += hh;
+        }
+        */
+        this.update();
+        return this;
+    }
+
     getBoundingBox(shallow?: boolean): { top?: number; left?: number; right?: number; bottom?: number } {
 
         let left = Infinity;

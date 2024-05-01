@@ -1,1 +1,1 @@
-export { Grid } from './lib/Grid';
+export { Grid, GridAttributes } from './lib/Grid';
