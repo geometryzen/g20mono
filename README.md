@@ -13,7 +13,7 @@ A modern JavaScript (TypeScript) suite of packages for rendering 2D graphics usi
 * Cartesian (y increasing upwards), SVG (y increasing downwards), and other Coordinate Systems.
 * Fine-Grained Reactivity for efficient updating.
 * Dynamic diagram updating using reactive position, attitude, and scale properties to link shapes and text together.
-* Geometric Algebra enabled multivectors for position and attitude.
+* Geometric Algebra enabled multivectors for shape position and attitude properties providing coordinate-free and coordinate-based manipulation.
 * Accurate (automatically generated) type definitions and API documentation.
 * ESM, System, CommonJS, and UMD distribution formats.
 * Modular package organization so that you only have to download what you need.
