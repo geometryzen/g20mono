@@ -26,6 +26,8 @@ The reactive signals library. Required.
 
 The HTML Canvas rendering library. Optional. Facilitates the generation of png images.
 
+[Live Demo](https://www.stemcstudio.com/gists/beb5ee1690bf44e9429cbeeb7cd7d5a6)
+
 [g2o-euclid](https://geometryzen.github.io/g2o-mono/euclid)
 
 Provides functions for computing circle and line intersections. Optional.
