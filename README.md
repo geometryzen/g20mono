@@ -1,6 +1,12 @@
-Geometric Algebra 2D Graphics Library Monorepo
+# Geometric Algebra 2D Graphics Library Monorepo
+
+## Overview
+
+
 
 ![](./images/ramp.png)
+
+## Status
 
 [Live Demo of Block on a Ramp in STEMCstudio](https://www.stemcstudio.com/gists/38aa01dfe4eca3a22d3f972d17c17df2)
 
@@ -12,32 +18,33 @@ Geometric Algebra 2D Graphics Library Monorepo
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
 
-Features and Benefits
+## Features and Benefits
 
-* Cartesian (y increasing upwards), SVG (y increasing downwards), and other User Coordinate Systems.
+* Cartesian (y increasing upwards), SVG (y increasing downwards), and other Coordinate Systems.
 * Fine-Grained Reactivity for efficient updating.
 * Dynamic diagram updating using reactive position, attitude, and scale properties.
 * Geometric Algebra enabled multivectors for position and attitude.
 * Accurate (automatically generated) type definitions and API documentation.
 * ESM, System, CommonJS, and UMD distribution formats.
+* Modular package organization so that you only have to download what you need.
 
-Tutorials and Examples
+## Tutorials and Examples
 
 A book is in the works.
 
 In the meantime, a search of `g2o` in the STEMCarXiv (STEMCstudio archive) at [STEMCstudio](https://www.stemcstudio.com) should produce many working examples.
 
-API Documentation
+## Packages and API Documentation
 
-[g2o](https://geometryzen.github.io/g2o-mono)
+### [g2o](https://geometryzen.github.io/g2o-mono)
 
 The core library that renders SVG. Required.
 
-[g2o-reactive](https://geometryzen.github.io/g2o-mono/reactive)
+### [g2o-reactive](https://geometryzen.github.io/g2o-mono/reactive)
 
 The reactive signals library. Required.
 
-[g2o-canvas](https://geometryzen.github.io/g2o-mono/canvas)
+### [g2o-canvas](https://geometryzen.github.io/g2o-mono/canvas)
 
 The HTML Canvas rendering library. Optional. Facilitates the generation of png images.
 
@@ -45,7 +52,7 @@ The HTML Canvas rendering library. Optional. Facilitates the generation of png i
 
 Hint: Launch the Program from the toolbar then right-click the output to obtain an image.
 
-[g2o-euclid](https://geometryzen.github.io/g2o-mono/euclid)
+### [g2o-euclid](https://geometryzen.github.io/g2o-mono/euclid)
 
 Provides functions for computing circle and line intersections. Optional.
 
@@ -53,7 +60,7 @@ Provides functions for computing circle and line intersections. Optional.
 
 [Live Demo of Euclid's Elements Construction in STEMCstudio](https://www.stemcstudio.com/gists/28890bad7794270d959330e2eba82cc7)
 
-[g2o-gradient](https://geometryzen.github.io/g2o-mono/gradient)
+### [g2o-gradient](https://geometryzen.github.io/g2o-mono/gradient)
 
 Provides Linear and Radial Gradiens. Optional.
 
@@ -61,7 +68,7 @@ Provides Linear and Radial Gradiens. Optional.
 
 [Live Demo of Linear and Radial Gradients in STEMCstudio](https://www.stemcstudio.com/gists/e82033ebe82bc5fd991a33a820cb7f83)
 
-[g2o-graphics](https://geometryzen.github.io/g2o-mono/graphics)
+### [g2o-graphics](https://geometryzen.github.io/g2o-mono/graphics)
 
 Provides RegularPolygon, RoundedRectangle, and Star shapes. Optional.
 
@@ -69,7 +76,7 @@ Provides RegularPolygon, RoundedRectangle, and Star shapes. Optional.
 
 [Live Demo of Graphics shapes in STEMCstudio](https://www.stemcstudio.com/gists/8f873d1ef37536795b40883aa2e77c01)
 
-[g2o-grid](https://geometryzen.github.io/g2o-mono/grid)
+### [g2o-grid](https://geometryzen.github.io/g2o-mono/grid)
 
 Provides a coordinate grid. Optional.
 
@@ -77,7 +84,7 @@ Provides a coordinate grid. Optional.
 
 [Live Demo of Grid in STEMCstudio](https://www.stemcstudio.com/gists/7106f94b7639ce77bbcf2fcc88b217db)
 
-[g2o-player](https://geometryzen.github.io/g2o-mono/player)
+### [g2o-player](https://geometryzen.github.io/g2o-mono/player)
 
 Provides a Player for controlling animation frame start, and pause. Optional.
 
