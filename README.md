@@ -1,4 +1,4 @@
-Geometric Algebra 2D Graphics Library Mono Repo
+Geometric Algebra 2D Graphics Library Monorepo
 
 [![version](https://img.shields.io/npm/v/g2o.svg)](https://www.npmjs.com/package/g2o) 
 
@@ -11,11 +11,19 @@ Geometric Algebra 2D Graphics Library Mono Repo
 API Documentation
 
 [g2o](https://geometryzen.github.io/g2o-mono)
+
 [g2o-canvas](https://geometryzen.github.io/g2o-mono/canvas)
+
 [g2o-euclid](https://geometryzen.github.io/g2o-mono/euclid)
+
 [g2o-gradient](https://geometryzen.github.io/g2o-mono/gradient)
+
 [g2o-grid](https://geometryzen.github.io/g2o-mono/grid)
+
 [g2o-parser](https://geometryzen.github.io/g2o-mono/parser)
+
 [g2o-player](https://geometryzen.github.io/g2o-mono/player)
+
 [g2o-reactive](https://geometryzen.github.io/g2o-mono/reactive)
+
 [g2o-texture](https://geometryzen.github.io/g2o-mono/texture)
