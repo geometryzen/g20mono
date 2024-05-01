@@ -1,5 +1,5 @@
-import { Player } from "../src/index";
+import { Texture } from "../src/index";
 
 test("index", function () {
-    expect(typeof Player === 'function').toBe(true);
+    expect(typeof Texture === 'function').toBe(true);
 });

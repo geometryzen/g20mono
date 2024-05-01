@@ -28,12 +28,16 @@
         "dist/system/index.min.js",
         "dist/system/index.min.js.map",
         "dist/umd/index.js",
-        "dist/umd/index.js.map",
-        "two.d.ts"
+        "dist/umd/index.js.map"
     ],
     "keywords": [
-        "my",
-        "lib"
+        "2D",
+        "Graphics",
+        "Library",
+        "SVG",
+        "Canvas",
+        "Geometric",
+        "Algebra"
     ],
     "publishConfig": {
         "access": "public"
@@ -58,7 +62,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/geometryzen/two.git"
+        "url": "git+https://github.com/geometryzen/g2o-mono.git"
     },
     "author": {
         "name": "David Geo Holmes",
@@ -66,9 +70,9 @@
     },
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/geometryzen/two/issues"
+        "url": "https://github.com/geometryzen/g2o-mono/issues"
     },
-    "homepage": "https://github.com/geometryzen/two#readme",
+    "homepage": "https://github.com/geometryzen/g2o-mono#readme",
     "dependencies": {
         "rxjs": "^7.8.1"
     },
