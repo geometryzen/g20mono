@@ -2,7 +2,7 @@
 
 ## Overview
 
-A modern JavaScript (TypeScript) suite of packages for rendering 2D graphics using Scalable Vector Graphics (SVG) in the browser.
+A modern JavaScript (TypeScript) suite of ESM modules for rendering 2D graphics using Scalable Vector Graphics (SVG) in the browser.
 
 ![](./images/ramp.png)
 
@@ -19,6 +19,8 @@ A modern JavaScript (TypeScript) suite of packages for rendering 2D graphics usi
 * Modular package organization so that you only have to download what you need.
 
 ## Status
+
+All packages are published together with the same version number.
 
 [![version](https://img.shields.io/npm/v/g2o.svg)](https://www.npmjs.com/package/g2o) 
 
@@ -42,7 +44,7 @@ The core library that renders SVG. Required.
 
 ### [g2o-reactive](https://geometryzen.github.io/g2o-mono/reactive)
 
-The reactive signals library. Required.
+The shared reactive signals library. Required. You will only need to use this directly if you are creating your own shape extensions.
 
 ### [g2o-canvas](https://geometryzen.github.io/g2o-mono/canvas)
 
