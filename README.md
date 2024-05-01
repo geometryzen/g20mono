@@ -14,22 +14,29 @@ API Documentation
 
 [g2o](https://geometryzen.github.io/g2o-mono)
 
+The core library. Required.
+
+[g2o-reactive](https://geometryzen.github.io/g2o-mono/reactive)
+
+The reactive signals library. Required
+
 [g2o-canvas](https://geometryzen.github.io/g2o-mono/canvas)
 
-![](./images/euclid.png)
+The HTML Canvas rendering library. Optional.
 
 [g2o-euclid](https://geometryzen.github.io/g2o-mono/euclid)
 
-![](./images/gradient.png)
+![](./images/euclid.png)
+
 
 [g2o-gradient](https://geometryzen.github.io/g2o-mono/gradient)
+
+![](./images/gradient.png)
 
 [g2o-grid](https://geometryzen.github.io/g2o-mono/grid)
 
 [g2o-parser](https://geometryzen.github.io/g2o-mono/parser)
 
 [g2o-player](https://geometryzen.github.io/g2o-mono/player)
-
-[g2o-reactive](https://geometryzen.github.io/g2o-mono/reactive)
 
 [g2o-texture](https://geometryzen.github.io/g2o-mono/texture)
