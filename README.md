@@ -1,4 +1,5 @@
 Geometric Algebra 2D Graphics Library Monorepo
+
 ![](./images/ramp.png)
 
 [![version](https://img.shields.io/npm/v/g2o.svg)](https://www.npmjs.com/package/g2o) 
@@ -15,7 +16,11 @@ API Documentation
 
 [g2o-canvas](https://geometryzen.github.io/g2o-mono/canvas)
 
+![](./images/euclid.png)
+
 [g2o-euclid](https://geometryzen.github.io/g2o-mono/euclid)
+
+![](./images/gradient.png)
 
 [g2o-gradient](https://geometryzen.github.io/g2o-mono/gradient)
 
