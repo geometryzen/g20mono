@@ -6,17 +6,7 @@
 
 ![](./images/ramp.png)
 
-## Status
-
 [Live Demo of Block on a Ramp in STEMCstudio](https://www.stemcstudio.com/gists/38aa01dfe4eca3a22d3f972d17c17df2)
-
-[![version](https://img.shields.io/npm/v/g2o.svg)](https://www.npmjs.com/package/g2o) 
-
-[![npm downloads](https://img.shields.io/npm/dm/g2o.svg)](https://npm-stat.com/charts.html?package=g2o&from=2024-03-27)
-
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
-
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
 
 ## Features and Benefits
 
@@ -27,6 +17,16 @@
 * Accurate (automatically generated) type definitions and API documentation.
 * ESM, System, CommonJS, and UMD distribution formats.
 * Modular package organization so that you only have to download what you need.
+
+## Status
+
+[![version](https://img.shields.io/npm/v/g2o.svg)](https://www.npmjs.com/package/g2o) 
+
+[![npm downloads](https://img.shields.io/npm/dm/g2o.svg)](https://npm-stat.com/charts.html?package=g2o&from=2024-03-27)
+
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
 
 ## Tutorials and Examples
 
