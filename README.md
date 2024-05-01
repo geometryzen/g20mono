@@ -26,17 +26,21 @@ The HTML Canvas rendering library. Optional.
 
 [g2o-euclid](https://geometryzen.github.io/g2o-mono/euclid)
 
+Provides functions for computing circle and line intersections.
+
 ![](./images/euclid.png)
 
 
 [g2o-gradient](https://geometryzen.github.io/g2o-mono/gradient)
 
+Provides Linear and Radial Gradiens.
+
 ![](./images/gradient.png)
 
 [g2o-grid](https://geometryzen.github.io/g2o-mono/grid)
 
-[g2o-parser](https://geometryzen.github.io/g2o-mono/parser)
+Provides a coordinate grid.
 
 [g2o-player](https://geometryzen.github.io/g2o-mono/player)
 
-[g2o-texture](https://geometryzen.github.io/g2o-mono/texture)
+Provides a Player for controlling animation frame start, and pause. 
