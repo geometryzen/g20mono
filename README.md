@@ -1,8 +1,8 @@
-# Geometric Algebra 2D Graphics Library Monorepo
+# Geometric Algebra 2D Graphics Monorepo
 
 ## Overview
 
-
+A modern JavaScript (TypeScript) suite of packages for rendering 2D graphics using Scalable Vector Graphics (SVG) in the browser.
 
 ![](./images/ramp.png)
 
@@ -12,7 +12,7 @@
 
 * Cartesian (y increasing upwards), SVG (y increasing downwards), and other Coordinate Systems.
 * Fine-Grained Reactivity for efficient updating.
-* Dynamic diagram updating using reactive position, attitude, and scale properties.
+* Dynamic diagram updating using reactive position, attitude, and scale properties to link shapes and text together.
 * Geometric Algebra enabled multivectors for position and attitude.
 * Accurate (automatically generated) type definitions and API documentation.
 * ESM, System, CommonJS, and UMD distribution formats.
