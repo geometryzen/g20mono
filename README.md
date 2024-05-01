@@ -12,6 +12,15 @@ Geometric Algebra 2D Graphics Library Monorepo
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
 
+Features and Benefits
+
+* Cartesian (y increasing upwards), SVG (y increasing downwards), and other User Coordinate Systems.
+* Fine-Grained Reactivity for efficient updating.
+* Dynamic diagram updating using reactive position, attitude, and scale properties.
+* Geometric Algebra enabled multivectors for position and attitude.
+* Accurate (automatically generated) type definitions and API documentation.
+* ESM, System, CommonJS, 
+
 API Documentation
 
 [g2o](https://geometryzen.github.io/g2o-mono)
@@ -36,18 +45,21 @@ Provides functions for computing circle and line intersections. Optional.
 
 ![](./images/euclid.png)
 
+[Live Demo of Euclid's Elements Construction in STEMCstudio](https://www.stemcstudio.com/gists/28890bad7794270d959330e2eba82cc7)
 
 [g2o-gradient](https://geometryzen.github.io/g2o-mono/gradient)
 
 Provides Linear and Radial Gradiens. Optional.
 
-[Live Demo of Linear and Radial Gradients in STEMCstudio](https://www.stemcstudio.com/gists/e82033ebe82bc5fd991a33a820cb7f83)
-
 ![](./images/gradient.png)
+
+[Live Demo of Linear and Radial Gradients in STEMCstudio](https://www.stemcstudio.com/gists/e82033ebe82bc5fd991a33a820cb7f83)
 
 [g2o-grid](https://geometryzen.github.io/g2o-mono/grid)
 
 Provides a coordinate grid. Optional.
+
+![](./images/grid.png)
 
 [Live Demo of Grid in STEMCstudio](https://www.stemcstudio.com/gists/7106f94b7639ce77bbcf2fcc88b217db)
 
