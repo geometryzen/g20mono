@@ -14,33 +14,33 @@ API Documentation
 
 [g2o](https://geometryzen.github.io/g2o-mono)
 
-The core library. Required.
+The core library that renders SVG. Required.
 
 [g2o-reactive](https://geometryzen.github.io/g2o-mono/reactive)
 
-The reactive signals library. Required
+The reactive signals library. Required.
 
 [g2o-canvas](https://geometryzen.github.io/g2o-mono/canvas)
 
-The HTML Canvas rendering library. Optional.
+The HTML Canvas rendering library. Optional. Facilitates the generation of png images.
 
 [g2o-euclid](https://geometryzen.github.io/g2o-mono/euclid)
 
-Provides functions for computing circle and line intersections.
+Provides functions for computing circle and line intersections. Optional.
 
 ![](./images/euclid.png)
 
 
 [g2o-gradient](https://geometryzen.github.io/g2o-mono/gradient)
 
-Provides Linear and Radial Gradiens.
+Provides Linear and Radial Gradiens. Optional.
 
 ![](./images/gradient.png)
 
 [g2o-grid](https://geometryzen.github.io/g2o-mono/grid)
 
-Provides a coordinate grid.
+Provides a coordinate grid. Optional.
 
 [g2o-player](https://geometryzen.github.io/g2o-mono/player)
 
-Provides a Player for controlling animation frame start, and pause. 
+Provides a Player for controlling animation frame start, and pause. Optional.
