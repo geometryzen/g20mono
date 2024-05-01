@@ -26,7 +26,8 @@ The reactive signals library. Required.
 
 The HTML Canvas rendering library. Optional. Facilitates the generation of png images.
 
-[Live Demo](https://www.stemcstudio.com/gists/beb5ee1690bf44e9429cbeeb7cd7d5a6)
+[Live Demo of CanvasView in STEMCstudio](https://www.stemcstudio.com/gists/beb5ee1690bf44e9429cbeeb7cd7d5a6)
+Launch the Program from the toolbar then right-click the output to obtain an image.
 
 [g2o-euclid](https://geometryzen.github.io/g2o-mono/euclid)
 
