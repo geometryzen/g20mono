@@ -19,7 +19,13 @@ Features and Benefits
 * Dynamic diagram updating using reactive position, attitude, and scale properties.
 * Geometric Algebra enabled multivectors for position and attitude.
 * Accurate (automatically generated) type definitions and API documentation.
-* ESM, System, CommonJS, 
+* ESM, System, CommonJS, and UMD distribution formats.
+
+Tutorials and Examples
+
+A book is in the works.
+
+In the meantime, a search of `g2o` in the STEMCarXiv (STEMCstudio archive) at [STEMCstudio](https://www.stemcstudio.com) should produce many working examples.
 
 API Documentation
 
