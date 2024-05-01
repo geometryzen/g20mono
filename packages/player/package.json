@@ -31,8 +31,13 @@
         "dist/umd/index.js.map"
     ],
     "keywords": [
-        "my",
-        "lib"
+        "2D",
+        "Graphics",
+        "Library",
+        "SVG",
+        "Canvas",
+        "Geometric",
+        "Algebra"
     ],
     "publishConfig": {
         "access": "public"
@@ -54,7 +59,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/geometryzen/g2o-player.git"
+        "url": "git+https://github.com/geometryzen/g2o-mono.git"
     },
     "author": {
         "name": "David Geo Holmes",
@@ -62,9 +67,9 @@
     },
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/geometryzen/g2o-player/issues"
+        "url": "https://github.com/geometryzen/g2o-mono/issues"
     },
-    "homepage": "https://github.com/geometryzen/g2o-player#readme",
+    "homepage": "https://github.com/geometryzen/g2o-mono#readme",
     "peerDependencies": {
         "g2o": "file:../core",
         "g2o-reactive": "file:../reactive"

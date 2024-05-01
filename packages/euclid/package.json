@@ -57,7 +57,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/geometryzen/g2o-euclid.git"
+        "url": "git+https://github.com/geometryzen/g2o-mono.git"
     },
     "author": {
         "name": "David Geo Holmes",
@@ -65,9 +65,9 @@
     },
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/geometryzen/g2o-euclid/issues"
+        "url": "https://github.com/geometryzen/g2o-mono/issues"
     },
-    "homepage": "https://github.com/geometryzen/g2o-euclid#readme",
+    "homepage": "https://github.com/geometryzen/g2o-mono#readme",
     "peerDependencies": {
         "g2o": "file:../core",
         "g2o-reactive": "file:../reactive"

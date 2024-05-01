@@ -31,8 +31,13 @@
         "dist/umd/index.js.map"
     ],
     "keywords": [
-        "my",
-        "lib"
+        "2D",
+        "Graphics",
+        "Library",
+        "SVG",
+        "Canvas",
+        "Geometric",
+        "Algebra"
     ],
     "publishConfig": {
         "access": "public"
