@@ -64,7 +64,7 @@ Provides functions for computing circle and line intersections. Optional.
 
 ### [g2o-gradient](https://geometryzen.github.io/g2o-mono/gradient)
 
-Provides Linear and Radial Gradiens. Optional.
+Provides Linear and Radial Gradients. Optional. Gradients are instances of ColorProvider(s), which can be used for shape `fill` and `stroke` properties. You may extend g2o with custom ColorProvider(s).
 
 ![](./images/gradient.png)
 
@@ -72,7 +72,7 @@ Provides Linear and Radial Gradiens. Optional.
 
 ### [g2o-graphics](https://geometryzen.github.io/g2o-mono/graphics)
 
-Provides RegularPolygon, RoundedRectangle, and Star shapes. Optional.
+Provides RegularPolygon, RoundedRectangle, and Star shapes. Optional. Shapes such as these are extensions of the Path class. You may extend g2o with custom Path based classes.
 
 ![](./images/graphics.png)
 
@@ -80,7 +80,7 @@ Provides RegularPolygon, RoundedRectangle, and Star shapes. Optional.
 
 ### [g2o-grid](https://geometryzen.github.io/g2o-mono/grid)
 
-Provides a coordinate grid. Optional.
+Provides a coordinate grid. Optional. The Grid class extends Group and provides an example of extending g2o with custom shapes based upon composition of existing shapes.
 
 ![](./images/grid.png)
 
