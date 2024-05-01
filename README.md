@@ -2,6 +2,8 @@ Geometric Algebra 2D Graphics Library Monorepo
 
 ![](./images/ramp.png)
 
+[Live Demo](https://www.stemcstudio.com/gists/38aa01dfe4eca3a22d3f972d17c17df2)
+
 [![version](https://img.shields.io/npm/v/g2o.svg)](https://www.npmjs.com/package/g2o) 
 
 [![npm downloads](https://img.shields.io/npm/dm/g2o.svg)](https://npm-stat.com/charts.html?package=g2o&from=2024-03-27)
