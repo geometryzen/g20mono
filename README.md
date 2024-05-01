@@ -1,4 +1,5 @@
 Geometric Algebra 2D Graphics Library Monorepo
+![](./images/ramp.png)
 
 [![version](https://img.shields.io/npm/v/g2o.svg)](https://www.npmjs.com/package/g2o) 
 
