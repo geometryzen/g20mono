@@ -61,6 +61,14 @@ Provides Linear and Radial Gradiens. Optional.
 
 [Live Demo of Linear and Radial Gradients in STEMCstudio](https://www.stemcstudio.com/gists/e82033ebe82bc5fd991a33a820cb7f83)
 
+[g2o-graphics](https://geometryzen.github.io/g2o-mono/graphics)
+
+Provides RegularPolygon, RoundedRectangle, and Star shapes. Optional.
+
+![](./images/graphics.png)
+
+[Live Demo of Graphics shapes in STEMCstudio](https://www.stemcstudio.com/gists/8f873d1ef37536795b40883aa2e77c01)
+
 [g2o-grid](https://geometryzen.github.io/g2o-mono/grid)
 
 Provides a coordinate grid. Optional.
