@@ -1,6 +1,6 @@
 {
     "name": "g2o-gradient",
-    "version": "0.9.232",
+    "version": "0.9.233",
     "description": "g2o LinearGradient and RadialGradient",
     "exports": {
         ".": {
