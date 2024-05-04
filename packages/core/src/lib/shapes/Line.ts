@@ -3,6 +3,10 @@ import { Color } from '../effects/ColorProvider';
 import { Board } from '../IBoard';
 import { Path, PathAttributes } from '../Path';
 import { PositionLike, position_from_like } from '../Shape';
+import { default_color } from '../utils/default_color';
+import { default_stroke_width } from '../utils/default_stroke_width';
+
+const LINE_STROKE_WIDTH_PX = 2;
 
 export interface LineAttributes {
     id?: string,
@@ -26,13 +30,11 @@ export class Line extends Path implements LineProperties {
     constructor(owner: Board, point1: PositionLike, point2: PositionLike, attributes: LineAttributes = {}) {
         const vertex1 = new Anchor(position_from_like(point1), 'M');
         const vertex2 = new Anchor(position_from_like(point2), 'L');
-        super(owner, [
-            vertex1,
-            vertex2],
+        super(owner, [vertex1, vertex2],
             false,
             false,
             false,
-            path_attribs_from_line_attribs(attributes));
+            path_attribs_from_line_attribs(attributes, owner));
     }
     override dispose(): void {
         super.dispose();
@@ -65,13 +67,13 @@ export class Line extends Path implements LineProperties {
     }
 }
 
-function path_attribs_from_line_attribs(attributes: LineAttributes): PathAttributes {
+function path_attribs_from_line_attribs(attributes: LineAttributes, owner: Board): PathAttributes {
     const retval: PathAttributes = {
         id: attributes.id,
         dashes: attributes.dashes,
-        stroke: attributes.stroke,
+        stroke: default_color(attributes.stroke, 'black'),
         strokeOpacity: attributes.strokeOpacity,
-        strokeWidth: attributes.strokeWidth,
+        strokeWidth: default_stroke_width(attributes.strokeWidth, LINE_STROKE_WIDTH_PX / owner.sx),
         vectorEffect: attributes.vectorEffect,
         visibility: attributes.visibility
     };

@@ -3,15 +3,17 @@ import { G20, initBoard } from './index';
 document.addEventListener('DOMContentLoaded', function () {
 
     const board = initBoard("my-board", {
-        boundingBox: { left: -2, top: 2, right: 2, bottom: -2 }
+        boundingBox: { left: -1, top: 1, right: 1, bottom: -1 }
     });
 
     const A = board.point(G20.zero);
-    const B = board.point(G20.ex);
-    const C = board.point(G20.ey);
+    const B = board.point(G20.ex.scale(0.9));
+    const C = board.point(G20.ey.scale(0.9));
+    const D = board.point(B.X.clone().add(C.X));
 
     board.line(A, B);
     board.line(A, C);
+    board.line(A, D);
 
     /*
     function animate() {

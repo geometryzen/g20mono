@@ -25,15 +25,13 @@ export class Grid extends Group {
 
         this.xAxis = new Arrow(board, G20.ex.scale(sx - 2 * dx), {
             position: xTail,
-            headLength: 0.025 * sx,
-            strokeWidth: 2
+            headLength: 0.025 * sx
         });
         this.add(this.xAxis);
 
         this.yAxis = new Arrow(board, G20.ey.scale(sy - 2 * dy), {
             position: yTail,
-            headLength: 0.025 * sy,
-            strokeWidth: 2
+            headLength: 0.025 * sy
         });
         this.add(this.yAxis);
 

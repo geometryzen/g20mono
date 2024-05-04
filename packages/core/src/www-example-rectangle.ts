@@ -1,22 +1,22 @@
-import { G20, initBoard } from './index';
+import { initBoard } from './index';
 
 document.addEventListener('DOMContentLoaded', function () {
 
     const board = initBoard("my-board", {
-        // boundingBox: { left: -2, top: 2, right: 2, bottom: -2 } // Cartesian
-        // boundingBox: { left: -2, top: -2, right: 2, bottom: 2 } // SVG
-        // boundingBox: { left: 2, top: -2, right: -2, bottom: 2 } // crazy
-        boundingBox: { left: 2, top: 2, right: -2, bottom: -2 } // crazy and goofy
+        // boundingBox: { left: -1, top: 1, right: 1, bottom: -1 } // Cartesian
+        // boundingBox: { left: -1, top: -1, right: 1, bottom: 1 } // SVG
+        // boundingBox: { left: 1, top: -1, right: -1, bottom: 1 } // crazy
+        // boundingBox: { left: 1, top: 1, right: -1, bottom: -1 } // crazy and goofy
     });
 
-    const A = board.point(G20.zero);
-    const B = board.point(G20.ex);
-    const C = board.point(G20.ey);
-
-    board.line(A, B);
-    board.line(A, C);
-
-    board.rectangle({ fill: 'none', stroke: 'black', width: 1.5, position: [0.75, 0.5] });
+    board.rectangle({
+        fill: "#FFFF00",
+        fillOpacity: 0.3,
+        stroke: "#FFCC00",
+        strokeOpacity: 0.6,
+        strokeWidth: 4 / board.sx,
+        // vectorEffect:'non-scaling-stroke'
+    });
 
     /*
     function animate() {

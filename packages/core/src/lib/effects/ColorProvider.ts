@@ -39,6 +39,18 @@ export function is_color_provider(x: Color): x is ColorProvider {
     }
 }
 
+export function is_color(x: unknown): x is Color {
+    if (is_color_provider(x as Color)) {
+        return true;
+    }
+    else if (typeof x === 'string') {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
 /**
  * If the color is a color provider then the returned value is `url(#id)`, otherwise it's the color itself.
  */

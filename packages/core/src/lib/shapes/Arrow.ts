@@ -6,6 +6,8 @@ import { G20 } from "../math/G20";
 import { Path, PathAttributes } from "../Path";
 import { Disposable, dispose } from '../reactive/Disposable';
 import { PositionLike, position_from_like } from "../Shape";
+import { default_color } from "../utils/default_color";
+import { default_stroke_width } from "../utils/default_stroke_width";
 import { Commands } from "../utils/path-commands";
 
 export interface ArrowAttributes {
@@ -47,7 +49,7 @@ export class Arrow extends Path implements ArrowProperties {
             new Anchor(G20.vector(0, 0), Commands.line),    // stbd tail
         ];
 
-        super(owner, vertices, false, false, true, path_attribs_from_arrow_attribs(attributes));
+        super(owner, vertices, false, false, true, path_attribs_from_arrow_attribs(attributes, owner));
 
         this.#axis = position_from_like(axis);
 
@@ -56,7 +58,7 @@ export class Arrow extends Path implements ArrowProperties {
             this.#headLength = G20.scalar(attributes.headLength);
         }
         else {
-            this.#headLength = G20.scalar(0.25);
+            this.#headLength = G20.scalar(0.2);
         }
 
         this.#origin = G20.zero.clone();
@@ -143,7 +145,7 @@ function update_arrow_vertices(axis: G20, headLength: number, origin: G20, verti
     stbd_tail.origin.set(axis.x - headLength * Math.cos(θ + φ), axis.y - headLength * Math.sin(θ + φ)).sub(origin);
 }
 
-function path_attribs_from_arrow_attribs(attributes: ArrowAttributes): PathAttributes {
+function path_attribs_from_arrow_attribs(attributes: ArrowAttributes, owner: Board): PathAttributes {
     const retval: PathAttributes = {
         id: attributes.id,
         // attitude: attributes.attitude,
@@ -152,11 +154,12 @@ function path_attribs_from_arrow_attribs(attributes: ArrowAttributes): PathAttri
         // visibility: attributes.visibility,
         // fill: attributes.fill,
         // fillOpacity: attributes.fillOpacity,
-        stroke: attributes.stroke,
+        stroke: default_color(attributes.stroke, 'black'),
         strokeOpacity: attributes.strokeOpacity,
-        strokeWidth: attributes.strokeWidth,
+        strokeWidth: default_stroke_width(attributes.strokeWidth, 2 / owner.sx),
         vectorEffect: attributes.vectorEffect,
         visibility: attributes.visibility
     };
     return retval;
 }
+
