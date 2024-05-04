@@ -15,6 +15,7 @@ export interface ArrowAttributes {
     stroke?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
+    vectorEffect?: null | 'non-scaling-stroke';
     visibility?: 'hidden' | 'visible' | 'collapse';
 }
 
@@ -154,6 +155,7 @@ function path_attribs_from_arrow_attribs(attributes: ArrowAttributes): PathAttri
         stroke: attributes.stroke,
         strokeOpacity: attributes.strokeOpacity,
         strokeWidth: attributes.strokeWidth,
+        vectorEffect: attributes.vectorEffect,
         visibility: attributes.visibility
     };
     return retval;

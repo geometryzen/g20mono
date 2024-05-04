@@ -79,7 +79,7 @@ class GraphicsBoard implements Board {
     #curr_now: number | null = null;
     #prev_now: number | null = null;
 
-    readonly #boundingBox: State<BoundingBox> = state({ left: -5, top: 5, right: 5, bottom: -5 });
+    readonly #boundingBox: State<BoundingBox> = state({ left: -1, top: 1, right: 1, bottom: -1 });
     /**
      * 'goofy' is actually regular SVG coordinates where the y coordinate increases downwards.
      */

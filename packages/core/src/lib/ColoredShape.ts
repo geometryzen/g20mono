@@ -17,7 +17,7 @@ export interface ColoredShapeAttributes extends ShapeAttributes {
     stroke?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
-    vectorEffect?: 'none';
+    vectorEffect?: null | 'non-scaling-stroke';
     visibility?: 'visible' | 'hidden' | 'collapse';
 }
 
@@ -37,7 +37,7 @@ export abstract class ColoredShape extends Shape {
 
     readonly #dashes: State<number[]> = state([]);
 
-    readonly #vectorEffect: State<'none' | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position'> = state('non-scaling-stroke');
+    readonly #vectorEffect: State<null | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position'> = state(null);
 
     constructor(board: Board, attributes: ColoredShapeAttributes = {}) {
         super(board, shape_attribs_from_colored_attribs(attributes));
@@ -126,10 +126,10 @@ export abstract class ColoredShape extends Shape {
             this.#strokeWidth.set(strokeWidth);
         }
     }
-    get vectorEffect(): 'none' | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position' {
+    get vectorEffect(): null | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position' {
         return this.#vectorEffect.get();
     }
-    set vectorEffect(vectorEffect: 'none' | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position') {
+    set vectorEffect(vectorEffect: null | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position') {
         this.#vectorEffect.set(vectorEffect);
     }
     /**
@@ -230,7 +230,7 @@ export abstract class ColoredShape extends Shape {
             // vector-effect
             this.zzz.disposables.push(effect(() => {
                 const vectorEffect = this.vectorEffect;
-                if (vectorEffect !== 'none') {
+                if (typeof vectorEffect === 'string') {
                     this.zzz.elem.setAttribute('vector-effect', `${vectorEffect}`);
                 }
                 else {
@@ -256,6 +256,7 @@ function shape_attribs_from_colored_attribs(attributes: ColoredShapeAttributes):
         plumb: attributes.plumb,
         attitude: attributes.attitude,
         position: attributes.position,
+
         visibility: attributes.visibility,
     };
     return retval;

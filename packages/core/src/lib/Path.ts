@@ -2,14 +2,14 @@ import { effect, state } from 'g2o-reactive';
 import { Anchor } from './anchor';
 import { Collection } from './collection';
 import { ColoredShape, ColoredShapeAttributes } from './ColoredShape';
-import { Color, is_color_provider } from './effects/ColorProvider';
+import { Color } from './effects/ColorProvider';
 import { ElementBase } from './element';
 import { Flag } from './Flag';
 import { Board } from './IBoard';
 import { G20 } from './math/G20.js';
 import { Disposable } from './reactive/Disposable';
 import { variable } from './reactive/variable';
-import { svg, SVGAttributes, transform_value_of_matrix } from './renderers/SVGView';
+import { svg, SVGAttributes } from './renderers/SVGView';
 import { PositionLike } from './Shape';
 import { getComponentOnCubicBezier, getCurveBoundingBox, getCurveFromPoints } from './utils/curves';
 import { lerp, mod } from './utils/math';
@@ -27,7 +27,7 @@ export interface PathAttributes extends ColoredShapeAttributes {
     dashes?: number[],
     opacity?: number;
     position?: PositionLike;
-    vectorEffect?: 'none';
+    vectorEffect?: null | 'non-scaling-stroke';
     visibility?: 'visible' | 'hidden' | 'collapse';
     /**
      * The value of what the path should be filled in with.
@@ -152,14 +152,16 @@ export class Path extends ColoredShape {
         const changed: SVGAttributes = {};
 
         if (this.zzz.flags[Flag.ClassName]) {
-            changed['class'] = this.classList.join(' ');
+            if (Array.isArray(this.classList) && this.classList.length > 0) {
+                changed['class'] = this.classList.join(' ');
+            }
         }
 
         if (this.zzz.elem) {
             // When completely reactive, this will not be needed
             svg.setAttributes(this.zzz.elem, changed);
             // Why is this needed?
-            this.zzz.elem.setAttribute("transform", transform_value_of_matrix(this.matrix));
+            // this.zzz.elem.setAttribute('transform', transform_value_of_matrix(this.matrix));
         }
         else {
             changed.id = this.id;
@@ -215,7 +217,12 @@ export class Path extends ColoredShape {
             }
             else {
                 clip.removeAttribute('id');
-                elem.setAttribute('id', this.id);
+                if (typeof this.id === 'string') {
+                    elem.setAttribute('id', this.id);
+                }
+                else {
+                    elem.removeAttribute('id');
+                }
                 if (this.parent && this.parent instanceof ElementBase) {
                     this.parent.zzz.elem.appendChild(elem); // TODO: should be insertBefore
                 }
@@ -948,9 +955,9 @@ function colored_shape_attribs_from_path_attribs(attributes: PathAttributes): Co
         dashes: attributes.dashes,
         position: attributes.position,
         attitude: attributes.attitude,
-        fill: defaultColor(attributes.fill, null),
+        fill: attributes.fill,
         fillOpacity: attributes.fillOpacity,
-        stroke: defaultColor(attributes.stroke, 'black'),
+        stroke: attributes.stroke,
         strokeOpacity: attributes.strokeOpacity,
         strokeWidth: attributes.strokeWidth,
         opacity: attributes.opacity,
@@ -959,16 +966,4 @@ function colored_shape_attribs_from_path_attribs(attributes: PathAttributes): Co
         visibility: attributes.visibility
     };
     return retval;
-}
-
-function defaultColor(color: Color, defaultValue: Color): Color {
-    if (typeof color === 'string') {
-        return color;
-    }
-    else if (is_color_provider(color)) {
-        return color;
-    }
-    else {
-        return defaultValue;
-    }
 }

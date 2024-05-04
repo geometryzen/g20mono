@@ -266,7 +266,8 @@ function path_attribs_from_rectangle_attribs(attributes: RectangleAttributes): P
         fillOpacity: attributes.fillOpacity,
         stroke: attributes.stroke,
         strokeOpacity: attributes.strokeOpacity,
-        strokeWidth: attributes.strokeWidth
+        strokeWidth: attributes.strokeWidth,
+        vectorEffect: attributes.vectorEffect
     };
     return retval;
 }

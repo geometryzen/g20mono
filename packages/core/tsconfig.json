@@ -29,7 +29,7 @@
     ],
     "exclude": [
         "node_modules",
-        "./src/main.ts",
+        "src/www-example-texture.ts",
         "./src/www*.ts",
     ]
 }

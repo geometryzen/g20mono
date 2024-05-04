@@ -17,13 +17,13 @@ export abstract class ElementBase<P> implements Disposable {
      */
     readonly zzz: ZZZ = new ZZZ();
 
-    readonly #id: State<string>;
+    readonly #id: State<string | null>;
 
     #className = '';
 
     classList: string[] = [];
 
-    constructor(id: string) {
+    constructor(id: string | null) {
         this.#id = state(id);
         this.flagReset(false);
     }
@@ -36,10 +36,10 @@ export abstract class ElementBase<P> implements Disposable {
         this.zzz.flags[Flag.ClassName] = dirtyFlag;
         return this;
     }
-    get id(): string {
+    get id(): string | null {
         return this.#id.get();
     }
-    set id(id: string) {
+    set id(id: string | null) {
         this.#id.set(id);
     }
     get className(): string {

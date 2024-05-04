@@ -72,8 +72,11 @@
     "dependencies": {
         "canvg": "^4.0.2"
     },
-    "peerDependencies": {
+    "devDependencies": {
         "g2o": "file:../core"
+    },
+    "peerDependencies": {
+        "g2o": "0.9.231"
     },
     "gitHead": "fc9dce94636e172091e78ad47e74fb5181f06058"
 }

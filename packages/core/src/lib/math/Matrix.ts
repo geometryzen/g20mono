@@ -131,6 +131,12 @@ export class Matrix {
         return this.set(1, 0, 0, 0, 1, 0, 0, 0, 1);
     }
 
+    isOne(): boolean {
+        return this.a11 === 1 && this.a12 === 0 && this.a13 == 0 &&
+            this.a21 === 0 && this.a22 === 1 && this.a23 === 0 &&
+            this.a31 === 0 && this.a32 === 0 && this.a33 === 1;
+    }
+
     multiply(b11: number, b12: number, b13: number, b21: number, b22: number, b23: number, b31: number, b32: number, b33: number): this {
 
         const elements: ELEMENTS = this.#signalValue[0];

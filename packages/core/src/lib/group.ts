@@ -195,9 +195,6 @@ export class Group extends Shape {
         const children = this.children;
         for (let i = 0; i < shapes.length; i++) {
             const child = shapes[i];
-            if (!(child && child.id)) {
-                continue;
-            }
             const index = children.indexOf(child);
             if (index >= 0) {
                 children.splice(index, 1);

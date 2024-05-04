@@ -70,7 +70,7 @@ export interface ShapeProperties {
     visibility: 'visible' | 'hidden' | 'collapse';
 }
 
-function ensure_identifier(attributes: ShapeAttributes): string {
+export function ensure_identifier(attributes: ShapeAttributes): string {
     if (typeof attributes.id === 'string') {
         return attributes.id;
     }
@@ -121,7 +121,7 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
 
     constructor(readonly board: Board, attributes: ShapeAttributes = {}) {
 
-        super(ensure_identifier(attributes));
+        super(attributes.id);
 
         this.flagReset(true);
 
@@ -205,7 +205,12 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
 
         // id
         this.zzz.disposables.push(effect(() => {
-            this.zzz.elem.setAttribute('id', this.id);
+            if (typeof this.id === 'string') {
+                this.zzz.elem.setAttribute('id', this.id);
+            }
+            else {
+                this.zzz.elem.removeAttribute('id');
+            }
         }));
 
         // opacity
@@ -225,7 +230,13 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
 
         // transform
         this.zzz.disposables.push(effect(() => {
-            this.zzz.elem.setAttribute('transform', transform_value_of_matrix(this.matrix));
+
+            if (this.matrix.isOne()) {
+                this.zzz.elem.removeAttribute('transform');
+            }
+            else {
+                this.zzz.elem.setAttribute('transform', transform_value_of_matrix(this.matrix));
+            }
         }));
 
         // visibility

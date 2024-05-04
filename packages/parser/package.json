@@ -70,9 +70,13 @@
         "url": "https://github.com/geometryzen/g2o-mono/issues"
     },
     "homepage": "https://github.com/geometryzen/g2o-mono#readme",
-    "peerDependencies": {
+    "devDependencies": {
         "g2o": "file:../core",
         "g2o-reactive": "file:../reactive"
+    },
+    "peerDependencies": {
+        "g2o": "0.9.231",
+        "g2o-reactive": "0.9.231"
     },
     "gitHead": "140e6f0a2366598efa2623600d4127a567883c4c"
 }

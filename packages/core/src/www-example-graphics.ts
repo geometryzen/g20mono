@@ -8,10 +8,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const disposables: Disposable[] = [];
 
     const board = initBoard("my-board", {
-        boundingBox: { left: -5, top: 5, right: 5, bottom: -5 },    // Cartesian
-        // boundingBox: { left: -5, top: -5, right: 5, bottom: 5 },     // SVG
-        // boundingBox: { left: 5, top: 5, right: -5, bottom: -5 },     // crazy     
-        // boundingBox: { left: 5, top: -5, right: -5, bottom: 5 },     // crazy and goofy       
+        boundingBox: { left: -1, top: 1, right: 1, bottom: -1 },    // Cartesian
+        // boundingBox: { left: -1, top: -1, right: 1, bottom: 1 },     // SVG
+        // boundingBox: { left: 1, top: 1, right: -1, bottom: -1 },     // crazy     
+        // boundingBox: { left: 1, top: -1, right: -1, bottom: 1 },     // crazy and goofy       
     });
 
     // Unfortunately, some casting required because TypeScript is getting hung up on private (#) properties.

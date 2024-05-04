@@ -10,7 +10,7 @@ export interface LineAttributes {
     stroke?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
-    vectorEffect?: 'none';
+    vectorEffect?: null | 'non-scaling-stroke';
     visibility?: 'visible' | 'hidden' | 'collapse';
 }
 
