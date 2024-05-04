@@ -42,7 +42,7 @@ class MockBoard implements Board {
         throw new Error("Method not implemented.");
     }
     getBoundingBox(): { left: number; top: number; right: number; bottom: number; } {
-        throw new Error("Method not implemented.");
+        return { left: -1, top: 1, right: 1, bottom: -1 };
     }
     update(): void {
         throw new Error("Method not implemented.");
@@ -59,13 +59,17 @@ class MockBoard implements Board {
     get scene(): Group {
         throw new Error("Method not implemented.");
     }
-    width: number;
-    height: number;
+    get width(): number {
+        return 500;
+    }
+    get height(): number {
+        return 500;
+    }
     get sx(): number {
-        throw new Error("Method not implemented.");
+        return 250;
     }
     get sy(): number {
-        throw new Error("Method not implemented.");
+        return 250;
     }
     dispose(): void {
         throw new Error("Method not implemented.");

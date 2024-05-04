@@ -79,5 +79,5 @@
     "peerDependencies": {
         "g2o-reactive": "file:../reactive"
     },
-    "gitHead": "fc9dce94636e172091e78ad47e74fb5181f06058"
+    "gitHead": "51c1a7df5115cd7ac77632d6ce60eaaf761403a2"
 }
