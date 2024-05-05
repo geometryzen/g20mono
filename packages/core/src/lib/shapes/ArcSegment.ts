@@ -3,13 +3,13 @@ import { Constants } from '../constants.js';
 import { Color } from '../effects/ColorProvider.js';
 import { Board } from '../IBoard.js';
 import { G20 } from '../math/G20.js';
-import { Path, PathAttributes } from '../Path.js';
+import { Path, PathOptions } from '../Path.js';
 import { default_color } from '../utils/default_color.js';
 import { default_closed_path_stroke_width } from '../utils/default_stroke_width.js';
 import { HALF_PI, mod, TWO_PI } from '../utils/math.js';
 import { Commands } from '../utils/path-commands.js';
 
-export interface ArcSegmentAttributes {
+export interface ArcSegmentOptions extends PathOptions {
     id?: string,
     fill?: Color;
     fillOpacity?: number;
@@ -29,7 +29,7 @@ export class ArcSegment extends Path {
     _innerRadius = 0;
     _outerRadius = 0;
 
-    constructor(owner: Board, x = 0, y = 0, ir = 0, or = 0, sa = 0, ea = 2 * Math.PI, res = 24) {
+    constructor(owner: Board, ir = 0, or = 0, sa = 0, ea = 2 * Math.PI, res = 24) {
 
         const amount = res || (Constants.Resolution * 3);
         const points: Anchor[] = [];
@@ -56,14 +56,6 @@ export class ArcSegment extends Path {
         }
 
         this.update();
-
-        if (typeof x === 'number') {
-            this.position.x = x;
-        }
-        if (typeof y === 'number') {
-            this.position.y = y;
-        }
-
     }
 
     override update() {
@@ -251,19 +243,19 @@ export class ArcSegment extends Path {
     }
 }
 
-function path_attribs_from_arc_attribs(attributes: ArcSegmentAttributes, owner: Board): PathAttributes {
-    const retval: PathAttributes = {
-        id: attributes.id,
-        // attitude: attributes.attitude,
-        // opacity: attributes.opacity,
-        // position: attributes.position,
-        // visibility: attributes.visibility,
-        fill: default_color(attributes.fill, 'none'),
-        fillOpacity: attributes.fillOpacity,
-        stroke: default_color(attributes.stroke, 'gray'),
-        strokeOpacity: attributes.strokeOpacity,
-        strokeWidth: default_closed_path_stroke_width(attributes.strokeWidth, owner),
-        // vectorEffect: attributes.vectorEffect
+function path_attribs_from_arc_attribs(options: ArcSegmentOptions, owner: Board): PathOptions {
+    const retval: PathOptions = {
+        id: options.id,
+        attitude: options.attitude,
+        opacity: options.opacity,
+        position: options.position,
+        visibility: options.visibility,
+        fill: default_color(options.fill, 'none'),
+        fillOpacity: options.fillOpacity,
+        stroke: default_color(options.stroke, 'gray'),
+        strokeOpacity: options.strokeOpacity,
+        strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
+        vectorEffect: options.vectorEffect
     };
     return retval;
 }

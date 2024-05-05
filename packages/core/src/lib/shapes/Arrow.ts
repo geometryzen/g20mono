@@ -2,18 +2,18 @@ import { Anchor } from "../anchor";
 import { Collection } from "../collection";
 import { Color } from "../effects/ColorProvider";
 import { Board } from "../IBoard";
-import { G20 } from "../math/G20";
-import { Path, PathAttributes } from "../Path";
+import { G20, SpinorLike, VectorLike, vector_from_like } from "../math/G20";
+import { Path, PathOptions } from "../Path";
 import { Disposable, dispose } from '../reactive/Disposable';
-import { PositionLike, position_from_like } from "../Shape";
 import { default_color } from "../utils/default_color";
 import { default_open_path_stroke_width } from "../utils/default_stroke_width";
 import { Commands } from "../utils/path-commands";
 
-export interface ArrowAttributes {
+export interface ArrowOptions extends PathOptions {
     id?: string;
     headLength?: number;
-    position?: PositionLike;
+    position?: VectorLike;
+    attitude?: SpinorLike;
     stroke?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
@@ -23,9 +23,7 @@ export interface ArrowAttributes {
 
 export interface ArrowProperties {
     X: G20;
-    position: G20;
     R: G20;
-    attitude: G20;
     axis: G20;
     headLength: number;
     stroke: Color;
@@ -38,7 +36,7 @@ export class Arrow extends Path implements ArrowProperties {
     readonly #axis: G20;
     readonly #headLength: G20;
     readonly #origin: G20;
-    constructor(owner: Board, axis: PositionLike, attributes: ArrowAttributes = {}) {
+    constructor(owner: Board, axis: VectorLike, options: ArrowOptions = {}) {
 
         const vertices = [
             new Anchor(G20.vector(0, 0), Commands.move),    // tail
@@ -49,13 +47,13 @@ export class Arrow extends Path implements ArrowProperties {
             new Anchor(G20.vector(0, 0), Commands.line),    // stbd tail
         ];
 
-        super(owner, vertices, false, false, true, path_attribs_from_arrow_attribs(attributes, owner));
+        super(owner, vertices, false, false, true, path_attribs_from_arrow_attribs(options, owner));
 
-        this.#axis = position_from_like(axis);
+        this.#axis = vector_from_like(axis);
 
-        if (typeof attributes.headLength === 'number') {
+        if (typeof options.headLength === 'number') {
             // We're hitting the internal property so that we don't trigger a vertex update.
-            this.#headLength = G20.scalar(attributes.headLength);
+            this.#headLength = G20.scalar(options.headLength);
         }
         else {
             this.#headLength = G20.scalar(0.2);
@@ -145,20 +143,20 @@ function update_arrow_vertices(axis: G20, headLength: number, origin: G20, verti
     stbd_tail.origin.set(axis.x - headLength * Math.cos(θ + φ), axis.y - headLength * Math.sin(θ + φ)).sub(origin);
 }
 
-function path_attribs_from_arrow_attribs(attributes: ArrowAttributes, owner: Board): PathAttributes {
-    const retval: PathAttributes = {
-        id: attributes.id,
+function path_attribs_from_arrow_attribs(options: ArrowOptions, owner: Board): PathOptions {
+    const retval: PathOptions = {
+        id: options.id,
         // attitude: attributes.attitude,
         // opacity: attributes.opacity,
-        position: attributes.position,
+        position: options.position,
         // visibility: attributes.visibility,
         // fill: attributes.fill,
         // fillOpacity: attributes.fillOpacity,
-        stroke: default_color(attributes.stroke, 'gray'),
-        strokeOpacity: attributes.strokeOpacity,
-        strokeWidth: default_open_path_stroke_width(attributes.strokeWidth, owner),
-        vectorEffect: attributes.vectorEffect,
-        visibility: attributes.visibility
+        stroke: default_color(options.stroke, 'gray'),
+        strokeOpacity: options.strokeOpacity,
+        strokeWidth: default_open_path_stroke_width(options.strokeWidth, owner),
+        vectorEffect: options.vectorEffect,
+        visibility: options.visibility
     };
     return retval;
 }

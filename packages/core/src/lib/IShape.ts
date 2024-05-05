@@ -7,7 +7,8 @@ export interface IShape<P> {
     id: string;
     classList: string[];
     parent: P;
-    position: G20;
+    X: G20;
+    R: G20;
     visibility: 'visible' | 'hidden' | 'collapse';
     getBoundingBox(shallow?: boolean): { top?: number; left?: number; right?: number; bottom?: number };
     // const regex = /texture|gradient/i;

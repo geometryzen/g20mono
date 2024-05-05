@@ -1,55 +1,25 @@
 import { effect, state } from 'g2o-reactive';
-import { Anchor } from './anchor';
 import { Constants } from './constants';
 import { ElementBase } from './element';
 import { Flag } from './Flag';
 import { Board } from './IBoard';
 import { IShape } from './IShape';
 import { compose_2d_3x3_transform } from './math/compose_2d_3x3_transform';
-import { G20 } from './math/G20';
+import { G20, SpinorLike, spinor_from_like, VectorLike, vector_from_like } from './math/G20';
 import { Matrix } from './math/Matrix';
 import { Disposable, dispose } from './reactive/Disposable';
 import { svg, SVGAttributes, transform_value_of_matrix } from './renderers/SVGView';
 import { computed_world_matrix } from './utils/compute_world_matrix';
 
-export type PositionLike = Anchor | G20 | Shape | [x: number, y: number];
-
-function ensure_mutable(mv: G20): G20 {
-    if (mv.isMutable()) {
-        return mv;
-    }
-    else {
-        return mv.clone();
-    }
-}
-
-export function position_from_like(like: PositionLike): G20 | null {
-    if (like instanceof Shape) {
-        return ensure_mutable(like.position);
-    }
-    if (like instanceof G20) {
-        return ensure_mutable(like);
-    }
-    else if (like instanceof Anchor) {
-        return ensure_mutable(like.origin);
-    }
-    else if (Array.isArray(like)) {
-        return G20.vector(like[0], like[1]);
-    }
-    else {
-        return null;
-    }
-}
-
 export interface Parent {
     update?(): void;
 }
 
-export interface ShapeAttributes {
+export interface ShapeOptions {
     id?: string;
     opacity?: number;
-    position?: PositionLike;
-    attitude?: G20;
+    position?: VectorLike;
+    attitude?: SpinorLike;
     visibility?: 'visible' | 'hidden' | 'collapse';
     plumb?: boolean;
     sx?: number;
@@ -60,21 +30,19 @@ export interface ShapeProperties {
     id: string;
     opacity: number;
     /**
-     * alias for the position property.
+     * position.
      */
     X: G20;
-    position: G20;
     /**
-     * alias for the attitude property.
+     * attitude.
      */
     R: G20;
-    attitude: G20;
     visibility: 'visible' | 'hidden' | 'collapse';
 }
 
-export function ensure_identifier(attributes: ShapeAttributes): string {
-    if (typeof attributes.id === 'string') {
-        return attributes.id;
+export function ensure_identifier(options: ShapeOptions): string {
+    if (typeof options.id === 'string') {
+        return options.id;
     }
     else {
         return `${Constants.Identifier}${Constants.uniqueId()}`;
@@ -121,9 +89,9 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
     abstract getBoundingBox(shallow?: boolean): { top?: number; left?: number; right?: number; bottom?: number };
     abstract hasBoundingBox(): boolean;
 
-    constructor(readonly board: Board, attributes: ShapeAttributes = {}) {
+    constructor(readonly board: Board, options: ShapeOptions = {}) {
 
-        super(attributes.id);
+        super(options.id);
 
         this.flagReset(true);
 
@@ -132,38 +100,38 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
          */
         this.worldMatrix = new Matrix();
 
-        if (attributes.position) {
-            this.#position = position_from_like(attributes.position);
+        if (options.position) {
+            this.#position = vector_from_like(options.position);
         }
         else {
             this.#position = new G20(0, 0);
         }
 
-        if (attributes.attitude) {
-            this.#attitude = attributes.attitude;
+        if (options.attitude) {
+            this.#attitude = spinor_from_like(options.attitude);
         }
         else {
             this.#attitude = new G20(0, 0, 1, 0);
         }
 
-        if (typeof attributes.plumb === 'boolean') {
-            this.#plumb.set(attributes.plumb);
+        if (typeof options.plumb === 'boolean') {
+            this.#plumb.set(options.plumb);
         }
 
-        if (typeof attributes.opacity === 'number') {
-            this.#opacity.set(attributes.opacity);
+        if (typeof options.opacity === 'number') {
+            this.#opacity.set(options.opacity);
         }
 
-        if (attributes.visibility) {
-            this.#visibility.set(attributes.visibility);
+        if (options.visibility) {
+            this.#visibility.set(options.visibility);
         }
 
         const scale = { sx: 1, sy: 1 };
-        if (typeof attributes.sx === 'number') {
-            scale.sx = attributes.sx;
+        if (typeof options.sx === 'number') {
+            scale.sx = options.sx;
         }
-        if (typeof attributes.sy === 'number') {
-            scale.sy = attributes.sy;
+        if (typeof options.sy === 'number') {
+            scale.sy = options.sy;
         }
         this.#scale.set(scale.sx, scale.sy);
 
@@ -278,9 +246,12 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
     get X(): G20 {
         return this.#position;
     }
-    set X(pos: G20) {
+    set X(pos: G20 | [x: number, y: number]) {
         if (pos instanceof G20) {
             this.#position.copyVector(pos);
+        }
+        else if (Array.isArray(pos)) {
+            this.#position.set(pos[0], pos[1]);
         }
     }
     get plumb(): boolean {
@@ -289,26 +260,10 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
     set plumb(plumb: boolean) {
         this.#plumb.set(plumb);
     }
-    get position(): G20 {
-        return this.#position;
-    }
-    set position(position: G20) {
-        if (position instanceof G20) {
-            this.#position.copyVector(position);
-        }
-    }
     get R(): G20 {
         return this.#attitude;
     }
     set R(attitude: G20) {
-        if (attitude instanceof G20) {
-            this.#attitude.copySpinor(attitude);
-        }
-    }
-    get attitude(): G20 {
-        return this.#attitude;
-    }
-    set attitude(attitude: G20) {
         if (attitude instanceof G20) {
             this.#attitude.copySpinor(attitude);
         }

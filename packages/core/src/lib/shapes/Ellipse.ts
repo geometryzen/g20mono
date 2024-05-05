@@ -1,25 +1,24 @@
 import { effect } from 'g2o-reactive';
-import { Anchor } from '../anchor.js';
-import { Collection } from '../collection.js';
-import { Color } from '../effects/ColorProvider.js';
-import { Board } from '../IBoard.js';
-import { G20 } from '../math/G20.js';
-import { Path, PathAttributes } from '../Path.js';
-import { Disposable, dispose } from '../reactive/Disposable.js';
-import { PositionLike } from '../Shape.js';
-import { default_color } from '../utils/default_color.js';
-import { default_closed_path_stroke_width } from '../utils/default_stroke_width.js';
-import { HALF_PI, TWO_PI } from '../utils/math.js';
-import { Commands } from '../utils/path-commands.js';
+import { Anchor } from '../anchor';
+import { Collection } from '../collection';
+import { Color } from '../effects/ColorProvider';
+import { Board } from '../IBoard';
+import { G20, SpinorLike, VectorLike } from '../math/G20';
+import { Path, PathOptions } from '../Path';
+import { Disposable, dispose } from '../reactive/Disposable';
+import { default_color } from '../utils/default_color';
+import { default_closed_path_stroke_width } from '../utils/default_stroke_width';
+import { HALF_PI, TWO_PI } from '../utils/math';
+import { Commands } from '../utils/path-commands';
 
 const cos = Math.cos, sin = Math.sin;
 
-export interface EllipseAttributes {
+export interface EllipseOptions extends PathOptions {
     id?: string;
     fill?: Color;
     fillOpacity?: number;
-    position?: PositionLike;
-    attitude?: G20;
+    position?: VectorLike;
+    attitude?: SpinorLike;
     rx?: number;
     ry?: number;
     stroke?: Color;
@@ -35,22 +34,22 @@ export class Ellipse extends Path {
 
     readonly #radius = G20.vector(1, 0.5);
 
-    constructor(owner: Board, attributes: EllipseAttributes = {}) {
+    constructor(owner: Board, options: EllipseOptions = {}) {
 
-        const amount = attributes.resolution ? Math.max(attributes.resolution, 2) : 4;
+        const amount = options.resolution ? Math.max(options.resolution, 2) : 4;
         const points = [];
         for (let i = 0; i < amount; i++) {
             points.push(new Anchor(G20.vector(0, 0)));
         }
 
-        super(owner, points, true, true, true, path_attribs_from_ellipse_attribs(attributes, owner));
+        super(owner, points, true, true, true, path_attribs_from_ellipse_attribs(options, owner));
 
-        if (typeof attributes.rx === 'number') {
-            this.rx = attributes.rx;
+        if (typeof options.rx === 'number') {
+            this.rx = options.rx;
         }
 
-        if (typeof attributes.ry === 'number') {
-            this.ry = attributes.ry;
+        if (typeof options.ry === 'number') {
+            this.ry = options.ry;
         }
 
         this.#disposables.push(effect(() => {
@@ -133,17 +132,17 @@ function update_ellipse_vertices(radiusX: number, radiusY: number, closed: boole
     }
 }
 
-function path_attribs_from_ellipse_attribs(attributes: EllipseAttributes, owner: Board): PathAttributes {
-    const retval: PathAttributes = {
-        id: attributes.id,
-        fill: default_color(attributes.fill, 'none'),
-        fillOpacity: attributes.fillOpacity,
-        attitude: attributes.attitude,
-        position: attributes.position,
-        stroke: default_color(attributes.stroke, 'gray'),
-        strokeOpacity: attributes.strokeOpacity,
-        strokeWidth: default_closed_path_stroke_width(attributes.strokeWidth, owner),
-        visibility: attributes.visibility
+function path_attribs_from_ellipse_attribs(options: EllipseOptions, owner: Board): PathOptions {
+    const retval: PathOptions = {
+        id: options.id,
+        fill: default_color(options.fill, 'none'),
+        fillOpacity: options.fillOpacity,
+        attitude: options.attitude,
+        position: options.position,
+        stroke: default_color(options.stroke, 'gray'),
+        strokeOpacity: options.strokeOpacity,
+        strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
+        visibility: options.visibility
     };
     return retval;
 }

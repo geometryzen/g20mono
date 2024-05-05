@@ -3,23 +3,23 @@ import { Flag } from './Flag';
 import { Board } from './IBoard';
 import { IShape } from './IShape';
 import { svg, transform_value_of_matrix } from './renderers/SVGView';
-import { Parent, Shape, ShapeAttributes } from './Shape';
+import { Parent, Shape, ShapeOptions } from './Shape';
 
 export interface IGroup extends Parent {
     remove(...shapes: Shape[]): void;
 }
 
-export interface GroupAttributes {
-    id: string;
+export interface GroupOptions extends ShapeOptions {
+    id?: string;
 }
 
 export class Group extends Shape {
 
     readonly #shapes: State<Shape[]>;
 
-    constructor(board: Board, shapes: Shape[] = [], attributes: Partial<GroupAttributes> = {}) {
+    constructor(board: Board, shapes: Shape[] = [], options: GroupOptions = {}) {
 
-        super(board, shape_attributes(attributes));
+        super(board, shape_attributes(options));
 
         this.flagReset(true);
         this.zzz.flags[Flag.Beginning] = false;
@@ -121,18 +121,18 @@ export class Group extends Shape {
      */
     center(): this {
         const bbox = this.getBoundingBox(true);
-        const cx = (bbox.left + bbox.right) / 2 - this.position.x;
-        const cy = (bbox.top + bbox.bottom) / 2 - this.position.y;
+        const cx = (bbox.left + bbox.right) / 2 - this.X.x;
+        const cy = (bbox.top + bbox.bottom) / 2 - this.X.y;
         const children = this.children;
         const N = children.length;
         for (let i = 0; i < N; i++) {
             const child = children[i];
-            child.position.x -= cx;
-            child.position.y -= cy;
+            child.X.x -= cx;
+            child.X.y -= cy;
         }
         if (this.clipPath) {
-            this.clipPath.position.x -= cx;
-            this.clipPath.position.y -= cy;
+            this.clipPath.X.x -= cx;
+            this.clipPath.X.y -= cy;
         }
         return this;
     }
@@ -320,9 +320,9 @@ export function update_shape_group(child: Shape, parent?: Group) {
     delete child.parent;
 }
 
-function shape_attributes(attributes: Partial<GroupAttributes>): ShapeAttributes {
-    const retval: ShapeAttributes = {
-        id: attributes.id
+function shape_attributes(options: Partial<GroupOptions>): ShapeOptions {
+    const retval: ShapeOptions = {
+        id: options.id
     };
     return retval;
 }

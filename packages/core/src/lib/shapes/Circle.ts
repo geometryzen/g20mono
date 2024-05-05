@@ -3,18 +3,17 @@ import { Anchor } from '../anchor';
 import { Collection } from '../collection';
 import { Color } from '../effects/ColorProvider';
 import { Board } from '../IBoard';
-import { G20 } from '../math/G20';
-import { Path, PathAttributes } from '../Path';
+import { G20, SpinorLike, VectorLike } from '../math/G20';
+import { Path, PathOptions } from '../Path';
 import { Disposable, dispose } from '../reactive/Disposable';
-import { PositionLike } from '../Shape';
 import { default_color } from '../utils/default_color';
 import { default_closed_path_stroke_width } from '../utils/default_stroke_width';
 import { HALF_PI, TWO_PI } from '../utils/math';
 import { Commands } from '../utils/path-commands';
 
-export interface CircleAttributes {
-    position?: PositionLike;
-    attitude?: G20;
+export interface CircleOptions extends PathOptions {
+    position?: VectorLike;
+    attitude?: SpinorLike;
     radius?: number;
     fill?: Color;
     fillOpacity?: number;
@@ -27,10 +26,7 @@ export interface CircleAttributes {
 export interface CircleProperties {
     X: G20;
     R: G20;
-    position: G20;
-    attitude: G20;
     radius: number;
-    // radius$: Observable<number>;
     fill: Color;
     fillOpacity: number;
     stroke: Color;
@@ -44,7 +40,7 @@ export class Circle extends Path implements CircleProperties {
 
     readonly #radius = state(1);
 
-    constructor(owner: Board, options: CircleAttributes = {}) {
+    constructor(owner: Board, options: CircleOptions = {}) {
 
         // At least 2 vertices are required for proper circle.
         const N = options.resolution ? Math.max(options.resolution, 2) : 4;
@@ -93,15 +89,15 @@ export class Circle extends Path implements CircleProperties {
     }
 }
 
-function path_attributes(attributes: CircleAttributes, owner: Board): PathAttributes {
-    const retval: PathAttributes = {
-        attitude: attributes.attitude,
-        position: attributes.position,
-        fill: default_color(attributes.fill, 'none'),
-        fillOpacity: attributes.fillOpacity,
-        stroke: default_color(attributes.stroke, 'gray'),
-        strokeOpacity: attributes.strokeOpacity,
-        strokeWidth: default_closed_path_stroke_width(attributes.strokeWidth, owner)
+function path_attributes(options: CircleOptions, owner: Board): PathOptions {
+    const retval: PathOptions = {
+        attitude: options.attitude,
+        position: options.position,
+        fill: default_color(options.fill, 'none'),
+        fillOpacity: options.fillOpacity,
+        stroke: default_color(options.stroke, 'gray'),
+        strokeOpacity: options.strokeOpacity,
+        strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner)
     };
     return retval;
 }

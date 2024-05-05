@@ -1,21 +1,25 @@
 import {
     Anchor,
     Board,
-    Collection, Color, Disposable,
-    dispose, G20,
+    Collection,
+    Color,
+    Disposable,
+    dispose,
+    G20,
     Path,
-    PathAttributes,
-    PositionLike
+    PathOptions,
+    SpinorLike,
+    VectorLike
 } from 'g2o';
 import { effect, state } from 'g2o-reactive';
 
-export interface RoundedRectangleAttributes {
+export interface RoundedRectangleOptions extends PathOptions {
     id?: string;
     fill?: Color;
     fillOpacity?: number;
     opacity?: number;
-    position?: PositionLike,
-    attitude?: G20,
+    position?: VectorLike,
+    attitude?: SpinorLike,
     radius?: number;
     stroke?: Color;
     strokeOpacity?: number;
@@ -34,10 +38,10 @@ export class RoundedRectangle extends Path {
 
     readonly #radius = state(0.2);
 
-    constructor(board: Board, attributes: RoundedRectangleAttributes = {}) {
+    constructor(board: Board, options: RoundedRectangleOptions = {}) {
 
-        if (typeof attributes.radius === 'undefined' && typeof attributes.width === 'number' && typeof attributes.height === 'number') {
-            attributes.radius = Math.floor(Math.min(attributes.width, attributes.height) / 12);
+        if (typeof options.radius === 'undefined' && typeof options.width === 'number' && typeof options.height === 'number') {
+            options.radius = Math.floor(Math.min(options.width, options.height) / 12);
         }
 
         const points: Anchor[] = [];
@@ -47,18 +51,18 @@ export class RoundedRectangle extends Path {
             points.push(new Anchor(origin, command));
         }
 
-        super(board, points, true, false, true, path_attribs_from_rounded_rectangle_attribs(attributes));
+        super(board, points, true, false, true, path_attribs_from_rounded_rectangle_attribs(options));
 
-        if (typeof attributes.width === 'number') {
-            this.width = attributes.width;
+        if (typeof options.width === 'number') {
+            this.width = options.width;
         }
 
-        if (typeof attributes.height === 'number') {
-            this.height = attributes.height;
+        if (typeof options.height === 'number') {
+            this.height = options.height;
         }
 
-        if (typeof attributes.radius === 'number') {
-            this.radius = attributes.radius;
+        if (typeof options.radius === 'number') {
+            this.radius = options.radius;
         }
 
         this.#trash.push(effect(() => {
@@ -99,18 +103,18 @@ export class RoundedRectangle extends Path {
     }
 }
 
-function path_attribs_from_rounded_rectangle_attribs(attributes: RoundedRectangleAttributes): PathAttributes {
-    const retval: PathAttributes = {
-        id: attributes.id,
-        attitude: attributes.attitude,
-        opacity: attributes.opacity,
-        position: attributes.position,
-        visibility: attributes.visibility,
-        fill: attributes.fill,
-        fillOpacity: attributes.fillOpacity,
-        stroke: attributes.stroke,
-        strokeOpacity: attributes.strokeOpacity,
-        strokeWidth: attributes.strokeWidth
+function path_attribs_from_rounded_rectangle_attribs(options: RoundedRectangleOptions): PathOptions {
+    const retval: PathOptions = {
+        id: options.id,
+        attitude: options.attitude,
+        opacity: options.opacity,
+        position: options.position,
+        visibility: options.visibility,
+        fill: options.fill,
+        fillOpacity: options.fillOpacity,
+        stroke: options.stroke,
+        strokeOpacity: options.strokeOpacity,
+        strokeWidth: options.strokeWidth
     };
     return retval;
 }

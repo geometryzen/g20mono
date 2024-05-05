@@ -3,13 +3,13 @@ import { ColorManager } from "./ColorManager";
 import { Color } from "./effects/ColorProvider";
 import { Flag } from "./Flag";
 import { Board } from "./IBoard";
-import { G20 } from "./math/G20";
+import { SpinorLike, VectorLike } from "./math/G20";
 import { get_svg_element_defs } from "./renderers/SVGView";
-import { PositionLike, Shape, ShapeAttributes } from "./Shape";
+import { Shape, ShapeOptions } from "./Shape";
 
-export interface ColoredShapeAttributes extends ShapeAttributes {
-    attitude?: G20;
-    position?: PositionLike,
+export interface ColoredShapeOptions extends ShapeOptions {
+    position?: VectorLike,
+    attitude?: SpinorLike;
     id?: string;
     dashes?: number[],
     fill?: Color;
@@ -41,44 +41,44 @@ export abstract class ColoredShape extends Shape {
 
     readonly #vectorEffect: State<null | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position'> = state(null);
 
-    constructor(board: Board, attributes: ColoredShapeAttributes = {}) {
-        super(board, shape_attribs_from_colored_attribs(attributes));
+    constructor(board: Board, options: ColoredShapeOptions = {}) {
+        super(board, shape_attribs_from_colored_attribs(options));
 
-        if (Array.isArray(attributes.dashes)) {
-            this.dashes = attributes.dashes;
+        if (Array.isArray(options.dashes)) {
+            this.dashes = options.dashes;
         }
 
-        if (attributes.fill) {
-            this.fill = attributes.fill;
+        if (options.fill) {
+            this.fill = options.fill;
         }
 
-        if (typeof attributes.fillOpacity === 'number') {
-            this.fillOpacity = attributes.fillOpacity;
+        if (typeof options.fillOpacity === 'number') {
+            this.fillOpacity = options.fillOpacity;
         }
         else {
             this.fillOpacity = 1.0;
         }
 
-        if (attributes.stroke) {
-            this.stroke = attributes.stroke;
+        if (options.stroke) {
+            this.stroke = options.stroke;
         }
 
-        if (typeof attributes.strokeWidth === 'number') {
-            this.strokeWidth = attributes.strokeWidth;
+        if (typeof options.strokeWidth === 'number') {
+            this.strokeWidth = options.strokeWidth;
         }
         else {
             this.strokeWidth = 1;
         }
 
-        if (typeof attributes.strokeOpacity === 'number') {
-            this.strokeOpacity = attributes.strokeOpacity;
+        if (typeof options.strokeOpacity === 'number') {
+            this.strokeOpacity = options.strokeOpacity;
         }
         else {
             this.strokeOpacity = 1.0;
         }
 
-        if (typeof attributes.vectorEffect === 'string') {
-            this.vectorEffect = attributes.vectorEffect;
+        if (typeof options.vectorEffect === 'string') {
+            this.vectorEffect = options.vectorEffect;
         }
     }
     /**
@@ -252,15 +252,15 @@ export abstract class ColoredShape extends Shape {
 }
 
 
-function shape_attribs_from_colored_attribs(attributes: ColoredShapeAttributes): Partial<ShapeAttributes> {
-    const retval: Partial<ShapeAttributes> = {
-        id: attributes.id,
-        plumb: attributes.plumb,
-        attitude: attributes.attitude,
-        position: attributes.position,
-        sx: attributes.sx,
-        sy: attributes.sy,
-        visibility: attributes.visibility,
+function shape_attribs_from_colored_attribs(options: ColoredShapeOptions): Partial<ShapeOptions> {
+    const retval: Partial<ShapeOptions> = {
+        id: options.id,
+        plumb: options.plumb,
+        attitude: options.attitude,
+        position: options.position,
+        sx: options.sx,
+        sy: options.sy,
+        visibility: options.visibility,
     };
     return retval;
 }

@@ -1,18 +1,25 @@
 import {
     Anchor,
     Board,
-    Collection, Color, Disposable, dispose, G20,
-    Path, PathAttributes, PositionLike
+    Collection,
+    Color,
+    Disposable,
+    dispose,
+    G20,
+    Path,
+    PathOptions,
+    SpinorLike,
+    VectorLike
 } from 'g2o';
 import { effect, state } from 'g2o-reactive';
 
-export interface StarAttributes {
+export interface StarOptions extends PathOptions {
     id?: string;
     fill?: Color;
     fillOpacity?: number;
     opacity?: number;
-    position?: PositionLike,
-    attitude?: G20,
+    position?: VectorLike,
+    attitude?: SpinorLike,
     radius?: number;
     stroke?: Color;
     strokeOpacity?: number;
@@ -35,24 +42,24 @@ export class Star extends Path {
     readonly #points = state(8);
     readonly #twist = state(0);
 
-    constructor(board: Board, attributes: StarAttributes = {}) {
+    constructor(board: Board, options: StarOptions = {}) {
 
-        super(board, [], true, false, true, path_attribs_from_star_attribs(attributes));
+        super(board, [], true, false, true, path_attribs_from_star_attribs(options));
 
-        if (typeof attributes.innerRadius === 'number') {
-            this.innerRadius = attributes.innerRadius;
+        if (typeof options.innerRadius === 'number') {
+            this.innerRadius = options.innerRadius;
         }
 
-        if (typeof attributes.outerRadius === 'number') {
-            this.outerRadius = attributes.outerRadius;
+        if (typeof options.outerRadius === 'number') {
+            this.outerRadius = options.outerRadius;
         }
 
-        if (typeof attributes.points === 'number') {
-            this.points = attributes.points;
+        if (typeof options.points === 'number') {
+            this.points = options.points;
         }
 
-        if (typeof attributes.twist === 'number') {
-            this.twist = attributes.twist;
+        if (typeof options.twist === 'number') {
+            this.twist = options.twist;
         }
 
         this.#trash.push(effect(() => {
@@ -120,18 +127,18 @@ function update_vertices(points: number, innerRadius: number, outerRadius: numbe
     }
 }
 
-function path_attribs_from_star_attribs(attributes: StarAttributes): PathAttributes {
-    const retval: PathAttributes = {
-        id: attributes.id,
-        attitude: attributes.attitude,
-        opacity: attributes.opacity,
-        position: attributes.position,
-        visibility: attributes.visibility,
-        fill: attributes.fill,
-        fillOpacity: attributes.fillOpacity,
-        stroke: attributes.stroke,
-        strokeOpacity: attributes.strokeOpacity,
-        strokeWidth: attributes.strokeWidth
+function path_attribs_from_star_attribs(options: StarOptions): PathOptions {
+    const retval: PathOptions = {
+        id: options.id,
+        attitude: options.attitude,
+        opacity: options.opacity,
+        position: options.position,
+        visibility: options.visibility,
+        fill: options.fill,
+        fillOpacity: options.fillOpacity,
+        stroke: options.stroke,
+        strokeOpacity: options.strokeOpacity,
+        strokeWidth: options.strokeWidth
     };
     return retval;
 }

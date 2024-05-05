@@ -2,17 +2,17 @@ import { BehaviorSubject } from "rxjs";
 import { DisposableObservable, Observable } from "./Observable";
 import { Equals, State } from "./types";
 
-export interface VariableAttributes<T> {
+export interface VariableOptions<T> {
     equals?: Equals<T>;
 }
 
 export class Variable<T> implements State<T> {
     readonly #bs: BehaviorSubject<T>;
-    // readonly #attributes: VariableAttributes<T>;
+    // readonly #options: VariableOptions<T>;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    constructor(bs: BehaviorSubject<T>, attributes: VariableAttributes<T> = {}) {
+    constructor(bs: BehaviorSubject<T>, options: VariableOptions<T> = {}) {
         this.#bs = bs;
-        // this.#attributes = attributes;
+        // this.#options = options;
     }
     get(): T {
         return this.#bs.getValue();
@@ -43,7 +43,7 @@ export class Variable<T> implements State<T> {
 }
 
 
-export function variable<T>(initialValue: T, attributes: VariableAttributes<T> = {}): Variable<T> {
+export function variable<T>(initialValue: T, options: VariableOptions<T> = {}): Variable<T> {
     const bs = new BehaviorSubject(initialValue);
-    return new Variable(bs, attributes);
+    return new Variable(bs, options);
 }

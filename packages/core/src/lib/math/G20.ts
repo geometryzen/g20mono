@@ -61,6 +61,42 @@ const COORD_X = 1;
 const COORD_Y = 2;
 const COORD_B = 3;
 
+export type VectorLike = G20 | [x: number, y: number];
+export type SpinorLike = G20 | [a: number, b: number];
+
+function ensure_mutable(mv: G20): G20 {
+    if (mv.isMutable()) {
+        return mv;
+    }
+    else {
+        return mv.clone();
+    }
+}
+
+export function vector_from_like(like: VectorLike): G20 | null {
+    if (like instanceof G20) {
+        return ensure_mutable(like);
+    }
+    else if (Array.isArray(like)) {
+        return G20.vector(like[0], like[1]);
+    }
+    else {
+        return null;
+    }
+}
+
+export function spinor_from_like(like: SpinorLike): G20 | null {
+    if (like instanceof G20) {
+        return ensure_mutable(like);
+    }
+    else if (Array.isArray(like)) {
+        return G20.spinor(like[0], like[1]);
+    }
+    else {
+        return null;
+    }
+}
+
 /**
  * A multivector for two dimensions with a Euclidean metric.
  */

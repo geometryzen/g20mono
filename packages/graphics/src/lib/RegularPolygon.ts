@@ -4,23 +4,25 @@ import {
     Collection,
     Color,
     Disposable,
-    dispose, G20,
+    dispose,
+    G20,
     Path,
-    PathAttributes,
-    PositionLike
+    PathOptions,
+    SpinorLike,
+    VectorLike
 } from 'g2o';
 import { effect, state } from 'g2o-reactive';
 
 const cos = Math.cos;
 const sin = Math.sin;
 
-export interface RegularPolygonAttributes {
+export interface RegularPolygonOptions extends PathOptions {
     id?: string;
     fill?: Color;
     fillOpacity?: number;
     opacity?: number;
-    position?: PositionLike,
-    attitude?: G20,
+    position?: VectorLike,
+    attitude?: SpinorLike,
     radius?: number;
     sides?: number;
     stroke?: Color;
@@ -38,22 +40,22 @@ export class RegularPolygon extends Path {
     readonly #twist = state(0);
     readonly #sides = state(6);
 
-    constructor(board: Board, attributes: RegularPolygonAttributes = {}) {
+    constructor(board: Board, options: RegularPolygonOptions = {}) {
 
-        super(board, [], true, false, true, path_attribs_from_regular_polygon_attribs(attributes));
+        super(board, [], true, false, true, path_attribs_from_regular_polygon_attribs(options));
 
-        if (typeof attributes.radius === 'number') {
-            this.radius = attributes.radius;
+        if (typeof options.radius === 'number') {
+            this.radius = options.radius;
         }
 
-        if (typeof attributes.sides === 'number') {
+        if (typeof options.sides === 'number') {
             const MIN = 3;
             const MAX = 24;
-            this.sides = Math.min(Math.max(attributes.sides, MIN), MAX);
+            this.sides = Math.min(Math.max(options.sides, MIN), MAX);
         }
 
-        if (typeof attributes.twist === 'number') {
-            this.twist = attributes.twist;
+        if (typeof options.twist === 'number') {
+            this.twist = options.twist;
         }
 
         this.#trash.push(effect(() => {
@@ -99,18 +101,18 @@ export class RegularPolygon extends Path {
     }
 }
 
-function path_attribs_from_regular_polygon_attribs(attributes: RegularPolygonAttributes): PathAttributes {
-    const retval: PathAttributes = {
-        id: attributes.id,
-        attitude: attributes.attitude,
-        opacity: attributes.opacity,
-        position: attributes.position,
-        visibility: attributes.visibility,
-        fill: attributes.fill,
-        fillOpacity: attributes.fillOpacity,
-        stroke: attributes.stroke,
-        strokeOpacity: attributes.strokeOpacity,
-        strokeWidth: attributes.strokeWidth,
+function path_attribs_from_regular_polygon_attribs(options: RegularPolygonOptions): PathOptions {
+    const retval: PathOptions = {
+        id: options.id,
+        attitude: options.attitude,
+        opacity: options.opacity,
+        position: options.position,
+        visibility: options.visibility,
+        fill: options.fill,
+        fillOpacity: options.fillOpacity,
+        stroke: options.stroke,
+        strokeOpacity: options.strokeOpacity,
+        strokeWidth: options.strokeWidth,
         // plumb: attributes.plumb
     };
     return retval;

@@ -3,43 +3,30 @@ import { Anchor } from '../anchor';
 import { Collection } from '../collection';
 import { Color } from '../effects/ColorProvider';
 import { Board } from '../IBoard';
-import { G20 } from '../math/G20';
-import { Path, PathAttributes } from '../Path';
+import { G20, SpinorLike, VectorLike } from '../math/G20';
+import { Path, PathOptions } from '../Path';
 import { Disposable, dispose } from '../reactive/Disposable';
-import { PositionLike } from '../Shape';
 import { default_color } from '../utils/default_color';
 import { default_closed_path_stroke_width } from '../utils/default_stroke_width';
 
-export interface RectangleAPI<X> {
-    id: string;
-    opacity: number;
-    position: X;
-    attitude: G20;
-    width: number;
-    height: number;
-    visibility: 'visible' | 'hidden' | 'collapse';
-    fill: Color;
-    fillOpacity: number;
-    stroke: Color;
-    strokeOpacity: number;
-    strokeWidth: number;
-}
-
-export interface RectangleAttributes extends Partial<RectangleAPI<PositionLike>>, PathAttributes {
+export interface RectangleOptions extends PathOptions {
     id?: string;
     opacity?: number;
-    position?: PositionLike;
-    attitude?: G20;
+    position?: VectorLike;
+    attitude?: SpinorLike;
     width?: number;
     height?: number;
     visibility?: 'visible' | 'hidden' | 'collapse';
+    fill?: Color;
+    fillOpacity?: number;
+    stroke?: Color;
+    strokeOpacity?: number;
+    strokeWidth?: number;
 }
 
-export interface RectangleProperties extends RectangleAPI<G20> {
+export interface RectangleProperties {
     id: string;
     opacity: number;
-    position: G20;
-    attitude: G20;
     width: number;
     height: number;
     visibility: 'visible' | 'hidden' | 'collapse';
@@ -186,12 +173,12 @@ export class Rectangle extends Path implements RectangleProperties, Disposable {
 
     readonly #disposables: Disposable[] = [];
 
-    readonly #width = state(1);
+    readonly #width = state((1 + Math.sqrt(5)) / 2);
     readonly #height = state(1);
 
     readonly #origin = G20.zero.clone();
 
-    constructor(owner: Board, attributes: RectangleAttributes = {}) {
+    constructor(owner: Board, attributes: RectangleOptions = {}) {
 
         const points = [
             new Anchor(G20.vector(0, 0), 'M'),
@@ -257,8 +244,8 @@ export class Rectangle extends Path implements RectangleProperties, Disposable {
     }
 }
 
-function path_attribs_from_rectangle_attribs(attributes: RectangleAttributes, owner: Board): PathAttributes {
-    const retval: PathAttributes = {
+function path_attribs_from_rectangle_attribs(attributes: RectangleOptions, owner: Board): PathOptions {
+    const retval: PathOptions = {
         id: attributes.id,
         attitude: attributes.attitude,
         opacity: attributes.opacity,

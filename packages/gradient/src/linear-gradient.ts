@@ -1,10 +1,10 @@
-import { ColorProvider, G20, PositionLike, position_from_like } from 'g2o';
+import { ColorProvider, G20, VectorLike, vector_from_like } from 'g2o';
 import { effect } from 'g2o-reactive';
-import { Gradient, GradientAttributes } from './gradient';
+import { Gradient, GradientOptions } from './gradient';
 import { Stop } from './stop';
 import { createElement, setAttributes, SVGAttributes } from './svg';
 
-export interface LinearGradientAttributes extends GradientAttributes {
+export interface LinearGradientOptions extends GradientOptions {
 
 }
 
@@ -19,10 +19,10 @@ export class LinearGradient extends Gradient implements ColorProvider {
      * @param stops A list of {@link Stop}s that contain the gradient fill pattern for the gradient.
      * The linear gradient lives within the space of the parent object's matrix space.
      */
-    constructor(point1: PositionLike, point2: PositionLike, stops: Stop[], attributes: LinearGradientAttributes = {}) {
-        super(stops, attributes);
-        this.#point1 = position_from_like(point1);
-        this.#point2 = position_from_like(point2);
+    constructor(point1: VectorLike, point2: VectorLike, stops: Stop[], options: LinearGradientOptions = {}) {
+        super(stops, options);
+        this.#point1 = vector_from_like(point1);
+        this.#point2 = vector_from_like(point2);
     }
     override render(defs: SVGDefsElement): this {
 

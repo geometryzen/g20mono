@@ -1,16 +1,16 @@
 import { effect, state } from 'g2o-reactive';
 import { Anchor } from './anchor';
 import { Collection } from './collection';
-import { ColoredShape, ColoredShapeAttributes } from './ColoredShape';
+import { ColoredShape, ColoredShapeOptions } from './ColoredShape';
 import { Color } from './effects/ColorProvider';
 import { ElementBase } from './element';
 import { Flag } from './Flag';
 import { Board } from './IBoard';
+import { SpinorLike, VectorLike } from './math/G20';
 import { G20 } from './math/G20.js';
 import { Disposable } from './reactive/Disposable';
 import { variable } from './reactive/variable';
 import { svg, SVGAttributes } from './renderers/SVGView';
-import { PositionLike } from './Shape';
 import { getComponentOnCubicBezier, getCurveBoundingBox, getCurveFromPoints } from './utils/curves';
 import { lerp, mod } from './utils/math';
 import { Commands } from './utils/path-commands';
@@ -21,12 +21,12 @@ const max = Math.max;
 
 const vector = new G20();
 
-export interface PathAttributes extends ColoredShapeAttributes {
-    attitude?: G20;
+export interface PathOptions extends ColoredShapeOptions {
     id?: string,
     dashes?: number[],
     opacity?: number;
-    position?: PositionLike;
+    position?: VectorLike;
+    attitude?: SpinorLike;
     vectorEffect?: null | 'non-scaling-stroke';
     visibility?: 'visible' | 'hidden' | 'collapse';
     /**
@@ -92,9 +92,9 @@ export class Path extends ColoredShape {
      * @param curved Describes whether the path automatically calculates bezier handles for each vertex.
      * @param manual Describes whether the developer controls how vertices are plotted.
      */
-    constructor(owner: Board, vertices: Anchor[] = [], closed?: boolean, curved?: boolean, manual?: boolean, attributes: PathAttributes = {}) {
+    constructor(owner: Board, vertices: Anchor[] = [], closed?: boolean, curved?: boolean, manual?: boolean, options: PathOptions = {}) {
 
-        super(owner, colored_shape_attribs_from_path_attribs(attributes));
+        super(owner, colored_shape_attribs_from_path_attribs(options));
 
         this.flagReset(true);
         this.zzz.flags[Flag.ClipPath] = false;
@@ -201,7 +201,7 @@ export class Path extends ColoredShape {
 
             this.zzz.disposables.push(this.zzz.vertices$.subscribe(() => {
                 const change: SVGAttributes = {};
-                change.d = svg.path_from_anchors(this.board, this.position, this.attitude, this.zzz.vertices, this.closed);
+                change.d = svg.path_from_anchors(this.board, this.X, this.R, this.zzz.vertices, this.closed);
                 svg.setAttributes(this.zzz.elem, change);
             }));
         }
@@ -249,8 +249,8 @@ export class Path extends ColoredShape {
 
     center(): this {
         const bbox = this.getBoundingBox(true);
-        const cx = (bbox.left + bbox.right) / 2 - this.position.x;
-        const cy = (bbox.top + bbox.bottom) / 2 - this.position.y;
+        const cx = (bbox.left + bbox.right) / 2 - this.X.x;
+        const cy = (bbox.top + bbox.bottom) / 2 - this.X.y;
         const vertices = this.vertices;
         const N = vertices.length;
         for (let i = 0; i < N; i++) {
@@ -259,8 +259,8 @@ export class Path extends ColoredShape {
             v.y -= cy;
         }
         if (this.clipPath) {
-            this.clipPath.position.x -= cx;
-            this.clipPath.position.y -= cy;
+            this.clipPath.X.x -= cx;
+            this.clipPath.X.y -= cy;
         }
         this.update();
         return this;
@@ -949,21 +949,21 @@ export class Path extends ColoredShape {
 }
 
 
-function colored_shape_attribs_from_path_attribs(attributes: PathAttributes): ColoredShapeAttributes {
-    const retval: ColoredShapeAttributes = {
-        id: attributes.id,
-        dashes: attributes.dashes,
-        position: attributes.position,
-        attitude: attributes.attitude,
-        fill: attributes.fill,
-        fillOpacity: attributes.fillOpacity,
-        stroke: attributes.stroke,
-        strokeOpacity: attributes.strokeOpacity,
-        strokeWidth: attributes.strokeWidth,
-        opacity: attributes.opacity,
-        plumb: attributes.plumb,
-        vectorEffect: attributes.vectorEffect,
-        visibility: attributes.visibility
+function colored_shape_attribs_from_path_attribs(options: PathOptions): ColoredShapeOptions {
+    const retval: ColoredShapeOptions = {
+        id: options.id,
+        dashes: options.dashes,
+        position: options.position,
+        attitude: options.attitude,
+        fill: options.fill,
+        fillOpacity: options.fillOpacity,
+        stroke: options.stroke,
+        strokeOpacity: options.strokeOpacity,
+        strokeWidth: options.strokeWidth,
+        opacity: options.opacity,
+        plumb: options.plumb,
+        vectorEffect: options.vectorEffect,
+        visibility: options.visibility
     };
     return retval;
 }

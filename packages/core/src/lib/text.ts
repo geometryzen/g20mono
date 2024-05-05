@@ -1,11 +1,11 @@
 import { effect, state } from 'g2o-reactive';
-import { ColoredShape, ColoredShapeAttributes } from './ColoredShape';
+import { ColoredShape, ColoredShapeOptions } from './ColoredShape';
 import { Color } from './effects/ColorProvider';
 import { ElementBase } from './element';
 import { Flag } from './Flag';
 import { Board } from './IBoard';
+import { SpinorLike, VectorLike } from './math/G20';
 import { svg, SVGAttributes, transform_value_of_matrix } from './renderers/SVGView';
-import { PositionLike } from './Shape';
 import { default_color } from './utils/default_color';
 import { default_open_path_stroke_width } from './utils/default_stroke_width';
 
@@ -13,7 +13,7 @@ const min = Math.min, max = Math.max;
 
 export type TextDecoration = 'none' | 'underline' | 'overline' | 'line-through';
 
-export interface TextAttributes extends ColoredShapeAttributes {
+export interface TextOptions extends ColoredShapeOptions {
     anchor?: 'start' | 'middle' | 'end';
     baseline?: 'auto' | 'text-bottom' | 'alphabetic' | 'ideographic' | 'middle' | 'central' | 'mathematical' | 'hanging' | 'text-top';
     decoration?: TextDecoration[];
@@ -27,7 +27,8 @@ export interface TextAttributes extends ColoredShapeAttributes {
     fontWeight?: 'normal' | 'bold' | 'bolder' | 'lighter' | number;
     id?: string;
     opacity?: number;
-    position?: PositionLike;
+    position?: VectorLike;
+    attitude?: SpinorLike;
     fontSize?: number;
     stroke?: Color;
     strokeOpacity?: number;
@@ -88,72 +89,50 @@ export class Text extends ColoredShape implements TextProperties {
     readonly #dx = state(0 as number | string);
     readonly #dy = state(0 as number | string);
 
-    constructor(owner: Board, content: string, attributes: Partial<TextAttributes> = {}) {
+    constructor(owner: Board, content: string, options: Partial<TextOptions> = {}) {
 
-        super(owner, shape_attributes_from_text_attributes(attributes, owner));
+        super(owner, shape_options_from_text_options(options, owner));
 
         this.content = content;
 
-        if (attributes.anchor) {
-            this.anchor = attributes.anchor;
+        if (options.anchor) {
+            this.anchor = options.anchor;
         }
-        if (attributes.baseline) {
-            this.baseline = attributes.baseline;
+        if (options.baseline) {
+            this.baseline = options.baseline;
         }
-        if (attributes.decoration) {
-            this.decoration = attributes.decoration;
+        if (options.decoration) {
+            this.decoration = options.decoration;
         }
-        if (attributes.direction) {
-            this.direction = attributes.direction;
+        if (options.direction) {
+            this.direction = options.direction;
         }
-        if (typeof attributes.dx === 'number' || typeof attributes.dx === 'string') {
-            this.dx = attributes.dx;
+        if (typeof options.dx === 'number' || typeof options.dx === 'string') {
+            this.dx = options.dx;
         }
-        if (typeof attributes.dy === 'number' || typeof attributes.dy === 'string') {
-            this.dy = attributes.dy;
+        if (typeof options.dy === 'number' || typeof options.dy === 'string') {
+            this.dy = options.dy;
         }
-        if (attributes.fontFamily) {
-            this.fontFamily = attributes.fontFamily;
+        if (options.fontFamily) {
+            this.fontFamily = options.fontFamily;
         }
-        /*
-        if (attributes.fill) {
-            this.fill = attributes.fill;
+        if (options.opacity) {
+            this.opacity = options.opacity;
         }
-        else {
-            this.fill = "#000";
+        if (options.fontSize) {
+            this.fontSize = options.fontSize;
         }
-        */
-        if (attributes.strokeWidth) {
-            this.strokeWidth = attributes.strokeWidth;
+        if (options.fontStyle) {
+            this.fontStyle = options.fontStyle;
         }
-        else {
-            this.strokeWidth = 1;
+        if (options.value) {
+            this.content = options.value;
         }
-        if (attributes.opacity) {
-            this.opacity = attributes.opacity;
+        if (typeof options.visibility === 'string') {
+            this.visibility = options.visibility;
         }
-        if (attributes.fontSize) {
-            this.fontSize = attributes.fontSize;
-        }
-        /*
-        if (attributes.stroke) {
-            this.stroke = attributes.stroke;
-        }
-        else {
-            this.stroke = "#000";
-        }
-        */
-        if (attributes.fontStyle) {
-            this.fontStyle = attributes.fontStyle;
-        }
-        if (attributes.value) {
-            this.content = attributes.value;
-        }
-        if (typeof attributes.visibility === 'string') {
-            this.visibility = attributes.visibility;
-        }
-        if (attributes.fontWeight) {
-            this.fontWeight = attributes.fontWeight;
+        if (options.fontWeight) {
+            this.fontWeight = options.fontWeight;
         }
 
         this.flagReset(true);
@@ -599,24 +578,24 @@ export class Text extends ColoredShape implements TextProperties {
     }
 }
 
-function shape_attributes_from_text_attributes(attributes: Partial<TextAttributes>, owner: Board): Partial<ColoredShapeAttributes> {
+function shape_options_from_text_options(options: Partial<TextOptions>, owner: Board): Partial<ColoredShapeOptions> {
 
-    const retval: Partial<ColoredShapeAttributes> = {
-        id: attributes.id,
-        dashes: attributes.dashes,
-        plumb: true,//attributes.plumb,
-        position: attributes.position,
-        attitude: attributes.attitude,
-        fill: default_color(attributes.fill, 'gray'),
-        fillOpacity: attributes.fillOpacity,
-        opacity: attributes.opacity,
-        stroke: default_color(attributes.stroke, 'gray'),
-        strokeOpacity: attributes.strokeOpacity,
-        strokeWidth: default_open_path_stroke_width(attributes.strokeWidth, owner),
-        sx: typeof attributes.sx === 'number' ? attributes.sx : 1 / owner.sx,
-        sy: typeof attributes.sy === 'number' ? attributes.sy : 1 / owner.sy,
-        vectorEffect: attributes.vectorEffect,
-        visibility: attributes.visibility
+    const retval: Partial<ColoredShapeOptions> = {
+        id: options.id,
+        dashes: options.dashes,
+        plumb: true,//options.plumb,
+        position: options.position,
+        attitude: options.attitude,
+        fill: default_color(options.fill, 'gray'),
+        fillOpacity: options.fillOpacity,
+        opacity: options.opacity,
+        stroke: default_color(options.stroke, 'gray'),
+        strokeOpacity: options.strokeOpacity,
+        strokeWidth: default_open_path_stroke_width(options.strokeWidth, owner),
+        sx: typeof options.sx === 'number' ? options.sx : 1 / owner.sx,
+        sy: typeof options.sy === 'number' ? options.sy : 1 / owner.sy,
+        vectorEffect: options.vectorEffect,
+        visibility: options.visibility
     };
     return retval;
 }

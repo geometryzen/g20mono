@@ -4,7 +4,7 @@ import { Constants } from './constants';
 import { Stop } from './stop';
 import { createElement, SVGAttributes } from './svg';
 
-export interface GradientAttributes {
+export interface GradientOptions {
     id?: string;
 }
 
@@ -33,8 +33,8 @@ export abstract class Gradient extends ElementBase<Group> implements ColorProvid
     readonly _change = variable(this);
     readonly change$ = this._change.asObservable();
 
-    constructor(stops: Stop[] = [], attributes: GradientAttributes = {}) {
-        super(ensure_identifier(attributes));
+    constructor(stops: Stop[] = [], options: GradientOptions = {}) {
+        super(ensure_identifier(options));
         this.classList = [];
         this.#stops = state(stops);
     }
@@ -120,7 +120,7 @@ export abstract class Gradient extends ElementBase<Group> implements ColorProvid
     }
 }
 
-function ensure_identifier(attributes: GradientAttributes): string {
+function ensure_identifier(attributes: GradientOptions): string {
     if (typeof attributes.id === 'string') {
         return attributes.id;
     }

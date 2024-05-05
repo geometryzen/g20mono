@@ -11,6 +11,6 @@ git add --all
 git commit -m "'$message'"
 git push origin main
 lerna version --no-private --force-publish
-lerna publish from-package
-# lerna run docs
-# lerna run pages --concurrency=1
+lerna publish from-package --yes
+lerna run docs
+lerna run pages --concurrency=1

@@ -16,23 +16,23 @@ document.addEventListener('DOMContentLoaded', function () {
         stroke: 'lightgreen',
         strokeWidth: 4
     });
-    ellipse.attitude.rotorFromAngle(Math.PI / 4);
-    ellipse.position.x += 1.0;
+    ellipse.R.rotorFromAngle(Math.PI / 4);
+    ellipse.X.x += 1.0;
 
     const origin = board.point([0.0, 0.0], { id: 'origin', visibility: 'hidden' });
     const unitX = board.point([1.0, 0.0], { id: 'unitX', visibility: 'hidden' });
     const unitY = board.point([0.0, 1.0], { id: 'unitY', visibility: 'hidden' });
 
-    const ex = board.arrow(unitX, {
+    const ex = board.arrow(unitX.X, {
         id: 'ex',
-        position: origin,
+        position: origin.X,
         stroke: 'red',
         strokeWidth: 4
     });
 
-    const ey = board.arrow(unitY, {
+    const ey = board.arrow(unitY.X, {
         id: 'ey',
-        position: origin,
+        position: origin.X,
         stroke: 'blue',
         strokeWidth: 4
     });

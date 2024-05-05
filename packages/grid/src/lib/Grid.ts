@@ -1,6 +1,6 @@
 import { Arrow, Board, G20, Group, Shape, Text } from "g2o";
 
-export interface GridAttributes {
+export interface GridOptions {
     id?: string
 }
 
@@ -9,8 +9,8 @@ export class Grid extends Group {
     readonly yAxis: Arrow;
     readonly xLabel: Text;
     readonly yLabel: Text;
-    constructor(board: Board, attributes: GridAttributes = {}) {
-        super(board, [], attributes);
+    constructor(board: Board, options: GridOptions = {}) {
+        super(board, [], options);
         const bbox = board.getBoundingBox();
         const sx = Math.abs(bbox.right - bbox.left);
         const sy = Math.abs(bbox.top - bbox.bottom);

@@ -4,36 +4,35 @@ import { Constants } from './constants';
 import { Color } from './effects/ColorProvider';
 import { Group } from './group';
 import { Board } from './IBoard';
-import { Path, PathAttributes } from './Path';
+import { G20, VectorLike } from './math/G20';
+import { Path, PathOptions } from './Path';
 import { Disposable, disposableFromFunction, dispose } from './reactive/Disposable';
 import { sizeEquals } from './renderers/Size';
 import { SVGViewFactory } from './renderers/SVGViewFactory';
 import { View } from './renderers/View';
 import { ViewFactory } from './renderers/ViewFactory';
-import { PositionLike, Shape } from './Shape';
+import { Shape } from './Shape';
 import { ArcSegment } from './shapes/ArcSegment';
-import { Arrow, ArrowAttributes } from './shapes/Arrow';
-import { Circle, CircleAttributes } from './shapes/Circle';
-import { Ellipse, EllipseAttributes } from './shapes/Ellipse';
-import { Line, LineAttributes } from './shapes/Line';
-import { Polygon, PolygonAttributes } from './shapes/Polygon';
-import { Rectangle, RectangleAttributes } from './shapes/Rectangle';
-import { Text, TextAttributes } from './text';
+import { Arrow, ArrowOptions } from './shapes/Arrow';
+import { Circle, CircleOptions } from './shapes/Circle';
+import { Ellipse, EllipseOptions } from './shapes/Ellipse';
+import { Line, LineOptions } from './shapes/Line';
+import { Polygon, PolygonOptions } from './shapes/Polygon';
+import { Rectangle, RectangleOptions } from './shapes/Rectangle';
+import { Text, TextOptions } from './text';
 import { default_color } from './utils/default_color';
+import { default_number } from './utils/default_number';
 import { default_closed_path_stroke_width, default_open_path_stroke_width } from './utils/default_stroke_width';
 import { dateTime } from './utils/performance';
 
 export type BoundingBox = { left: number, top: number, right: number, bottom: number };
 
-export interface BoardAttributes {
+export interface BoardOptions {
     boundingBox?: { left: number, top: number, right: number, bottom: number };
-    resizeTo?: Element;
-    scene?: Group;
-    size?: { width: number; height: number };
     viewFactory?: ViewFactory;
 }
 
-export interface PointAttributes {
+export interface PointOptions extends PathOptions {
     id?: string;
     fill?: Color;
     fillOpacity?: number;
@@ -46,10 +45,10 @@ export interface PointAttributes {
 /**
  * Initialize a new board.
  * @param elementOrId HTML identifier (id) of element in which the board is rendered.
- * @param attributes An object that sets some of the board properties.
+ * @param options An object that sets some of the board properties.
  */
-export function initBoard(elementOrId: string | HTMLElement, attributes: BoardAttributes = {}): Board {
-    return new GraphicsBoard(elementOrId, attributes);
+export function initBoard(elementOrId: string | HTMLElement, options: BoardOptions = {}): Board {
+    return new GraphicsBoard(elementOrId, options);
 }
 
 class GraphicsBoard implements Board {
@@ -94,7 +93,7 @@ class GraphicsBoard implements Board {
         return bbox.left > bbox.right;
     });
 
-    constructor(elementOrId: string | HTMLElement, options: BoardAttributes = {}) {
+    constructor(elementOrId: string | HTMLElement, options: BoardOptions = {}) {
 
         const container = get_container(elementOrId);
         const container_id = get_container_id(elementOrId);
@@ -102,19 +101,14 @@ class GraphicsBoard implements Board {
         this.#viewBox = new Group(this, [], { id: `${container_id}-viewbox` });
 
         if (typeof options.boundingBox === 'object') {
-            const left = options.boundingBox.left;
-            const top = options.boundingBox.top;
-            const right = options.boundingBox.right;
-            const bottom = options.boundingBox.bottom;
+            const left = default_number(options.boundingBox.left, -1);
+            const top = default_number(options.boundingBox.top, 1);
+            const right = default_number(options.boundingBox.right, 1);
+            const bottom = default_number(options.boundingBox.bottom, -1);
             this.#boundingBox.set({ left, top, right, bottom });
         }
 
-        if (options.scene instanceof Group) {
-            this.#scene = options.scene;
-        }
-        else {
-            this.#scene = new Group(this, [], { id: `${container_id}-scene` });
-        }
+        this.#scene = new Group(this, [], { id: `${container_id}-scene` });
         this.#viewBox.add(this.#scene);
 
         if (typeof options.viewFactory === 'object') {
@@ -173,12 +167,12 @@ class GraphicsBoard implements Board {
         const sy = Δy / Math.abs(TB);
         const x = -left * Δx / LR;
         const y = -top * Δy / TB;
-        this.#viewBox.position.set(x, y);
+        this.#viewBox.X.set(x, y);
         this.#viewBox.scaleXY.set(sx, sy);
         if (this.goofy) {
             if (this.crazy) {
                 // crazy and goofy Coordinate System.
-                this.#viewBox.attitude.rotorFromAngle(-Math.PI / 2);
+                this.#viewBox.R.rotorFromAngle(-Math.PI / 2);
             }
             else {
                 // SVG Coordinate System.
@@ -187,11 +181,11 @@ class GraphicsBoard implements Board {
         else {
             if (this.crazy) {
                 // crazy but not goofy Coordinate System.
-                this.#viewBox.attitude.rotorFromAngle(Math.PI);
+                this.#viewBox.R.rotorFromAngle(Math.PI);
             }
             else {
                 // Cartesian Coordinate System.
-                this.#viewBox.attitude.rotorFromAngle(+Math.PI / 2);
+                this.#viewBox.R.rotorFromAngle(+Math.PI / 2);
             }
         }
     }
@@ -361,31 +355,31 @@ class GraphicsBoard implements Board {
         return this;
     }
 
-    circle(attributes: CircleAttributes = {}): Circle {
-        const circle = new Circle(this, attributes);
+    circle(options: CircleOptions = {}): Circle {
+        const circle = new Circle(this, options);
         this.add(circle);
         return circle;
     }
 
-    ellipse(attributes: EllipseAttributes = {}): Ellipse {
-        const ellipse = new Ellipse(this, attributes);
+    ellipse(options: EllipseOptions = {}): Ellipse {
+        const ellipse = new Ellipse(this, options);
         this.add(ellipse);
         return ellipse;
     }
 
-    line(point1: PositionLike, point2: PositionLike, attributes: LineAttributes = {}): Line {
-        const line = new Line(this, point1, point2, attributes);
+    line(point1: VectorLike, point2: VectorLike, options: LineOptions = {}): Line {
+        const line = new Line(this, point1, point2, options);
         this.add(line);
         return line;
     }
 
-    point(position: PositionLike, attributes: PointAttributes = {}): Shape {
+    point(position: VectorLike, options: PointOptions = {}): Shape {
         const { left, top, right, bottom } = this.getBoundingBox();
         const sx = this.width / Math.abs(right - left);
         const sy = this.height / Math.abs(bottom - top);
         const rx = 4 / sx;
         const ry = 4 / sy;
-        const ellipse_attribs = ellipse_attribs_from_point_attribs(attributes);
+        const ellipse_attribs = ellipse_attribs_from_point_attribs(options);
         ellipse_attribs.fill = default_color(ellipse_attribs.fill, 'gray');
         ellipse_attribs.position = position;
         ellipse_attribs.rx = rx;
@@ -395,50 +389,51 @@ class GraphicsBoard implements Board {
         return ellipse;
     }
 
-    polygon(points: PositionLike[] = [], attributes: PolygonAttributes = {}): Polygon {
-        const polygon = new Polygon(this, points, attributes);
+    polygon(points: VectorLike[] = [], options: PolygonOptions = {}): Polygon {
+        const polygon = new Polygon(this, points, options);
         this.add(polygon);
         return polygon;
     }
 
-    rectangle(attributes: RectangleAttributes = {}): Rectangle {
-        const shape = new Rectangle(this, attributes);
+    rectangle(options: RectangleOptions = {}): Rectangle {
+        const shape = new Rectangle(this, options);
         this.add(shape);
         return shape;
     }
 
-    text(message: string, attributes: TextAttributes = {}): Text {
-        const text = new Text(this, message, attributes);
+    text(message: string, options: TextOptions = {}): Text {
+        const text = new Text(this, message, options);
         this.add(text);
         return text;
     }
 
-    arrow(axis: PositionLike, attributes: ArrowAttributes = {}): Arrow {
-        const arrow = new Arrow(this, axis, attributes);
+    arrow(axis: VectorLike, options: ArrowOptions = {}): Arrow {
+        const arrow = new Arrow(this, axis, options);
         this.add(arrow);
         return arrow;
     }
 
-    curve(closed: boolean, points: Anchor[], attributes: PathAttributes = {}): Path {
+    curve(closed: boolean, points: (Anchor | G20 | [x: number, y: number])[], options: PathOptions = {}): Path {
         const curved = true;
-        attributes.fill = default_color(attributes.fill, closed ? 'none' : 'gray');
-        attributes.stroke = default_color(attributes.stroke, 'gray');
-        attributes.strokeWidth = closed ? default_closed_path_stroke_width(attributes.strokeWidth, this) : default_open_path_stroke_width(attributes.strokeWidth, this);
-        const curve = new Path(this, points, closed, curved, false, attributes);
+        options.fill = default_color(options.fill, closed ? 'none' : 'gray');
+        options.stroke = default_color(options.stroke, 'gray');
+        options.strokeWidth = closed ? default_closed_path_stroke_width(options.strokeWidth, this) : default_open_path_stroke_width(options.strokeWidth, this);
+        const curve = new Path(this, points_to_anchors(points), closed, curved, false, options);
         this.add(curve);
         return curve;
     }
 
-    path(closed: boolean, points: Anchor[], attributes: PathAttributes = {}): Path {
-        attributes.stroke = default_color(attributes.stroke, 'gray');
-        attributes.strokeWidth = closed ? default_closed_path_stroke_width(attributes.strokeWidth, this) : default_open_path_stroke_width(attributes.strokeWidth, this);
-        const path = new Path(this, points, closed, false, false, attributes);
+    path(closed: boolean, points: (Anchor | G20 | [x: number, y: number])[], options: PathOptions = {}): Path {
+        options.fill = default_color(options.fill, closed ? 'none' : 'none');
+        options.stroke = default_color(options.stroke, 'gray');
+        options.strokeWidth = closed ? default_closed_path_stroke_width(options.strokeWidth, this) : default_open_path_stroke_width(options.strokeWidth, this);
+        const path = new Path(this, points_to_anchors(points), closed, false, false, options);
         this.add(path);
         return path;
     }
 
-    arc(x: number, y: number, innerRadius: number, outerRadius: number, startAngle: number, endAngle: number, resolution: number = Constants.Resolution): ArcSegment {
-        const arcSegment = new ArcSegment(this, x, y, innerRadius, outerRadius, startAngle, endAngle, resolution);
+    arc(innerRadius: number, outerRadius: number, startAngle: number, endAngle: number, resolution: number = Constants.Resolution): ArcSegment {
+        const arcSegment = new ArcSegment(this, innerRadius, outerRadius, startAngle, endAngle, resolution);
         this.add(arcSegment);
         return arcSegment;
     }
@@ -536,7 +531,7 @@ interface BoardConfig {
     size?: { width: number; height: number };
 }
 
-function config_from_options(container: HTMLElement, options: BoardAttributes): BoardConfig {
+function config_from_options(container: HTMLElement, options: BoardOptions): BoardConfig {
     const config: BoardConfig = {
         resizeTo: compute_config_resize_to(container, options),
         size: compute_config_size(container, options)
@@ -544,24 +539,23 @@ function config_from_options(container: HTMLElement, options: BoardAttributes): 
     return config;
 }
 
-function compute_config_resize_to(container: HTMLElement, options: BoardAttributes): Element | null {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function compute_config_resize_to(container: HTMLElement, options: BoardOptions): Element | null {
+    /*
     if (options.resizeTo) {
         return options.resizeTo;
     }
+    */
     return container;
 }
 
-function compute_config_size(container: HTMLElement, options: BoardAttributes): { width: number; height: number } | null {
-    if (typeof options.size === 'object') {
-        return options.size;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function compute_config_size(container: HTMLElement, options: BoardOptions): { width: number; height: number } | null {
+    if (container) {
+        return null;
     }
     else {
-        if (container) {
-            return null;
-        }
-        else {
-            return { width: 640, height: 480 };
-        }
+        return { width: 640, height: 480 };
     }
 }
 
@@ -583,18 +577,39 @@ function get_container_id(elementOrId: string | HTMLElement): string {
     }
 }
 
-function ellipse_attribs_from_point_attribs(attributes: PointAttributes): EllipseAttributes {
-    const retval: EllipseAttributes = {
-        id: attributes.id,
-        fill: attributes.fill,
-        fillOpacity: attributes.fillOpacity,
+function ellipse_attribs_from_point_attribs(options: PointOptions): EllipseOptions {
+    const retval: EllipseOptions = {
+        id: options.id,
+        fill: options.fill,
+        fillOpacity: options.fillOpacity,
         // attitude: attributes.attitude,
         // position: attributes.position,
-        stroke: attributes.stroke,
-        strokeOpacity: attributes.strokeOpacity,
-        strokeWidth: attributes.strokeWidth,
-        visibility: attributes.visibility
+        stroke: options.stroke,
+        strokeOpacity: options.strokeOpacity,
+        strokeWidth: options.strokeWidth,
+        visibility: options.visibility
     };
     return retval;
+}
+
+function points_to_anchors(points: (Anchor | G20 | [x: number, y: number])[]): Anchor[] {
+    const anchors: Anchor[] = [];
+    const N = points.length;
+    for (let i = 0; i < N; i++) {
+        const point = points[i];
+        if (point instanceof Anchor) {
+            anchors.push(point);
+        }
+        else if (point instanceof G20) {
+            anchors.push(new Anchor(point, i === 0 ? 'M' : 'L'));
+        }
+        else if (Array.isArray(point)) {
+            anchors.push(new Anchor(point, i === 0 ? 'M' : 'L'));
+        }
+        else {
+            throw new Error();
+        }
+    }
+    return anchors;
 }
 

@@ -1,48 +1,72 @@
-import { Anchor, ArcSegment, Arrow, ArrowAttributes, Board, Circle, CircleAttributes, Ellipse, EllipseAttributes, Group, Line, LineAttributes, Path, PathAttributes, PointAttributes, Polygon, PolygonAttributes, PositionLike, Rectangle, RectangleAttributes, Shape, Text, TextAttributes } from "../src/index";
+import {
+    Anchor,
+    ArcSegment,
+    Arrow,
+    ArrowOptions,
+    Board,
+    Circle,
+    CircleOptions,
+    Ellipse,
+    EllipseOptions,
+    Group,
+    Line,
+    LineOptions,
+    Path,
+    PathOptions,
+    PointOptions,
+    Polygon,
+    PolygonOptions,
+    Rectangle,
+    RectangleOptions,
+    Shape,
+    Text,
+    TextOptions,
+    VectorLike
+} from "../src/index";
 
 class MockBoard implements Board {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    arc(x: number, y: number, innerRadius: number, outerRadius: number, startAngle: number, endAngle: number, resolution?: number): ArcSegment {
+    arc(innerRadius: number, outerRadius: number, startAngle: number, endAngle: number, resolution?: number): ArcSegment {
         throw new Error("Method not implemented.");
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    arrow(axis: PositionLike, attributes?: ArrowAttributes): Arrow {
+    arrow(axis: VectorLike, options?: ArrowOptions): Arrow {
         throw new Error("Method not implemented.");
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    circle(attributes?: CircleAttributes): Circle {
+    circle(options?: CircleOptions): Circle {
         throw new Error("Method not implemented.");
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    curve(closed: boolean, points: Anchor[], attributes?: PathAttributes): Path {
+    curve(closed: boolean, points: Anchor[], options?: PathOptions): Path {
         throw new Error("Method not implemented.");
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ellipse(attributes?: EllipseAttributes): Ellipse {
+    ellipse(options?: EllipseOptions): Ellipse {
         throw new Error("Method not implemented.");
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    line(point1: PositionLike, point2: PositionLike, attributes?: LineAttributes): Line {
+    line(point1: VectorLike, point2: VectorLike, options?: LineOptions): Line {
         throw new Error("Method not implemented.");
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    path(closed: boolean, points: Anchor[], attributes?: PathAttributes): Path {
+    path(closed: boolean, points: Anchor[], options?: PathOptions): Path {
         throw new Error("Method not implemented.");
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    point(position: PositionLike, attributes?: PointAttributes): Shape {
+    point(position: VectorLike, options?: PointOptions): Shape {
         throw new Error("Method not implemented.");
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    polygon(points: PositionLike[], attributes?: PolygonAttributes): Polygon {
+    polygon(points: VectorLike[], options?: PolygonOptions): Polygon {
         throw new Error("Method not implemented.");
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    rectangle(attributes?: RectangleAttributes): Rectangle {
+    rectangle(options?: RectangleOptions): Rectangle {
         throw new Error("Method not implemented.");
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    text(message: string, attributes?: TextAttributes): Text {
+    text(message: string, options?: TextOptions): Text {
         throw new Error("Method not implemented.");
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

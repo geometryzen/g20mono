@@ -1,12 +1,12 @@
 import { Anchor } from '../anchor';
 import { Color } from '../effects/ColorProvider';
 import { Board } from '../IBoard';
-import { Path, PathAttributes } from '../Path';
-import { PositionLike, position_from_like } from '../Shape';
+import { VectorLike, vector_from_like } from '../math/G20';
+import { Path, PathOptions } from '../Path';
 import { default_color } from '../utils/default_color';
 import { default_open_path_stroke_width } from '../utils/default_stroke_width';
 
-export interface LineAttributes {
+export interface LineOptions extends PathOptions {
     id?: string,
     dashes?: number[],
     stroke?: Color;
@@ -25,14 +25,14 @@ export interface LineProperties {
 }
 
 export class Line extends Path implements LineProperties {
-    constructor(owner: Board, point1: PositionLike, point2: PositionLike, attributes: LineAttributes = {}) {
-        const vertex1 = new Anchor(position_from_like(point1), 'M');
-        const vertex2 = new Anchor(position_from_like(point2), 'L');
+    constructor(owner: Board, point1: VectorLike, point2: VectorLike, options: LineOptions = {}) {
+        const vertex1 = new Anchor(vector_from_like(point1), 'M');
+        const vertex2 = new Anchor(vector_from_like(point2), 'L');
         super(owner, [vertex1, vertex2],
             false,
             false,
             false,
-            path_attribs_from_line_attribs(attributes, owner));
+            path_attribs_from_line_attribs(options, owner));
     }
     override dispose(): void {
         super.dispose();
@@ -65,15 +65,15 @@ export class Line extends Path implements LineProperties {
     }
 }
 
-function path_attribs_from_line_attribs(attributes: LineAttributes, owner: Board): PathAttributes {
-    const retval: PathAttributes = {
-        id: attributes.id,
-        dashes: attributes.dashes,
-        stroke: default_color(attributes.stroke, 'gray'),
-        strokeOpacity: attributes.strokeOpacity,
-        strokeWidth: default_open_path_stroke_width(attributes.strokeWidth, owner),
-        vectorEffect: attributes.vectorEffect,
-        visibility: attributes.visibility
+function path_attribs_from_line_attribs(options: LineOptions, owner: Board): PathOptions {
+    const retval: PathOptions = {
+        id: options.id,
+        dashes: options.dashes,
+        stroke: default_color(options.stroke, 'gray'),
+        strokeOpacity: options.strokeOpacity,
+        strokeWidth: default_open_path_stroke_width(options.strokeWidth, owner),
+        vectorEffect: options.vectorEffect,
+        visibility: options.visibility
     };
     return retval;
 }
