@@ -56,7 +56,6 @@
         "lint": "eslint .",
         "pages": "npm run docs:typedoc && gh-pages -d docs",
         "pretest": "npm run build",
-        "prepublishOnly": "npm run check && npm run build && npm run test && npm run lint",
         "release": "release-it",
         "test": "jest"
     },
@@ -79,5 +78,5 @@
     "peerDependencies": {
         "g2o-reactive": "file:../reactive"
     },
-    "gitHead": "d5905cbe46b21ccf472752da84a70728bd579e7b"
+    "gitHead": "c05e3ff3c176fbdb92dfac3f2d6c39bb2a2decd6"
 }

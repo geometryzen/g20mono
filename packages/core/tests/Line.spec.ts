@@ -60,7 +60,7 @@ class MockBoard implements Board {
         throw new Error("Method not implemented.");
     }
     get crazy(): boolean {
-        throw new Error("Method not implemented.");
+        return false;
     }
     get goofy(): boolean {
         return false;

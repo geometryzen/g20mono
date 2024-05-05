@@ -53,7 +53,6 @@
         "lint": "eslint .",
         "pages": "npm run docs:typedoc && gh-pages --dist docs --dest reactive",
         "pretest": "npm run build",
-        "prepublishOnly": "npm run check && npm run build && npm run lint && npm run pages",
         "release": "release-it"
     },
     "repository": {
@@ -72,5 +71,5 @@
     "dependencies": {
         "signal-polyfill": "^0.1.0"
     },
-    "gitHead": "d5905cbe46b21ccf472752da84a70728bd579e7b"
+    "gitHead": "c05e3ff3c176fbdb92dfac3f2d6c39bb2a2decd6"
 }
