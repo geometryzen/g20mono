@@ -14,7 +14,7 @@ export interface ArrowOptions extends PathOptions {
     headLength?: number;
     position?: VectorLike;
     attitude?: SpinorLike;
-    stroke?: Color;
+    strokeColor?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
     vectorEffect?: null | 'non-scaling-stroke';
@@ -26,7 +26,9 @@ export interface ArrowProperties {
     R: G20;
     axis: G20;
     headLength: number;
-    stroke: Color;
+    fillColor: Color;
+    fillOpacity: number;
+    strokeColor: Color;
     strokeOpacity: number;
     strokeWidth: number;
 }
@@ -152,7 +154,7 @@ function path_attribs_from_arrow_attribs(options: ArrowOptions, owner: Board): P
         // visibility: attributes.visibility,
         // fill: attributes.fill,
         // fillOpacity: attributes.fillOpacity,
-        stroke: default_color(options.stroke, 'gray'),
+        strokeColor: default_color(options.strokeColor, 'gray'),
         strokeOpacity: options.strokeOpacity,
         strokeWidth: default_open_path_stroke_width(options.strokeWidth, owner),
         vectorEffect: options.vectorEffect,

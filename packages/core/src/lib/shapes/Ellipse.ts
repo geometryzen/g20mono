@@ -15,13 +15,13 @@ const cos = Math.cos, sin = Math.sin;
 
 export interface EllipseOptions extends PathOptions {
     id?: string;
-    fill?: Color;
+    fillColor?: Color;
     fillOpacity?: number;
     position?: VectorLike;
     attitude?: SpinorLike;
     rx?: number;
     ry?: number;
-    stroke?: Color;
+    strokeColor?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
     resolution?: number;
@@ -135,11 +135,11 @@ function update_ellipse_vertices(radiusX: number, radiusY: number, closed: boole
 function path_attribs_from_ellipse_attribs(options: EllipseOptions, owner: Board): PathOptions {
     const retval: PathOptions = {
         id: options.id,
-        fill: default_color(options.fill, 'none'),
+        fillColor: default_color(options.fillColor, 'none'),
         fillOpacity: options.fillOpacity,
         attitude: options.attitude,
         position: options.position,
-        stroke: default_color(options.stroke, 'gray'),
+        strokeColor: default_color(options.strokeColor, 'gray'),
         strokeOpacity: options.strokeOpacity,
         strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
         visibility: options.visibility

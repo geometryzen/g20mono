@@ -20,7 +20,7 @@ export interface TextOptions extends ColoredShapeOptions {
     direction?: 'ltr' | 'rtl';
     dx?: number | string;
     dy?: number | string;
-    fill?: Color;
+    fillColor?: Color;
     fillOpacity?: number;
     fontFamily?: string;
     fontStyle?: 'normal' | 'italic' | 'oblique';
@@ -30,7 +30,7 @@ export interface TextOptions extends ColoredShapeOptions {
     position?: VectorLike;
     attitude?: SpinorLike;
     fontSize?: number;
-    stroke?: Color;
+    strokeColor?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
     sx?: number;
@@ -47,12 +47,14 @@ export interface TextProperties {
     dx: number | string;
     dy: number | string;
     fontFamily: string;
-    fill: Color;
+    fillColor: Color;
+    fillOpacity: number;
     id: string;
-    strokeWidth: number;
     opacity: number;
     fontSize: number;
-    stroke: Color;
+    strokeColor: Color;
+    strokeOpacity: number;
+    strokeWidth: number;
     fontStyle: 'normal' | 'italic' | 'oblique';
     content: string;
     visibility: 'visible' | 'hidden' | 'collapse';
@@ -586,10 +588,10 @@ function shape_options_from_text_options(options: Partial<TextOptions>, owner: B
         plumb: true,//options.plumb,
         position: options.position,
         attitude: options.attitude,
-        fill: default_color(options.fill, 'gray'),
+        fillColor: default_color(options.fillColor, 'gray'),
         fillOpacity: options.fillOpacity,
         opacity: options.opacity,
-        stroke: default_color(options.stroke, 'gray'),
+        strokeColor: default_color(options.strokeColor, 'gray'),
         strokeOpacity: options.strokeOpacity,
         strokeWidth: default_open_path_stroke_width(options.strokeWidth, owner),
         sx: typeof options.sx === 'number' ? options.sx : 1 / owner.sx,

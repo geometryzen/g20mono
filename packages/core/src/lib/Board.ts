@@ -34,9 +34,9 @@ export interface BoardOptions {
 
 export interface PointOptions extends PathOptions {
     id?: string;
-    fill?: Color;
+    fillColor?: Color;
     fillOpacity?: number;
-    stroke?: Color;
+    strokeColor?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
     visibility?: 'visible' | 'hidden' | 'collapse';
@@ -380,7 +380,7 @@ class GraphicsBoard implements Board {
         const rx = 4 / sx;
         const ry = 4 / sy;
         const ellipse_attribs = ellipse_attribs_from_point_attribs(options);
-        ellipse_attribs.fill = default_color(ellipse_attribs.fill, 'gray');
+        ellipse_attribs.fillColor = default_color(ellipse_attribs.fillColor, 'gray');
         ellipse_attribs.position = position;
         ellipse_attribs.rx = rx;
         ellipse_attribs.ry = ry;
@@ -415,8 +415,8 @@ class GraphicsBoard implements Board {
 
     curve(closed: boolean, points: (Anchor | G20 | [x: number, y: number])[], options: PathOptions = {}): Path {
         const curved = true;
-        options.fill = default_color(options.fill, closed ? 'none' : 'gray');
-        options.stroke = default_color(options.stroke, 'gray');
+        options.fillColor = default_color(options.fillColor, closed ? 'none' : 'gray');
+        options.strokeColor = default_color(options.strokeColor, 'gray');
         options.strokeWidth = closed ? default_closed_path_stroke_width(options.strokeWidth, this) : default_open_path_stroke_width(options.strokeWidth, this);
         const curve = new Path(this, points_to_anchors(points), closed, curved, false, options);
         this.add(curve);
@@ -424,8 +424,8 @@ class GraphicsBoard implements Board {
     }
 
     path(closed: boolean, points: (Anchor | G20 | [x: number, y: number])[], options: PathOptions = {}): Path {
-        options.fill = default_color(options.fill, closed ? 'none' : 'none');
-        options.stroke = default_color(options.stroke, 'gray');
+        options.fillColor = default_color(options.fillColor, closed ? 'none' : 'none');
+        options.strokeColor = default_color(options.strokeColor, 'gray');
         options.strokeWidth = closed ? default_closed_path_stroke_width(options.strokeWidth, this) : default_open_path_stroke_width(options.strokeWidth, this);
         const path = new Path(this, points_to_anchors(points), closed, false, false, options);
         this.add(path);
@@ -580,11 +580,11 @@ function get_container_id(elementOrId: string | HTMLElement): string {
 function ellipse_attribs_from_point_attribs(options: PointOptions): EllipseOptions {
     const retval: EllipseOptions = {
         id: options.id,
-        fill: options.fill,
+        fillColor: options.fillColor,
         fillOpacity: options.fillOpacity,
         // attitude: attributes.attitude,
         // position: attributes.position,
-        stroke: options.stroke,
+        strokeColor: options.strokeColor,
         strokeOpacity: options.strokeOpacity,
         strokeWidth: options.strokeWidth,
         visibility: options.visibility

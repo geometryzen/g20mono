@@ -15,9 +15,9 @@ export interface CircleOptions extends PathOptions {
     position?: VectorLike;
     attitude?: SpinorLike;
     radius?: number;
-    fill?: Color;
+    fillColor?: Color;
     fillOpacity?: number;
-    stroke?: Color;
+    strokeColor?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
     resolution?: number;
@@ -27,9 +27,9 @@ export interface CircleProperties {
     X: G20;
     R: G20;
     radius: number;
-    fill: Color;
+    fillColor: Color;
     fillOpacity: number;
-    stroke: Color;
+    strokeColor: Color;
     strokeOpacity: number;
     strokeWidth: number;
 }
@@ -93,9 +93,9 @@ function path_attributes(options: CircleOptions, owner: Board): PathOptions {
     const retval: PathOptions = {
         attitude: options.attitude,
         position: options.position,
-        fill: default_color(options.fill, 'none'),
+        fillColor: default_color(options.fillColor, 'none'),
         fillOpacity: options.fillOpacity,
-        stroke: default_color(options.stroke, 'gray'),
+        strokeColor: default_color(options.strokeColor, 'gray'),
         strokeOpacity: options.strokeOpacity,
         strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner)
     };

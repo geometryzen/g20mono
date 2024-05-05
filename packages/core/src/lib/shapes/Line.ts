@@ -9,7 +9,7 @@ import { default_open_path_stroke_width } from '../utils/default_stroke_width';
 export interface LineOptions extends PathOptions {
     id?: string,
     dashes?: number[],
-    stroke?: Color;
+    strokeColor?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
     vectorEffect?: null | 'non-scaling-stroke';
@@ -69,7 +69,7 @@ function path_attribs_from_line_attribs(options: LineOptions, owner: Board): Pat
     const retval: PathOptions = {
         id: options.id,
         dashes: options.dashes,
-        stroke: default_color(options.stroke, 'gray'),
+        strokeColor: default_color(options.strokeColor, 'gray'),
         strokeOpacity: options.strokeOpacity,
         strokeWidth: default_open_path_stroke_width(options.strokeWidth, owner),
         vectorEffect: options.vectorEffect,

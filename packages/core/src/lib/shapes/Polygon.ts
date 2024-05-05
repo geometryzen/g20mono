@@ -9,9 +9,9 @@ import { default_closed_path_stroke_width } from "../utils/default_stroke_width"
 export interface PolygonOptions extends PathOptions {
     id?: string;
     opacity?: number;
-    fill?: Color,
+    fillColor?: Color,
     fillOpacity?: number,
-    stroke?: Color,
+    strokeColor?: Color,
     strokeOpacity?: number,
     strokeWidth?: number
 }
@@ -34,9 +34,9 @@ function path_attributes(options: PolygonOptions, owner: Board): PathOptions {
     const retval: PathOptions = {
         id: options.id,
         opacity: options.opacity,
-        fill: default_color(options.fill, 'none'),
+        fillColor: default_color(options.fillColor, 'none'),
         fillOpacity: options.fillOpacity,
-        stroke: default_color(options.stroke, 'gray'),
+        strokeColor: default_color(options.strokeColor, 'gray'),
         strokeOpacity: options.strokeOpacity,
         strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner)
     };

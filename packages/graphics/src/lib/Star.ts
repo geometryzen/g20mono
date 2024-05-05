@@ -15,13 +15,13 @@ import { effect, state } from 'g2o-reactive';
 
 export interface StarOptions extends PathOptions {
     id?: string;
-    fill?: Color;
+    fillColor?: Color;
     fillOpacity?: number;
     opacity?: number;
     position?: VectorLike,
     attitude?: SpinorLike,
     radius?: number;
-    stroke?: Color;
+    strokeColor?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
     visibility?: 'visible' | 'hidden' | 'collapse';
@@ -134,9 +134,9 @@ function path_attribs_from_star_attribs(options: StarOptions): PathOptions {
         opacity: options.opacity,
         position: options.position,
         visibility: options.visibility,
-        fill: options.fill,
+        fillColor: options.fillColor,
         fillOpacity: options.fillOpacity,
-        stroke: options.stroke,
+        strokeColor: options.strokeColor,
         strokeOpacity: options.strokeOpacity,
         strokeWidth: options.strokeWidth
     };

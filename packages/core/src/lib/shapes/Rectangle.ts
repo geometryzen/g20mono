@@ -17,9 +17,9 @@ export interface RectangleOptions extends PathOptions {
     width?: number;
     height?: number;
     visibility?: 'visible' | 'hidden' | 'collapse';
-    fill?: Color;
+    fillColor?: Color;
     fillOpacity?: number;
-    stroke?: Color;
+    strokeColor?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
 }
@@ -251,9 +251,9 @@ function path_attribs_from_rectangle_attribs(attributes: RectangleOptions, owner
         opacity: attributes.opacity,
         position: attributes.position,
         visibility: attributes.visibility,
-        fill: default_color(attributes.fill, 'none'),
+        fillColor: default_color(attributes.fillColor, 'none'),
         fillOpacity: attributes.fillOpacity,
-        stroke: default_color(attributes.stroke, 'gray'),
+        strokeColor: default_color(attributes.strokeColor, 'gray'),
         strokeOpacity: attributes.strokeOpacity,
         strokeWidth: default_closed_path_stroke_width(attributes.strokeWidth, owner),
         vectorEffect: attributes.vectorEffect

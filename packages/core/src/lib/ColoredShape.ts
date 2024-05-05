@@ -12,9 +12,9 @@ export interface ColoredShapeOptions extends ShapeOptions {
     attitude?: SpinorLike;
     id?: string;
     dashes?: number[],
-    fill?: Color;
+    fillColor?: Color;
     fillOpacity?: number;
-    stroke?: Color;
+    strokeColor?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
     sx?: number;
@@ -48,8 +48,8 @@ export abstract class ColoredShape extends Shape {
             this.dashes = options.dashes;
         }
 
-        if (options.fill) {
-            this.fill = options.fill;
+        if (options.fillColor) {
+            this.fillColor = options.fillColor;
         }
 
         if (typeof options.fillOpacity === 'number') {
@@ -59,8 +59,8 @@ export abstract class ColoredShape extends Shape {
             this.fillOpacity = 1.0;
         }
 
-        if (options.stroke) {
-            this.stroke = options.stroke;
+        if (options.strokeColor) {
+            this.strokeColor = options.strokeColor;
         }
 
         if (typeof options.strokeWidth === 'number') {
@@ -94,10 +94,10 @@ export abstract class ColoredShape extends Shape {
             this.#dashes.set(dashes);
         }
     }
-    get fill(): Color {
+    get fillColor(): Color {
         return this.#fillColor.get();
     }
-    set fill(fill: Color) {
+    set fillColor(fill: Color) {
         this.#fillColor.set(fill);
         this.zzz.flags[Flag.Fill] = true;
     }
@@ -107,10 +107,10 @@ export abstract class ColoredShape extends Shape {
     set fillOpacity(fillOpacity: number) {
         this.#fillOpacity.set(fillOpacity);
     }
-    get stroke(): Color {
+    get strokeColor(): Color {
         return this.#strokeColor.get();
     }
-    set stroke(stroke: Color) {
+    set strokeColor(stroke: Color) {
         this.#strokeColor.set(stroke);
         this.zzz.flags[Flag.Stroke] = true;
     }
@@ -138,7 +138,7 @@ export abstract class ColoredShape extends Shape {
      * A convenience method for setting the `fill` attribute to "none".
      */
     noFill(): this {
-        this.fill = 'none';
+        this.fillColor = 'none';
         return this;
     }
 
@@ -146,7 +146,7 @@ export abstract class ColoredShape extends Shape {
      * A convenience method for setting the `stroke` attribute to "none".
      */
     noStroke(): this {
-        this.stroke = 'none';
+        this.strokeColor = 'none';
         return this;
     }
     override render(domElement: HTMLElement | SVGElement, svgElement: SVGElement): void {

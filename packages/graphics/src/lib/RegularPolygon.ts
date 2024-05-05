@@ -18,14 +18,14 @@ const sin = Math.sin;
 
 export interface RegularPolygonOptions extends PathOptions {
     id?: string;
-    fill?: Color;
+    fillColor?: Color;
     fillOpacity?: number;
     opacity?: number;
     position?: VectorLike,
     attitude?: SpinorLike,
     radius?: number;
     sides?: number;
-    stroke?: Color;
+    strokeColor?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
     twist?: number;
@@ -108,9 +108,9 @@ function path_attribs_from_regular_polygon_attribs(options: RegularPolygonOption
         opacity: options.opacity,
         position: options.position,
         visibility: options.visibility,
-        fill: options.fill,
+        fillColor: options.fillColor,
         fillOpacity: options.fillOpacity,
-        stroke: options.stroke,
+        strokeColor: options.strokeColor,
         strokeOpacity: options.strokeOpacity,
         strokeWidth: options.strokeWidth,
         // plumb: attributes.plumb

@@ -11,9 +11,9 @@ import { Commands } from '../utils/path-commands.js';
 
 export interface ArcSegmentOptions extends PathOptions {
     id?: string,
-    fill?: Color;
+    fillColor?: Color;
     fillOpacity?: number;
-    stroke?: Color;
+    strokeColor?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
 }
@@ -250,9 +250,9 @@ function path_attribs_from_arc_attribs(options: ArcSegmentOptions, owner: Board)
         opacity: options.opacity,
         position: options.position,
         visibility: options.visibility,
-        fill: default_color(options.fill, 'none'),
+        fillColor: default_color(options.fillColor, 'none'),
         fillOpacity: options.fillOpacity,
-        stroke: default_color(options.stroke, 'gray'),
+        strokeColor: default_color(options.strokeColor, 'gray'),
         strokeOpacity: options.strokeOpacity,
         strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
         vectorEffect: options.vectorEffect

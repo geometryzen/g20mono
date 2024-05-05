@@ -33,13 +33,13 @@ export interface PathOptions extends ColoredShapeOptions {
      * The value of what the path should be filled in with.
      * @see {@link https://developer.mozilla.org/en-US/docs/Web/CSS/color_value} for more information on CSS's colors as `String`.
      */
-    fill?: Color;
+    fillColor?: Color;
     fillOpacity?: number;
     /**
      * The value of what the path should be outlined in with.
      * @see {@link https://developer.mozilla.org/en-US/docs/Web/CSS/color_value} for more information on CSS's colors as `String`.
      */
-    stroke?: Color;
+    strokeColor?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
 }
@@ -308,7 +308,7 @@ export class Path extends ColoredShape {
         let border = (this.strokeWidth || 0) / 2;
         const l = this.zzz.vertices.length;
 
-        if (this.strokeWidth > 0 || (this.stroke && typeof this.stroke === 'string' && !(/(transparent|none)/i.test(this.stroke)))) {
+        if (this.strokeWidth > 0 || (this.strokeColor && typeof this.strokeColor === 'string' && !(/(transparent|none)/i.test(this.strokeColor)))) {
             border *= max(this.scaleXY.x, this.scaleXY.y);
         }
 
@@ -955,9 +955,9 @@ function colored_shape_attribs_from_path_attribs(options: PathOptions): ColoredS
         dashes: options.dashes,
         position: options.position,
         attitude: options.attitude,
-        fill: options.fill,
+        fillColor: options.fillColor,
         fillOpacity: options.fillOpacity,
-        stroke: options.stroke,
+        strokeColor: options.strokeColor,
         strokeOpacity: options.strokeOpacity,
         strokeWidth: options.strokeWidth,
         opacity: options.opacity,
