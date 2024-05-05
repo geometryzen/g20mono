@@ -1,6 +1,6 @@
 {
     "name": "g2o-texture",
-    "version": "0.9.238",
+    "version": "0.9.239",
     "description": "g2o Texture",
     "exports": {
         ".": {
