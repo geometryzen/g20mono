@@ -1,6 +1,10 @@
-import { Arrow, ArrowAttributes, Board, Circle, CircleAttributes, Ellipse, EllipseAttributes, Group, Line, LineAttributes, PointAttributes, Polygon, PolygonAttributes, PositionLike, Rectangle, RectangleAttributes, Shape, Text, TextAttributes } from "../src/index";
+import { Anchor, ArcSegment, Arrow, ArrowAttributes, Board, Circle, CircleAttributes, Ellipse, EllipseAttributes, Group, Line, LineAttributes, Path, PathAttributes, PointAttributes, Polygon, PolygonAttributes, PositionLike, Rectangle, RectangleAttributes, Shape, Text, TextAttributes } from "../src/index";
 
 class MockBoard implements Board {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    arc(x: number, y: number, innerRadius: number, outerRadius: number, startAngle: number, endAngle: number, resolution?: number): ArcSegment {
+        throw new Error("Method not implemented.");
+    }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     arrow(axis: PositionLike, attributes?: ArrowAttributes): Arrow {
         throw new Error("Method not implemented.");
@@ -10,11 +14,19 @@ class MockBoard implements Board {
         throw new Error("Method not implemented.");
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    curve(closed: boolean, points: Anchor[], attributes?: PathAttributes): Path {
+        throw new Error("Method not implemented.");
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ellipse(attributes?: EllipseAttributes): Ellipse {
         throw new Error("Method not implemented.");
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     line(point1: PositionLike, point2: PositionLike, attributes?: LineAttributes): Line {
+        throw new Error("Method not implemented.");
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    path(closed: boolean, points: Anchor[], attributes?: PathAttributes): Path {
         throw new Error("Method not implemented.");
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

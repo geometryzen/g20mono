@@ -74,5 +74,5 @@
         "g2o": "file:../core",
         "g2o-reactive": "file:../reactive"
     },
-    "gitHead": "51c1a7df5115cd7ac77632d6ce60eaaf761403a2"
+    "gitHead": "d5905cbe46b21ccf472752da84a70728bd579e7b"
 }
