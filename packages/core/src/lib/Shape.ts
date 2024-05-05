@@ -277,15 +277,25 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
             throw new Error();
         }
     }
-    set scale(scale: number) {
-        this.#scale.x = scale;
-        this.#scale.y = scale;
+    set scale(scale: number | [sx: number, sy: number]) {
+        if (typeof scale === 'number') {
+            this.#scale.set(scale, scale);
+        }
+        else if (Array.isArray(scale)) {
+            this.#scale.set(scale[0], scale[1]);
+        }
     }
-    get scaleXY(): G20 {
-        return this.#scale;
+    get sx(): number {
+        return this.#scale.x;
     }
-    set scaleXY(scale: G20) {
-        this.#scale.set(scale.x, scale.y, 0, 0);
+    set sx(sx: number) {
+        this.#scale.x = sx;
+    }
+    get sy(): number {
+        return this.#scale.y;
+    }
+    set sy(sy: number) {
+        this.#scale.y = sy;
     }
     get skewX(): number {
         return this.#skew.x;

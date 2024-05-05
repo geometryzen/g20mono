@@ -27,7 +27,7 @@ export interface PathOptions extends ColoredShapeOptions {
     opacity?: number;
     position?: VectorLike;
     attitude?: SpinorLike;
-    vectorEffect?: null | 'non-scaling-stroke';
+    vectorEffect?: null | 'non-scaling-stroke' | 'none';
     visibility?: 'visible' | 'hidden' | 'collapse';
     /**
      * The value of what the path should be filled in with.
@@ -309,7 +309,7 @@ export class Path extends ColoredShape {
         const l = this.zzz.vertices.length;
 
         if (this.strokeWidth > 0 || (this.strokeColor && typeof this.strokeColor === 'string' && !(/(transparent|none)/i.test(this.strokeColor)))) {
-            border *= max(this.scaleXY.x, this.scaleXY.y);
+            border *= max(this.sx, this.sy);
         }
 
         if (l <= 0) {

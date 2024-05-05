@@ -12,7 +12,7 @@ export interface LineOptions extends PathOptions {
     strokeColor?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
-    vectorEffect?: null | 'non-scaling-stroke';
+    vectorEffect?: null | 'non-scaling-stroke' | 'none';
     visibility?: 'visible' | 'hidden' | 'collapse';
 }
 

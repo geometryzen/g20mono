@@ -1,5 +1,5 @@
 export { Anchor } from './lib/anchor';
-export { BoardOptions as BoardAttributes, initBoard, PointOptions } from './lib/Board';
+export { BoardOptions, initBoard, PointOptions } from './lib/Board';
 export { Collection } from './lib/collection';
 export { Color, ColorProvider } from './lib/effects/ColorProvider';
 export { ElementBase } from './lib/element';

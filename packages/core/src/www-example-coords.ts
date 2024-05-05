@@ -17,14 +17,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const ex = board.arrow(unitX.X, {
         id: 'ex',
         position: origin.X,
-        stroke: 'red',
+        strokeColor: 'red',
         strokeWidth: 4
     });
 
     const ey = board.arrow(unitY.X, {
         id: 'ey',
         position: origin.X,
-        stroke: 'blue',
+        strokeColor: 'blue',
         strokeWidth: 4
     });
 
@@ -51,7 +51,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // board.update(); // Needed for CanvasView
 
     function rescale(shape: Shape, board: Board): void {
-        shape.scaleXY.set(2 / board.sx, 2 / board.sy);
+        shape.sx = 2 / board.sx;
+        shape.sy = 2 / board.sy;
     }
 
     window.onunload = function () {

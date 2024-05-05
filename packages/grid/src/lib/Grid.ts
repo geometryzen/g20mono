@@ -71,5 +71,5 @@ export class Grid extends Group {
 }
 
 function resize(shape: Shape, board: Board): void {
-    shape.scaleXY.set(1 / board.sx, 1 / board.sy);
+    shape.scale = [1 / board.sx, 1 / board.sy];
 }

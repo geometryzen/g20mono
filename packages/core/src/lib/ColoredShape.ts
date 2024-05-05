@@ -19,7 +19,7 @@ export interface ColoredShapeOptions extends ShapeOptions {
     strokeWidth?: number;
     sx?: number;
     sy?: number;
-    vectorEffect?: null | 'non-scaling-stroke';
+    vectorEffect?: null | 'non-scaling-stroke' | 'none';
     visibility?: 'visible' | 'hidden' | 'collapse';
 }
 
@@ -39,7 +39,7 @@ export abstract class ColoredShape extends Shape {
 
     readonly #dashes: State<number[]> = state([]);
 
-    readonly #vectorEffect: State<null | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position'> = state(null);
+    readonly #vectorEffect: State<null | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position' | 'none'> = state(null);
 
     constructor(board: Board, options: ColoredShapeOptions = {}) {
         super(board, shape_attribs_from_colored_attribs(options));
@@ -128,10 +128,10 @@ export abstract class ColoredShape extends Shape {
             this.#strokeWidth.set(strokeWidth);
         }
     }
-    get vectorEffect(): null | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position' {
+    get vectorEffect(): null | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position' | 'none' {
         return this.#vectorEffect.get();
     }
-    set vectorEffect(vectorEffect: null | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position') {
+    set vectorEffect(vectorEffect: null | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position' | 'none') {
         this.#vectorEffect.set(vectorEffect);
     }
     /**

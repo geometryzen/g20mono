@@ -11,9 +11,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const C = board.point(G20.ey.scale(0.9));
     const D = board.point(B.X.clone().add(C.X));
 
-    board.arrow(B);
-    board.arrow(C);
-    board.arrow(D);
+    board.arrow(B.X);
+    board.arrow(C.X);
+    board.arrow(D.X);
 
     /*
     function animate() {

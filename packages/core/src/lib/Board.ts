@@ -168,7 +168,8 @@ class GraphicsBoard implements Board {
         const x = -left * Δx / LR;
         const y = -top * Δy / TB;
         this.#viewBox.X.set(x, y);
-        this.#viewBox.scaleXY.set(sx, sy);
+        this.#viewBox.sx = sx;
+        this.#viewBox.sy = sy;
         if (this.goofy) {
             if (this.crazy) {
                 // crazy and goofy Coordinate System.
@@ -240,17 +241,17 @@ class GraphicsBoard implements Board {
     }
 
     get sx(): number {
-        return this.#viewBox.scaleXY.x;
+        return this.#viewBox.sx;
     }
     set sx(sx: number) {
-        this.#viewBox.scaleXY.x = sx;
+        this.#viewBox.sx = sx;
     }
 
     get sy(): number {
-        return this.#viewBox.scaleXY.y;
+        return this.#viewBox.sy;
     }
     set sy(sy: number) {
-        this.#viewBox.scaleXY.y = sy;
+        this.#viewBox.sy = sy;
     }
 
     get scene(): Group {

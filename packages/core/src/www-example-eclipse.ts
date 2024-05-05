@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
         id: 'ellipse',
         rx: 1.0,
         ry: 0.5,
-        stroke: 'lightgreen',
+        strokeColor: 'lightgreen',
         strokeWidth: 4
     });
     ellipse.R.rotorFromAngle(Math.PI / 4);
@@ -26,14 +26,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const ex = board.arrow(unitX.X, {
         id: 'ex',
         position: origin.X,
-        stroke: 'red',
+        strokeColor: 'red',
         strokeWidth: 4
     });
 
     const ey = board.arrow(unitY.X, {
         id: 'ey',
         position: origin.X,
-        stroke: 'blue',
+        strokeColor: 'blue',
         strokeWidth: 4
     });
 
@@ -69,7 +69,8 @@ document.addEventListener('DOMContentLoaded', function () {
     ellipse.ry = 1;
 
     function rescale(shape: Shape, board: Board): void {
-        shape.scaleXY.set(1 / board.sx, 1 / board.sy);
+        shape.sx = 1 / board.sx;
+        shape.sy = 1 / board.sy;
     }
 
     window.onunload = function () {
