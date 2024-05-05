@@ -17,6 +17,8 @@ export interface ColoredShapeAttributes extends ShapeAttributes {
     stroke?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
+    sx?: number;
+    sy?: number;
     vectorEffect?: null | 'non-scaling-stroke';
     visibility?: 'visible' | 'hidden' | 'collapse';
 }
@@ -256,7 +258,8 @@ function shape_attribs_from_colored_attribs(attributes: ColoredShapeAttributes):
         plumb: attributes.plumb,
         attitude: attributes.attitude,
         position: attributes.position,
-
+        sx: attributes.sx,
+        sy: attributes.sy,
         visibility: attributes.visibility,
     };
     return retval;

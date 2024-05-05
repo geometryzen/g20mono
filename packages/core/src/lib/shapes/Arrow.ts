@@ -7,7 +7,7 @@ import { Path, PathAttributes } from "../Path";
 import { Disposable, dispose } from '../reactive/Disposable';
 import { PositionLike, position_from_like } from "../Shape";
 import { default_color } from "../utils/default_color";
-import { default_stroke_width } from "../utils/default_stroke_width";
+import { default_open_path_stroke_width } from "../utils/default_stroke_width";
 import { Commands } from "../utils/path-commands";
 
 export interface ArrowAttributes {
@@ -154,9 +154,9 @@ function path_attribs_from_arrow_attribs(attributes: ArrowAttributes, owner: Boa
         // visibility: attributes.visibility,
         // fill: attributes.fill,
         // fillOpacity: attributes.fillOpacity,
-        stroke: default_color(attributes.stroke, 'black'),
+        stroke: default_color(attributes.stroke, 'gray'),
         strokeOpacity: attributes.strokeOpacity,
-        strokeWidth: default_stroke_width(attributes.strokeWidth, 2 / owner.sx),
+        strokeWidth: default_open_path_stroke_width(attributes.strokeWidth, owner),
         vectorEffect: attributes.vectorEffect,
         visibility: attributes.visibility
     };

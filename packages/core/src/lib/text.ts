@@ -6,6 +6,8 @@ import { Flag } from './Flag';
 import { Board } from './IBoard';
 import { svg, SVGAttributes, transform_value_of_matrix } from './renderers/SVGView';
 import { PositionLike } from './Shape';
+import { default_color } from './utils/default_color';
+import { default_open_path_stroke_width } from './utils/default_stroke_width';
 
 const min = Math.min, max = Math.max;
 
@@ -30,6 +32,8 @@ export interface TextAttributes extends ColoredShapeAttributes {
     stroke?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
+    sx?: number;
+    sy?: number;
     value?: string;
     visibility?: 'visible' | 'hidden' | 'collapse';
 }
@@ -86,7 +90,7 @@ export class Text extends ColoredShape implements TextProperties {
 
     constructor(owner: Board, content: string, attributes: Partial<TextAttributes> = {}) {
 
-        super(owner, shape_attributes_from_text_attributes(attributes));
+        super(owner, shape_attributes_from_text_attributes(attributes, owner));
 
         this.content = content;
 
@@ -111,12 +115,14 @@ export class Text extends ColoredShape implements TextProperties {
         if (attributes.fontFamily) {
             this.fontFamily = attributes.fontFamily;
         }
+        /*
         if (attributes.fill) {
             this.fill = attributes.fill;
         }
         else {
             this.fill = "#000";
         }
+        */
         if (attributes.strokeWidth) {
             this.strokeWidth = attributes.strokeWidth;
         }
@@ -129,12 +135,14 @@ export class Text extends ColoredShape implements TextProperties {
         if (attributes.fontSize) {
             this.fontSize = attributes.fontSize;
         }
+        /*
         if (attributes.stroke) {
             this.stroke = attributes.stroke;
         }
         else {
             this.stroke = "#000";
         }
+        */
         if (attributes.fontStyle) {
             this.fontStyle = attributes.fontStyle;
         }
@@ -591,7 +599,7 @@ export class Text extends ColoredShape implements TextProperties {
     }
 }
 
-function shape_attributes_from_text_attributes(attributes: Partial<TextAttributes>): Partial<ColoredShapeAttributes> {
+function shape_attributes_from_text_attributes(attributes: Partial<TextAttributes>, owner: Board): Partial<ColoredShapeAttributes> {
 
     const retval: Partial<ColoredShapeAttributes> = {
         id: attributes.id,
@@ -599,12 +607,14 @@ function shape_attributes_from_text_attributes(attributes: Partial<TextAttribute
         plumb: true,//attributes.plumb,
         position: attributes.position,
         attitude: attributes.attitude,
-        fill: attributes.fill,
+        fill: default_color(attributes.fill, 'gray'),
         fillOpacity: attributes.fillOpacity,
         opacity: attributes.opacity,
-        stroke: attributes.stroke,
+        stroke: default_color(attributes.stroke, 'gray'),
         strokeOpacity: attributes.strokeOpacity,
-        strokeWidth: attributes.strokeWidth,
+        strokeWidth: default_open_path_stroke_width(attributes.strokeWidth, owner),
+        sx: typeof attributes.sx === 'number' ? attributes.sx : 1 / owner.sx,
+        sy: typeof attributes.sy === 'number' ? attributes.sy : 1 / owner.sy,
         vectorEffect: attributes.vectorEffect,
         visibility: attributes.visibility
     };

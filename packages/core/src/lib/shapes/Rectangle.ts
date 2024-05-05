@@ -7,6 +7,8 @@ import { G20 } from '../math/G20';
 import { Path, PathAttributes } from '../Path';
 import { Disposable, dispose } from '../reactive/Disposable';
 import { PositionLike } from '../Shape';
+import { default_color } from '../utils/default_color';
+import { default_closed_path_stroke_width } from '../utils/default_stroke_width';
 
 export interface RectangleAPI<X> {
     id: string;
@@ -198,7 +200,7 @@ export class Rectangle extends Path implements RectangleProperties, Disposable {
             new Anchor(G20.vector(0, 0), 'L')
         ];
 
-        super(owner, points, true, false, true, path_attribs_from_rectangle_attribs(attributes));
+        super(owner, points, true, false, true, path_attribs_from_rectangle_attribs(attributes, owner));
 
         if (typeof attributes.width === 'number') {
             this.width = attributes.width;
@@ -255,18 +257,18 @@ export class Rectangle extends Path implements RectangleProperties, Disposable {
     }
 }
 
-function path_attribs_from_rectangle_attribs(attributes: RectangleAttributes): PathAttributes {
+function path_attribs_from_rectangle_attribs(attributes: RectangleAttributes, owner: Board): PathAttributes {
     const retval: PathAttributes = {
         id: attributes.id,
         attitude: attributes.attitude,
         opacity: attributes.opacity,
         position: attributes.position,
         visibility: attributes.visibility,
-        fill: attributes.fill,
+        fill: default_color(attributes.fill, 'none'),
         fillOpacity: attributes.fillOpacity,
-        stroke: attributes.stroke,
+        stroke: default_color(attributes.stroke, 'gray'),
         strokeOpacity: attributes.strokeOpacity,
-        strokeWidth: attributes.strokeWidth,
+        strokeWidth: default_closed_path_stroke_width(attributes.strokeWidth, owner),
         vectorEffect: attributes.vectorEffect
     };
     return retval;

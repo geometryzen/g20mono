@@ -1,10 +1,22 @@
 import { Anchor } from '../anchor.js';
 import { Constants } from '../constants.js';
+import { Color } from '../effects/ColorProvider.js';
 import { Board } from '../IBoard.js';
 import { G20 } from '../math/G20.js';
-import { Path } from '../Path.js';
+import { Path, PathAttributes } from '../Path.js';
+import { default_color } from '../utils/default_color.js';
+import { default_closed_path_stroke_width } from '../utils/default_stroke_width.js';
 import { HALF_PI, mod, TWO_PI } from '../utils/math.js';
 import { Commands } from '../utils/path-commands.js';
+
+export interface ArcSegmentAttributes {
+    id?: string,
+    fill?: Color;
+    fillOpacity?: number;
+    stroke?: Color;
+    strokeOpacity?: number;
+    strokeWidth?: number;
+}
 
 export class ArcSegment extends Path {
 
@@ -25,7 +37,7 @@ export class ArcSegment extends Path {
             points.push(new Anchor(G20.vector(0, 0)));
         }
 
-        super(owner, points, true, false, true);
+        super(owner, points, true, false, true, path_attribs_from_arc_attribs({}, owner));
 
         if (typeof ir === 'number') {
             this.innerRadius = ir;
@@ -237,4 +249,21 @@ export class ArcSegment extends Path {
         this._outerRadius = v;
         this._flagOuterRadius = true;
     }
+}
+
+function path_attribs_from_arc_attribs(attributes: ArcSegmentAttributes, owner: Board): PathAttributes {
+    const retval: PathAttributes = {
+        id: attributes.id,
+        // attitude: attributes.attitude,
+        // opacity: attributes.opacity,
+        // position: attributes.position,
+        // visibility: attributes.visibility,
+        fill: default_color(attributes.fill, 'none'),
+        fillOpacity: attributes.fillOpacity,
+        stroke: default_color(attributes.stroke, 'gray'),
+        strokeOpacity: attributes.strokeOpacity,
+        strokeWidth: default_closed_path_stroke_width(attributes.strokeWidth, owner),
+        // vectorEffect: attributes.vectorEffect
+    };
+    return retval;
 }

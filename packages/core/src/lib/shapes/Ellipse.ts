@@ -7,6 +7,8 @@ import { G20 } from '../math/G20.js';
 import { Path, PathAttributes } from '../Path.js';
 import { Disposable, dispose } from '../reactive/Disposable.js';
 import { PositionLike } from '../Shape.js';
+import { default_color } from '../utils/default_color.js';
+import { default_closed_path_stroke_width } from '../utils/default_stroke_width.js';
 import { HALF_PI, TWO_PI } from '../utils/math.js';
 import { Commands } from '../utils/path-commands.js';
 
@@ -31,7 +33,7 @@ export class Ellipse extends Path {
 
     readonly #disposables: Disposable[] = [];
 
-    readonly #radius = G20.vector(1, 1);
+    readonly #radius = G20.vector(1, 0.5);
 
     constructor(owner: Board, attributes: EllipseAttributes = {}) {
 
@@ -41,14 +43,14 @@ export class Ellipse extends Path {
             points.push(new Anchor(G20.vector(0, 0)));
         }
 
-        super(owner, points, true, true, true, path_attribs_from_ellipse_attribs(attributes));
+        super(owner, points, true, true, true, path_attribs_from_ellipse_attribs(attributes, owner));
 
         if (typeof attributes.rx === 'number') {
             this.rx = attributes.rx;
         }
 
         if (typeof attributes.ry === 'number') {
-            this.height = attributes.ry * 2;
+            this.ry = attributes.ry;
         }
 
         this.#disposables.push(effect(() => {
@@ -131,16 +133,16 @@ function update_ellipse_vertices(radiusX: number, radiusY: number, closed: boole
     }
 }
 
-function path_attribs_from_ellipse_attribs(attributes: EllipseAttributes): PathAttributes {
+function path_attribs_from_ellipse_attribs(attributes: EllipseAttributes, owner: Board): PathAttributes {
     const retval: PathAttributes = {
         id: attributes.id,
-        fill: attributes.fill,
+        fill: default_color(attributes.fill, 'none'),
         fillOpacity: attributes.fillOpacity,
         attitude: attributes.attitude,
         position: attributes.position,
-        stroke: attributes.stroke,
+        stroke: default_color(attributes.stroke, 'gray'),
         strokeOpacity: attributes.strokeOpacity,
-        strokeWidth: attributes.strokeWidth,
+        strokeWidth: default_closed_path_stroke_width(attributes.strokeWidth, owner),
         visibility: attributes.visibility
     };
     return retval;

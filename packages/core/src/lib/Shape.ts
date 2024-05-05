@@ -52,6 +52,8 @@ export interface ShapeAttributes {
     attitude?: G20;
     visibility?: 'visible' | 'hidden' | 'collapse';
     plumb?: boolean;
+    sx?: number;
+    sy?: number;
 }
 
 export interface ShapeProperties {
@@ -156,10 +158,14 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
             this.#visibility.set(attributes.visibility);
         }
 
-        /**
-         * The value for how much the shape is scaled relative to its parent.
-         */
-        this.scale = 1.0;
+        const scale = { sx: 1, sy: 1 };
+        if (typeof attributes.sx === 'number') {
+            scale.sx = attributes.sx;
+        }
+        if (typeof attributes.sy === 'number') {
+            scale.sy = attributes.sy;
+        }
+        this.#scale.set(scale.sx, scale.sy);
 
         /**
          * Skew the shape by an angle in the x axis direction.

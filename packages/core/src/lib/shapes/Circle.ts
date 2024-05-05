@@ -7,6 +7,8 @@ import { G20 } from '../math/G20';
 import { Path, PathAttributes } from '../Path';
 import { Disposable, dispose } from '../reactive/Disposable';
 import { PositionLike } from '../Shape';
+import { default_color } from '../utils/default_color';
+import { default_closed_path_stroke_width } from '../utils/default_stroke_width';
 import { HALF_PI, TWO_PI } from '../utils/math';
 import { Commands } from '../utils/path-commands';
 
@@ -52,7 +54,7 @@ export class Circle extends Path implements CircleProperties {
             points.push(new Anchor(G20.vector(0, 0)));
         }
 
-        super(owner, points, true, true, true, path_attributes(options));
+        super(owner, points, true, true, true, path_attributes(options, owner));
 
         if (typeof options.radius === 'number') {
             this.#radius.set(options.radius);
@@ -91,15 +93,15 @@ export class Circle extends Path implements CircleProperties {
     }
 }
 
-function path_attributes(attributes: CircleAttributes): PathAttributes {
+function path_attributes(attributes: CircleAttributes, owner: Board): PathAttributes {
     const retval: PathAttributes = {
         attitude: attributes.attitude,
         position: attributes.position,
-        fill: attributes.fill,
+        fill: default_color(attributes.fill, 'none'),
         fillOpacity: attributes.fillOpacity,
-        stroke: attributes.stroke,
+        stroke: default_color(attributes.stroke, 'gray'),
         strokeOpacity: attributes.strokeOpacity,
-        strokeWidth: attributes.strokeWidth
+        strokeWidth: default_closed_path_stroke_width(attributes.strokeWidth, owner)
     };
     return retval;
 }

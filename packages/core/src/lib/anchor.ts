@@ -41,7 +41,7 @@ export class Anchor {
      */
     constructor(origin: G20, command: 'M' | 'L' | 'C' | 'A' | 'Z' = Commands.move, ax = 0, ay = 0, bx = 0, by = 0) {
 
-        this.origin = origin;
+        this.origin = origin.isLocked() ? origin.clone() : origin;
         this.controls.a.set(ax, ay);
         this.controls.b.set(bx, by);
 

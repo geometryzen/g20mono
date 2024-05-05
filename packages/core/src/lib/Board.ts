@@ -4,7 +4,7 @@ import { Constants } from './constants';
 import { Color } from './effects/ColorProvider';
 import { Group } from './group';
 import { Board } from './IBoard';
-import { Path } from './Path';
+import { Path, PathAttributes } from './Path';
 import { Disposable, disposableFromFunction, dispose } from './reactive/Disposable';
 import { sizeEquals } from './renderers/Size';
 import { SVGViewFactory } from './renderers/SVGViewFactory';
@@ -19,6 +19,8 @@ import { Line, LineAttributes } from './shapes/Line';
 import { Polygon, PolygonAttributes } from './shapes/Polygon';
 import { Rectangle, RectangleAttributes } from './shapes/Rectangle';
 import { Text, TextAttributes } from './text';
+import { default_color } from './utils/default_color';
+import { default_closed_path_stroke_width, default_open_path_stroke_width } from './utils/default_stroke_width';
 import { dateTime } from './utils/performance';
 
 export type BoundingBox = { left: number, top: number, right: number, bottom: number };
@@ -377,17 +379,6 @@ class GraphicsBoard implements Board {
         return line;
     }
 
-    path(closed: boolean, ...points: Anchor[]): Path {
-        const path = new Path(this, points, closed);
-        const bbox = path.getBoundingBox();
-        if (typeof bbox.top === 'number' && typeof bbox.left === 'number' &&
-            typeof bbox.right === 'number' && typeof bbox.bottom === 'number') {
-            path.center().position.set((bbox.left + bbox.right) / 2, (bbox.top + bbox.bottom) / 2);
-        }
-        this.add(path);
-        return path;
-    }
-
     point(position: PositionLike, attributes: PointAttributes = {}): Shape {
         const { left, top, right, bottom } = this.getBoundingBox();
         const sx = this.width / Math.abs(right - left);
@@ -395,6 +386,7 @@ class GraphicsBoard implements Board {
         const rx = 4 / sx;
         const ry = 4 / sy;
         const ellipse_attribs = ellipse_attribs_from_point_attribs(attributes);
+        ellipse_attribs.fill = default_color(ellipse_attribs.fill, 'gray');
         ellipse_attribs.position = position;
         ellipse_attribs.rx = rx;
         ellipse_attribs.ry = ry;
@@ -427,13 +419,22 @@ class GraphicsBoard implements Board {
         return arrow;
     }
 
-    curve(closed: boolean, ...anchors: Anchor[]): Path {
+    curve(closed: boolean, points: Anchor[], attributes: PathAttributes = {}): Path {
         const curved = true;
-        const curve = new Path(this, anchors, closed, curved);
-        const bbox = curve.getBoundingBox();
-        curve.center().position.set((bbox.left + bbox.right) / 2, (bbox.top + bbox.bottom) / 2);
+        attributes.fill = default_color(attributes.fill, closed ? 'none' : 'gray');
+        attributes.stroke = default_color(attributes.stroke, 'gray');
+        attributes.strokeWidth = closed ? default_closed_path_stroke_width(attributes.strokeWidth, this) : default_open_path_stroke_width(attributes.strokeWidth, this);
+        const curve = new Path(this, points, closed, curved, false, attributes);
         this.add(curve);
         return curve;
+    }
+
+    path(closed: boolean, points: Anchor[], attributes: PathAttributes = {}): Path {
+        attributes.stroke = default_color(attributes.stroke, 'gray');
+        attributes.strokeWidth = closed ? default_closed_path_stroke_width(attributes.strokeWidth, this) : default_open_path_stroke_width(attributes.strokeWidth, this);
+        const path = new Path(this, points, closed, false, false, attributes);
+        this.add(path);
+        return path;
     }
 
     arc(x: number, y: number, innerRadius: number, outerRadius: number, startAngle: number, endAngle: number, resolution: number = Constants.Resolution): ArcSegment {

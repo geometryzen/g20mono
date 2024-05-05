@@ -4,9 +4,7 @@ import { Board } from '../IBoard';
 import { Path, PathAttributes } from '../Path';
 import { PositionLike, position_from_like } from '../Shape';
 import { default_color } from '../utils/default_color';
-import { default_stroke_width } from '../utils/default_stroke_width';
-
-const LINE_STROKE_WIDTH_PX = 2;
+import { default_open_path_stroke_width } from '../utils/default_stroke_width';
 
 export interface LineAttributes {
     id?: string,
@@ -71,9 +69,9 @@ function path_attribs_from_line_attribs(attributes: LineAttributes, owner: Board
     const retval: PathAttributes = {
         id: attributes.id,
         dashes: attributes.dashes,
-        stroke: default_color(attributes.stroke, 'black'),
+        stroke: default_color(attributes.stroke, 'gray'),
         strokeOpacity: attributes.strokeOpacity,
-        strokeWidth: default_stroke_width(attributes.strokeWidth, LINE_STROKE_WIDTH_PX / owner.sx),
+        strokeWidth: default_open_path_stroke_width(attributes.strokeWidth, owner),
         vectorEffect: attributes.vectorEffect,
         visibility: attributes.visibility
     };
