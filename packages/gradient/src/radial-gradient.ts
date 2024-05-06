@@ -22,7 +22,7 @@ export class RadialGradient extends Gradient implements ColorProvider {
      * @param fx The x position of the focal point on the radial gradient.
      * @param fy The y position of the focal point on the radial gradient.
      */
-    constructor(cx: number = 0, cy: number = 0, r: number = 1, stops: Stop[] = [], fx?: number, fy?: number, options: RadialGradientOptions = {}) {
+    constructor(cx: number = 0, cy: number = 0, r: number = 1, stops: (Stop | [offset: number, color: string, opacity: number])[] = [], fx?: number, fy?: number, options: RadialGradientOptions = {}) {
 
         super(stops, options);
 
@@ -56,6 +56,7 @@ export class RadialGradient extends Gradient implements ColorProvider {
                 change.cy = `${this.center.y}`;
                 setAttributes(this.zzz.elem, change);
             }));
+
             // focal
             this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = {};
@@ -63,18 +64,21 @@ export class RadialGradient extends Gradient implements ColorProvider {
                 change.fy = `${this.focal.y}`;
                 setAttributes(this.zzz.elem, change);
             }));
+
             // gradientUnits
             this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = {};
                 change.gradientUnits = this.units;
                 setAttributes(this.zzz.elem, change);
             }));
+
             // radius
             this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = {};
                 change.r = `${this.radius}`;
                 setAttributes(this.zzz.elem, change);
             }));
+
             // spreadMethod
             this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = {};

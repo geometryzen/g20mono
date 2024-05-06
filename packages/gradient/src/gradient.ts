@@ -33,10 +33,10 @@ export abstract class Gradient extends ElementBase<Group> implements ColorProvid
     readonly _change = variable(this);
     readonly change$ = this._change.asObservable();
 
-    constructor(stops: Stop[] = [], options: GradientOptions = {}) {
+    constructor(stops: (Stop | [offset: number, color: string, opacity: number])[] = [], options: GradientOptions = {}) {
         super(ensure_identifier(options));
         this.classList = [];
-        this.#stops = state(stops);
+        this.#stops = state(map_to_stops(stops));
     }
 
     override dispose(): void {
@@ -132,4 +132,22 @@ function ensure_identifier(attributes: GradientOptions): string {
     else {
         return `${Constants.Identifier}${Constants.uniqueId()}`;
     }
+}
+
+function map_to_stops(stops: (Stop | [offset: number, color: string, opacity: number])[]): Stop[] {
+    const retval: Stop[] = [];
+    const N = stops.length;
+    for (let i = 0; i < N; i++) {
+        const candidate = stops[i];
+        if (candidate instanceof Stop) {
+            retval.push(candidate);
+        }
+        else if (Array.isArray(candidate)) {
+            retval.push(new Stop(candidate[0], candidate[1], candidate[2]))
+        }
+        else {
+            throw new Error();
+        }
+    }
+    return retval;
 }

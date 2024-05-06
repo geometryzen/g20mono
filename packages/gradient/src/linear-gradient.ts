@@ -19,7 +19,7 @@ export class LinearGradient extends Gradient implements ColorProvider {
      * @param stops A list of {@link Stop}s that contain the gradient fill pattern for the gradient.
      * The linear gradient lives within the space of the parent object's matrix space.
      */
-    constructor(point1: VectorLike, point2: VectorLike, stops: Stop[], options: LinearGradientOptions = {}) {
+    constructor(point1: VectorLike, point2: VectorLike, stops: (Stop | [offset: number, color: string, opacity: number])[], options: LinearGradientOptions = {}) {
         super(stops, options);
         this.#point1 = vector_from_like(point1);
         this.#point2 = vector_from_like(point2);
