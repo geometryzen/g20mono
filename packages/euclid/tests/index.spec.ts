@@ -7,11 +7,9 @@ class MockCircle implements CircleProperties {
     readonly R = G20.one.clone();
     readonly #radius = state(1);
     // radius$ = this.#radius.asObservable();
-    position: G20;
-    attitude: G20;
-    fill: Color;
+    fillColor: Color;
     fillOpacity: number;
-    stroke: Color;
+    strokeColor: Color;
     strokeOpacity: number;
     strokeWidth: number;
     constructor() {
