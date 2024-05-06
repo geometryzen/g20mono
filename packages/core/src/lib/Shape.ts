@@ -246,12 +246,23 @@ export abstract class Shape extends ElementBase<unknown> implements IShape<unkno
     get X(): G20 {
         return this.#position;
     }
-    set X(pos: G20 | [x: number, y: number]) {
-        if (pos instanceof G20) {
-            this.#position.copyVector(pos);
+    set X(X: G20 | [x: number, y: number] | { x: number, y: number }) {
+        if (X instanceof G20) {
+            this.#position.copyVector(X);
         }
-        else if (Array.isArray(pos)) {
-            this.#position.set(pos[0], pos[1]);
+        else if (Array.isArray(X)) {
+            this.#position.set(X[0], X[1]);
+        }
+        else if (X === null) {
+            throw new Error();
+        }
+        else if (typeof X === 'object') {
+            const duck = X as { x: number, y: number };
+            const x = duck.x;
+            const y = duck.y;
+            if (typeof x === 'number' && typeof y === 'number') {
+                this.#position.set(x, y);
+            }
         }
     }
     get plumb(): boolean {
