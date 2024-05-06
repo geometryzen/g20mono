@@ -17,6 +17,11 @@ export interface ColorProvider {
      * The ColorProvider is expected to remove itself from the SVG defs element when no longer used.
      */
     release(defs: SVGDefsElement): void;
+    /**
+     * Provide the value that will be used in the `fill` or `stroke` attribute of the consuming element.
+     * Usually url(#${this.id}) for gradients and textures but may e.g. an rgb() or #RRGGBB value. 
+     */
+    // serialize(): string;
 }
 
 export type Color = string | ColorProvider;

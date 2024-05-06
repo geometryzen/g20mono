@@ -1,58 +1,82 @@
-import { initBoard } from './index';
+import { RegularPolygon } from '../../graphics/src/lib/RegularPolygon';
+import { RoundedRectangle } from '../../graphics/src/lib/RoundedRectangle';
+import { Star } from '../../graphics/src/lib/Star';
+import { Disposable, dispose, initBoard, Path } from './index';
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    const board = initBoard("my-board");
+    const disposables: Disposable[] = [];
 
-    board.point([0, 0]);
-    board.point([0.5, 0]);
-    board.point([0, 0.5]);
-    board.point([0.75, 0.75]);
+    const size = 1
 
-    board.line([0, 0], [0.75, 0.75]);
+    const board = initBoard("my-board", {
+        boundingBox: { left: -1, top: 1, right: 1, bottom: -1 },    // Cartesian
+        // boundingBox: { left: -1, top: -1, right: 1, bottom: 1 },     // SVG
+        // boundingBox: { left: 1, top: 1, right: -1, bottom: -1 },     // crazy     
+        // boundingBox: { left: 1, top: -1, right: -1, bottom: 1 },     // crazy and goofy       
+    });
 
-    board.arrow([1, 0]);
-    board.arrow([0, 1]);
+    // Unfortunately, some casting required because TypeScript is getting hung up on private (#) properties.
+    // Here it's not the Board itself, but the classes that it refers to.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const rectangle = new RoundedRectangle(board as any, {
+        id: 'rectangle',
+        width: Math.SQRT2 * size / 5,
+        height: Math.SQRT2 * size / 5,
+        position: [-2 * size / 5, 2 * size / 5],
+        fillColor: "#FFFF00",
+        fillOpacity: 0.3,
+        strokeColor: "#FFCC00",
+        strokeOpacity: 0.6,
+        strokeWidth: 4 / board.sx
+    });
+    board.add(rectangle as unknown as Path);
 
-    board.rectangle();
+    // Unfortunately, some casting required because TypeScript is getting hung up on private (#) properties.
+    // Here it's not the Board itself, but the classes that it refers to.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const polygon = new RegularPolygon(board as any, {
+        id: 'polygon',
+        position: [2 * size / 5, 2 * size / 5],
+        fillColor: "#FFFF00",
+        fillOpacity: 0.3,
+        radius: 1 * size / 5,
+        sides: 6,
+        strokeColor: "#FFCC00",
+        strokeOpacity: 0.6,
+        strokeWidth: 4 / board.sx,
+        twist: Math.PI / 2
+    });
 
-    board.circle();
+    board.add(polygon as unknown as Path);
 
-    board.ellipse();
+    // Unfortunately, some casting required because TypeScript is getting hung up on private (#) properties.
+    // Here it's not the Board itself, but the classes that it refers to.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const star = new Star(board as any, {
+        id: 'star',
+        points: 6,
+        innerRadius: 0.5 * size / 5,
+        outerRadius: 1 * size / 5,
+        position: [-2 * size / 5, -2 * size / 5],
+        fillColor: "#FFFF00",
+        fillOpacity: 0.3,
+        strokeColor: "#FFCC00",
+        strokeOpacity: 0.6,
+        strokeWidth: 4 / board.sx,
+        twist: Math.PI / 2
+    });
+    board.add(star as unknown as Path);
 
-    board.polygon([
-        [0, 1],
-        [-Math.cos(Math.PI / 6), -Math.sin(Math.PI / 6)],
-        [Math.cos(Math.PI / 6), -Math.sin(Math.PI / 6)]
-    ]);
+    window.onunload = function () {
+        dispose(disposables);
+        board.dispose();
+    };
 
-    board.text("Hello, World");
-
-    board.arc(0.45, 0.5, 0, Math.PI / 2);
-
-    board.path(true,
-        [
-            [0, -0.5],
-            [-0.25, -0.75],
-            [0, -1],
-            [0.25, -0.75]
-        ]
-    );
-
-    board.curve(true,
-        [
-            [0, 0],
-            [0, 0.8],
-            [-0.8, 0],
-            [0, -0.8]
-        ]
-    );
-
-    /*
     function animate() {
-        window.requestAnimationFrame(animate);
+        //window.requestAnimationFrame(animate)
     }
-    
+
     window.requestAnimationFrame(animate);
-    */
 });
+
