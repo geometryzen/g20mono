@@ -1,4 +1,4 @@
-import { Arrow, Board, G20, Group, Shape, Text } from "g2o";
+import { Arrow, Board, G20, Group, ShapeBase, Text } from "g2o";
 
 export interface GridOptions {
     id?: string
@@ -70,6 +70,6 @@ export class Grid extends Group {
     }
 }
 
-function resize(shape: Shape, board: Board): void {
+function resize(shape: ShapeBase, board: Board): void {
     shape.scale = [1 / board.sx, 1 / board.sy];
 }

@@ -3,11 +3,7 @@ import { state } from 'g2o-reactive';
 import { Constants } from './constants';
 import { Gradient } from './gradient';
 
-export class Stop extends ElementBase<Gradient> {
-
-    _flagOffset = true;
-    _flagOpacity = true;
-    _flagColor = true;
+export class Stop extends ElementBase {
 
     readonly #offset = state(0);
     readonly #opacity = state(1);
@@ -40,7 +36,6 @@ export class Stop extends ElementBase<Gradient> {
     static Index = 0;
 
     override flagReset(dirtyFlag = false) {
-        this._flagOffset = this._flagColor = this._flagOpacity = dirtyFlag;
         super.flagReset(dirtyFlag);
         return this;
     }
@@ -49,8 +44,7 @@ export class Stop extends ElementBase<Gradient> {
     }
     set color(color: string) {
         this.#color.set(color);
-        this._flagColor = true;
-        if (this.parent) {
+        if (this.parent && this.parent instanceof Gradient) {
             this.parent._flagStops = true;
         }
         this.#change.set(this);
@@ -60,8 +54,7 @@ export class Stop extends ElementBase<Gradient> {
     }
     set offset(offset: number) {
         this.#offset.set(offset);
-        this._flagOffset = true;
-        if (this.parent) {
+        if (this.parent && this.parent instanceof Gradient) {
             this.parent._flagStops = true;
         }
         this.#change.set(this);
@@ -71,8 +64,7 @@ export class Stop extends ElementBase<Gradient> {
     }
     set opacity(opacity: number) {
         this.#opacity.set(opacity);
-        this._flagOpacity = true;
-        if (this.parent) {
+        if (this.parent && this.parent instanceof Gradient) {
             this.parent._flagStops = true;
         }
         this.#change.set(this);

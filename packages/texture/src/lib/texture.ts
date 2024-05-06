@@ -1,11 +1,11 @@
-import { ColorProvider, Disposable, ElementBase, G20, Group, variable } from "g2o";
+import { ColorProvider, Disposable, ElementBase, G20, variable } from "g2o";
 import { Constants } from "./constants";
 import { is_canvas } from "./is_canvas";
 import { is_img } from "./is_img";
 import { is_video } from "./is_video";
 import { createElement, get_svg_element_defs, setAttributes, SVGAttributes } from "./svg";
 
-export class Texture extends ElementBase<Group> implements ColorProvider {
+export class Texture extends ElementBase implements ColorProvider {
 
     #refCount: number = 0;
 

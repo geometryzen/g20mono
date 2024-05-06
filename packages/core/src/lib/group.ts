@@ -1,23 +1,19 @@
 import { State, state } from 'g2o-reactive';
 import { Flag } from './Flag';
 import { Board } from './IBoard';
-import { IShape } from './IShape';
 import { svg, transform_value_of_matrix } from './renderers/SVGView';
-import { Parent, Shape, ShapeOptions } from './Shape';
-
-export interface IGroup extends Parent {
-    remove(...shapes: Shape[]): void;
-}
+import { Shape } from './Shape';
+import { ShapeBase, ShapeOptions } from './ShapeBase';
 
 export interface GroupOptions extends ShapeOptions {
     id?: string;
 }
 
-export class Group extends Shape {
+export class Group extends ShapeBase {
 
-    readonly #shapes: State<Shape[]>;
+    readonly #shapes: State<ShapeBase[]>;
 
-    constructor(board: Board, shapes: Shape[] = [], options: GroupOptions = {}) {
+    constructor(board: Board, shapes: ShapeBase[] = [], options: GroupOptions = {}) {
 
         super(board, shape_attributes(options));
 
@@ -137,9 +133,9 @@ export class Group extends Shape {
         return this;
     }
 
-    getById(id: string): IShape<unknown> {
+    getById(id: string): Shape {
         let found = null;
-        function search(node: IShape<unknown>): IShape<unknown> {
+        function search(node: Shape): Shape {
             if (node.id === id) {
                 return node;
             }
@@ -156,9 +152,9 @@ export class Group extends Shape {
         return search(this);
     }
 
-    getByClassName(className: string): IShape<unknown>[] {
-        const found: IShape<unknown>[] = [];
-        function search(node: IShape<unknown>) {
+    getByClassName(className: string): Shape[] {
+        const found: Shape[] = [];
+        function search(node: Shape) {
             if (Array.prototype.indexOf.call(node.classList, className) >= 0) {
                 found.push(node);
             }
@@ -174,9 +170,9 @@ export class Group extends Shape {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    getByType(type: any): IShape<unknown>[] {
-        const found: IShape<unknown>[] = [];
-        function search(node: IShape<unknown>) {
+    getByType(type: any): Shape[] {
+        const found: Shape[] = [];
+        function search(node: Shape) {
             if (node instanceof type) {
                 found.push(node);
             }
@@ -191,7 +187,7 @@ export class Group extends Shape {
         return search(this);
     }
 
-    add(...shapes: Shape[]) {
+    add(...shapes: ShapeBase[]) {
         const children = this.children;
         for (let i = 0; i < shapes.length; i++) {
             const child = shapes[i];
@@ -204,7 +200,7 @@ export class Group extends Shape {
         return this;
     }
 
-    remove(...shapes: Shape[]) {
+    remove(...shapes: ShapeBase[]) {
         const children = this.children;
         for (let i = 0; i < shapes.length; i++) {
             const shape = shapes[i];
@@ -285,10 +281,10 @@ export class Group extends Shape {
     /**
      * A list of all the children in the scenegraph.
      */
-    get children(): Shape[] {
+    get children(): ShapeBase[] {
         return this.#shapes.get();
     }
-    set children(children: Shape[]) {
+    set children(children: ShapeBase[]) {
 
         this.#shapes.set(children);
 
@@ -299,7 +295,7 @@ export class Group extends Shape {
     }
 }
 
-export function update_shape_group(child: Shape, parent?: Group) {
+export function update_shape_group(child: ShapeBase, parent?: Group) {
 
     const previous_parent = child.parent;
 

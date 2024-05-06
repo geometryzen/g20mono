@@ -4,7 +4,7 @@ import { Group } from '../group';
 import { Board } from '../IBoard';
 import { G20 } from '../math/G20';
 import { Matrix } from '../math/Matrix';
-import { Shape } from '../Shape';
+import { ShapeBase } from '../ShapeBase';
 import { mod, toFixed } from '../utils/math';
 import { Commands } from '../utils/path-commands';
 import { sizeEquals } from './Size';
@@ -347,7 +347,7 @@ export const svg = {
      * @param svgElement 
      * @returns 
      */
-    getClip: function (shape: Shape, svgElement: SVGElement): SVGClipPathElement {
+    getClip: function (shape: ShapeBase, svgElement: SVGElement): SVGClipPathElement {
         let clipPath = shape.zzz.clipPath;
         if (!clipPath) {
             clipPath = shape.zzz.clipPath = svg.createElement('clipPath', { 'clip-rule': 'nonzero' }) as SVGClipPathElement;

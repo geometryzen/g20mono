@@ -26,9 +26,10 @@ export class RadialGradient extends Gradient implements ColorProvider {
     readonly #focal: G20;
 
     /**
+     * 
      * @param center The position of the origin of the radial gradient.
-     * @param r The radius of the radial gradient.
      * @param stops A list of {@link Stop}s that contain the gradient fill pattern for the gradient.
+     * @param options 
      */
     constructor(center: VectorLike, stops: (Stop | [offset: number, color: string, opacity: number])[] = [], options: RadialGradientOptions = {}) {
 

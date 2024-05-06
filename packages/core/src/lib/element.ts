@@ -6,11 +6,11 @@ import { ZZZ } from './renderers/ZZZ';
 /**
  * The foundational object for the scenegraph.
  */
-export abstract class ElementBase<P> implements Disposable {
+export abstract class ElementBase implements Disposable {
     /**
      * 
      */
-    parent: P;
+    parent: unknown;
 
     /**
      * 

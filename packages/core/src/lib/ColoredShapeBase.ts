@@ -5,7 +5,7 @@ import { Flag } from "./Flag";
 import { Board } from "./IBoard";
 import { SpinorLike, VectorLike } from "./math/G20";
 import { get_svg_element_defs } from "./renderers/SVGView";
-import { Shape, ShapeOptions } from "./Shape";
+import { ShapeBase, ShapeOptions } from "./ShapeBase";
 
 export interface ColoredShapeOptions extends ShapeOptions {
     position?: VectorLike,
@@ -23,7 +23,7 @@ export interface ColoredShapeOptions extends ShapeOptions {
     visibility?: 'visible' | 'hidden' | 'collapse';
 }
 
-export abstract class ColoredShape extends Shape {
+export abstract class ColoredShapeBase extends ShapeBase {
     /**
      * @see {@link https://developer.mozilla.org/en-US/docs/Web/CSS/color_value} for more information on CSS's colors as `String`.
      */

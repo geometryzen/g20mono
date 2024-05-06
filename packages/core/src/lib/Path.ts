@@ -1,7 +1,7 @@
 import { effect, state } from 'g2o-reactive';
 import { Anchor } from './anchor';
 import { Collection } from './collection';
-import { ColoredShape, ColoredShapeOptions } from './ColoredShape';
+import { ColoredShapeBase, ColoredShapeOptions } from './ColoredShapeBase';
 import { Color } from './effects/ColorProvider';
 import { ElementBase } from './element';
 import { Flag } from './Flag';
@@ -44,7 +44,7 @@ export interface PathOptions extends ColoredShapeOptions {
     strokeWidth?: number;
 }
 
-export class Path extends ColoredShape {
+export class Path extends ColoredShapeBase {
 
     #length = 0;
 

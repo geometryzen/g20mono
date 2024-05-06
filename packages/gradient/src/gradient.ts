@@ -1,4 +1,4 @@
-import { ColorProvider, ElementBase, Group, variable } from 'g2o';
+import { ColorProvider, ElementBase, variable } from 'g2o';
 import { effect, State, state } from 'g2o-reactive';
 import { Constants } from './constants';
 import { Stop } from './stop';
@@ -13,7 +13,7 @@ export interface GradientOptions {
 /**
  *
  */
-export abstract class Gradient extends ElementBase<Group> implements ColorProvider {
+export abstract class Gradient extends ElementBase implements ColorProvider {
 
     #refCount = 0;
 

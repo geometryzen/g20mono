@@ -1,5 +1,5 @@
 import { effect, state } from 'g2o-reactive';
-import { ColoredShape, ColoredShapeOptions } from './ColoredShape';
+import { ColoredShapeBase, ColoredShapeOptions } from './ColoredShapeBase';
 import { Color } from './effects/ColorProvider';
 import { ElementBase } from './element';
 import { Flag } from './Flag';
@@ -61,7 +61,7 @@ export interface TextProperties {
     fontWeight: 'normal' | 'bold' | 'bolder' | 'lighter' | number;
 }
 
-export class Text extends ColoredShape implements TextProperties {
+export class Text extends ColoredShapeBase implements TextProperties {
     beginning: number;
     ending: number;
     length: number;
