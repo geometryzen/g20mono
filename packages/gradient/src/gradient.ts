@@ -6,6 +6,8 @@ import { createElement, SVGAttributes } from './svg';
 
 export interface GradientOptions {
     id?: string;
+    spreadMethod?: 'pad' | 'reflect' | 'repeat';
+    units?: 'objectBoundingBox' | 'userSpaceOnUse';
 }
 
 /**
@@ -17,15 +19,7 @@ export abstract class Gradient extends ElementBase<Group> implements ColorProvid
 
     _flagStops = false;
 
-    /**
-     * Indicates what happens if the gradient starts or ends inside the bounds of the target rectangle.
-     * @see {@link https://www.w3.org/TR/SVG11/pservers.html#LinearGradientElementSpreadMethodAttribute} for more information
-     */
     readonly #spreadMethod = state('pad' as 'pad' | 'reflect' | 'repeat');
-    /**
-     * Indicates how coordinate values are interpreted by the renderer.
-     * @see {@link https://www.w3.org/TR/SVG11/pservers.html#RadialGradientElementGradientUnitsAttribute} for more information
-     */
     readonly #units = state('userSpaceOnUse' as 'userSpaceOnUse' | 'objectBoundingBox');
 
     readonly #stops: State<Stop[]> = state([]);
@@ -36,6 +30,12 @@ export abstract class Gradient extends ElementBase<Group> implements ColorProvid
     constructor(stops: (Stop | [offset: number, color: string, opacity: number])[] = [], options: GradientOptions = {}) {
         super(ensure_identifier(options));
         this.classList = [];
+        if (typeof options.spreadMethod === 'string') {
+            this.spreadMethod = options.spreadMethod;
+        }
+        if (typeof options.units === 'string') {
+            this.units = options.units;
+        }
         this.#stops = state(map_to_stops(stops));
     }
 
@@ -105,6 +105,10 @@ export abstract class Gradient extends ElementBase<Group> implements ColorProvid
         super.flagReset(dirtyFlag);
         return this;
     }
+    /**
+     * Indicates what happens if the gradient starts or ends inside the bounds of the target rectangle.
+     * @see {@link https://www.w3.org/TR/SVG11/pservers.html#LinearGradientElementSpreadMethodAttribute} for more information
+     */
     get spreadMethod(): 'pad' | 'reflect' | 'repeat' {
         return this.#spreadMethod.get();
     }
@@ -117,6 +121,10 @@ export abstract class Gradient extends ElementBase<Group> implements ColorProvid
     set stops(stops: Stop[]) {
         this.#stops.set(stops);
     }
+    /**
+     * Indicates how coordinate values are interpreted by the renderer.
+     * @see {@link https://www.w3.org/TR/SVG11/pservers.html#RadialGradientElementGradientUnitsAttribute} for more information
+     */
     get units(): 'userSpaceOnUse' | 'objectBoundingBox' {
         return this.#units.get();
     }

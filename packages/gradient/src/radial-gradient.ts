@@ -1,41 +1,51 @@
-import { ColorProvider, G20 } from 'g2o';
+import { ColorProvider, G20, VectorLike, vector_from_like } from 'g2o';
 import { effect, state } from 'g2o-reactive';
 import { Gradient, GradientOptions } from './gradient';
 import { Stop } from './stop';
 import { createElement, setAttributes, SVGAttributes } from './svg';
 
 export interface RadialGradientOptions extends GradientOptions {
-
+    /**
+     * The radius of the radial gradient.
+     */
+    radius?: number;
+    /**
+     * The x coordinate of the focal point on the radial gradient.
+     */
+    fx?: number;
+    /**
+     * The y coordinate of the focal point on the radial gradient.
+     */
+    fy?: number;
 }
 
 export class RadialGradient extends Gradient implements ColorProvider {
 
     readonly #center: G20;
-    readonly #radius = state(null as number | null);
+    readonly #radius = state(1);
     readonly #focal: G20;
 
     /**
-     * @param cx The x position of the origin of the radial gradient.
-     * @param cy The y position of the origin of the radial gradient.
+     * @param center The position of the origin of the radial gradient.
      * @param r The radius of the radial gradient.
      * @param stops A list of {@link Stop}s that contain the gradient fill pattern for the gradient.
-     * @param fx The x position of the focal point on the radial gradient.
-     * @param fy The y position of the focal point on the radial gradient.
      */
-    constructor(cx: number = 0, cy: number = 0, r: number = 1, stops: (Stop | [offset: number, color: string, opacity: number])[] = [], fx?: number, fy?: number, options: RadialGradientOptions = {}) {
+    constructor(center: VectorLike, stops: (Stop | [offset: number, color: string, opacity: number])[] = [], options: RadialGradientOptions = {}) {
 
         super(stops, options);
 
-        this.#center = new G20(cx, cy);
+        this.#center = vector_from_like(center);
 
-        this.#radius.set(r);
+        if (typeof options.radius === 'number') {
+            this.#radius.set(options.radius);
+        }
 
         this.#focal = this.center.clone();
-        if (typeof fx === 'number') {
-            this.focal.x = fx;
+        if (typeof options.fx === 'number') {
+            this.focal.x = options.fx;
         }
-        if (typeof fy === 'number') {
-            this.focal.y = fy;
+        if (typeof options.fy === 'number') {
+            this.focal.y = options.fy;
         }
     }
     override render(defs: SVGDefsElement): this {

@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const disposables: Disposable[] = [];
 
+    const size = 1;
+
     const board = initBoard("my-board", {
         boundingBox: { left: -1, top: 1, right: 1, bottom: -1 },    // Cartesian
         // boundingBox: { left: -1, top: -1, right: 1, bottom: 1 },     // SVG
@@ -19,12 +21,14 @@ document.addEventListener('DOMContentLoaded', function () {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const rectangle = new RoundedRectangle(board as any, {
         id: 'rectangle',
-        position: [-2, 2],
-        fill: "#FFFF00",
+        width: Math.SQRT2 * size / 5,
+        height: Math.SQRT2 * size / 5,
+        position: [-2 * size / 5, 2 * size / 5],
+        fillColor: "#FFFF00",
         fillOpacity: 0.3,
-        stroke: "#FFCC00",
+        strokeColor: "#FFCC00",
         strokeOpacity: 0.6,
-        strokeWidth: 4
+        strokeWidth: 4 / board.sx
     });
     board.add(rectangle as unknown as Path);
 
@@ -33,14 +37,14 @@ document.addEventListener('DOMContentLoaded', function () {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const polygon = new RegularPolygon(board as any, {
         id: 'polygon',
-        position: [2, 2],
-        fill: "#FFFF00",
+        position: [2 * size / 5, 2 * size / 5],
+        fillColor: "#FFFF00",
         fillOpacity: 0.3,
-        radius: 1,
-        sides: 3,
-        stroke: "#FFCC00",
+        radius: 1 * size / 5,
+        sides: 6,
+        strokeColor: "#FFCC00",
         strokeOpacity: 0.6,
-        strokeWidth: 4,
+        strokeWidth: 4 / board.sx,
         twist: Math.PI / 2
     });
 
@@ -52,13 +56,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const star = new Star(board as any, {
         id: 'star',
         points: 6,
-        innerRadius: 0.5,
-        position: [-2, -2],
-        fill: "#FFFF00",
+        innerRadius: 0.5 * size / 5,
+        outerRadius: 1 * size / 5,
+        position: [-2 * size / 5, -2 * size / 5],
+        fillColor: "#FFFF00",
         fillOpacity: 0.3,
-        stroke: "#FFCC00",
+        strokeColor: "#FFCC00",
         strokeOpacity: 0.6,
-        strokeWidth: 4,
+        strokeWidth: 4 / board.sx,
         twist: Math.PI / 2
     });
     board.add(star as unknown as Path);
