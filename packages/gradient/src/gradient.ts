@@ -143,7 +143,7 @@ function map_to_stops(stops: (Stop | [offset: number, color: string, opacity: nu
             retval.push(candidate);
         }
         else if (Array.isArray(candidate)) {
-            retval.push(new Stop(candidate[0], candidate[1], candidate[2]))
+            retval.push(new Stop(candidate[0], candidate[1], candidate[2]));
         }
         else {
             throw new Error();
