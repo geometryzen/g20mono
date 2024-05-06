@@ -1,5 +1,5 @@
 import { state, State } from "g2o-reactive";
-import { Color, ColorProvider, is_color_provider, serialize_color } from "./effects/ColorProvider";
+import { Color, ColorProvider, is_color_provider } from "./effects/ColorProvider";
 import { get_svg_element_defs } from "./renderers/SVGView";
 
 /**
@@ -37,7 +37,7 @@ export class ColorManager {
         if (newColor !== oldColor) {
             if (is_color_provider(oldColor)) {
                 if (this.#svg) {
-                    oldColor.release(get_svg_element_defs(this.#svg));
+                    oldColor.decrementUse(get_svg_element_defs(this.#svg));
                 }
                 else {
                     this.#olds.push(oldColor);
@@ -45,7 +45,7 @@ export class ColorManager {
             }
             if (is_color_provider(newColor)) {
                 if (this.#svg) {
-                    newColor.addRef(get_svg_element_defs(this.#svg));
+                    newColor.incrementUse(get_svg_element_defs(this.#svg));
                 }
                 else {
                     this.#news.push(newColor);
@@ -59,18 +59,21 @@ export class ColorManager {
         this.#hostElement = hostElement;
         const defs: SVGDefsElement = get_svg_element_defs(svgElement);
         for (const newColor of this.#news) {
-            newColor.addRef(defs);
+            newColor.incrementUse(defs);
         }
         this.#news.length = 0;
         for (const oldColor of this.#olds) {
-            oldColor.release(defs);
+            oldColor.decrementUse(defs);
         }
         this.#olds.length = 0;
     }
     update(): void {
         const color = this.#color.get();
-        if (color/* && color != defaultValue(this.qualifiedName)*/) {
-            this.#hostElement.setAttribute(this.qualifiedName, serialize_color(color));
+        if (typeof color === 'string') {
+            this.#hostElement.setAttribute(this.qualifiedName, color);
+        }
+        else if (is_color_provider(color)) {
+            this.#hostElement.setAttribute(this.qualifiedName, color.serialize());
         }
         else {
             this.#hostElement.removeAttribute(this.qualifiedName);

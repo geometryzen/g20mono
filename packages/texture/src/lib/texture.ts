@@ -66,7 +66,10 @@ export class Texture extends ElementBase<Group> implements ColorProvider {
 
         this.update();
     }
-    addRef(defs: SVGDefsElement): void {
+    serialize(): string {
+        return `url(#${this.id})`;
+    }
+    incrementUse(defs: SVGDefsElement): void {
         this.#refCount++;
         if (this.#refCount == 1) {
             this.zzz.elem = createElement('pattern', {});
@@ -85,7 +88,7 @@ export class Texture extends ElementBase<Group> implements ColorProvider {
                 this.zzz.image.setAttribute('href', this.image.toDataURL('image/png'));
             }
             else if (is_img(this.image)) {
-                this.zzz.image.setAttribute('href',this.image.src);
+                this.zzz.image.setAttribute('href', this.image.src);
             }
             else if (is_video(this.image)) {
                 // styles.href = this.src;
@@ -97,7 +100,7 @@ export class Texture extends ElementBase<Group> implements ColorProvider {
             this.zzz.elem.appendChild(this.zzz.image);
         }
     }
-    release(defs: SVGDefsElement): void {
+    decrementUse(defs: SVGDefsElement): void {
         this.#refCount--;
         if (this.#refCount === 0) {
             defs.removeChild(this.zzz.elem);

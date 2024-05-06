@@ -43,6 +43,10 @@ export abstract class Gradient extends ElementBase<Group> implements ColorProvid
         super.dispose();
     }
 
+    serialize(): string {
+        return `url(#${this.id})`;
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     render(defs: SVGDefsElement): void {
         this.zzz.disposables.push(effect(() => {
@@ -74,13 +78,14 @@ export abstract class Gradient extends ElementBase<Group> implements ColorProvid
         }));
     }
 
-    addRef(defs: SVGDefsElement): void {
+    incrementUse(defs: SVGDefsElement): void {
         this.#refCount++;
         if (this.#refCount === 1) {
             this.render(defs);
         }
     }
-    release(defs: SVGDefsElement): void {
+
+    decrementUse(defs: SVGDefsElement): void {
         this.#refCount--;
         if (this.#refCount === 0) {
             defs.removeChild(this.zzz.elem);
