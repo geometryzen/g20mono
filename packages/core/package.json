@@ -1,6 +1,6 @@
 {
     "name": "g2o",
-    "version": "0.9.241",
+    "version": "0.9.242",
     "description": "Geometric Algebra 2D Graphics Library",
     "exports": {
         ".": {
@@ -76,7 +76,6 @@
         "rxjs": "^7.8.1"
     },
     "devDependencies": {
-        "g2o-reactive": "^0.9.241",
         "@rollup/plugin-commonjs": "^25.0.7",
         "@rollup/plugin-node-resolve": "^15.2.3",
         "@rollup/plugin-terser": "^0.4.4",
@@ -89,6 +88,7 @@
         "esbuild": "^0.20.2",
         "esbuild-plugin-tsc": "^0.4.0",
         "eslint": "^8.56.0",
+        "g2o-reactive": "^0.9.242",
         "gh-pages": "^6.1.1",
         "jest": "^29.7.0",
         "lerna": "^8.1.2",
