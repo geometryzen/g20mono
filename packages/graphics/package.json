@@ -1,6 +1,6 @@
 {
     "name": "g2o-graphics",
-    "version": "0.9.248",
+    "version": "0.9.249",
     "description": "g2o Graphics",
     "exports": {
         ".": {
