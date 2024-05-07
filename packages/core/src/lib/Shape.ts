@@ -70,7 +70,7 @@ export interface SVGAttributes {
     'y2'?: string;
 }
 
-export interface ShapeHost {
+export interface ViewDOM {
     createSVGElement(qualifiedName: string, attrs: SVGAttributes): unknown;
     setAttribute(element: unknown, qualifiedName: string, value: string): void;
     setAttributes(element: unknown, attrs: SVGAttributes): void;
@@ -82,6 +82,7 @@ export interface ShapeHost {
     getParentNode(element: unknown): unknown | null;
     getLastChild(element: unknown): unknown | null;
     getElementDefs(svg: unknown): unknown;
+    setStyle(element: unknown, name: 'display' | 'overflow' | 'top', value: string): void;
 }
 
 /**
@@ -102,5 +103,5 @@ export interface Shape extends Disposable {
     visibility: 'visible' | 'hidden' | 'collapse';
     getBoundingBox(shallow?: boolean): { top?: number; left?: number; right?: number; bottom?: number };
     hasBoundingBox(): boolean;
-    render(shapeHost: ShapeHost, parentElement: unknown, svgElement: unknown): void;
+    render(viewDOM: ViewDOM, parentElement: unknown, svgElement: unknown): void;
 }

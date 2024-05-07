@@ -1,7 +1,7 @@
 import { Anchor } from '../anchor.js';
 import { Constants } from '../constants.js';
 import { Color } from '../effects/ColorProvider.js';
-import { Board } from '../IBoard.js';
+import { Board } from '../Board.js';
 import { G20 } from '../math/G20.js';
 import { Path, PathOptions } from '../Path.js';
 import { default_color } from '../utils/default_color.js';

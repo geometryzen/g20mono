@@ -1,4 +1,4 @@
-import { ColorProvider, Disposable, ElementBase, G20, ShapeHost, SVGAttributes, variable } from "g2o";
+import { ColorProvider, Disposable, ElementBase, G20, SVGAttributes, variable, ViewDOM } from "g2o";
 import { Constants } from "./constants";
 import { is_canvas } from "./is_canvas";
 import { is_img } from "./is_img";
@@ -68,26 +68,26 @@ export class Texture extends ElementBase implements ColorProvider {
     serialize(): string {
         return `url(#${this.id})`;
     }
-    incrementUse(shapeHost: ShapeHost, defs: unknown): void {
+    incrementUse(viewDOM: ViewDOM, defs: unknown): void {
         this.#refCount++;
         if (this.#refCount == 1) {
-            this.zzz.elem = shapeHost.createSVGElement('pattern', {});
-            shapeHost.setAttribute(this.zzz.elem, 'id', this.id);
-            shapeHost.setAttribute(this.zzz.elem, 'patternUnits', 'userSpaceOnUse');
-            shapeHost.setAttribute(this.zzz.elem, 'width', `${this.image.width}`);
-            shapeHost.setAttribute(this.zzz.elem, 'height', `${this.image.height}`);
-            shapeHost.appendChild(defs, this.zzz.elem);
-            this.zzz.image = shapeHost.createSVGElement('image', {
+            this.zzz.elem = viewDOM.createSVGElement('pattern', {});
+            viewDOM.setAttribute(this.zzz.elem, 'id', this.id);
+            viewDOM.setAttribute(this.zzz.elem, 'patternUnits', 'userSpaceOnUse');
+            viewDOM.setAttribute(this.zzz.elem, 'width', `${this.image.width}`);
+            viewDOM.setAttribute(this.zzz.elem, 'height', `${this.image.height}`);
+            viewDOM.appendChild(defs, this.zzz.elem);
+            this.zzz.image = viewDOM.createSVGElement('image', {
                 x: '0',
                 y: '0',
                 width: `${this.image.width}`,
                 height: `${this.image.height}`
             }) as SVGImageElement;
             if (is_canvas(this.image)) {
-                shapeHost.setAttribute(this.zzz.image, 'href', this.image.toDataURL('image/png'));
+                viewDOM.setAttribute(this.zzz.image, 'href', this.image.toDataURL('image/png'));
             }
             else if (is_img(this.image)) {
-                shapeHost.setAttribute(this.zzz.image, 'href', this.image.src);
+                viewDOM.setAttribute(this.zzz.image, 'href', this.image.src);
             }
             else if (is_video(this.image)) {
                 // styles.href = this.src;
@@ -95,16 +95,16 @@ export class Texture extends ElementBase implements ColorProvider {
             else {
                 throw new Error();
             }
-            shapeHost.appendChild(this.zzz.elem, this.zzz.image);
+            viewDOM.appendChild(this.zzz.elem, this.zzz.image);
         }
     }
-    decrementUse(shapeHost: ShapeHost, defs: unknown): void {
+    decrementUse(viewDOM: ViewDOM, defs: unknown): void {
         this.#refCount--;
         if (this.#refCount === 0) {
-            shapeHost.removeChild(defs, this.zzz.elem);
+            viewDOM.removeChild(defs, this.zzz.elem);
         }
     }
-    use(shapeHost: ShapeHost, svgElement: unknown): this {
+    use(viewDOM: ViewDOM, svgElement: unknown): this {
 
         let changed_x: number;
         let changed_y: number;
@@ -194,10 +194,10 @@ export class Texture extends ElementBase implements ColorProvider {
 
         if (this._flagScale || this._flagLoaded) {
             if (!this.zzz.image) {
-                this.zzz.image = shapeHost.createSVGElement('image', styles);
+                this.zzz.image = viewDOM.createSVGElement('image', styles);
             }
             else {
-                shapeHost.setAttributes(this.zzz.image, styles);
+                viewDOM.setAttributes(this.zzz.image, styles);
             }
         }
 
@@ -210,18 +210,18 @@ export class Texture extends ElementBase implements ColorProvider {
             changed.id = this.id;
             changed.x = `${changed_x}`;
             // changed.patternUnits = 'userSpaceOnUse';
-            this.zzz.elem = shapeHost.createSVGElement('pattern', changed);
+            this.zzz.elem = viewDOM.createSVGElement('pattern', changed);
         }
         else if (Object.keys(changed).length !== 0) {
-            shapeHost.setAttributes(this.zzz.elem, changed);
+            viewDOM.setAttributes(this.zzz.elem, changed);
         }
 
-        if (shapeHost.getParentNode(this.zzz.elem) === null) {
-            shapeHost.appendChild(shapeHost.getElementDefs(svgElement), this.zzz.elem);
+        if (viewDOM.getParentNode(this.zzz.elem) === null) {
+            viewDOM.appendChild(viewDOM.getElementDefs(svgElement), this.zzz.elem);
         }
 
         if (this.zzz.elem && this.zzz.image && !this.zzz.appended) {
-            shapeHost.appendChild(this.zzz.elem, this.zzz.image);
+            viewDOM.appendChild(this.zzz.elem, this.zzz.image);
             this.zzz.appended = true;
         }
 

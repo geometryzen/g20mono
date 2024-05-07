@@ -2,7 +2,7 @@ import { effect, state } from 'g2o-reactive';
 import { Anchor } from '../anchor';
 import { Collection } from '../collection';
 import { Color } from '../effects/ColorProvider';
-import { Board } from '../IBoard';
+import { Board } from '../Board';
 import { G20, SpinorLike, VectorLike } from '../math/G20';
 import { Path, PathOptions } from '../Path';
 import { Disposable, dispose } from '../reactive/Disposable';
@@ -70,7 +70,7 @@ export class Rectangle extends ColoredShape implements RectangleProperties, Disp
             this.#width.set(width);
         }
     }
-    render(shapeHost: ShapeHost, parentElement: unknown, svgElement: unknown): void {
+    render(viewDOM: ViewDOM, parentElement: unknown, svgElement: unknown): void {
 
         this.update();
 
@@ -79,7 +79,7 @@ export class Rectangle extends ColoredShape implements RectangleProperties, Disp
         }
         else {
             const changed: SVGAttributes = {};
-            this.zzz.elem = shapeHost.createSVGElement('rect', changed);
+            this.zzz.elem = viewDOM.createSVGElement('rect', changed);
             parentElement.appendChild(this.zzz.elem);
             super.render(parentElement, svgElement);
 

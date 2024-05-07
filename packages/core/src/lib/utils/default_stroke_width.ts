@@ -1,4 +1,4 @@
-import { Board } from "../IBoard";
+import { Board } from "../Board";
 
 export const STROKE_WIDTH_OPEN_PATH_PIXELS = 3;
 export const STROKE_WIDTH_CLOSED_PATH_PIXELS = 3;

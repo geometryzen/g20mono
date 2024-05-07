@@ -2,7 +2,7 @@ import { effect } from 'g2o-reactive';
 import { Anchor } from '../anchor';
 import { Collection } from '../collection';
 import { Color } from '../effects/ColorProvider';
-import { Board } from '../IBoard';
+import { Board } from '../Board';
 import { G20, SpinorLike, VectorLike } from '../math/G20';
 import { Path, PathOptions } from '../Path';
 import { Disposable, dispose } from '../reactive/Disposable';

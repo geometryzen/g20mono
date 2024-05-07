@@ -1,4 +1,4 @@
-import { ColorProvider, G20, ShapeHost, VectorLike, vector_from_like } from 'g2o';
+import { ColorProvider, G20, ViewDOM, VectorLike, vector_from_like } from 'g2o';
 import { effect } from 'g2o-reactive';
 import { Gradient, GradientOptions } from './gradient';
 import { Stop } from './stop';
@@ -24,50 +24,50 @@ export class LinearGradient extends Gradient implements ColorProvider {
         this.#point1 = vector_from_like(point1);
         this.#point2 = vector_from_like(point2);
     }
-    override render(shapeHost: ShapeHost, defs: unknown): this {
+    override render(viewDOM: ViewDOM, defs: unknown): this {
 
         // If there is no attached DOM element yet,
         // create it with all necessary attributes.
         if (this.zzz.elem) {
             const changed: SVGAttributes = {};
-            shapeHost.setAttributes(this.zzz.elem, changed);
+            viewDOM.setAttributes(this.zzz.elem, changed);
         }
         else {
             {
                 const changed: SVGAttributes = {};
                 changed.id = this.id;
-                this.zzz.elem = shapeHost.createSVGElement('linearGradient', changed);
-                super.render(shapeHost, defs);
+                this.zzz.elem = viewDOM.createSVGElement('linearGradient', changed);
+                super.render(viewDOM, defs);
             }
 
             this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = {};
                 change.x1 = `${this.point1.x}`;
                 change.y1 = `${this.point1.y}`;
-                shapeHost.setAttributes(this.zzz.elem, change);
+                viewDOM.setAttributes(this.zzz.elem, change);
             }));
 
             this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = {};
                 change.x2 = `${this.point2.x}`;
                 change.y2 = `${this.point2.y}`;
-                shapeHost.setAttributes(this.zzz.elem, change);
+                viewDOM.setAttributes(this.zzz.elem, change);
             }));
 
             this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = {};
                 change.gradientUnits = this.units;
-                shapeHost.setAttributes(this.zzz.elem, change);
+                viewDOM.setAttributes(this.zzz.elem, change);
             }));
             this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = {};
                 change.spreadMethod = this.spreadMethod;
-                shapeHost.setAttributes(this.zzz.elem, change);
+                viewDOM.setAttributes(this.zzz.elem, change);
             }));
         }
 
-        if (shapeHost.getParentNode(this.zzz.elem) === null) {
-            shapeHost.appendChild(defs, this.zzz.elem);
+        if (viewDOM.getParentNode(this.zzz.elem) === null) {
+            viewDOM.appendChild(defs, this.zzz.elem);
         }
 
         return this.flagReset();

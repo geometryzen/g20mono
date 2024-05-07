@@ -1,6 +1,6 @@
 import { Anchor } from "../anchor";
 import { Color } from "../effects/ColorProvider";
-import { Board } from "../IBoard";
+import { Board } from "../Board";
 import { VectorLike, vector_from_like } from "../math/G20";
 import { Path, PathOptions } from "../Path";
 import { default_color } from "../utils/default_color";

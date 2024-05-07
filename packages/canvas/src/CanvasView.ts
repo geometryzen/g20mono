@@ -1,10 +1,10 @@
 import { Canvg } from 'canvg';
 import { Group, SVGViewFactory, View } from "g2o";
 
-export class CanvasView implements View {
+export class CanvasView implements View<HTMLCanvasElement> {
     domElement: HTMLCanvasElement;
     #ctx: CanvasRenderingContext2D;
-    #svgView: View;
+    #svgView: View<SVGElement>;
     constructor(viewBox: Group, containerId: string) {
         this.#svgView = new SVGViewFactory().createView(viewBox, containerId);
         this.domElement = document.createElement('canvas');

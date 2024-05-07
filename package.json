@@ -2,7 +2,7 @@
     "name": "root",
     "private": true,
     "scripts": {
-        "build": "lerna run build",
+        "build": "lerna run clean && lerna run build",
         "lint": "lerna run lint",
         "test": "lerna run test",
         "prepublishOnly": "npm run lint && npm run build && lerna run test"
@@ -29,7 +29,7 @@
         "@types/rollup-plugin-peer-deps-external": "^2.2.5",
         "@typescript-eslint/eslint-plugin": "7.8.0",
         "@typescript-eslint/parser": "7.8.0",
-        "esbuild": "^0.20.2",
+        "esbuild": "^0.21.0",
         "esbuild-plugin-tsc": "^0.4.0",
         "eslint": "^8.56.0",
         "gh-pages": "^6.1.1",

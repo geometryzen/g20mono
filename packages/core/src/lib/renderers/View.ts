@@ -1,9 +1,9 @@
 
-export interface View {
+export interface View<T> {
     /**
-     * 
+     * HTMLCanvasElement or SVGElement (or something else).
      */
-    domElement: HTMLCanvasElement | SVGElement;
+    domElement: T;
     height: number;
     width: number;
     render(): void;

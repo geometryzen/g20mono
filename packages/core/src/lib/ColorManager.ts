@@ -1,6 +1,6 @@
 import { state, State } from "g2o-reactive";
 import { Color, ColorProvider, is_color_provider } from "./effects/ColorProvider";
-import { ShapeHost } from "./Shape";
+import { ViewDOM } from "./Shape";
 
 /**
  * Helps to keep fillColor and strokeColor code DRY as well as defining the protocol
@@ -17,7 +17,7 @@ export class ColorManager {
     readonly #olds: ColorProvider[] = [];
     readonly #color: State<Color>;
     #svg: unknown | null = null;
-    #shapeHost: ShapeHost | null = null;
+    #viewDOM: ViewDOM | null = null;
     /**
      * The SVG element with the 'fill' or 'stroke' property.
      */
@@ -38,7 +38,7 @@ export class ColorManager {
         if (newColor !== oldColor) {
             if (is_color_provider(oldColor)) {
                 if (this.#svg) {
-                    oldColor.decrementUse(this.#shapeHost, this.#shapeHost.getElementDefs(this.#svg));
+                    oldColor.decrementUse(this.#viewDOM, this.#viewDOM.getElementDefs(this.#svg));
                 }
                 else {
                     this.#olds.push(oldColor);
@@ -46,7 +46,7 @@ export class ColorManager {
             }
             if (is_color_provider(newColor)) {
                 if (this.#svg) {
-                    newColor.incrementUse(this.#shapeHost, this.#shapeHost.getElementDefs(this.#svg));
+                    newColor.incrementUse(this.#viewDOM, this.#viewDOM.getElementDefs(this.#svg));
                 }
                 else {
                     this.#news.push(newColor);
@@ -55,30 +55,30 @@ export class ColorManager {
             this.#color.set(newColor);
         }
     }
-    use(shapeHost: ShapeHost, svgElement: unknown, hostElement: unknown): void {
-        this.#shapeHost = shapeHost;
+    use(viewDOM: ViewDOM, svgElement: unknown, hostElement: unknown): void {
+        this.#viewDOM = viewDOM;
         this.#svg = svgElement;
         this.#hostElement = hostElement;
-        const defs = this.#shapeHost.getElementDefs(svgElement);
+        const defs = this.#viewDOM.getElementDefs(svgElement);
         for (const newColor of this.#news) {
-            newColor.incrementUse(this.#shapeHost, defs);
+            newColor.incrementUse(this.#viewDOM, defs);
         }
         this.#news.length = 0;
         for (const oldColor of this.#olds) {
-            oldColor.decrementUse(this.#shapeHost, defs);
+            oldColor.decrementUse(this.#viewDOM, defs);
         }
         this.#olds.length = 0;
     }
     update(): void {
         const color = this.#color.get();
         if (typeof color === 'string') {
-            this.#shapeHost.setAttribute(this.#hostElement, this.qualifiedName, color);
+            this.#viewDOM.setAttribute(this.#hostElement, this.qualifiedName, color);
         }
         else if (is_color_provider(color)) {
-            this.#shapeHost.setAttribute(this.#hostElement, this.qualifiedName, color.serialize());
+            this.#viewDOM.setAttribute(this.#hostElement, this.qualifiedName, color.serialize());
         }
         else {
-            this.#shapeHost.removeAttribute(this.#hostElement, this.qualifiedName);
+            this.#viewDOM.removeAttribute(this.#hostElement, this.qualifiedName);
         }
     }
 }

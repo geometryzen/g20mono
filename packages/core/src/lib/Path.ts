@@ -5,13 +5,13 @@ import { ColoredShapeBase, ColoredShapeOptions } from './ColoredShapeBase';
 import { Color } from './effects/ColorProvider';
 import { ElementBase } from './element';
 import { Flag } from './Flag';
-import { Board } from './IBoard';
+import { Board } from './Board';
 import { SpinorLike, VectorLike } from './math/G20';
 import { G20 } from './math/G20.js';
 import { Disposable } from './reactive/Disposable';
 import { variable } from './reactive/variable';
-import { svg } from './renderers/SVGView';
-import { ShapeHost, SVGAttributes } from './Shape';
+import { svg } from './renderers/SVGViewDOM';
+import { ViewDOM, SVGAttributes } from './Shape';
 import { getComponentOnCubicBezier, getCurveBoundingBox, getCurveFromPoints } from './utils/curves';
 import { lerp, mod } from './utils/math';
 import { Commands } from './utils/path-commands';
@@ -147,7 +147,7 @@ export class Path extends ColoredShapeBase {
         this.automatic = !manual;
     }
 
-    override render(shapeHost: ShapeHost, parentElement: unknown, svgElement: unknown): void {
+    override render(viewDOM: ViewDOM, parentElement: unknown, svgElement: unknown): void {
 
         // Collect any attribute that needs to be changed here
         const changed: SVGAttributes = {};
@@ -160,70 +160,70 @@ export class Path extends ColoredShapeBase {
 
         if (this.zzz.elem) {
             // When completely reactive, this will not be needed
-            shapeHost.setAttributes(this.zzz.elem, changed);
+            viewDOM.setAttributes(this.zzz.elem, changed);
         }
         else {
             changed.id = this.id;
-            this.zzz.elem = shapeHost.createSVGElement('path', changed);
-            shapeHost.appendChild(parentElement, this.zzz.elem);
-            super.render(shapeHost, parentElement, svgElement);
+            this.zzz.elem = viewDOM.createSVGElement('path', changed);
+            viewDOM.appendChild(parentElement, this.zzz.elem);
+            super.render(viewDOM, parentElement, svgElement);
 
             // stroke-linecap
             this.zzz.disposables.push(effect(() => {
                 if (this.cap && this.cap !== "butt") {
-                    shapeHost.setAttribute(this.zzz.elem, 'stroke-linecap', this.cap);
+                    viewDOM.setAttribute(this.zzz.elem, 'stroke-linecap', this.cap);
                 }
                 else {
-                    shapeHost.removeAttribute(this.zzz.elem, 'stroke-linecap');
+                    viewDOM.removeAttribute(this.zzz.elem, 'stroke-linecap');
                 }
             }));
 
             // stroke-linejoin
             this.zzz.disposables.push(effect(() => {
                 if (this.join && this.join !== "miter") {
-                    shapeHost.setAttribute(this.zzz.elem, 'stroke-linejoin', this.join);
+                    viewDOM.setAttribute(this.zzz.elem, 'stroke-linejoin', this.join);
                 }
                 else {
-                    shapeHost.removeAttribute(this.zzz.elem, 'stroke-linejoin');
+                    viewDOM.removeAttribute(this.zzz.elem, 'stroke-linejoin');
                 }
             }));
 
             // stroke-miterlimit
             this.zzz.disposables.push(effect(() => {
                 if (this.miterLimit !== 4) {
-                    shapeHost.setAttribute(this.zzz.elem, 'stroke-miterlimit', `${this.miterLimit}`);
+                    viewDOM.setAttribute(this.zzz.elem, 'stroke-miterlimit', `${this.miterLimit}`);
                 }
                 else {
-                    shapeHost.removeAttribute(this.zzz.elem, 'stroke-miterlimit');
+                    viewDOM.removeAttribute(this.zzz.elem, 'stroke-miterlimit');
                 }
             }));
 
             this.zzz.disposables.push(this.zzz.vertices$.subscribe(() => {
                 const change: SVGAttributes = {};
                 change.d = svg.path_from_anchors(this.board, this.X, this.R, this.zzz.vertices, this.closed);
-                shapeHost.setAttributes(this.zzz.elem, change);
+                viewDOM.setAttributes(this.zzz.elem, change);
             }));
         }
 
         if (this.zzz.flags[Flag.ClipFlag]) {
-            const clip = svg.getClip(shapeHost, this, svgElement);
+            const clip = svg.getClip(viewDOM, this, svgElement);
             const elem = this.zzz.elem;
 
             if (this.zzz.ismask) {
-                shapeHost.removeAttribute(elem, 'id');
-                shapeHost.setAttribute(clip, 'id', this.id);
-                shapeHost.appendChild(clip, elem);
+                viewDOM.removeAttribute(elem, 'id');
+                viewDOM.setAttribute(clip, 'id', this.id);
+                viewDOM.appendChild(clip, elem);
             }
             else {
-                shapeHost.removeAttribute(clip, 'id');
+                viewDOM.removeAttribute(clip, 'id');
                 if (typeof this.id === 'string') {
-                    shapeHost.setAttribute(elem, 'id', this.id);
+                    viewDOM.setAttribute(elem, 'id', this.id);
                 }
                 else {
-                    shapeHost.removeAttribute(elem, 'id');
+                    viewDOM.removeAttribute(elem, 'id');
                 }
                 if (this.parent && this.parent instanceof ElementBase) {
-                    shapeHost.appendChild(this.parent.zzz.elem, elem); // TODO: should be insertBefore
+                    viewDOM.appendChild(this.parent.zzz.elem, elem); // TODO: should be insertBefore
                 }
             }
         }
@@ -235,11 +235,11 @@ export class Path extends ColoredShapeBase {
         // https://developer.mozilla.org/en-US/docs/Web/SVG/Element/mask
         if (this.zzz.flags[Flag.ClipPath]) {
             if (this.mask) {
-                this.mask.render(shapeHost, parentElement, svgElement);
-                shapeHost.setAttribute(this.zzz.elem, 'clip-path', 'url(#' + this.mask.id + ')');
+                this.mask.render(viewDOM, parentElement, svgElement);
+                viewDOM.setAttribute(this.zzz.elem, 'clip-path', 'url(#' + this.mask.id + ')');
             }
             else {
-                shapeHost.removeAttribute(this.zzz.elem, 'clip-path');
+                viewDOM.removeAttribute(this.zzz.elem, 'clip-path');
             }
         }
 

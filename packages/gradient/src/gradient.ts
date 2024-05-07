@@ -1,4 +1,4 @@
-import { ColorProvider, ElementBase, ShapeHost, variable } from 'g2o';
+import { ColorProvider, ElementBase, ViewDOM, variable } from 'g2o';
 import { effect, State, state } from 'g2o-reactive';
 import { Constants } from './constants';
 import { Stop } from './stop';
@@ -48,11 +48,11 @@ export abstract class Gradient extends ElementBase implements ColorProvider {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    render(shapeHost: ShapeHost, defs: unknown): void {
+    render(viewDOM: ViewDOM, defs: unknown): void {
         this.zzz.disposables.push(effect(() => {
 
-            while (shapeHost.getLastChild(this.zzz.elem)) {
-                shapeHost.removeChild(this.zzz.elem, shapeHost.getLastChild(this.zzz.elem));
+            while (viewDOM.getLastChild(this.zzz.elem)) {
+                viewDOM.removeChild(this.zzz.elem, viewDOM.getLastChild(this.zzz.elem));
             }
 
             const stops = this.stops;
@@ -61,34 +61,34 @@ export abstract class Gradient extends ElementBase implements ColorProvider {
                 const stop = stops[i];
                 {
                     const attrs: SVGAttributes = { id: stop.id };
-                    stop.zzz.elem = shapeHost.createSVGElement('stop', attrs);
-                    shapeHost.appendChild(this.zzz.elem, stop.zzz.elem);
+                    stop.zzz.elem = viewDOM.createSVGElement('stop', attrs);
+                    viewDOM.appendChild(this.zzz.elem, stop.zzz.elem);
                 }
                 stop.zzz.disposables.push(effect(() => {
-                    shapeHost.setAttribute(stop.zzz.elem, 'offset', 100 * stop.offset + '%');
+                    viewDOM.setAttribute(stop.zzz.elem, 'offset', 100 * stop.offset + '%');
                 }));
                 stop.zzz.disposables.push(effect(() => {
-                    shapeHost.setAttribute(stop.zzz.elem, 'stop-color', stop.color);
+                    viewDOM.setAttribute(stop.zzz.elem, 'stop-color', stop.color);
                 }));
                 stop.zzz.disposables.push(effect(() => {
-                    shapeHost.setAttribute(stop.zzz.elem, 'stop-opacity', `${stop.opacity}`);
+                    viewDOM.setAttribute(stop.zzz.elem, 'stop-opacity', `${stop.opacity}`);
                 }));
                 stop.flagReset();
             }
         }));
     }
 
-    incrementUse(shapeHost: ShapeHost, defs: unknown): void {
+    incrementUse(viewDOM: ViewDOM, defs: unknown): void {
         this.#refCount++;
         if (this.#refCount === 1) {
-            this.render(shapeHost, defs);
+            this.render(viewDOM, defs);
         }
     }
 
-    decrementUse(shapeHost: ShapeHost, defs: unknown): void {
+    decrementUse(viewDOM: ViewDOM, defs: unknown): void {
         this.#refCount--;
         if (this.#refCount === 0) {
-            shapeHost.removeChild(defs, this.zzz.elem);
+            viewDOM.removeChild(defs, this.zzz.elem);
             this.zzz.elem = null;
         }
     }
