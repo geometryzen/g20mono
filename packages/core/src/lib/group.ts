@@ -11,9 +11,9 @@ export interface GroupOptions extends ShapeOptions {
 
 export class Group extends ShapeBase {
 
-    readonly #shapes: State<ShapeBase[]>;
+    readonly #shapes: State<Shape[]>;
 
-    constructor(board: Board, shapes: ShapeBase[] = [], options: GroupOptions = {}) {
+    constructor(board: Board, shapes: Shape[] = [], options: GroupOptions = {}) {
 
         super(board, shape_attributes(options));
 
@@ -59,10 +59,10 @@ export class Group extends ShapeBase {
 
         const children = this.children;
         const N = children.length;
+        const childParentElement = this.zzz.elem;
         for (let i = 0; i < N; i++) {
             const child = children[i];
-            const elem = this.zzz.elem;
-            child.render(elem, svgElement);
+            child.render(childParentElement, svgElement);
         }
 
         // TODO: Why are we doing this here and why isn't it reactive?
@@ -187,7 +187,7 @@ export class Group extends ShapeBase {
         return search(this);
     }
 
-    add(...shapes: ShapeBase[]) {
+    add(...shapes: Shape[]) {
         const children = this.children;
         for (let i = 0; i < shapes.length; i++) {
             const child = shapes[i];
@@ -200,7 +200,7 @@ export class Group extends ShapeBase {
         return this;
     }
 
-    remove(...shapes: ShapeBase[]) {
+    remove(...shapes: Shape[]) {
         const children = this.children;
         for (let i = 0; i < shapes.length; i++) {
             const shape = shapes[i];
@@ -281,10 +281,10 @@ export class Group extends ShapeBase {
     /**
      * A list of all the children in the scenegraph.
      */
-    get children(): ShapeBase[] {
+    get children(): Shape[] {
         return this.#shapes.get();
     }
-    set children(children: ShapeBase[]) {
+    set children(children: Shape[]) {
 
         this.#shapes.set(children);
 
@@ -295,7 +295,7 @@ export class Group extends ShapeBase {
     }
 }
 
-export function update_shape_group(child: ShapeBase, parent?: Group) {
+export function update_shape_group(child: Shape, parent?: Group) {
 
     const previous_parent = child.parent;
 

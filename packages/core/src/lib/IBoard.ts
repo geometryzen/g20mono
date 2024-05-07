@@ -4,7 +4,7 @@ import { Group } from './group';
 import { G20, VectorLike } from './math/G20';
 import { Path, PathOptions } from './Path';
 import { Disposable } from './reactive/Disposable';
-import { ShapeBase } from './ShapeBase';
+import { Shape } from './Shape';
 import { ArcSegment } from './shapes/ArcSegment';
 import { Arrow, ArrowOptions } from './shapes/Arrow';
 import { Circle, CircleOptions } from './shapes/Circle';
@@ -22,13 +22,13 @@ export interface Board extends Disposable {
     ellipse(options?: EllipseOptions): Ellipse;
     line(point1: VectorLike, point2: VectorLike, options?: LineOptions): Line;
     path(closed: boolean, points: (Anchor | G20 | [x: number, y: number])[], options?: PathOptions): Path;
-    point(position: VectorLike, options?: PointOptions): ShapeBase;
+    point(position: VectorLike, options?: PointOptions): Shape;
     polygon(points: VectorLike[], options?: PolygonOptions): Polygon;
     rectangle(options?: RectangleOptions): Rectangle;
     text(message: string, options?: TextOptions): Text;
 
-    add(...shapes: ShapeBase[]): this;
-    remove(...shapes: ShapeBase[]): this;
+    add(...shapes: Shape[]): this;
+    remove(...shapes: Shape[]): this;
 
     getBoundingBox(): { left: number, top: number, right: number, bottom: number };
     update(): void;

@@ -11,7 +11,7 @@ import { sizeEquals } from './renderers/Size';
 import { SVGViewFactory } from './renderers/SVGViewFactory';
 import { View } from './renderers/View';
 import { ViewFactory } from './renderers/ViewFactory';
-import { ShapeBase } from './ShapeBase';
+import { Shape } from './Shape';
 import { ArcSegment } from './shapes/ArcSegment';
 import { Arrow, ArrowOptions } from './shapes/Arrow';
 import { Circle, CircleOptions } from './shapes/Circle';
@@ -344,13 +344,13 @@ class GraphicsBoard implements Board {
         this.#frameCount.set(this.#frameCount.get() + 1);
     }
 
-    add(...shapes: ShapeBase[]): this {
+    add(...shapes: Shape[]): this {
         this.#scene.add(...shapes);
         this.update();
         return this;
     }
 
-    remove(...shapes: ShapeBase[]): this {
+    remove(...shapes: Shape[]): this {
         this.#scene.remove(...shapes);
         this.update();
         return this;
@@ -374,7 +374,7 @@ class GraphicsBoard implements Board {
         return line;
     }
 
-    point(position: VectorLike, options: PointOptions = {}): ShapeBase {
+    point(position: VectorLike, options: PointOptions = {}): Shape {
         const { left, top, right, bottom } = this.getBoundingBox();
         const sx = this.width / Math.abs(right - left);
         const sy = this.height / Math.abs(bottom - top);
@@ -439,7 +439,7 @@ class GraphicsBoard implements Board {
         return arcSegment;
     }
 
-    group(...shapes: ShapeBase[]): Group {
+    group(...shapes: Shape[]): Group {
         const group = new Group(this, shapes);
         this.add(group);
         return group;

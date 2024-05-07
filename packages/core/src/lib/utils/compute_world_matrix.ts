@@ -1,11 +1,11 @@
 import { Group } from "../group";
 import { Matrix } from "../math/Matrix";
-import { ShapeBase } from "../ShapeBase";
+import { Shape } from "../Shape";
 
-export function computed_world_matrix(shape: ShapeBase, matrix: Matrix): void {
+export function computed_world_matrix(shape: Shape, matrix: Matrix): void {
 
     matrix = (matrix && matrix.identity()) || new Matrix();
-    let parent: ShapeBase | Group = shape;
+    let parent: Shape | Group = shape;
     const matrices: Matrix[] = [];
 
     while (parent && parent.matrix) {
