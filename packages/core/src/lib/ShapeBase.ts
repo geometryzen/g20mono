@@ -273,9 +273,9 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
     get R(): G20 {
         return this.#attitude;
     }
-    set R(attitude: G20) {
-        if (attitude instanceof G20) {
-            this.#attitude.copySpinor(attitude);
+    set R(R: G20) {
+        if (R instanceof G20) {
+            this.#attitude.copySpinor(R);
         }
     }
     get scale(): number {

@@ -93,15 +93,20 @@ export interface Shape extends Disposable {
     classList: string[];
     parent: unknown;
     get matrix(): Matrix;
-    X: G20;
-    R: G20;
+    get X(): G20;
+    set X(X: G20 | [x: number, y: number] | { x: number, y: number });
+    get R(): G20;
+    set R(R: G20);
     sx: number;
     sy: number;
     skewX: number;
     skewY: number;
     opacity: number;
     visibility: 'visible' | 'hidden' | 'collapse';
+    collapse(): this;
     getBoundingBox(shallow?: boolean): { top?: number; left?: number; right?: number; bottom?: number };
     hasBoundingBox(): boolean;
+    hide(): this;
     render(viewDOM: ViewDOM, parentElement: unknown, svgElement: unknown): void;
+    show(): this;
 }
