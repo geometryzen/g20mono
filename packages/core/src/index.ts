@@ -3,6 +3,7 @@ export { Board, PointOptions } from './lib/Board';
 export { Collection } from './lib/collection';
 export { Color, ColorProvider } from './lib/effects/ColorProvider';
 export { ElementBase } from './lib/element';
+export { ElementDOM } from './lib/ElementDOM';
 export { GraphicsBoard, GraphicsBoardOptions } from './lib/GraphicsBoard';
 export { Group, GroupOptions } from './lib/group';
 export { BoardOptions, initBoard } from './lib/initBoard';

@@ -1,6 +1,5 @@
-import { CanvasView, CanvasViewFactory } from "../src/index";
+import { initBoard } from "../src/index";
 
 test("index", function () {
-    expect(typeof CanvasViewFactory === 'function').toBe(true);
-    expect(typeof CanvasView === 'function').toBe(true);
+    expect(typeof initBoard === 'function').toBe(true);
 });

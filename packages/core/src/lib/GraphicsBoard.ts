@@ -2,6 +2,7 @@ import { computed, effect, Readable, state, State } from 'g2o-reactive';
 import { Anchor } from './anchor';
 import { Board, PointOptions } from './Board';
 import { Constants } from './constants';
+import { ElementDOM } from './ElementDOM';
 import { Group } from './group';
 import { G20, VectorLike } from './math/G20';
 import { Path, PathOptions } from './Path';
@@ -29,12 +30,13 @@ export interface GraphicsBoardOptions {
     boundingBox?: { left: number, top: number, right: number, bottom: number };
 }
 
-export class GraphicsBoard<T> implements Board {
+export class GraphicsBoard<E, T> implements Board {
 
     readonly #disposables: Disposable[] = [];
 
     readonly #view: View<T>;
     readonly #viewDOM: ViewDOM;
+    readonly #elementDOM: ElementDOM<E, T>;
 
     /**
      * A wrapper group that is used to transform the scene from user coordinates to pixels.
@@ -51,7 +53,7 @@ export class GraphicsBoard<T> implements Board {
     /**
      * A helper to handle sizing.
      */
-    readonly #fitter: Fitter<T>;
+    readonly #fitter: Fitter<E, T>;
 
     readonly #frameCount = state(0);
 
@@ -72,12 +74,13 @@ export class GraphicsBoard<T> implements Board {
         return bbox.left > bbox.right;
     });
 
-    constructor(elementOrId: string | HTMLElement, viewDOM: ViewDOM, viewFactory: ViewFactory<T>, options: GraphicsBoardOptions = {}) {
+    constructor(elementOrId: string | E, elementDOM: ElementDOM<E, T>, viewDOM: ViewDOM, viewFactory: ViewFactory<T>, options: GraphicsBoardOptions = {}) {
 
+        this.#elementDOM = elementDOM;
         this.#viewDOM = viewDOM;
 
-        const container = get_container(elementOrId);
-        const container_id = get_container_id(elementOrId);
+        const container = get_container(elementOrId, elementDOM);
+        const container_id = get_container_id(elementOrId, elementDOM);
 
         this.#viewBox = new Group(this, [], { id: `${container_id}-viewbox` });
 
@@ -94,17 +97,17 @@ export class GraphicsBoard<T> implements Board {
 
         this.#view = viewFactory.createView(this.#viewBox, container_id);
 
-        const config: BoardConfig = config_from_options(container, options);
+        const config: BoardConfig<E> = config_from_options(container, options);
 
-        this.#fitter = new Fitter(this, this.#view, this.#viewDOM);
+        this.#fitter = new Fitter(this, elementDOM, this.#view, this.#viewDOM);
 
-        if (container instanceof HTMLElement) {
-            this.#fitter.set_target(container as HTMLElement);
+        if (container) {
+            this.#fitter.set_target(container);
             this.#fitter.subscribe();
             this.#fitter.resize();
         }
 
-        if (container instanceof HTMLElement) {
+        if (container) {
             this.appendTo(container);
         }
 
@@ -257,25 +260,14 @@ export class GraphicsBoard<T> implements Board {
         this.#ratio.set(ratio);
     }
 
-    appendTo(container: Element) {
-        if (container && typeof container.nodeType === 'number') {
-            if (container.nodeType === Node.ELEMENT_NODE) {
-                const domElement = this.#view.domElement;
-                if (domElement instanceof SVGElement || domElement instanceof HTMLCanvasElement) {
-                    this.#viewDOM.appendChild(container, this.#view.domElement);
-                }
-                else {
-                    throw new Error("domElement must be an SVGElement or HTMLCanvasElement");
-                }
-
-                if (!this.#fitter.is_target_body()) {
-                    this.#fitter.set_target(container);
-                }
-
-                this.update();
+    appendTo(container: E): this {
+        if (container) {
+            this.#elementDOM.appendChild(container, this.#view.domElement);
+            if (!this.#fitter.is_target_body()) {
+                this.#fitter.set_target(container);
             }
+            this.update();
         }
-
         return this;
     }
 
@@ -422,15 +414,17 @@ export class GraphicsBoard<T> implements Board {
     }
 }
 
-class Fitter<T> {
-    readonly #board: GraphicsBoard<T>;
+class Fitter<E, T> {
+    readonly #board: GraphicsBoard<E, T>;
+    readonly #elementDOM: ElementDOM<E, T>;
     readonly #view: View<T>;
     readonly #viewDOM: ViewDOM;
     readonly #domElement: unknown;
-    #target: Element | null = null;
+    #target: E | null = null;
     #target_resize: Disposable | null = null;
-    constructor(board: GraphicsBoard<T>, view: View<T>, viewDOM: ViewDOM) {
+    constructor(board: GraphicsBoard<E, T>, elementDOM: ElementDOM<E, T>, view: View<T>, viewDOM: ViewDOM) {
         this.#board = board;
+        this.#elementDOM = elementDOM;
         this.#view = view;
         this.#viewDOM = viewDOM;
         this.#domElement = view.domElement;
@@ -450,9 +444,9 @@ class Fitter<T> {
             this.resize();
 
         };
-        this.#target.addEventListener('resize', callback);
+        this.#elementDOM.addEventListener(this.#target, 'resize', callback);
         const cleanup = () => {
-            this.#target.removeEventListener('resize', callback);
+            this.#elementDOM.removeEventListener(this.#target, 'resize', callback);
         };
         this.#target_resize = disposableFromFunction(cleanup);
     }
@@ -468,7 +462,7 @@ class Fitter<T> {
     has_target(): boolean {
         return !!this.#target;
     }
-    set_target(target: Element): this {
+    set_target(target: E): this {
         this.#target = target;
         if (this.is_target_body()) {
             // TODO: The controller should take care of this...
@@ -494,11 +488,11 @@ class Fitter<T> {
         return this;
     }
     is_target_body(): boolean {
-        return this.#target === document.body;
+        return this.#elementDOM.isDocumentBody(this.#target);
     }
     resize(): void {
         const board = this.#board;
-        const size = this.#target.getBoundingClientRect();
+        const size = this.#elementDOM.getBoundingClientRect(this.#target);
 
         board.width = size.width;
         board.height = size.height;
@@ -507,13 +501,13 @@ class Fitter<T> {
     }
 }
 
-interface BoardConfig {
-    resizeTo?: Element;
+interface BoardConfig<E> {
+    resizeTo?: E;
     size?: { width: number; height: number };
 }
 
-function config_from_options(container: HTMLElement, options: GraphicsBoardOptions): BoardConfig {
-    const config: BoardConfig = {
+function config_from_options<E>(container: E, options: GraphicsBoardOptions): BoardConfig<E> {
+    const config: BoardConfig<E> = {
         resizeTo: compute_config_resize_to(container, options),
         size: compute_config_size(container, options)
     };
@@ -521,7 +515,7 @@ function config_from_options(container: HTMLElement, options: GraphicsBoardOptio
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function compute_config_resize_to(container: HTMLElement, options: GraphicsBoardOptions): Element | null {
+function compute_config_resize_to<E>(container: E, options: GraphicsBoardOptions): E | null {
     /*
     if (options.resizeTo) {
         return options.resizeTo;
@@ -531,7 +525,7 @@ function compute_config_resize_to(container: HTMLElement, options: GraphicsBoard
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function compute_config_size(container: HTMLElement, options: GraphicsBoardOptions): { width: number; height: number } | null {
+function compute_config_size<E>(container: E, options: GraphicsBoardOptions): { width: number; height: number } | null {
     if (container) {
         return null;
     }
@@ -540,21 +534,21 @@ function compute_config_size(container: HTMLElement, options: GraphicsBoardOptio
     }
 }
 
-function get_container(elementOrId: string | HTMLElement): HTMLElement {
+function get_container<E, T>(elementOrId: string | E, elementDOM: ElementDOM<E, T>): E {
     if (typeof elementOrId === 'string') {
-        return document.getElementById(elementOrId);
+        return elementDOM.getElementById(elementOrId);
     }
     else {
         return elementOrId;
     }
 }
 
-function get_container_id(elementOrId: string | HTMLElement): string {
+function get_container_id<E, T>(elementOrId: string | E, elementDOM: ElementDOM<E, T>): string {
     if (typeof elementOrId === 'string') {
         return elementOrId;
     }
     else {
-        return elementOrId.id;
+        return elementDOM.getAttribute(elementOrId, 'id');
     }
 }
 

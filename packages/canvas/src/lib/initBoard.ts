@@ -1,8 +1,6 @@
-import { Board } from "./Board";
-import { GraphicsBoard } from "./GraphicsBoard";
+import { Board, GraphicsBoard, SVGViewDOM } from "g2o";
+import { CanvasViewFactory } from "./CanvasViewFactory";
 import { HTMLElementDOM } from "./HTMLElementDOM";
-import { SVGViewDOM } from "./renderers/SVGViewDOM";
-import { SVGViewFactory } from "./renderers/SVGViewFactory";
 
 export interface BoardOptions {
     boundingBox?: { left: number, top: number, right: number, bottom: number };
@@ -16,5 +14,5 @@ export interface BoardOptions {
 export function initBoard(elementOrId: string | HTMLElement, options: BoardOptions = {}): Board {
     const elementDOM = new HTMLElementDOM();
     const viewDOM = new SVGViewDOM();
-    return new GraphicsBoard<HTMLElement, SVGElement>(elementOrId, elementDOM, viewDOM, new SVGViewFactory(), options);
+    return new GraphicsBoard<HTMLElement, HTMLCanvasElement>(elementOrId, elementDOM, viewDOM, new CanvasViewFactory(), options);
 }
