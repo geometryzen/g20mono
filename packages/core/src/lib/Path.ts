@@ -164,7 +164,7 @@ export class Path extends ColoredShapeBase {
         }
         else {
             changed.id = this.id;
-            this.zzz.elem = svg.createElement('path', changed);
+            this.zzz.elem = shapeHost.createSVGElement('path', changed);
             shapeHost.appendChild(parentElement, this.zzz.elem);
             super.render(shapeHost, parentElement, svgElement);
 

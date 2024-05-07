@@ -50,7 +50,10 @@ export class ZZZ implements Disposable {
      * A flag that reminds us that the stroke (ColorProvider) has been rendered into the SVGDefsElement.
      */
     hasStrokeEffect?: boolean;
-    image?: SVGImageElement;
+    /**
+     * SVGImageElement as a handle.
+     */
+    image?: unknown;
     offset?: G20;
 
     readonly vertices: Anchor[] = [];

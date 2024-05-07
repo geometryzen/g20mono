@@ -346,11 +346,11 @@ export class SVGView implements View {
      */
     readonly domElement: SVGElement;
     readonly viewBox: Group;
-    readonly defs: SVGDefsElement;
+    readonly #defs: SVGDefsElement;
 
     readonly #size = state({ width: 0, height: 0 }, { equals: sizeEquals });
 
-    readonly #host = new SVGShapeHost();
+    readonly #shapeHost: ShapeHost = new SVGShapeHost();
 
     constructor(viewBox: Group, containerId: string, params: SVGViewParams = {}) {
         if (viewBox instanceof Group) {
@@ -367,9 +367,9 @@ export class SVGView implements View {
             this.domElement = svg.createElement('svg', { id: `${containerId}-svg` });
         }
 
-        this.defs = svg.createElement('defs') as SVGDefsElement;
-        set_defs_dirty_flag(this.defs, false);
-        this.domElement.appendChild(this.defs);
+        this.#defs = svg.createElement('defs') as SVGDefsElement;
+        set_defs_dirty_flag(this.#defs, false);
+        this.#shapeHost.appendChild(this.domElement, this.#defs);
         this.domElement.style.overflow = 'hidden';
     }
 
@@ -395,15 +395,15 @@ export class SVGView implements View {
     setSize(size: { width: number, height: number }, ratio: number): this {
         this.width = size.width;
         this.height = size.height;
-        svg.setAttributes(this.domElement, { width: `${size.width}px`, height: `${size.height}px` });
+        this.#shapeHost.setAttributes(this.domElement, { width: `${size.width}px`, height: `${size.height}px` });
         this.#size.set(size);
         return this;
     }
 
     render(): this {
         const svgElement = this.domElement;
-        this.viewBox.render(this.#host, this.domElement, svgElement);
-        svg.defs.update(svgElement, this.defs);
+        this.viewBox.render(this.#shapeHost, this.domElement, svgElement);
+        svg.defs.update(svgElement, this.#defs);
         return this;
     }
 }

@@ -158,7 +158,7 @@ export class Text extends ColoredShapeBase implements TextProperties {
         }
         else {
             changed.id = this.id;
-            this.zzz.elem = svg.createElement('text', changed);
+            this.zzz.elem = shapeHost.createSVGElement('text', changed);
             shapeHost.appendChild(parentElement, this.zzz.elem);
 
             super.render(shapeHost, parentElement, svgElement);

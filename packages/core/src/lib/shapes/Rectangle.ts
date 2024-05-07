@@ -70,7 +70,7 @@ export class Rectangle extends ColoredShape implements RectangleProperties, Disp
             this.#width.set(width);
         }
     }
-    render(parentElement: HTMLElement | SVGElement, svgElement: SVGElement): void {
+    render(shapeHost: ShapeHost, parentElement: unknown, svgElement: unknown): void {
 
         this.update();
 
@@ -79,7 +79,7 @@ export class Rectangle extends ColoredShape implements RectangleProperties, Disp
         }
         else {
             const changed: SVGAttributes = {};
-            this.zzz.elem = svg.createElement('rect', changed);
+            this.zzz.elem = shapeHost.createSVGElement('rect', changed);
             parentElement.appendChild(this.zzz.elem);
             super.render(parentElement, svgElement);
 
