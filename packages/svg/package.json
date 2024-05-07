@@ -1,6 +1,6 @@
 {
     "name": "g2o-svg",
-    "version": "0.9.254",
+    "version": "0.9.255",
     "description": "g2o Scalable Vector Graphics",
     "exports": {
         ".": {
