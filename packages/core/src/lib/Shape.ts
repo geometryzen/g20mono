@@ -6,7 +6,7 @@ import { Disposable } from './reactive/Disposable';
  *
  */
 export interface Shape extends Disposable {
-    id: string;
+    id: string | null;
     classList: string[];
     parent: unknown;
     get matrix(): Matrix;
