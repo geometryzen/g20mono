@@ -1,6 +1,4 @@
-import { Board, GraphicsBoard, SVGViewDOM } from "g2o";
-import { CanvasViewFactory } from "./CanvasViewFactory";
-import { HTMLElementDOM } from "./HTMLElementDOM";
+import { Board } from "g2o";
 
 export interface BoardOptions {
     boundingBox?: { left: number, top: number, right: number, bottom: number };
@@ -11,8 +9,7 @@ export interface BoardOptions {
  * @param elementOrId HTML identifier (id) of element in which the board is rendered.
  * @param options An object that sets some of the board properties.
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function initBoard(elementOrId: string | HTMLElement, options: BoardOptions = {}): Board {
-    const elementDOM = new HTMLElementDOM();
-    const viewDOM = new SVGViewDOM();
-    return new GraphicsBoard<HTMLElement, HTMLCanvasElement>(elementOrId, elementDOM, viewDOM, new CanvasViewFactory(), options);
+    throw new Error();
 }

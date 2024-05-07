@@ -1,4 +1,5 @@
-import { Group, SVGViewDOM, TreeView, TreeViewParams, View, ViewFactory } from "g2o";
+import { Group, TreeView, TreeViewParams, View, ViewFactory } from "g2o";
+import { SVGViewDOM } from "./SVGViewDOM";
 
 export class SVGViewFactory implements ViewFactory<SVGElement> {
     constructor(readonly params?: TreeViewParams) {

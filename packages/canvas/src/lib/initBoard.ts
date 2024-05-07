@@ -1,4 +1,5 @@
-import { Board, GraphicsBoard, SVGViewDOM } from "g2o";
+import { Board, GraphicsBoard } from "g2o";
+import { SVGViewDOM } from "g2o-svg";
 import { CanvasViewFactory } from "./CanvasViewFactory";
 import { HTMLElementDOM } from "./HTMLElementDOM";
 

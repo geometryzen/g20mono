@@ -72,7 +72,8 @@
         "canvg": "^4.0.2"
     },
     "peerDependencies": {
-        "g2o": "file:../core"
+        "g2o": "file:../core",
+        "g2o-svg": "file:../svg"
     },
     "gitHead": "dff18f904372b2302589e848dbcea5c298643249"
 }
