@@ -43,7 +43,7 @@
         "access": "public"
     },
     "scripts": {
-        "build": "npm run clean && rollup --config rollup.config.mts --configPlugin @rollup/plugin-typescript",
+        "build": "rollup --config rollup.config.mts --configPlugin @rollup/plugin-typescript",
         "check": "npx package-check",
         "clean": "rm -rf coverage && rm -rf dist && rm -rf docs && rm -rf es2015 && rm -rf system && rm -rf types && rm -rf build",
         "coverage": "npm run test -- --coverage",

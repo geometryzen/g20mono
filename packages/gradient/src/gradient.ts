@@ -1,8 +1,8 @@
-import { ColorProvider, ElementBase, variable } from 'g2o';
+import { ColorProvider, ElementBase, ShapeHost, variable } from 'g2o';
 import { effect, State, state } from 'g2o-reactive';
 import { Constants } from './constants';
 import { Stop } from './stop';
-import { createElement, SVGAttributes } from './svg';
+import { SVGAttributes } from './svg';
 
 export interface GradientOptions {
     id?: string;
@@ -48,11 +48,11 @@ export abstract class Gradient extends ElementBase implements ColorProvider {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    render(defs: SVGDefsElement): void {
+    render(shapeHost: ShapeHost, defs: unknown): void {
         this.zzz.disposables.push(effect(() => {
 
-            while (this.zzz.elem.lastChild) {
-                this.zzz.elem.removeChild(this.zzz.elem.lastChild);
+            while (shapeHost.getLastChild(this.zzz.elem)) {
+                shapeHost.removeChild(this.zzz.elem, shapeHost.getLastChild(this.zzz.elem));
             }
 
             const stops = this.stops;
@@ -61,34 +61,34 @@ export abstract class Gradient extends ElementBase implements ColorProvider {
                 const stop = stops[i];
                 {
                     const attrs: SVGAttributes = { id: stop.id };
-                    stop.zzz.elem = createElement('stop', attrs);
-                    this.zzz.elem.appendChild(stop.zzz.elem);
+                    stop.zzz.elem = shapeHost.createSVGElement('stop', attrs);
+                    shapeHost.appendChild(this.zzz.elem, stop.zzz.elem);
                 }
                 stop.zzz.disposables.push(effect(() => {
-                    stop.zzz.elem.setAttribute('offset', 100 * stop.offset + '%');
+                    shapeHost.setAttribute(stop.zzz.elem, 'offset', 100 * stop.offset + '%');
                 }));
                 stop.zzz.disposables.push(effect(() => {
-                    stop.zzz.elem.setAttribute('stop-color', stop.color);
+                    shapeHost.setAttribute(stop.zzz.elem, 'stop-color', stop.color);
                 }));
                 stop.zzz.disposables.push(effect(() => {
-                    stop.zzz.elem.setAttribute('stop-opacity', `${stop.opacity}`);
+                    shapeHost.setAttribute(stop.zzz.elem, 'stop-opacity', `${stop.opacity}`);
                 }));
                 stop.flagReset();
             }
         }));
     }
 
-    incrementUse(defs: SVGDefsElement): void {
+    incrementUse(shapeHost: ShapeHost, defs: unknown): void {
         this.#refCount++;
         if (this.#refCount === 1) {
-            this.render(defs);
+            this.render(shapeHost, defs);
         }
     }
 
-    decrementUse(defs: SVGDefsElement): void {
+    decrementUse(shapeHost: ShapeHost, defs: unknown): void {
         this.#refCount--;
         if (this.#refCount === 0) {
-            defs.removeChild(this.zzz.elem);
+            shapeHost.removeChild(defs, this.zzz.elem);
             this.zzz.elem = null;
         }
     }

@@ -1,8 +1,8 @@
 import { State, state } from 'g2o-reactive';
 import { Flag } from './Flag';
 import { Board } from './IBoard';
-import { svg, transform_value_of_matrix } from './renderers/SVGView';
-import { Shape } from './Shape';
+import { transform_value_of_matrix } from './renderers/SVGView';
+import { Shape, ShapeHost } from './Shape';
 import { ShapeBase, ShapeOptions } from './ShapeBase';
 
 export interface GroupOptions extends ShapeOptions {
@@ -33,18 +33,18 @@ export class Group extends ShapeBase {
         return false;
     }
 
-    render(parentElement: HTMLElement | SVGElement, svgElement: SVGElement): void {
+    override render(shapeHost: ShapeHost, parentElement: unknown, svgElement: unknown): void {
 
         this.update();
 
         if (this.zzz.elem) {
             // Why is this needed when Shape has already created an effect?
-            this.zzz.elem.setAttribute('transform', transform_value_of_matrix(this.matrix));
+            shapeHost.setAttribute(this.zzz.elem, 'transform', transform_value_of_matrix(this.matrix));
         }
         else {
-            this.zzz.elem = svg.createElement('g', { id: this.id });
-            parentElement.appendChild(this.zzz.elem);
-            super.render(parentElement, svgElement);
+            this.zzz.elem = shapeHost.createSVGElement('g', { id: this.id });
+            shapeHost.appendChild(parentElement, this.zzz.elem);
+            super.render(shapeHost, parentElement, svgElement);
         }
 
         /*
@@ -62,16 +62,16 @@ export class Group extends ShapeBase {
         const childParentElement = this.zzz.elem;
         for (let i = 0; i < N; i++) {
             const child = children[i];
-            child.render(childParentElement, svgElement);
+            child.render(shapeHost, childParentElement, svgElement);
         }
 
         // TODO: Why are we doing this here and why isn't it reactive?
         if (this.zzz.flags[Flag.ClassName]) {
             if (this.classList.length > 0) {
-                this.zzz.elem.setAttribute('class', this.classList.join(' '));
+                shapeHost.setAttribute(this.zzz.elem, 'class', this.classList.join(' '));
             }
             else {
-                this.zzz.elem.removeAttribute('class');
+                shapeHost.removeAttribute(this.zzz.elem, 'class');
             }
         }
 
@@ -99,12 +99,12 @@ export class Group extends ShapeBase {
 
             // This code is a candidate for being put in Shape?
             if (this.zzz.flags[Flag.ClipPath]) {
-                if (this.clipPath) {
-                    this.clipPath.render(parentElement, svgElement);
-                    this.zzz.elem.setAttribute('clip-path', 'url(#' + this.clipPath.id + ')');
+                if (this.mask) {
+                    this.mask.render(shapeHost, parentElement, svgElement);
+                    shapeHost.setAttribute(this.zzz.elem, 'clip-path', 'url(#' + this.mask.id + ')');
                 }
                 else {
-                    this.zzz.elem.removeAttribute('clip-path');
+                    shapeHost.removeAttribute(this.zzz.elem, 'clip-path');
                 }
             }
         }
@@ -126,9 +126,9 @@ export class Group extends ShapeBase {
             child.X.x -= cx;
             child.X.y -= cy;
         }
-        if (this.clipPath) {
-            this.clipPath.X.x -= cx;
-            this.clipPath.X.y -= cy;
+        if (this.mask) {
+            this.mask.X.x -= cx;
+            this.mask.X.y -= cy;
         }
         return this;
     }

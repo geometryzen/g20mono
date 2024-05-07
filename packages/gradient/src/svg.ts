@@ -70,7 +70,7 @@ const ns = 'http://www.w3.org/2000/svg';
 
 const xlink = 'http://www.w3.org/1999/xlink';
 
-export function createElement(qualifiedName: string, attrs: SVGAttributes = {}) {
+export function createSVGElement(qualifiedName: string, attrs: SVGAttributes = {}) {
     const elem = document.createElementNS(ns, qualifiedName);
     if (attrs && Object.keys(attrs).length > 0) {
         setAttributes(elem, attrs);

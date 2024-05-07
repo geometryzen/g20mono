@@ -90,24 +90,24 @@ export class Rectangle extends ColoredShape implements RectangleProperties, Disp
                 const crazy = this.board.crazy;
                 if (goofy) {
                     if (crazy) {
-                        this.zzz.elem.setAttribute("x", `${-height / 2}`);
-                        this.zzz.elem.setAttribute("y", `${-width / 2}`);
+                        host.setAttribute(this.zzz.elem,"x", `${-height / 2}`);
+                        host.setAttribute(this.zzz.elem,"y", `${-width / 2}`);
                     }
                     else {
                         // SVG Coordinate System
-                        this.zzz.elem.setAttribute("x", `${-width / 2}`);
-                        this.zzz.elem.setAttribute("y", `${-height / 2}`);
+                        host.setAttribute(this.zzz.elem,"x", `${-width / 2}`);
+                        host.setAttribute(this.zzz.elem,"y", `${-height / 2}`);
                     }
                 }
                 else {
                     if (crazy) {
-                        this.zzz.elem.setAttribute("x", `${-width / 2}`);
-                        this.zzz.elem.setAttribute("y", `${-height / 2}`);
+                        host.setAttribute(this.zzz.elem,"x", `${-width / 2}`);
+                        host.setAttribute(this.zzz.elem,"y", `${-height / 2}`);
                     }
                     else {
                         // Cartesian Coordinate System
-                        this.zzz.elem.setAttribute("x", `${-height / 2}`);
-                        this.zzz.elem.setAttribute("y", `${-width / 2}`);
+                        host.setAttribute(this.zzz.elem,"x", `${-height / 2}`);
+                        host.setAttribute(this.zzz.elem,"y", `${-width / 2}`);
                     }
                 }
             }));
@@ -120,22 +120,22 @@ export class Rectangle extends ColoredShape implements RectangleProperties, Disp
                 const crazy = this.board.crazy;
                 if (goofy) {
                     if (crazy) {
-                        this.zzz.elem.setAttribute("width", `${height}`);
-                        this.zzz.elem.setAttribute("height", `${width}`);
+                        host.setAttribute(this.zzz.elem,"width", `${height}`);
+                        host.setAttribute(this.zzz.elem,"height", `${width}`);
                     }
                     else {
-                        this.zzz.elem.setAttribute("width", `${width}`);
-                        this.zzz.elem.setAttribute("height", `${height}`);
+                        host.setAttribute(this.zzz.elem,"width", `${width}`);
+                        host.setAttribute(this.zzz.elem,"height", `${height}`);
                     }
                 }
                 else {
                     if (crazy) {
-                        this.zzz.elem.setAttribute("width", `${width}`);
-                        this.zzz.elem.setAttribute("height", `${height}`);
+                        host.setAttribute(this.zzz.elem,"width", `${width}`);
+                        host.setAttribute(this.zzz.elem,"height", `${height}`);
                     }
                     else {
-                        this.zzz.elem.setAttribute("width", `${height}`);
-                        this.zzz.elem.setAttribute("height", `${width}`);
+                        host.setAttribute(this.zzz.elem,"width", `${height}`);
+                        host.setAttribute(this.zzz.elem,"height", `${width}`);
                     }
                 }
             }));

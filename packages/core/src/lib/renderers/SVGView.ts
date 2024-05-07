@@ -4,6 +4,7 @@ import { Group } from '../group';
 import { Board } from '../IBoard';
 import { G20 } from '../math/G20';
 import { Matrix } from '../math/Matrix';
+import { ShapeHost, SVGAttributes } from '../Shape';
 import { ShapeBase } from '../ShapeBase';
 import { mod, toFixed } from '../utils/math';
 import { Commands } from '../utils/path-commands';
@@ -11,6 +12,82 @@ import { sizeEquals } from './Size';
 import { View } from './View';
 
 type DOMElement = HTMLElement | SVGElement;
+
+const ns = 'http://www.w3.org/2000/svg';
+
+const xlink = 'http://www.w3.org/1999/xlink';
+
+function createSVGElement(qualifiedName: string, attrs: SVGAttributes = {}): SVGElement {
+    const elem = document.createElementNS(ns, qualifiedName);
+    if (attrs && Object.keys(attrs).length > 0) {
+        setAttributes(elem, attrs);
+    }
+    return elem;
+}
+
+function setAttributes(elem: Element, attrs: SVGAttributes): void {
+    // SVGAttributes does not have an index signature.
+    const styles = attrs as { [name: string]: string };
+    const keys = Object.keys(attrs);
+    for (let i = 0; i < keys.length; i++) {
+        const qualifiedName = keys[i];
+        const value = styles[qualifiedName];
+        if (/href/.test(keys[i])) {
+            elem.setAttributeNS(xlink, qualifiedName, value);
+        }
+        else {
+            elem.setAttribute(qualifiedName, value);
+        }
+    }
+}
+
+class SVGShapeHost implements ShapeHost {
+    createSVGElement(qualifiedName: string, attrs: SVGAttributes): unknown {
+        return createSVGElement(qualifiedName, attrs);
+    }
+    setAttribute(unk: unknown, qualifiedName: string, value: string): void {
+        const element = unk as HTMLElement | SVGElement;
+        element.setAttribute(qualifiedName, value);
+    }
+    setAttributes(unk: unknown, attrs: SVGAttributes): void {
+        const element = unk as HTMLElement | SVGElement;
+        setAttributes(element, attrs);
+    }
+    removeAttribute(unk: unknown, qualifiedName: string): void {
+        const element = unk as HTMLElement | SVGElement;
+        element.removeAttribute(qualifiedName);
+    }
+    removeAttributes(unk: unknown, attributes: SVGAttributes): void {
+        const element = unk as HTMLElement | SVGElement;
+        svg.removeAttributes(element, attributes);
+    }
+    appendChild(unkP: unknown, unkC: unknown): void {
+        const parent = unkP as HTMLElement | SVGElement;
+        const child = unkC as HTMLElement | SVGElement;
+        parent.appendChild(child);
+    }
+    removeChild(unkP: unknown, unkC: unknown): void {
+        const parent = unkP as HTMLElement | SVGElement;
+        const child = unkC as HTMLElement | SVGElement;
+        parent.removeChild(child);
+    }
+    setTextContent(unk: unknown, textContent: string): void {
+        const element = unk as HTMLElement | SVGElement;
+        element.textContent = textContent;
+    }
+    getParentNode(unk: unknown): unknown | null {
+        const element = unk as HTMLElement | SVGElement;
+        return element.parentNode;
+    }
+    getLastChild(unk: unknown): unknown {
+        const element = unk as HTMLElement | SVGElement;
+        return element.lastChild;
+    }
+    getElementDefs(unk: unknown): unknown {
+        const svg = unk as SVGElement;
+        return get_svg_element_defs(svg);
+    }
+}
 
 /**
  * Finds the SVGDefsElement from the children of the SVGElement.
@@ -41,124 +118,6 @@ export function set_defs_dirty_flag(defs: SVGDefsElement, dirtyFlag: boolean): v
 function get_defs_dirty_flag(defs: SVGDefsElement): boolean {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (defs as any)._flagUpdate as boolean;
-}
-
-/**
- * Used to set attributes on SVG elements so the value MUST be a string.
- */
-export type StylesMap = { [name: string]: string };
-
-/**
- * A more specific representation of the attributes that are permitted on SVG elements.
- * @see https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute
- * The value of all attributes MUST be string.
- */
-export interface SVGAttributes {
-    'class'?: string;
-    'clip-rule'?: 'nonzero' | 'evenodd' | 'inherit';
-    'cx'?: string;
-    'cy'?: string;
-    /**
-     * Defines the path to be drawn as a list of path commands and their parameters.
-     */
-    'd'?: string;
-    'direction'?: 'ltr' | 'rtl';
-    /**
-     * @see https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/dominant-baseline
-     */
-    'dominant-baseline'?: 'auto' | 'text-bottom' | 'alphabetic' | 'ideographic' | 'middle' | 'central' | 'mathematical' | 'hanging' | 'text-top';
-    'dx'?: string;
-    'dy'?: string;
-    'fill'?: string;
-    'fill-opacity'?: string;
-    'font-family'?: string;
-    'font-size'?: string;
-    'font-style'?: 'normal' | 'italic' | 'oblique';
-    'font-weight'?: 'normal' | 'bold' | 'bolder' | 'lighter' | string;
-    'fx'?: string;
-    'fy'?: string;
-    'gradientUnits'?: 'userSpaceOnUse' | 'objectBoundingBox';
-    'height'?: string;
-    'href'?: string;
-    'id'?: string;
-    'line-height'?: string;
-    /**
-     * TODO: offset is not a documented SVG attribute. How do we account for it?
-     */
-    'offset'?: string;
-    'opacity'?: string;
-    'text-anchor'?: 'start' | 'middle' | 'end';
-    'r'?: string;
-    'spreadMethod'?: 'pad' | 'reflect' | 'repeat';
-    'stop-color'?: string;
-    'stop-opacity'?: string;
-    'stroke'?: string;
-    'stroke-dasharray'?: string;
-    'stroke-dashoffset'?: string;
-    'stroke-linecap'?: 'butt' | 'round' | 'square';
-    'stroke-linejoin'?: 'arcs' | 'bevel' | 'miter' | 'miter-clip' | 'round';
-    'stroke-miterlimit'?: string;
-    'stroke-opacity'?: string;
-    'stroke-width'?: string;
-    'text-decoration'?: string;
-    /**
-     * https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/transform
-     */
-    'transform'?: string;
-    'vector-effect'?: 'none' | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position';
-    'visibility'?: 'visible' | 'hidden' | 'collapse';
-    'width'?: string;
-    'x'?: string;
-    'x1'?: string;
-    'x2'?: string;
-    'y'?: string;
-    'y1'?: string;
-    'y2'?: string;
-}
-
-/**
- * An de-serialized representation of SVGAttributes.
- */
-export interface SVGProperties {
-    'class'?: string;
-    'cx'?: number;
-    'cy'?: number;
-    /**
-     * Defines the path to be drawn as a list of path commands and their parameters.
-     */
-    'd'?: string;
-    'dominant-baseline'?: 'auto' | 'middle' | 'hanging';
-    'fill'?: string;
-    'fill-opacity'?: string;
-    'font-family'?: string;
-    'font-size'?: number;
-    'fx'?: number;
-    'fy'?: number;
-    'height'?: number;
-    'id'?: string;
-    'line-height'?: number;
-    'opacity'?: string;
-    'patternUnits'?: 'userSpaceOnUse' | 'objectBoundingBox';
-    'text-anchor'?: 'start' | 'middle' | 'end';
-    'r'?: number;
-    'stroke'?: string;
-    'stroke-dasharray'?: string;
-    'stroke-opacity'?: number;
-    'stroke-width'?: number;
-    'transform'?: string;
-    'visibility'?: 'visible' | 'hidden' | 'collapse';
-    'width'?: number;
-    'x'?: number;
-    'y'?: number;
-}
-
-export function serialize_svg_props(props: SVGProperties): SVGAttributes {
-    const attrs: SVGAttributes = {};
-    attrs.class = props.class;
-    if (typeof props.cx === 'number') {
-        attrs.cx = `${props.cx}`;
-    }
-    return attrs;
 }
 
 export type DomContext = {
@@ -347,13 +306,13 @@ export const svg = {
      * @param svgElement 
      * @returns 
      */
-    getClip: function (shape: ShapeBase, svgElement: SVGElement): SVGClipPathElement {
-        let clipPath = shape.zzz.clipPath;
+    getClip: function (shapeHost: ShapeHost, shape: ShapeBase, svgElement: unknown): unknown {
+        let clipPath = shape.zzz.svgClipPathElement;
         if (!clipPath) {
-            clipPath = shape.zzz.clipPath = svg.createElement('clipPath', { 'clip-rule': 'nonzero' }) as SVGClipPathElement;
+            clipPath = shape.zzz.svgClipPathElement = shapeHost.createSVGElement('clipPath', { 'clip-rule': 'nonzero' });
         }
-        if (clipPath.parentNode === null) {
-            get_svg_element_defs(svgElement).appendChild(clipPath);
+        if (shapeHost.getParentNode(clipPath) === null) {
+            shapeHost.appendChild(shapeHost.getElementDefs(svgElement), clipPath);
         }
         return clipPath;
     },
@@ -390,6 +349,8 @@ export class SVGView implements View {
     readonly defs: SVGDefsElement;
 
     readonly #size = state({ width: 0, height: 0 }, { equals: sizeEquals });
+
+    readonly #host = new SVGShapeHost();
 
     constructor(viewBox: Group, containerId: string, params: SVGViewParams = {}) {
         if (viewBox instanceof Group) {
@@ -441,7 +402,7 @@ export class SVGView implements View {
 
     render(): this {
         const svgElement = this.domElement;
-        this.viewBox.render(this.domElement, svgElement);
+        this.viewBox.render(this.#host, this.domElement, svgElement);
         svg.defs.update(svgElement, this.defs);
         return this;
     }

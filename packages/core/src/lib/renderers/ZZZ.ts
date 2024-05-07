@@ -21,11 +21,14 @@ export class ZZZ implements Disposable {
     appended?: boolean;
 
     /**
-     * The clip property indicates that this path is being used as the clipPath for some other shape.
+     * The ismask property indicates that this path is being used as the mask for some other shape.
      */
-    readonly #clip = variable(false);
-    readonly clip$ = this.#clip.asObservable();
-    clipPath?: SVGClipPathElement;
+    readonly #ismask = variable(false);
+    readonly ismask$ = this.#ismask.asObservable();
+    /**
+     * SVGClipPathElement
+     */
+    svgClipPathElement?: unknown;
 
     context?: {
         ctx?: CanvasRenderingContext2D;
@@ -36,8 +39,9 @@ export class ZZZ implements Disposable {
     effect?: CanvasPattern;
     /**
      * The element corresponding to some Shape and used by the SVG renderer. It will share the same identifier.
+     * This is a handle to some kind of SVG element.
      */
-    elem?: HTMLElement | SVGElement;
+    elem?: unknown;
     /**
      * A flag that reminds us that the fill (ColorProvider) has been rendered into the SVGDefsElement.
      */
@@ -57,11 +61,11 @@ export class ZZZ implements Disposable {
         dispose(this.disposables);
     }
 
-    get clip(): boolean {
-        return this.#clip.get();
+    get ismask(): boolean {
+        return this.#ismask.get();
     }
-    set clip(clip: boolean) {
-        this.#clip.set(clip);
+    set ismask(ismask: boolean) {
+        this.#ismask.set(ismask);
         this.flags[Flag.ClipFlag] = true;
     }
 }

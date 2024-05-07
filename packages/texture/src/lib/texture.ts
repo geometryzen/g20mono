@@ -1,4 +1,4 @@
-import { ColorProvider, Disposable, ElementBase, G20, variable } from "g2o";
+import { ColorProvider, Disposable, ElementBase, G20, ShapeHost, variable } from "g2o";
 import { Constants } from "./constants";
 import { is_canvas } from "./is_canvas";
 import { is_img } from "./is_img";
@@ -69,15 +69,15 @@ export class Texture extends ElementBase implements ColorProvider {
     serialize(): string {
         return `url(#${this.id})`;
     }
-    incrementUse(defs: SVGDefsElement): void {
+    incrementUse(shapeHost: ShapeHost, defs: unknown): void {
         this.#refCount++;
         if (this.#refCount == 1) {
             this.zzz.elem = createElement('pattern', {});
-            this.zzz.elem.setAttribute('id', this.id);
-            this.zzz.elem.setAttribute('patternUnits', 'userSpaceOnUse');
-            this.zzz.elem.setAttribute('width', `${this.image.width}`);
-            this.zzz.elem.setAttribute('height', `${this.image.height}`);
-            defs.appendChild(this.zzz.elem);
+            shapeHost.setAttribute(this.zzz.elem, 'id', this.id);
+            shapeHost.setAttribute(this.zzz.elem, 'patternUnits', 'userSpaceOnUse');
+            shapeHost.setAttribute(this.zzz.elem, 'width', `${this.image.width}`);
+            shapeHost.setAttribute(this.zzz.elem, 'height', `${this.image.height}`);
+            shapeHost.appendChild(defs, this.zzz.elem);
             this.zzz.image = createElement('image', {
                 x: '0',
                 y: '0',
@@ -85,10 +85,10 @@ export class Texture extends ElementBase implements ColorProvider {
                 height: `${this.image.height}`
             }) as SVGImageElement;
             if (is_canvas(this.image)) {
-                this.zzz.image.setAttribute('href', this.image.toDataURL('image/png'));
+                shapeHost.setAttribute(this.zzz.image, 'href', this.image.toDataURL('image/png'));
             }
             else if (is_img(this.image)) {
-                this.zzz.image.setAttribute('href', this.image.src);
+                shapeHost.setAttribute(this.zzz.image, 'href', this.image.src);
             }
             else if (is_video(this.image)) {
                 // styles.href = this.src;
@@ -96,17 +96,16 @@ export class Texture extends ElementBase implements ColorProvider {
             else {
                 throw new Error();
             }
-
-            this.zzz.elem.appendChild(this.zzz.image);
+            shapeHost.appendChild(this.zzz.elem, this.zzz.image);
         }
     }
-    decrementUse(defs: SVGDefsElement): void {
+    decrementUse(shapeHost: ShapeHost, defs: unknown): void {
         this.#refCount--;
         if (this.#refCount === 0) {
-            defs.removeChild(this.zzz.elem);
+            shapeHost.removeChild(defs, this.zzz.elem);
         }
     }
-    use(svgElement: SVGElement): this {
+    use(shapeHost: ShapeHost, svgElement: SVGElement): this {
 
         let changed_x: number;
         let changed_y: number;
@@ -215,15 +214,15 @@ export class Texture extends ElementBase implements ColorProvider {
             this.zzz.elem = createElement('pattern', changed);
         }
         else if (Object.keys(changed).length !== 0) {
-            setAttributes(this.zzz.elem, changed);
+            shapeHost.setAttributes(this.zzz.elem, changed);
         }
 
-        if (this.zzz.elem.parentNode === null) {
-            get_svg_element_defs(svgElement).appendChild(this.zzz.elem);
+        if (shapeHost.getParentNode(this.zzz.elem) === null) {
+            shapeHost.appendChild(get_svg_element_defs(svgElement), this.zzz.elem);
         }
 
         if (this.zzz.elem && this.zzz.image && !this.zzz.appended) {
-            this.zzz.elem.appendChild(this.zzz.image);
+            shapeHost.appendChild(this.zzz.elem, this.zzz.image);
             this.zzz.appended = true;
         }
 

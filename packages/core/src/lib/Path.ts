@@ -10,7 +10,8 @@ import { SpinorLike, VectorLike } from './math/G20';
 import { G20 } from './math/G20.js';
 import { Disposable } from './reactive/Disposable';
 import { variable } from './reactive/variable';
-import { svg, SVGAttributes } from './renderers/SVGView';
+import { svg } from './renderers/SVGView';
+import { ShapeHost, SVGAttributes } from './Shape';
 import { getComponentOnCubicBezier, getCurveBoundingBox, getCurveFromPoints } from './utils/curves';
 import { lerp, mod } from './utils/math';
 import { Commands } from './utils/path-commands';
@@ -146,7 +147,7 @@ export class Path extends ColoredShapeBase {
         this.automatic = !manual;
     }
 
-    override render(parentElement: HTMLElement | SVGElement, svgElement: SVGElement): void {
+    override render(shapeHost: ShapeHost, parentElement: unknown, svgElement: unknown): void {
 
         // Collect any attribute that needs to be changed here
         const changed: SVGAttributes = {};
@@ -159,72 +160,70 @@ export class Path extends ColoredShapeBase {
 
         if (this.zzz.elem) {
             // When completely reactive, this will not be needed
-            svg.setAttributes(this.zzz.elem, changed);
-            // Why is this needed?
-            // this.zzz.elem.setAttribute('transform', transform_value_of_matrix(this.matrix));
+            shapeHost.setAttributes(this.zzz.elem, changed);
         }
         else {
             changed.id = this.id;
             this.zzz.elem = svg.createElement('path', changed);
-            parentElement.appendChild(this.zzz.elem);
-            super.render(parentElement, svgElement);
+            shapeHost.appendChild(parentElement, this.zzz.elem);
+            super.render(shapeHost, parentElement, svgElement);
 
             // stroke-linecap
             this.zzz.disposables.push(effect(() => {
                 if (this.cap && this.cap !== "butt") {
-                    this.zzz.elem.setAttribute('stroke-linecap', this.cap);
+                    shapeHost.setAttribute(this.zzz.elem, 'stroke-linecap', this.cap);
                 }
                 else {
-                    this.zzz.elem.removeAttribute('stroke-linecap');
+                    shapeHost.removeAttribute(this.zzz.elem, 'stroke-linecap');
                 }
             }));
 
             // stroke-linejoin
             this.zzz.disposables.push(effect(() => {
                 if (this.join && this.join !== "miter") {
-                    this.zzz.elem.setAttribute('stroke-linejoin', this.join);
+                    shapeHost.setAttribute(this.zzz.elem, 'stroke-linejoin', this.join);
                 }
                 else {
-                    this.zzz.elem.removeAttribute('stroke-linejoin');
+                    shapeHost.removeAttribute(this.zzz.elem, 'stroke-linejoin');
                 }
             }));
 
             // stroke-miterlimit
             this.zzz.disposables.push(effect(() => {
                 if (this.miterLimit !== 4) {
-                    this.zzz.elem.setAttribute('stroke-miterlimit', `${this.miterLimit}`);
+                    shapeHost.setAttribute(this.zzz.elem, 'stroke-miterlimit', `${this.miterLimit}`);
                 }
                 else {
-                    this.zzz.elem.removeAttribute('stroke-miterlimit');
+                    shapeHost.removeAttribute(this.zzz.elem, 'stroke-miterlimit');
                 }
             }));
 
             this.zzz.disposables.push(this.zzz.vertices$.subscribe(() => {
                 const change: SVGAttributes = {};
                 change.d = svg.path_from_anchors(this.board, this.X, this.R, this.zzz.vertices, this.closed);
-                svg.setAttributes(this.zzz.elem, change);
+                shapeHost.setAttributes(this.zzz.elem, change);
             }));
         }
 
         if (this.zzz.flags[Flag.ClipFlag]) {
-            const clip = svg.getClip(this, svgElement);
+            const clip = svg.getClip(shapeHost, this, svgElement);
             const elem = this.zzz.elem;
 
-            if (this.zzz.clip) {
-                elem.removeAttribute('id');
-                clip.setAttribute('id', this.id);
-                clip.appendChild(elem);
+            if (this.zzz.ismask) {
+                shapeHost.removeAttribute(elem, 'id');
+                shapeHost.setAttribute(clip, 'id', this.id);
+                shapeHost.appendChild(clip, elem);
             }
             else {
-                clip.removeAttribute('id');
+                shapeHost.removeAttribute(clip, 'id');
                 if (typeof this.id === 'string') {
-                    elem.setAttribute('id', this.id);
+                    shapeHost.setAttribute(elem, 'id', this.id);
                 }
                 else {
-                    elem.removeAttribute('id');
+                    shapeHost.removeAttribute(elem, 'id');
                 }
                 if (this.parent && this.parent instanceof ElementBase) {
-                    this.parent.zzz.elem.appendChild(elem); // TODO: should be insertBefore
+                    shapeHost.appendChild(this.parent.zzz.elem, elem); // TODO: should be insertBefore
                 }
             }
         }
@@ -235,12 +234,12 @@ export class Path extends ColoredShapeBase {
 
         // https://developer.mozilla.org/en-US/docs/Web/SVG/Element/mask
         if (this.zzz.flags[Flag.ClipPath]) {
-            if (this.clipPath) {
-                this.clipPath.render(parentElement, svgElement);
-                this.zzz.elem.setAttribute('clip-path', 'url(#' + this.clipPath.id + ')');
+            if (this.mask) {
+                this.mask.render(shapeHost, parentElement, svgElement);
+                shapeHost.setAttribute(this.zzz.elem, 'clip-path', 'url(#' + this.mask.id + ')');
             }
             else {
-                this.zzz.elem.removeAttribute('clip-path');
+                shapeHost.removeAttribute(this.zzz.elem, 'clip-path');
             }
         }
 
@@ -258,9 +257,9 @@ export class Path extends ColoredShapeBase {
             v.x -= cx;
             v.y -= cy;
         }
-        if (this.clipPath) {
-            this.clipPath.X.x -= cx;
-            this.clipPath.X.y -= cy;
+        if (this.mask) {
+            this.mask.X.x -= cx;
+            this.mask.X.y -= cy;
         }
         this.update();
         return this;

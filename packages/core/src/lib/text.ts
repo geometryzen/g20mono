@@ -5,7 +5,8 @@ import { ElementBase } from './element';
 import { Flag } from './Flag';
 import { Board } from './IBoard';
 import { SpinorLike, VectorLike } from './math/G20';
-import { svg, SVGAttributes, transform_value_of_matrix } from './renderers/SVGView';
+import { svg, transform_value_of_matrix } from './renderers/SVGView';
+import { ShapeHost, SVGAttributes } from './Shape';
 import { default_color } from './utils/default_color';
 import { default_open_path_stroke_width } from './utils/default_stroke_width';
 
@@ -140,7 +141,7 @@ export class Text extends ColoredShapeBase implements TextProperties {
         this.flagReset(true);
     }
 
-    render(parentElement: HTMLElement | SVGElement, svgElement: SVGElement): void {
+    override render(shapeHost: ShapeHost, parentElement: unknown, svgElement: unknown): void {
 
         this.update();
 
@@ -152,15 +153,15 @@ export class Text extends ColoredShapeBase implements TextProperties {
         }
 
         if (this.zzz.elem) {
-            svg.setAttributes(this.zzz.elem, changed);
-            this.zzz.elem.setAttribute('transform', transform_value_of_matrix(this.matrix));
+            shapeHost.setAttributes(this.zzz.elem, changed);
+            shapeHost.setAttribute(this.zzz.elem, 'transform', transform_value_of_matrix(this.matrix));
         }
         else {
             changed.id = this.id;
             this.zzz.elem = svg.createElement('text', changed);
-            parentElement.appendChild(this.zzz.elem);
+            shapeHost.appendChild(parentElement, this.zzz.elem);
 
-            super.render(parentElement, svgElement);
+            super.render(shapeHost, parentElement, svgElement);
 
             // anchor
             this.zzz.disposables.push(effect(() => {
@@ -169,23 +170,23 @@ export class Text extends ColoredShapeBase implements TextProperties {
                 switch (anchor) {
                     case 'start': {
                         if (crazy) {
-                            this.zzz.elem.setAttribute('text-anchor', 'end');
+                            shapeHost.setAttribute(this.zzz.elem, 'text-anchor', 'end');
                         }
                         else {
-                            this.zzz.elem.removeAttribute('text-anchor');
+                            shapeHost.removeAttribute(this.zzz.elem, 'text-anchor');
                         }
                         break;
                     }
                     case 'middle': {
-                        this.zzz.elem.setAttribute('text-anchor', anchor);
+                        shapeHost.setAttribute(this.zzz.elem, 'text-anchor', anchor);
                         break;
                     }
                     case 'end': {
                         if (crazy) {
-                            this.zzz.elem.removeAttribute('text-anchor');
+                            shapeHost.removeAttribute(this.zzz.elem, 'text-anchor');
                         }
                         else {
-                            this.zzz.elem.setAttribute('text-anchor', anchor);
+                            shapeHost.setAttribute(this.zzz.elem, 'text-anchor', anchor);
                         }
                         break;
                     }
@@ -200,7 +201,7 @@ export class Text extends ColoredShapeBase implements TextProperties {
                 const decoration = this.decoration;
                 const change: SVGAttributes = {};
                 change['text-decoration'] = decoration.join(' ');
-                svg.setAttributes(this.zzz.elem, change);
+                shapeHost.setAttributes(this.zzz.elem, change);
                 return function () {
                     // No cleanup to be done.
                 };
@@ -210,10 +211,10 @@ export class Text extends ColoredShapeBase implements TextProperties {
             this.zzz.disposables.push(effect(() => {
                 const direction = this.direction;
                 if (direction === 'rtl') {
-                    svg.setAttributes(this.zzz.elem, { direction });
+                    shapeHost.setAttributes(this.zzz.elem, { direction });
                 }
                 else {
-                    svg.removeAttributes(this.zzz.elem, { direction });
+                    shapeHost.removeAttributes(this.zzz.elem, { direction });
                 }
                 return function () {
                     // No cleanup to be done.
@@ -227,28 +228,28 @@ export class Text extends ColoredShapeBase implements TextProperties {
                 switch (baseline) {
                     case 'auto': {
                         if (goofy) {
-                            this.zzz.elem.setAttribute('dominant-baseline', 'hanging');
+                            shapeHost.setAttribute(this.zzz.elem, 'dominant-baseline', 'hanging');
                         }
                         else {
-                            this.zzz.elem.removeAttribute('dominant-baseline');
+                            shapeHost.removeAttribute(this.zzz.elem, 'dominant-baseline');
                         }
                         break;
                     }
                     case 'middle': {
-                        this.zzz.elem.setAttribute('dominant-baseline', baseline);
+                        shapeHost.setAttribute(this.zzz.elem, 'dominant-baseline', baseline);
                         break;
                     }
                     case 'hanging': {
                         if (goofy) {
-                            this.zzz.elem.setAttribute('dominant-baseline', 'auto');
+                            shapeHost.setAttribute(this.zzz.elem, 'dominant-baseline', 'auto');
                         }
                         else {
-                            this.zzz.elem.setAttribute('dominant-baseline', baseline);
+                            shapeHost.setAttribute(this.zzz.elem, 'dominant-baseline', baseline);
                         }
                         break;
                     }
                     default: {
-                        this.zzz.elem.setAttribute('dominant-baseline', baseline);
+                        shapeHost.setAttribute(this.zzz.elem, 'dominant-baseline', baseline);
                         break;
                     }
                 }
@@ -262,19 +263,19 @@ export class Text extends ColoredShapeBase implements TextProperties {
                 const dx = this.dx;
                 const crazy = this.board.crazy;
                 if (typeof dx === 'number' && dx === 0) {
-                    svg.removeAttributes(this.zzz.elem, { dx: "" });
+                    shapeHost.removeAttributes(this.zzz.elem, { dx: "" });
                 }
                 else {
                     if (typeof dx === 'number') {
                         if (crazy) {
-                            svg.setAttributes(this.zzz.elem, { dx: `${-dx}` });
+                            shapeHost.setAttributes(this.zzz.elem, { dx: `${-dx}` });
                         }
                         else {
-                            svg.setAttributes(this.zzz.elem, { dx: `${dx}` });
+                            shapeHost.setAttributes(this.zzz.elem, { dx: `${dx}` });
                         }
                     }
                     else {
-                        svg.setAttributes(this.zzz.elem, { dx: `${dx}` });
+                        shapeHost.setAttributes(this.zzz.elem, { dx: `${dx}` });
                     }
                 }
                 return function () {
@@ -287,19 +288,19 @@ export class Text extends ColoredShapeBase implements TextProperties {
                 const dy = this.dy;
                 const goofy = this.board.goofy;
                 if (typeof dy === 'number' && dy === 0) {
-                    svg.removeAttributes(this.zzz.elem, { dy: "" });
+                    shapeHost.removeAttributes(this.zzz.elem, { dy: "" });
                 }
                 else {
                     if (typeof dy === 'number') {
                         if (goofy) {
-                            svg.setAttributes(this.zzz.elem, { dy: `${dy}` });
+                            shapeHost.setAttributes(this.zzz.elem, { dy: `${dy}` });
                         }
                         else {
-                            svg.setAttributes(this.zzz.elem, { dy: `${-dy}` });
+                            shapeHost.setAttributes(this.zzz.elem, { dy: `${-dy}` });
                         }
                     }
                     else {
-                        svg.setAttributes(this.zzz.elem, { dy: `${dy}` });
+                        shapeHost.setAttributes(this.zzz.elem, { dy: `${dy}` });
                     }
                 }
                 return function () {
@@ -309,22 +310,22 @@ export class Text extends ColoredShapeBase implements TextProperties {
 
             // font-family
             this.zzz.disposables.push(effect(() => {
-                svg.setAttributes(this.zzz.elem, { 'font-family': this.fontFamily });
+                shapeHost.setAttributes(this.zzz.elem, { 'font-family': this.fontFamily });
             }));
 
             // font-size
             this.zzz.disposables.push(effect(() => {
-                svg.setAttributes(this.zzz.elem, { 'font-size': `${this.fontSize}` });
+                shapeHost.setAttributes(this.zzz.elem, { 'font-size': `${this.fontSize}` });
             }));
 
             // font-style
             this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = { 'font-style': this.fontStyle };
                 if (change['font-style'] === 'normal') {
-                    svg.removeAttributes(this.zzz.elem, change);
+                    shapeHost.removeAttributes(this.zzz.elem, change);
                 }
                 else {
-                    svg.setAttributes(this.zzz.elem, change);
+                    shapeHost.setAttributes(this.zzz.elem, change);
                 }
                 return function () {
                     // No cleanup to be done.
@@ -335,10 +336,10 @@ export class Text extends ColoredShapeBase implements TextProperties {
             this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = { 'font-weight': `${this.fontWeight}` };
                 if (change['font-weight'] === 'normal') {
-                    svg.removeAttributes(this.zzz.elem, change);
+                    shapeHost.removeAttributes(this.zzz.elem, change);
                 }
                 else {
-                    svg.setAttributes(this.zzz.elem, change);
+                    shapeHost.setAttributes(this.zzz.elem, change);
                 }
                 return function () {
                     // No cleanup to be done.
@@ -347,24 +348,24 @@ export class Text extends ColoredShapeBase implements TextProperties {
 
             // textContent
             this.zzz.disposables.push(effect(() => {
-                this.zzz.elem.textContent = this.content;
+                shapeHost.setTextContent(this.zzz.elem, this.content);
             }));
         }
 
         if (this.zzz.flags[Flag.ClipFlag]) {
-            const clip = svg.getClip(this, svgElement);
+            const clip = svg.getClip(shapeHost, this, svgElement);
             const elem = this.zzz.elem;
 
-            if (this.zzz.clip) {
-                elem.removeAttribute('id');
-                clip.setAttribute('id', this.id);
-                clip.appendChild(elem);
+            if (this.zzz.ismask) {
+                shapeHost.removeAttribute(elem, 'id');
+                shapeHost.setAttribute(clip, 'id', this.id);
+                shapeHost.appendChild(clip, elem);
             }
             else {
-                clip.removeAttribute('id');
-                elem.setAttribute('id', this.id);
+                shapeHost.removeAttribute(clip, 'id');
+                shapeHost.setAttribute(elem, 'id', this.id);
                 if (this.parent instanceof ElementBase) {
-                    this.parent.zzz.elem.appendChild(elem); // TODO: should be insertBefore
+                    shapeHost.appendChild(this.parent.zzz.elem, elem); // TODO: should be insertBefore
                 }
             }
         }
@@ -374,12 +375,12 @@ export class Text extends ColoredShapeBase implements TextProperties {
         // https://code.google.com/p/chromium/issues/detail?id=370951
 
         if (this.zzz.flags[Flag.ClipPath]) {
-            if (this.clipPath) {
-                this.clipPath.render(parentElement, svgElement);
-                this.zzz.elem.setAttribute('clip-path', 'url(#' + this.clipPath.id + ')');
+            if (this.mask) {
+                this.mask.render(shapeHost, parentElement, svgElement);
+                shapeHost.setAttribute(this.zzz.elem, 'clip-path', 'url(#' + this.mask.id + ')');
             }
             else {
-                this.zzz.elem.removeAttribute('clip-path');
+                shapeHost.removeAttribute(this.zzz.elem, 'clip-path');
             }
         }
 

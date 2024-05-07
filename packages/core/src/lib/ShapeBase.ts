@@ -3,12 +3,12 @@ import { Constants } from './constants';
 import { ElementBase } from './element';
 import { Flag } from './Flag';
 import { Board } from './IBoard';
-import { Shape } from './Shape';
 import { compose_2d_3x3_transform } from './math/compose_2d_3x3_transform';
 import { G20, SpinorLike, spinor_from_like, VectorLike, vector_from_like } from './math/G20';
 import { Matrix } from './math/Matrix';
 import { Disposable, dispose } from './reactive/Disposable';
-import { svg, SVGAttributes, transform_value_of_matrix } from './renderers/SVGView';
+import { transform_value_of_matrix } from './renderers/SVGView';
+import { Shape, ShapeHost, SVGAttributes } from './Shape';
 import { computed_world_matrix } from './utils/compute_world_matrix';
 
 export interface Parent {
@@ -83,7 +83,7 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
 
     readonly #plumb = state(false);
 
-    readonly #clipPath = state(null as ShapeBase | null);
+    readonly #mask = state(null as Shape | null);
 
     // TODO: Remove the properties that don't generally apply
     abstract getBoundingBox(shallow?: boolean): { top?: number; left?: number; right?: number; bottom?: number };
@@ -164,26 +164,26 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
         super.dispose();
     }
 
-    render(parentElement: HTMLElement | SVGElement, svgElement: SVGElement): void {
+    render(shapeHost: ShapeHost, parentElement: unknown, svgElement: unknown): void {
         // clip-path
         this.zzz.disposables.push(effect(() => {
-            const clipPath = this.clipPath;
-            if (clipPath) {
-                this.clipPath.render(parentElement, svgElement);
-                this.zzz.elem.setAttribute('clip-path', 'url(#' + this.clipPath.id + ')');
+            const mask = this.mask;
+            if (mask) {
+                this.mask.render(shapeHost, parentElement, svgElement);
+                shapeHost.setAttribute(this.zzz.elem, 'clip-path', 'url(#' + this.mask.id + ')');
             }
             else {
-                this.zzz.elem.removeAttribute('clip-path');
+                shapeHost.removeAttribute(this.zzz.elem, 'clip-path');
             }
         }));
 
         // id
         this.zzz.disposables.push(effect(() => {
             if (typeof this.id === 'string') {
-                this.zzz.elem.setAttribute('id', this.id);
+                shapeHost.setAttribute(this.zzz.elem, 'id', this.id);
             }
             else {
-                this.zzz.elem.removeAttribute('id');
+                shapeHost.removeAttribute(this.zzz.elem, 'id');
             }
         }));
 
@@ -192,10 +192,10 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
             const opacity = this.opacity;
             const change: SVGAttributes = { opacity: `${opacity}` };
             if (opacity === 1) {
-                svg.removeAttributes(this.zzz.elem, change);
+                shapeHost.removeAttribute(this.zzz.elem, 'opacity');
             }
             else {
-                svg.setAttributes(this.zzz.elem, change);
+                shapeHost.setAttributes(this.zzz.elem, change);
             }
             return function () {
                 // No cleanup to be done.
@@ -204,12 +204,11 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
 
         // transform
         this.zzz.disposables.push(effect(() => {
-
             if (this.matrix.isOne()) {
-                this.zzz.elem.removeAttribute('transform');
+                shapeHost.removeAttribute(this.zzz.elem, 'transform');
             }
             else {
-                this.zzz.elem.setAttribute('transform', transform_value_of_matrix(this.matrix));
+                shapeHost.setAttribute(this.zzz.elem, 'transform', transform_value_of_matrix(this.matrix));
             }
         }));
 
@@ -219,12 +218,12 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
             switch (visibility) {
                 case 'visible': {
                     const change: SVGAttributes = { visibility };
-                    svg.removeAttributes(this.zzz.elem, change);
+                    shapeHost.removeAttributes(this.zzz.elem, change);
                     break;
                 }
                 default: {
                     const change: SVGAttributes = { visibility };
-                    svg.setAttributes(this.zzz.elem, change);
+                    shapeHost.setAttributes(this.zzz.elem, change);
                     break;
                 }
             }
@@ -320,14 +319,14 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
     set skewY(skewY: number) {
         this.#skew.y = skewY;
     }
-    get clipPath(): ShapeBase | null {
-        return this.#clipPath.get();
+    get mask(): Shape | null {
+        return this.#mask.get();
     }
-    set clipPath(clipPath: ShapeBase | null) {
-        this.#clipPath.set(clipPath);
+    set mask(mask: Shape | null) {
+        this.#mask.set(mask);
         this.zzz.flags[Flag.ClipPath] = true;
-        if (clipPath instanceof ShapeBase && !clipPath.zzz.clip) {
-            clipPath.zzz.clip = true;
+        if (mask instanceof ShapeBase && !mask.zzz.ismask) {
+            mask.zzz.ismask = true;
         }
     }
     get matrix(): Matrix {

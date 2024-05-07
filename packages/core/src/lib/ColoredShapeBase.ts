@@ -4,7 +4,7 @@ import { Color } from "./effects/ColorProvider";
 import { Flag } from "./Flag";
 import { Board } from "./IBoard";
 import { SpinorLike, VectorLike } from "./math/G20";
-import { get_svg_element_defs } from "./renderers/SVGView";
+import { ShapeHost } from "./Shape";
 import { ShapeBase, ShapeOptions } from "./ShapeBase";
 
 export interface ColoredShapeOptions extends ShapeOptions {
@@ -149,22 +149,20 @@ export abstract class ColoredShapeBase extends ShapeBase {
         this.strokeColor = 'none';
         return this;
     }
-    override render(domElement: HTMLElement | SVGElement, svgElement: SVGElement): void {
+    override render(shapeHost: ShapeHost, parentElement: unknown, svgElement: unknown): void {
         // The derived class determines the element.
         if (this.zzz.elem) {
-            // TODO: We really only need the defs element for the ColorManager.
-            get_svg_element_defs(svgElement);
-            this.#fillColor.use(svgElement, this.zzz.elem);
-            this.#strokeColor.use(svgElement, this.zzz.elem);
+            this.#fillColor.use(shapeHost, svgElement, this.zzz.elem);
+            this.#strokeColor.use(shapeHost, svgElement, this.zzz.elem);
 
             // dashes
             this.zzz.disposables.push(effect(() => {
                 const dashes = this.dashes;
                 if (Array.isArray(dashes) && dashes.length > 0) {
-                    this.zzz.elem.setAttribute('stroke-dasharray', this.dashes.join(' '));
+                    shapeHost.setAttribute(this.zzz.elem, 'stroke-dasharray', this.dashes.join(' '));
                 }
                 else {
-                    this.zzz.elem.removeAttribute('stroke-dasharray');
+                    shapeHost.removeAttribute(this.zzz.elem, 'stroke-dasharray');
                 }
                 return function () {
                     // No cleanup to be done.
@@ -183,10 +181,10 @@ export abstract class ColoredShapeBase extends ShapeBase {
             this.zzz.disposables.push(effect(() => {
                 const fillOpacity = this.fillOpacity;
                 if (fillOpacity !== 1) {
-                    this.zzz.elem.setAttribute('fill-opacity', `${fillOpacity}`);
+                    shapeHost.setAttribute(this.zzz.elem, 'fill-opacity', `${fillOpacity}`);
                 }
                 else {
-                    this.zzz.elem.removeAttribute('fill-opacity');
+                    shapeHost.removeAttribute(this.zzz.elem, 'fill-opacity');
                 }
                 return function () {
                     // No cleanup to be done.
@@ -205,10 +203,10 @@ export abstract class ColoredShapeBase extends ShapeBase {
             this.zzz.disposables.push(effect(() => {
                 const strokeOpacity = this.strokeOpacity;
                 if (strokeOpacity !== 1) {
-                    this.zzz.elem.setAttribute('stroke-opacity', `${strokeOpacity}`);
+                    shapeHost.setAttribute(this.zzz.elem, 'stroke-opacity', `${strokeOpacity}`);
                 }
                 else {
-                    this.zzz.elem.removeAttribute('stroke-opacity');
+                    shapeHost.removeAttribute(this.zzz.elem, 'stroke-opacity');
                 }
                 return function () {
                     // No cleanup to be done.
@@ -219,10 +217,10 @@ export abstract class ColoredShapeBase extends ShapeBase {
             this.zzz.disposables.push(effect(() => {
                 const strokeWidth = this.strokeWidth;
                 if (strokeWidth !== 1) {
-                    this.zzz.elem.setAttribute('stroke-width', `${strokeWidth}`);
+                    shapeHost.setAttribute(this.zzz.elem, 'stroke-width', `${strokeWidth}`);
                 }
                 else {
-                    this.zzz.elem.removeAttribute('stroke-width');
+                    shapeHost.removeAttribute(this.zzz.elem, 'stroke-width');
                 }
                 return function () {
                     // No cleanup to be done.
@@ -233,17 +231,17 @@ export abstract class ColoredShapeBase extends ShapeBase {
             this.zzz.disposables.push(effect(() => {
                 const vectorEffect = this.vectorEffect;
                 if (typeof vectorEffect === 'string') {
-                    this.zzz.elem.setAttribute('vector-effect', `${vectorEffect}`);
+                    shapeHost.setAttribute(this.zzz.elem, 'vector-effect', `${vectorEffect}`);
                 }
                 else {
-                    this.zzz.elem.removeAttribute('vector-effect');
+                    shapeHost.removeAttribute(this.zzz.elem, 'vector-effect');
                 }
                 return function () {
                     // No cleanup to be done.
                 };
             }));
 
-            super.render(domElement, svgElement);
+            super.render(shapeHost, parentElement, svgElement);
         }
         else {
             throw new Error();

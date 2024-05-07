@@ -1,4 +1,4 @@
-import { Arrow, Board, G20, Group, ShapeBase, Text } from "g2o";
+import { Arrow, Board, G20, Group, Shape, ShapeHost, Text } from "g2o";
 
 export interface GridOptions {
     id?: string
@@ -60,16 +60,17 @@ export class Grid extends Group {
         this.yAxis.dispose();
         super.dispose();
     }
-    override render(parentElement: HTMLElement | SVGElement, svgElement: SVGElement): void {
+    override render(shapeHost: ShapeHost, parentElement: unknown, svgElement: unknown): void {
         if (this.zzz.elem) {
             // The element has already been defined.
         }
         else {
-            super.render(parentElement, svgElement);
+            super.render(shapeHost, parentElement, svgElement);
         }
     }
 }
 
-function resize(shape: ShapeBase, board: Board): void {
-    shape.scale = [1 / board.sx, 1 / board.sy];
+function resize(shape: Shape, board: Board): void {
+    shape.sx = 1 / board.sx;
+    shape.sy = 1 / board.sy;
 }
