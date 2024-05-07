@@ -20,6 +20,7 @@ export { State } from './lib/reactive/types';
 export { Variable, variable } from './lib/reactive/variable';
 export { SVGViewDOM } from './lib/renderers/SVGViewDOM';
 export { SVGViewFactory } from './lib/renderers/SVGViewFactory';
+export { TreeView, TreeViewParams } from './lib/renderers/TreeView';
 export { View } from './lib/renderers/View';
 export { ViewFactory } from './lib/renderers/ViewFactory';
 export { ZZZ } from './lib/renderers/ZZZ';
@@ -33,4 +34,5 @@ export { Line, LineOptions, LineProperties } from './lib/shapes/Line';
 export { Polygon, PolygonOptions } from './lib/shapes/Polygon';
 export { Rectangle, RectangleOptions, RectangleProperties } from './lib/shapes/Rectangle';
 export { Text, TextDecoration, TextOptions, TextProperties } from './lib/text';
+export { Commands } from './lib/utils/path-commands';
 

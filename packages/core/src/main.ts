@@ -1,4 +1,6 @@
-import { initBoard } from './index';
+// import { initBoard } from './index';
+// import { initBoard } from '../../svg/src/lib/initBoard';
+import { initBoard } from '../../svg/src/index';
 
 document.addEventListener('DOMContentLoaded', function () {
 

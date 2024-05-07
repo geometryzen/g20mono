@@ -16,6 +16,8 @@
         "packages/grid",
         "packages/player",
         "packages/reactive",
+        "packages/server",
+        "packages/svg",
         "packages/texture"
     ],
     "dependencies": {},

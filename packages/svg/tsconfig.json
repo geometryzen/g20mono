@@ -1,5 +1,4 @@
 {
-    "extends": "../../tsconfig.json",
     "compilerOptions": {
         "target": "esnext",
         "module": "esnext",
@@ -28,9 +27,6 @@
         "./rollup-plugin-dts.d.ts"
     ],
     "exclude": [
-        "node_modules",
-        "src/main.ts",
-        "src/www-example-texture.ts",
-        "./src/www*.ts",
+        "node_modules"
     ]
 }

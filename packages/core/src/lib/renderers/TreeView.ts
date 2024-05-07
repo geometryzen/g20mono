@@ -4,14 +4,14 @@ import { ViewDOM } from "../Shape";
 import { sizeEquals } from "./Size";
 import { View } from "./View";
 
-export interface SVGViewParams {
+export interface TreeViewParams {
     domElement?: unknown;
 }
 
 /**
- * TODO: This could become a tree view parametrized by a ViewDOM?
+ * 
  */
-export class SVGView implements View<unknown> {
+export class TreeView implements View<unknown> {
     /**
      * The topmost svg element.
      */
@@ -23,7 +23,7 @@ export class SVGView implements View<unknown> {
 
     readonly #viewDOM: ViewDOM;
 
-    constructor(viewDOM: ViewDOM, viewBox: Group, containerId: string, params: SVGViewParams = {}) {
+    constructor(viewDOM: ViewDOM, viewBox: Group, containerId: string, params: TreeViewParams = {}) {
         this.#viewDOM = viewDOM;
         if (viewBox instanceof Group) {
             this.viewBox = viewBox;
