@@ -95,7 +95,12 @@ export class GraphicsBoard<E, T> implements Board {
         this.#scene = new Group(this, [], { id: `${container_id}-scene` });
         this.#viewBox.add(this.#scene);
 
-        this.#view = viewFactory.createView(this.#viewBox, container_id);
+        if (viewFactory) {
+            this.#view = viewFactory.createView(this.#viewBox, container_id);
+        }
+        else {
+            throw new Error("viewFactory must be defined");
+        }
 
         const config: BoardConfig<E> = config_from_options(container, options);
 
@@ -543,12 +548,17 @@ function get_container<E, T>(elementOrId: string | E, elementDOM: ElementDOM<E, 
     }
 }
 
-function get_container_id<E, T>(elementOrId: string | E, elementDOM: ElementDOM<E, T>): string {
+function get_container_id<E, T>(elementOrId: string | E, elementDOM: ElementDOM<E, T>): string | null {
     if (typeof elementOrId === 'string') {
         return elementOrId;
     }
     else {
-        return elementDOM.getAttribute(elementOrId, 'id');
+        if (elementDOM) {
+            return elementDOM.getAttribute(elementOrId, 'id');
+        }
+        else {
+            return null;
+        }
     }
 }
 

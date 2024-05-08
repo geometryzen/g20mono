@@ -8,6 +8,7 @@ import { Disposable } from './reactive/Disposable';
  * The value of all attributes MUST be string.
  */
 export interface SVGAttributes {
+    [name: string]: string;
     'class'?: string;
     'clip-rule'?: 'nonzero' | 'evenodd' | 'inherit';
     'cx'?: string;
@@ -71,11 +72,11 @@ export interface SVGAttributes {
 }
 
 export interface ViewDOM {
-    createSVGElement(qualifiedName: string, attrs: SVGAttributes): unknown;
+    createSVGElement(qualifiedName: string, attributes: { [name: string]: string }): unknown;
     setAttribute(element: unknown, qualifiedName: string, value: string): void;
-    setAttributes(element: unknown, attrs: SVGAttributes): void;
+    setAttributes(element: unknown, attributes: { [name: string]: string }): void;
     removeAttribute(element: unknown, qualifiedName: string): void;
-    removeAttributes(element: unknown, attributes: SVGAttributes): void;
+    removeAttributes(element: unknown, attributes: { [name: string]: string }): void;
     appendChild(parent: unknown, child: unknown): void;
     removeChild(parent: unknown, child: unknown): void;
     setTextContent(element: unknown, textContent: string): void;

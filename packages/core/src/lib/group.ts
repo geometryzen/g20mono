@@ -1,6 +1,6 @@
 import { State, state } from 'g2o-reactive';
-import { Flag } from './Flag';
 import { Board } from './Board';
+import { Flag } from './Flag';
 import { transform_value_of_matrix } from './renderers/SVGViewDOM';
 import { Shape, ViewDOM } from './Shape';
 import { ShapeBase, ShapeOptions } from './ShapeBase';
@@ -42,9 +42,19 @@ export class Group extends ShapeBase {
             viewDOM.setAttribute(this.zzz.elem, 'transform', transform_value_of_matrix(this.matrix));
         }
         else {
-            this.zzz.elem = viewDOM.createSVGElement('g', { id: this.id });
-            viewDOM.appendChild(parentElement, this.zzz.elem);
-            super.render(viewDOM, parentElement, svgElement);
+            if (viewDOM) {
+                this.zzz.elem = viewDOM.createSVGElement('g', { id: this.id });
+                if (parentElement) {
+                    viewDOM.appendChild(parentElement, this.zzz.elem);
+                    super.render(viewDOM, parentElement, svgElement);
+                }
+                else {
+                    throw new Error("parentElement must be defined");
+                }
+            }
+            else {
+                throw new Error("viewDOM must be defined");
+            }
         }
 
         /*

@@ -4,6 +4,7 @@
  * The value of all attributes MUST be string.
  */
 export interface SVGAttributes {
+    [name: string]: string,
     'class'?: string;
     'clip-rule'?: 'nonzero' | 'evenodd' | 'inherit';
     'cx'?: string;
