@@ -1,76 +1,40 @@
-import { Arrow, Board, G20, Group, Shape, Text, ViewDOM } from "g2o";
+import { Board, Group, Line } from "g2o";
 
 export interface GridOptions {
     id?: string
 }
 
 export class Grid extends Group {
-    readonly xAxis: Arrow;
-    readonly yAxis: Arrow;
-    readonly xLabel: Text;
-    readonly yLabel: Text;
     constructor(board: Board, options: GridOptions = {}) {
-        super(board, [], options);
-        const bbox = board.getBoundingBox();
-        const sx = Math.abs(bbox.right - bbox.left);
-        const sy = Math.abs(bbox.top - bbox.bottom);
-        const dx = sx * 0.05;
-        const dy = sy * 0.05;
+        super(board, [], options)
+        const Nx = 10        // number of divisions (assumed even)
+        const Ny = 10
+        const Lx = Nx - 1      // number of lines
+        const Ly = Ny - 1      // number of lines
+        const Mx = (Nx / 2) - 1   // middle line
+        const My = (Ny / 2) - 1   // middle line
 
-        const xHead: [x: number, y: number] = [(board.crazy ? bbox.left : bbox.right) - dx, 0];
-        const xTail: [x: number, y: number] = [(board.crazy ? bbox.right : bbox.left) + dx, 0];
+        const bbox = board.getBoundingBox()
 
-        const yHead: [x: number, y: number] = [0, (board.goofy ? bbox.bottom : bbox.top) - dy];
-        const yTail: [x: number, y: number] = [0, (board.goofy ? bbox.top : bbox.bottom) + dy];
+        const mx = (bbox.right - bbox.left) / Nx
+        const my = (bbox.top - bbox.bottom) / Ny
 
-        this.xAxis = new Arrow(board, G20.ex.scale(sx - 2 * dx), {
-            position: xTail,
-            headLength: 0.025 * sx
-        });
-        this.add(this.xAxis);
-
-        this.yAxis = new Arrow(board, G20.ey.scale(sy - 2 * dy), {
-            position: yTail,
-            headLength: 0.025 * sy
-        });
-        this.add(this.yAxis);
-
-        this.xLabel = new Text(board, "x", {
-            position: xHead,
-            anchor: 'start',
-            baseline: 'middle',
-            dx: 16 * 0.6,   // fontSize * ratio of width / height for typical character
-        });
-        this.add(this.xLabel);
-        resize(this.xLabel, board);
-
-        this.yLabel = new Text(board, "y", {
-            position: yHead,
-            anchor: 'middle',
-            baseline: 'middle',
-            dy: 16, // fontSize
-        });
-        this.add(this.yLabel);
-        resize(this.yLabel, board);
-    }
-    override dispose(): void {
-        this.xLabel.dispose();
-        this.yLabel.dispose();
-        this.xAxis.dispose();
-        this.yAxis.dispose();
-        super.dispose();
-    }
-    override render<T>(viewDOM: ViewDOM<T>, parentElement: unknown, svgElement: unknown): void {
-        if (this.zzz.elem) {
-            // The element has already been defined.
+        // Horizontal Lines
+        for (let i = 0; i < Ly; i++) {
+            const line = new Line(board, [bbox.left, my * (i - My)], [bbox.right, my * (i - My)], {
+                strokeWidth: 2 / board.sx,
+                strokeOpacity: 0.5
+            })
+            this.add(line)
         }
-        else {
-            super.render(viewDOM, parentElement, svgElement);
+
+        // Vertical Lines
+        for (let i = 0; i < Lx; i++) {
+            const line = new Line(board, [mx * (i - Mx), bbox.bottom], [mx * (i - Mx), bbox.top], {
+                strokeWidth: 2 / board.sx,
+                strokeOpacity: 0.5
+            })
+            this.add(line)
         }
     }
-}
-
-function resize(shape: Shape, board: Board): void {
-    shape.sx = 1 / board.sx;
-    shape.sy = 1 / board.sy;
 }
