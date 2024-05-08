@@ -227,8 +227,8 @@ export const svg = {
      * @param svgElement 
      * @returns 
      */
-    getClip: function (viewDOM: ViewDOM, shape: ShapeBase, svgElement: unknown): unknown {
-        let clipPath = shape.zzz.svgClipPathElement;
+    getClip: function <T>(viewDOM: ViewDOM<T>, shape: ShapeBase, svgElement: T): T {
+        let clipPath = shape.zzz.svgClipPathElement as T;
         if (!clipPath) {
             clipPath = shape.zzz.svgClipPathElement = viewDOM.createSVGElement('clipPath', { 'clip-rule': 'nonzero' });
         }

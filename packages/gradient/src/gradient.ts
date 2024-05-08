@@ -1,4 +1,4 @@
-import { ColorProvider, ElementBase, ViewDOM, variable } from 'g2o';
+import { ColorProvider, ElementBase, variable, ViewDOM } from 'g2o';
 import { effect, State, state } from 'g2o-reactive';
 import { Constants } from './constants';
 import { Stop } from './stop';
@@ -48,11 +48,10 @@ export abstract class Gradient extends ElementBase implements ColorProvider {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    render(viewDOM: ViewDOM, defs: unknown): void {
+    render<T>(viewDOM: ViewDOM<T>, defs: unknown): void {
         this.zzz.disposables.push(effect(() => {
-
-            while (viewDOM.getLastChild(this.zzz.elem)) {
-                viewDOM.removeChild(this.zzz.elem, viewDOM.getLastChild(this.zzz.elem));
+            while (viewDOM.getLastChild(this.zzz.elem as T)) {
+                viewDOM.removeChild(this.zzz.elem as T, viewDOM.getLastChild(this.zzz.elem as T));
             }
 
             const stops = this.stops;
@@ -61,34 +60,35 @@ export abstract class Gradient extends ElementBase implements ColorProvider {
                 const stop = stops[i];
                 {
                     const attrs: SVGAttributes = { id: stop.id };
-                    stop.zzz.elem = viewDOM.createSVGElement('stop', attrs);
-                    viewDOM.appendChild(this.zzz.elem, stop.zzz.elem);
+                    const stopElement = viewDOM.createSVGElement('stop', attrs);
+                    stop.zzz.elem = stopElement;
+                    viewDOM.appendChild(this.zzz.elem as T, stopElement);
                 }
                 stop.zzz.disposables.push(effect(() => {
-                    viewDOM.setAttribute(stop.zzz.elem, 'offset', 100 * stop.offset + '%');
+                    viewDOM.setAttribute(stop.zzz.elem as T, 'offset', 100 * stop.offset + '%');
                 }));
                 stop.zzz.disposables.push(effect(() => {
-                    viewDOM.setAttribute(stop.zzz.elem, 'stop-color', stop.color);
+                    viewDOM.setAttribute(stop.zzz.elem as T, 'stop-color', stop.color);
                 }));
                 stop.zzz.disposables.push(effect(() => {
-                    viewDOM.setAttribute(stop.zzz.elem, 'stop-opacity', `${stop.opacity}`);
+                    viewDOM.setAttribute(stop.zzz.elem as T, 'stop-opacity', `${stop.opacity}`);
                 }));
                 stop.flagReset();
             }
         }));
     }
 
-    incrementUse(viewDOM: ViewDOM, defs: unknown): void {
+    incrementUse<T>(viewDOM: ViewDOM<T>, defs: T): void {
         this.#refCount++;
         if (this.#refCount === 1) {
             this.render(viewDOM, defs);
         }
     }
 
-    decrementUse(viewDOM: ViewDOM, defs: unknown): void {
+    decrementUse<T>(viewDOM: ViewDOM<T>, defs: T): void {
         this.#refCount--;
         if (this.#refCount === 0) {
-            viewDOM.removeChild(defs, this.zzz.elem);
+            viewDOM.removeChild(defs, this.zzz.elem as T);
             this.zzz.elem = null;
         }
     }

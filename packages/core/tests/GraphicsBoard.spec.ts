@@ -1,7 +1,7 @@
 import { ElementDOM, GraphicsBoard, Group, SVGAttributes, View, ViewDOM, ViewFactory } from "../src/index";
 
 class MockNode {
-    parent: MockNode | null = null;
+    parent: MockElement | null = null;
 }
 
 class MockElement extends MockNode {
@@ -33,7 +33,7 @@ class MockView implements View<MockElement> {
     height: number;
     width: number;
     readonly #svgElement: MockElement;
-    constructor(readonly viewBox: Group, readonly containerId: string, readonly viewDOM: ViewDOM) {
+    constructor(readonly viewBox: Group, readonly containerId: string, readonly viewDOM: ViewDOM<MockElement>) {
         this.#svgElement = viewDOM.createSVGElement('svg', {}) as MockElement;
         const defs = viewDOM.createSVGElement('defs', {}) as MockElement;
         // this.#svgElement.appendChild(defs);
@@ -48,7 +48,7 @@ class MockView implements View<MockElement> {
 }
 
 class MockViewFactory implements ViewFactory<MockElement> {
-    constructor(readonly viewDOM: ViewDOM) {
+    constructor(readonly viewDOM: ViewDOM<MockElement>) {
 
     }
     createView(viewBox: Group, containerId: string): View<MockElement> {
@@ -60,9 +60,9 @@ class MockViewFactory implements ViewFactory<MockElement> {
  * TODO: Can ViewDOM was be parameterized while keeping Shape unparameterized?
  * This would allow us to avoid casting.
  */
-class MockViewDOM implements ViewDOM {
+class MockViewDOM implements ViewDOM<MockElement> {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    createSVGElement(qualifiedName: string, attrs: SVGAttributes): unknown {
+    createSVGElement(qualifiedName: string, attrs: SVGAttributes): MockElement {
         return new MockElement(qualifiedName);
     }
     setAttribute(unk: unknown, qualifiedName: string, value: string): void {
@@ -86,14 +86,8 @@ class MockViewDOM implements ViewDOM {
             throw new Error();
         }
     }
-    removeAttribute(unk: unknown, qualifiedName: string): void {
-        if (unk instanceof MockElement) {
-            const element = unk as MockElement;
-            element.removeAttribute(qualifiedName);
-        }
-        else {
-            throw new Error();
-        }
+    removeAttribute(element: MockElement, qualifiedName: string): void {
+        element.removeAttribute(qualifiedName);
     }
     removeAttributes(unk: unknown, attributes: SVGAttributes): void {
         if (unk instanceof MockElement) {
@@ -122,36 +116,25 @@ class MockViewDOM implements ViewDOM {
     setTextContent(element: unknown, textContent: string): void {
         throw new Error("Method not implemented.");
     }
-    getParentNode(unk: unknown): unknown {
-        if (unk instanceof MockNode) {
-            return unk.parent;
-        }
-        else {
-            throw new Error();
-        }
+    getParentNode(element: MockElement): MockElement {
+        return element.parent;
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    getLastChild(element: unknown): unknown {
+    getLastChild(element: MockElement): MockElement {
         throw new Error("Method not implemented.");
     }
-    getElementDefs(unk: unknown): unknown {
-        if (unk instanceof MockElement) {
-            const svg = unk as MockElement;
-            const children = svg.children;
-            const N = children.length;
-            for (let i = 0; i < N; i++) {
-                const child = children[i];
-                if (child instanceof MockElement) {
-                    if (child.qualifiedName === 'defs') {
-                        return child;
-                    }
+    getElementDefs(svg: MockElement): MockElement {
+        const children = svg.children;
+        const N = children.length;
+        for (let i = 0; i < N; i++) {
+            const child = children[i];
+            if (child instanceof MockElement) {
+                if (child.qualifiedName === 'defs') {
+                    return child;
                 }
             }
-            throw new Error();
         }
-        else {
-            throw new Error();
-        }
+        throw new Error();
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     setStyle(element: unknown, name: "display" | "overflow" | "top", value: string): void {

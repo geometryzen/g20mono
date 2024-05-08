@@ -71,19 +71,19 @@ export interface SVGAttributes {
     'y2'?: string;
 }
 
-export interface ViewDOM {
-    createSVGElement(qualifiedName: string, attributes: { [name: string]: string }): unknown;
-    setAttribute(element: unknown, qualifiedName: string, value: string): void;
-    setAttributes(element: unknown, attributes: { [name: string]: string }): void;
-    removeAttribute(element: unknown, qualifiedName: string): void;
-    removeAttributes(element: unknown, attributes: { [name: string]: string }): void;
-    appendChild(parent: unknown, child: unknown): void;
-    removeChild(parent: unknown, child: unknown): void;
-    setTextContent(element: unknown, textContent: string): void;
-    getParentNode(element: unknown): unknown | null;
-    getLastChild(element: unknown): unknown | null;
-    getElementDefs(svg: unknown): unknown;
-    setStyle(element: unknown, name: 'display' | 'overflow' | 'top', value: string): void;
+export interface ViewDOM<T> {
+    createSVGElement(qualifiedName: string, attributes: { [name: string]: string }): T;
+    setAttribute(element: T, qualifiedName: string, value: string): void;
+    setAttributes(element: T, attributes: { [name: string]: string }): void;
+    removeAttribute(element: T, qualifiedName: string): void;
+    removeAttributes(element: T, attributes: { [name: string]: string }): void;
+    appendChild(parent: T, child: T): void;
+    removeChild(parent: T, child: T): void;
+    setTextContent(element: T, textContent: string): void;
+    getParentNode(element: T): T | null;
+    getLastChild(element: T): T | null;
+    getElementDefs(svg: T): T;
+    setStyle(element: T, name: 'display' | 'overflow' | 'top', value: string): void;
 }
 
 /**
@@ -108,6 +108,6 @@ export interface Shape extends Disposable {
     getBoundingBox(shallow?: boolean): { top?: number; left?: number; right?: number; bottom?: number };
     hasBoundingBox(): boolean;
     hide(): this;
-    render(viewDOM: ViewDOM, parentElement: unknown, svgElement: unknown): void;
+    render<T>(viewDOM: ViewDOM<T>, parentElement: T, svgElement: T): void;
     show(): this;
 }

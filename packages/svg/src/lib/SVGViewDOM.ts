@@ -1,4 +1,4 @@
-import { Anchor, Board, G20, Matrix, ShapeBase, SVGAttributes, ViewDOM,Commands } from "g2o";
+import { Anchor, Board, Commands, G20, Matrix, ShapeBase, SVGAttributes, ViewDOM } from "g2o";
 import { mod, toFixed } from "./math";
 
 type DOMElement = HTMLElement | SVGElement;
@@ -31,54 +31,41 @@ function setAttributes(elem: Element, attrs: SVGAttributes): void {
     }
 }
 
-export class SVGViewDOM implements ViewDOM {
-    createSVGElement(qualifiedName: string, attrs: SVGAttributes): unknown {
-        return createSVGElement(qualifiedName, attrs);
+export class SVGViewDOM implements ViewDOM<SVGElement> {
+    createSVGElement(qualifiedName: string, attributes: SVGAttributes = {}): SVGElement {
+        return createSVGElement(qualifiedName, attributes);
     }
-    setAttribute(unk: unknown, qualifiedName: string, value: string): void {
-        const element = unk as HTMLElement | SVGElement;
+    setAttribute(element: SVGElement, qualifiedName: string, value: string): void {
         element.setAttribute(qualifiedName, value);
     }
-    setAttributes(unk: unknown, attrs: SVGAttributes): void {
-        const element = unk as HTMLElement | SVGElement;
-        setAttributes(element, attrs);
+    setAttributes(element: SVGElement, attributes: SVGAttributes): void {
+        setAttributes(element, attributes);
     }
-    removeAttribute(unk: unknown, qualifiedName: string): void {
-        const element = unk as HTMLElement | SVGElement;
+    removeAttribute(element: SVGElement, qualifiedName: string): void {
         element.removeAttribute(qualifiedName);
     }
-    removeAttributes(unk: unknown, attributes: SVGAttributes): void {
-        const element = unk as HTMLElement | SVGElement;
+    removeAttributes(element: SVGElement, attributes: SVGAttributes): void {
         svg.removeAttributes(element, attributes);
     }
-    appendChild(unkP: unknown, unkC: unknown): void {
-        const parent = unkP as HTMLElement | SVGElement;
-        const child = unkC as HTMLElement | SVGElement;
+    appendChild(parent: SVGElement, child: SVGElement): void {
         parent.appendChild(child);
     }
-    removeChild(unkP: unknown, unkC: unknown): void {
-        const parent = unkP as HTMLElement | SVGElement;
-        const child = unkC as HTMLElement | SVGElement;
+    removeChild(parent: SVGElement, child: SVGElement): void {
         parent.removeChild(child);
     }
-    setTextContent(unk: unknown, textContent: string): void {
-        const element = unk as HTMLElement | SVGElement;
+    setTextContent(element: SVGElement, textContent: string): void {
         element.textContent = textContent;
     }
-    getParentNode(unk: unknown): unknown | null {
-        const element = unk as HTMLElement | SVGElement;
-        return element.parentNode;
+    getParentNode(element: SVGElement): SVGElement | null {
+        return element.parentNode as SVGElement;
     }
-    getLastChild(unk: unknown): unknown {
-        const element = unk as HTMLElement | SVGElement;
-        return element.lastChild;
+    getLastChild(element: SVGElement): SVGElement {
+        return element.lastChild as SVGElement;
     }
-    getElementDefs(unk: unknown): unknown {
-        const svg = unk as SVGElement;
+    getElementDefs(svg: SVGElement): SVGElement {
         return get_svg_element_defs(svg);
     }
-    setStyle(unk: unknown, name: 'display' | 'overflow', value: string): void {
-        const element = unk as HTMLElement | SVGElement;
+    setStyle(element: SVGElement, name: 'display' | 'overflow', value: string): void {
         element.style[name] = value;
     }
 }
@@ -300,8 +287,8 @@ export const svg = {
      * @param svgElement 
      * @returns 
      */
-    getClip: function (viewDOM: ViewDOM, shape: ShapeBase, svgElement: unknown): unknown {
-        let clipPath = shape.zzz.svgClipPathElement;
+    getClip: function <T>(viewDOM: ViewDOM<T>, shape: ShapeBase, svgElement: T): T {
+        let clipPath = shape.zzz.svgClipPathElement as T;
         if (!clipPath) {
             clipPath = shape.zzz.svgClipPathElement = viewDOM.createSVGElement('clipPath', { 'clip-rule': 'nonzero' });
         }

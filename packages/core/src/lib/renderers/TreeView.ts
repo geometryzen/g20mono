@@ -4,26 +4,26 @@ import { ViewDOM } from "../Shape";
 import { sizeEquals } from "./Size";
 import { View } from "./View";
 
-export interface TreeViewParams {
-    domElement?: unknown;
+export interface TreeViewParams<T> {
+    domElement?: T;
 }
 
 /**
  * 
  */
-export class TreeView implements View<unknown> {
+export class TreeView<T> implements View<T> {
     /**
      * The topmost svg element.
      */
-    readonly domElement: unknown;
+    readonly domElement: T;
     readonly viewBox: Group;
-    readonly #defs: SVGDefsElement;
+    readonly #defs: T;
 
     readonly #size = state({ width: 0, height: 0 }, { equals: sizeEquals });
 
-    readonly #viewDOM: ViewDOM;
+    readonly #viewDOM: ViewDOM<T>;
 
-    constructor(viewDOM: ViewDOM, viewBox: Group, containerId: string, params: TreeViewParams = {}) {
+    constructor(viewDOM: ViewDOM<T>, viewBox: Group, containerId: string, params: TreeViewParams<T> = {}) {
         this.#viewDOM = viewDOM;
         if (viewBox instanceof Group) {
             this.viewBox = viewBox;
@@ -39,7 +39,7 @@ export class TreeView implements View<unknown> {
             this.domElement = this.#viewDOM.createSVGElement('svg', { id: `${containerId}-svg` });
         }
 
-        this.#defs = this.#viewDOM.createSVGElement('defs', {}) as SVGDefsElement;
+        this.#defs = this.#viewDOM.createSVGElement('defs', {});
         // set_defs_dirty_flag(this.#defs, false);
         this.#viewDOM.appendChild(this.domElement, this.#defs);
         this.#viewDOM.setStyle(this.domElement, 'overflow', 'hidden');

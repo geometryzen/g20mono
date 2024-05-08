@@ -33,19 +33,20 @@ export class Group extends ShapeBase {
         return false;
     }
 
-    override render(viewDOM: ViewDOM, parentElement: unknown, svgElement: unknown): void {
+    override render<T>(viewDOM: ViewDOM<T>, parentElement: T, svgElement: T): void {
 
         this.update();
 
         if (this.zzz.elem) {
             // Why is this needed when Shape has already created an effect?
-            viewDOM.setAttribute(this.zzz.elem, 'transform', transform_value_of_matrix(this.matrix));
+            viewDOM.setAttribute(this.zzz.elem as T, 'transform', transform_value_of_matrix(this.matrix));
         }
         else {
             if (viewDOM) {
-                this.zzz.elem = viewDOM.createSVGElement('g', { id: this.id });
+                const g = viewDOM.createSVGElement('g', { id: this.id });
+                this.zzz.elem = g;
                 if (parentElement) {
-                    viewDOM.appendChild(parentElement, this.zzz.elem);
+                    viewDOM.appendChild(parentElement, g);
                     super.render(viewDOM, parentElement, svgElement);
                 }
                 else {
@@ -78,10 +79,10 @@ export class Group extends ShapeBase {
         // TODO: Why are we doing this here and why isn't it reactive?
         if (this.zzz.flags[Flag.ClassName]) {
             if (this.classList.length > 0) {
-                viewDOM.setAttribute(this.zzz.elem, 'class', this.classList.join(' '));
+                viewDOM.setAttribute(this.zzz.elem as T, 'class', this.classList.join(' '));
             }
             else {
-                viewDOM.removeAttribute(this.zzz.elem, 'class');
+                viewDOM.removeAttribute(this.zzz.elem as T, 'class');
             }
         }
 
@@ -111,10 +112,10 @@ export class Group extends ShapeBase {
             if (this.zzz.flags[Flag.ClipPath]) {
                 if (this.mask) {
                     this.mask.render(viewDOM, parentElement, svgElement);
-                    viewDOM.setAttribute(this.zzz.elem, 'clip-path', 'url(#' + this.mask.id + ')');
+                    viewDOM.setAttribute(this.zzz.elem as T, 'clip-path', 'url(#' + this.mask.id + ')');
                 }
                 else {
-                    viewDOM.removeAttribute(this.zzz.elem, 'clip-path');
+                    viewDOM.removeAttribute(this.zzz.elem as T, 'clip-path');
                 }
             }
         }

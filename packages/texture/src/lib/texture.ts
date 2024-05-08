@@ -68,26 +68,27 @@ export class Texture extends ElementBase implements ColorProvider {
     serialize(): string {
         return `url(#${this.id})`;
     }
-    incrementUse(viewDOM: ViewDOM, defs: unknown): void {
+    incrementUse<T>(viewDOM: ViewDOM<T>, defs: T): void {
         this.#refCount++;
         if (this.#refCount == 1) {
-            this.zzz.elem = viewDOM.createSVGElement('pattern', {});
-            viewDOM.setAttribute(this.zzz.elem, 'id', this.id);
-            viewDOM.setAttribute(this.zzz.elem, 'patternUnits', 'userSpaceOnUse');
-            viewDOM.setAttribute(this.zzz.elem, 'width', `${this.image.width}`);
-            viewDOM.setAttribute(this.zzz.elem, 'height', `${this.image.height}`);
-            viewDOM.appendChild(defs, this.zzz.elem);
+            const pattern = viewDOM.createSVGElement('pattern', {});
+            this.zzz.elem = pattern;
+            viewDOM.setAttribute(pattern, 'id', this.id);
+            viewDOM.setAttribute(pattern, 'patternUnits', 'userSpaceOnUse');
+            viewDOM.setAttribute(pattern, 'width', `${this.image.width}`);
+            viewDOM.setAttribute(pattern, 'height', `${this.image.height}`);
+            viewDOM.appendChild(defs, pattern);
             this.zzz.image = viewDOM.createSVGElement('image', {
                 x: '0',
                 y: '0',
                 width: `${this.image.width}`,
                 height: `${this.image.height}`
-            }) as SVGImageElement;
+            });
             if (is_canvas(this.image)) {
-                viewDOM.setAttribute(this.zzz.image, 'href', this.image.toDataURL('image/png'));
+                viewDOM.setAttribute(this.zzz.image as T, 'href', this.image.toDataURL('image/png'));
             }
             else if (is_img(this.image)) {
-                viewDOM.setAttribute(this.zzz.image, 'href', this.image.src);
+                viewDOM.setAttribute(this.zzz.image as T, 'href', this.image.src);
             }
             else if (is_video(this.image)) {
                 // styles.href = this.src;
@@ -95,16 +96,16 @@ export class Texture extends ElementBase implements ColorProvider {
             else {
                 throw new Error();
             }
-            viewDOM.appendChild(this.zzz.elem, this.zzz.image);
+            viewDOM.appendChild(this.zzz.elem as T, this.zzz.image as T);
         }
     }
-    decrementUse(viewDOM: ViewDOM, defs: unknown): void {
+    decrementUse<T>(viewDOM: ViewDOM<T>, defs: T): void {
         this.#refCount--;
         if (this.#refCount === 0) {
-            viewDOM.removeChild(defs, this.zzz.elem);
+            viewDOM.removeChild(defs, this.zzz.elem as T);
         }
     }
-    use(viewDOM: ViewDOM, svgElement: unknown): this {
+    use<T>(viewDOM: ViewDOM<T>, svgElement: T): this {
 
         let changed_x: number;
         let changed_y: number;
@@ -197,7 +198,7 @@ export class Texture extends ElementBase implements ColorProvider {
                 this.zzz.image = viewDOM.createSVGElement('image', styles);
             }
             else {
-                viewDOM.setAttributes(this.zzz.image, styles);
+                viewDOM.setAttributes(this.zzz.image as T, styles);
             }
         }
 
@@ -213,15 +214,15 @@ export class Texture extends ElementBase implements ColorProvider {
             this.zzz.elem = viewDOM.createSVGElement('pattern', changed);
         }
         else if (Object.keys(changed).length !== 0) {
-            viewDOM.setAttributes(this.zzz.elem, changed);
+            viewDOM.setAttributes(this.zzz.elem as T, changed);
         }
 
-        if (viewDOM.getParentNode(this.zzz.elem) === null) {
-            viewDOM.appendChild(viewDOM.getElementDefs(svgElement), this.zzz.elem);
+        if (viewDOM.getParentNode(this.zzz.elem as T) === null) {
+            viewDOM.appendChild(viewDOM.getElementDefs(svgElement), this.zzz.elem as T);
         }
 
         if (this.zzz.elem && this.zzz.image && !this.zzz.appended) {
-            viewDOM.appendChild(this.zzz.elem, this.zzz.image);
+            viewDOM.appendChild(this.zzz.elem as T, this.zzz.image as T);
             this.zzz.appended = true;
         }
 

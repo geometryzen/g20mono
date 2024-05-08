@@ -1,14 +1,14 @@
 import { effect, state } from 'g2o-reactive';
+import { Board } from './Board';
 import { Constants } from './constants';
 import { ElementBase } from './element';
 import { Flag } from './Flag';
-import { Board } from './Board';
 import { compose_2d_3x3_transform } from './math/compose_2d_3x3_transform';
 import { G20, SpinorLike, spinor_from_like, VectorLike, vector_from_like } from './math/G20';
 import { Matrix } from './math/Matrix';
 import { Disposable, dispose } from './reactive/Disposable';
 import { transform_value_of_matrix } from './renderers/SVGViewDOM';
-import { Shape, ViewDOM, SVGAttributes } from './Shape';
+import { Shape, SVGAttributes, ViewDOM } from './Shape';
 import { computed_world_matrix } from './utils/compute_world_matrix';
 
 export interface Parent {
@@ -164,26 +164,27 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
         super.dispose();
     }
 
-    render(viewDOM: ViewDOM, parentElement: unknown, svgElement: unknown): void {
+    render<T>(viewDOM: ViewDOM<T>, parentElement: T, svgElement: T): void {
         // clip-path
         this.zzz.disposables.push(effect(() => {
             const mask = this.mask;
             if (mask) {
                 this.mask.render(viewDOM, parentElement, svgElement);
-                viewDOM.setAttribute(this.zzz.elem, 'clip-path', 'url(#' + this.mask.id + ')');
+                // TODO: Consider the shape returning a serialized value for the clip-path?
+                viewDOM.setAttribute(this.zzz.elem as T, 'clip-path', 'url(#' + this.mask.id + ')');
             }
             else {
-                viewDOM.removeAttribute(this.zzz.elem, 'clip-path');
+                viewDOM.removeAttribute(this.zzz.elem as T, 'clip-path');
             }
         }));
 
         // id
         this.zzz.disposables.push(effect(() => {
             if (typeof this.id === 'string') {
-                viewDOM.setAttribute(this.zzz.elem, 'id', this.id);
+                viewDOM.setAttribute(this.zzz.elem as T, 'id', this.id);
             }
             else {
-                viewDOM.removeAttribute(this.zzz.elem, 'id');
+                viewDOM.removeAttribute(this.zzz.elem as T, 'id');
             }
         }));
 
@@ -192,10 +193,10 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
             const opacity = this.opacity;
             const change: SVGAttributes = { opacity: `${opacity}` };
             if (opacity === 1) {
-                viewDOM.removeAttribute(this.zzz.elem, 'opacity');
+                viewDOM.removeAttribute(this.zzz.elem as T, 'opacity');
             }
             else {
-                viewDOM.setAttributes(this.zzz.elem, change);
+                viewDOM.setAttributes(this.zzz.elem as T, change);
             }
             return function () {
                 // No cleanup to be done.
@@ -205,10 +206,10 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
         // transform
         this.zzz.disposables.push(effect(() => {
             if (this.matrix.isOne()) {
-                viewDOM.removeAttribute(this.zzz.elem, 'transform');
+                viewDOM.removeAttribute(this.zzz.elem as T, 'transform');
             }
             else {
-                viewDOM.setAttribute(this.zzz.elem, 'transform', transform_value_of_matrix(this.matrix));
+                viewDOM.setAttribute(this.zzz.elem as T, 'transform', transform_value_of_matrix(this.matrix));
             }
         }));
 
@@ -218,12 +219,12 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
             switch (visibility) {
                 case 'visible': {
                     const change: SVGAttributes = { visibility };
-                    viewDOM.removeAttributes(this.zzz.elem, change);
+                    viewDOM.removeAttributes(this.zzz.elem as T, change);
                     break;
                 }
                 default: {
                     const change: SVGAttributes = { visibility };
-                    viewDOM.setAttributes(this.zzz.elem, change);
+                    viewDOM.setAttributes(this.zzz.elem as T, change);
                     break;
                 }
             }

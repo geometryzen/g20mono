@@ -8,12 +8,12 @@ export interface ColorProvider {
      * Indicates to the ColorProvider that it is being used in one more fill or stroke property.
      * The ColorProvider is expected to add itself to the SVG defs element when being used.
      */
-    incrementUse(viewDOM: ViewDOM, defs: unknown): void;
+    incrementUse<T>(viewDOM: ViewDOM<T>, defs: T): void;
     /**
      * Indicates to the ColorProvider that it is being used in one less fill or stroke property.
      * The ColorProvider is expected to remove itself from the SVG defs element when no longer used.
      */
-    decrementUse(viewDOM: ViewDOM, defs: unknown): void;
+    decrementUse<T>(viewDOM: ViewDOM<T>, defs: T): void;
     /**
      * Provide the value that will be used in the `fill` or `stroke` attribute of the consuming element.
      * Usually url(#${this.id}) for gradients and textures but may be e.g. an rgb() or #RRGGBB value. 

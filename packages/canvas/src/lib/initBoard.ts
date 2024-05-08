@@ -1,4 +1,4 @@
-import { Board, GraphicsBoard } from "g2o";
+import { Board, GraphicsBoard, ViewDOM, ViewFactory } from "g2o";
 import { SVGViewDOM } from "g2o-svg";
 import { CanvasViewFactory } from "./CanvasViewFactory";
 import { HTMLElementDOM } from "./HTMLElementDOM";
@@ -14,6 +14,8 @@ export interface BoardOptions {
  */
 export function initBoard(elementOrId: string | HTMLElement, options: BoardOptions = {}): Board {
     const elementDOM = new HTMLElementDOM();
-    const viewDOM = new SVGViewDOM();
-    return new GraphicsBoard<HTMLElement, HTMLCanvasElement>(elementOrId, elementDOM, viewDOM, new CanvasViewFactory(), options);
+    // The casting is a bit wierd. The viewDOM will build an SVG tree, but the viewFactory will render it into a canvas.
+    const viewDOM: ViewDOM<HTMLCanvasElement> = new SVGViewDOM() as unknown as ViewDOM<HTMLCanvasElement>;
+    const viewFactory: ViewFactory<HTMLCanvasElement> = new CanvasViewFactory();
+    return new GraphicsBoard<HTMLElement, HTMLCanvasElement>(elementOrId, elementDOM, viewDOM, viewFactory, options);
 }

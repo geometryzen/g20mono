@@ -13,7 +13,7 @@ export abstract class ElementBase implements Disposable {
     parent: unknown;
 
     /**
-     * 
+     *
      */
     readonly zzz: ZZZ = new ZZZ();
 

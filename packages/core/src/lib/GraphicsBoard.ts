@@ -35,7 +35,7 @@ export class GraphicsBoard<E, T> implements Board {
     readonly #disposables: Disposable[] = [];
 
     readonly #view: View<T>;
-    readonly #viewDOM: ViewDOM;
+    readonly #viewDOM: ViewDOM<T>;
     readonly #elementDOM: ElementDOM<E, T>;
 
     /**
@@ -74,7 +74,7 @@ export class GraphicsBoard<E, T> implements Board {
         return bbox.left > bbox.right;
     });
 
-    constructor(elementOrId: string | E, elementDOM: ElementDOM<E, T>, viewDOM: ViewDOM, viewFactory: ViewFactory<T>, options: GraphicsBoardOptions = {}) {
+    constructor(elementOrId: string | E, elementDOM: ElementDOM<E, T>, viewDOM: ViewDOM<T>, viewFactory: ViewFactory<T>, options: GraphicsBoardOptions = {}) {
 
         this.#elementDOM = elementDOM;
         this.#viewDOM = viewDOM;
@@ -423,11 +423,11 @@ class Fitter<E, T> {
     readonly #board: GraphicsBoard<E, T>;
     readonly #elementDOM: ElementDOM<E, T>;
     readonly #view: View<T>;
-    readonly #viewDOM: ViewDOM;
-    readonly #domElement: unknown;
+    readonly #viewDOM: ViewDOM<T>;
+    readonly #domElement: T;
     #target: E | null = null;
     #target_resize: Disposable | null = null;
-    constructor(board: GraphicsBoard<E, T>, elementDOM: ElementDOM<E, T>, view: View<T>, viewDOM: ViewDOM) {
+    constructor(board: GraphicsBoard<E, T>, elementDOM: ElementDOM<E, T>, view: View<T>, viewDOM: ViewDOM<T>) {
         this.#board = board;
         this.#elementDOM = elementDOM;
         this.#view = view;

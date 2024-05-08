@@ -22,11 +22,12 @@ export class ZZZ implements Disposable {
 
     /**
      * The ismask property indicates that this path is being used as the mask for some other shape.
+     * TODO: What if it is being used multiple times?
      */
     readonly #ismask = variable(false);
     readonly ismask$ = this.#ismask.asObservable();
     /**
-     * SVGClipPathElement
+     * SVGClipPathElement, TODO: Rename clipPath.
      */
     svgClipPathElement?: unknown;
 

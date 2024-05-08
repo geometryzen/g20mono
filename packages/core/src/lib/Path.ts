@@ -1,17 +1,17 @@
 import { effect, state } from 'g2o-reactive';
 import { Anchor } from './anchor';
+import { Board } from './Board';
 import { Collection } from './collection';
 import { ColoredShapeBase, ColoredShapeOptions } from './ColoredShapeBase';
 import { Color } from './effects/ColorProvider';
 import { ElementBase } from './element';
 import { Flag } from './Flag';
-import { Board } from './Board';
 import { SpinorLike, VectorLike } from './math/G20';
 import { G20 } from './math/G20.js';
 import { Disposable } from './reactive/Disposable';
 import { variable } from './reactive/variable';
 import { svg } from './renderers/SVGViewDOM';
-import { ViewDOM, SVGAttributes } from './Shape';
+import { SVGAttributes, ViewDOM } from './Shape';
 import { getComponentOnCubicBezier, getCurveBoundingBox, getCurveFromPoints } from './utils/curves';
 import { lerp, mod } from './utils/math';
 import { Commands } from './utils/path-commands';
@@ -147,7 +147,7 @@ export class Path extends ColoredShapeBase {
         this.automatic = !manual;
     }
 
-    override render(viewDOM: ViewDOM, parentElement: unknown, svgElement: unknown): void {
+    override render<T>(viewDOM: ViewDOM<T>, parentElement: T, svgElement: T): void {
 
         // Collect any attribute that needs to be changed here
         const changed: SVGAttributes = {};
@@ -160,54 +160,55 @@ export class Path extends ColoredShapeBase {
 
         if (this.zzz.elem) {
             // When completely reactive, this will not be needed
-            viewDOM.setAttributes(this.zzz.elem, changed);
+            viewDOM.setAttributes(this.zzz.elem as T, changed);
         }
         else {
             changed.id = this.id;
-            this.zzz.elem = viewDOM.createSVGElement('path', changed);
-            viewDOM.appendChild(parentElement, this.zzz.elem);
+            const path = viewDOM.createSVGElement('path', changed);
+            this.zzz.elem = path;
+            viewDOM.appendChild(parentElement, path);
             super.render(viewDOM, parentElement, svgElement);
 
             // stroke-linecap
             this.zzz.disposables.push(effect(() => {
                 if (this.cap && this.cap !== "butt") {
-                    viewDOM.setAttribute(this.zzz.elem, 'stroke-linecap', this.cap);
+                    viewDOM.setAttribute(path, 'stroke-linecap', this.cap);
                 }
                 else {
-                    viewDOM.removeAttribute(this.zzz.elem, 'stroke-linecap');
+                    viewDOM.removeAttribute(path, 'stroke-linecap');
                 }
             }));
 
             // stroke-linejoin
             this.zzz.disposables.push(effect(() => {
                 if (this.join && this.join !== "miter") {
-                    viewDOM.setAttribute(this.zzz.elem, 'stroke-linejoin', this.join);
+                    viewDOM.setAttribute(path, 'stroke-linejoin', this.join);
                 }
                 else {
-                    viewDOM.removeAttribute(this.zzz.elem, 'stroke-linejoin');
+                    viewDOM.removeAttribute(path, 'stroke-linejoin');
                 }
             }));
 
             // stroke-miterlimit
             this.zzz.disposables.push(effect(() => {
                 if (this.miterLimit !== 4) {
-                    viewDOM.setAttribute(this.zzz.elem, 'stroke-miterlimit', `${this.miterLimit}`);
+                    viewDOM.setAttribute(path, 'stroke-miterlimit', `${this.miterLimit}`);
                 }
                 else {
-                    viewDOM.removeAttribute(this.zzz.elem, 'stroke-miterlimit');
+                    viewDOM.removeAttribute(path, 'stroke-miterlimit');
                 }
             }));
 
             this.zzz.disposables.push(this.zzz.vertices$.subscribe(() => {
                 const change: SVGAttributes = {};
                 change.d = svg.path_from_anchors(this.board, this.X, this.R, this.zzz.vertices, this.closed);
-                viewDOM.setAttributes(this.zzz.elem, change);
+                viewDOM.setAttributes(path, change);
             }));
         }
 
         if (this.zzz.flags[Flag.ClipFlag]) {
             const clip = svg.getClip(viewDOM, this, svgElement);
-            const elem = this.zzz.elem;
+            const elem = this.zzz.elem as T;
 
             if (this.zzz.ismask) {
                 viewDOM.removeAttribute(elem, 'id');
@@ -223,7 +224,7 @@ export class Path extends ColoredShapeBase {
                     viewDOM.removeAttribute(elem, 'id');
                 }
                 if (this.parent && this.parent instanceof ElementBase) {
-                    viewDOM.appendChild(this.parent.zzz.elem, elem); // TODO: should be insertBefore
+                    viewDOM.appendChild(this.parent.zzz.elem as T, elem); // TODO: should be insertBefore
                 }
             }
         }
@@ -236,10 +237,10 @@ export class Path extends ColoredShapeBase {
         if (this.zzz.flags[Flag.ClipPath]) {
             if (this.mask) {
                 this.mask.render(viewDOM, parentElement, svgElement);
-                viewDOM.setAttribute(this.zzz.elem, 'clip-path', 'url(#' + this.mask.id + ')');
+                viewDOM.setAttribute(this.zzz.elem as T, 'clip-path', 'url(#' + this.mask.id + ')');
             }
             else {
-                viewDOM.removeAttribute(this.zzz.elem, 'clip-path');
+                viewDOM.removeAttribute(this.zzz.elem as T, 'clip-path');
             }
         }
 

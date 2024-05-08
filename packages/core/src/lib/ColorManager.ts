@@ -17,7 +17,7 @@ export class ColorManager {
     readonly #olds: ColorProvider[] = [];
     readonly #color: State<Color>;
     #svg: unknown | null = null;
-    #viewDOM: ViewDOM | null = null;
+    #viewDOM: ViewDOM<unknown> | null = null;
     /**
      * The SVG element with the 'fill' or 'stroke' property.
      */
@@ -55,7 +55,7 @@ export class ColorManager {
             this.#color.set(newColor);
         }
     }
-    use(viewDOM: ViewDOM, svgElement: unknown, hostElement: unknown): void {
+    use<T>(viewDOM: ViewDOM<T>, svgElement: unknown, hostElement: unknown): void {
         this.#viewDOM = viewDOM;
         this.#svg = svgElement;
         this.#hostElement = hostElement;

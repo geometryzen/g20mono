@@ -1,4 +1,4 @@
-import { ColorProvider, G20, ViewDOM, VectorLike, vector_from_like } from 'g2o';
+import { ColorProvider, G20, VectorLike, vector_from_like, ViewDOM } from 'g2o';
 import { effect, state } from 'g2o-reactive';
 import { Gradient, GradientOptions } from './gradient';
 import { Stop } from './stop';
@@ -49,15 +49,18 @@ export class RadialGradient extends Gradient implements ColorProvider {
             this.focal.y = options.fy;
         }
     }
-    override render(viewDOM: ViewDOM, defs: unknown): this {
-        const changed: SVGAttributes = {};
-
+    override render<T>(viewDOM: ViewDOM<T>, defs: T): this {
         if (this.zzz.elem) {
-            viewDOM.setAttributes(this.zzz.elem, changed);
+            // Nothing to see here.
         }
         else {
+            const changed: SVGAttributes = {};
             changed.id = this.id;
             this.zzz.elem = viewDOM.createSVGElement('radialGradient', changed);
+            if (viewDOM.getParentNode(this.zzz.elem as T) === null) {
+                viewDOM.appendChild(defs, this.zzz.elem as T);
+            }
+
             super.render(viewDOM, defs);
 
             // center
@@ -65,7 +68,7 @@ export class RadialGradient extends Gradient implements ColorProvider {
                 const change: SVGAttributes = {};
                 change.cx = `${this.center.x}`;
                 change.cy = `${this.center.y}`;
-                viewDOM.setAttributes(this.zzz.elem, change);
+                viewDOM.setAttributes(this.zzz.elem as T, change);
             }));
 
             // focal
@@ -73,35 +76,30 @@ export class RadialGradient extends Gradient implements ColorProvider {
                 const change: SVGAttributes = {};
                 change.fx = `${this.focal.x}`;
                 change.fy = `${this.focal.y}`;
-                viewDOM.setAttributes(this.zzz.elem, change);
+                viewDOM.setAttributes(this.zzz.elem as T, change);
             }));
 
             // gradientUnits
             this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = {};
                 change.gradientUnits = this.units;
-                viewDOM.setAttributes(this.zzz.elem, change);
+                viewDOM.setAttributes(this.zzz.elem as T, change);
             }));
 
             // radius
             this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = {};
                 change.r = `${this.radius}`;
-                viewDOM.setAttributes(this.zzz.elem, change);
+                viewDOM.setAttributes(this.zzz.elem as T, change);
             }));
 
             // spreadMethod
             this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = {};
                 change.spreadMethod = this.spreadMethod;
-                viewDOM.setAttributes(this.zzz.elem, change);
+                viewDOM.setAttributes(this.zzz.elem as T, change);
             }));
         }
-
-        if (viewDOM.getParentNode(this.zzz.elem) === null) {
-            viewDOM.appendChild(defs, this.zzz.elem);
-        }
-
         return this.flagReset();
     }
 

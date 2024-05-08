@@ -1,4 +1,4 @@
-import { Arrow, Board, G20, Group, Shape, ViewDOM, Text } from "g2o";
+import { Arrow, Board, G20, Group, Shape, Text, ViewDOM } from "g2o";
 
 export interface GridOptions {
     id?: string
@@ -60,7 +60,7 @@ export class Grid extends Group {
         this.yAxis.dispose();
         super.dispose();
     }
-    override render(viewDOM: ViewDOM, parentElement: unknown, svgElement: unknown): void {
+    override render<T>(viewDOM: ViewDOM<T>, parentElement: unknown, svgElement: unknown): void {
         if (this.zzz.elem) {
             // The element has already been defined.
         }
