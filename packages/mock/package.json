@@ -1,13 +1,13 @@
 {
-    "name": "g2o",
-    "version": "0.9.257",
-    "description": "Geometric Algebra 2D Graphics Library",
+    "name": "g2o-mock",
+    "version": "0.9.210",
+    "description": "MockElement, MockNode, and initBoard",
     "exports": {
         ".": {
-            "import": "./dist/esm/index.min.js",
-            "require": "./dist/commonjs/index.js",
+            "types": "./dist/index.d.ts",
             "system": "./dist/system/index.min.js",
-            "types": "./dist/index.d.ts"
+            "import": "./dist/esm/index.min.js",
+            "default": "./dist/commonjs/index.js"
         }
     },
     "browser": "./dist/umd/index.js",
@@ -43,18 +43,15 @@
         "access": "public"
     },
     "scripts": {
-        "analyze": "node ./build/analyze.js",
-        "build": "rollup --config rollup.config.mts --configPlugin @rollup/plugin-typescript",
+        "build": "npm run clean && rollup --config rollup.config.mts --configPlugin @rollup/plugin-typescript",
         "check": "npx package-check",
-        "clean": "rm -rf coverage && rm -rf dist && rm -rf docs && rm -rf es2015 && rm -rf system && rm -rf types",
+        "clean": "rm -rf coverage && rm -rf dist && rm -rf docs && rm -rf es2015 && rm -rf system && rm -rf types && rm -rf build",
         "coverage": "npm run test -- --coverage",
         "dev": "rollup --config rollup.config.mts --configPlugin @rollup/plugin-typescript -w",
-        "dev-start": "node ./build/serve.js --watch",
         "docs": "npm run docs:typedoc && open-cli docs/index.html",
         "docs:typedoc": "rm -rf docs && typedoc --options typedoc.json",
-        "esbuild": "node ./build/build.js",
         "lint": "eslint .",
-        "pages": "npm run docs:typedoc && gh-pages -d docs",
+        "pages": "npm run docs:typedoc && gh-pages --dist docs --dest parser",
         "pretest": "npm run build",
         "release": "release-it",
         "test": "jest"
@@ -72,11 +69,9 @@
         "url": "https://github.com/geometryzen/g2o-mono/issues"
     },
     "homepage": "https://github.com/geometryzen/g2o-mono#readme",
-    "dependencies": {
-        "rxjs": "^7.8.1"
-    },
     "peerDependencies": {
+        "g2o": "file:../core",
         "g2o-reactive": "file:../reactive"
     },
-    "gitHead": "dff18f904372b2302589e848dbcea5c298643249"
+    "gitHead": "140e6f0a2366598efa2623600d4127a567883c4c"
 }

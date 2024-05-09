@@ -151,18 +151,18 @@ export abstract class ColoredShapeBase extends ShapeBase {
     }
     override render<T>(viewDOM: ViewDOM<T>, parentElement: unknown, svgElement: unknown): void {
         // The derived class determines the element.
-        if (this.zzz.elem) {
-            this.#fillColor.use(viewDOM, svgElement, this.zzz.elem);
-            this.#strokeColor.use(viewDOM, svgElement, this.zzz.elem);
+        if (this.zzz.viewee) {
+            this.#fillColor.use(viewDOM, svgElement, this.zzz.viewee);
+            this.#strokeColor.use(viewDOM, svgElement, this.zzz.viewee);
 
             // dashes
             this.zzz.disposables.push(effect(() => {
                 const dashes = this.dashes;
                 if (Array.isArray(dashes) && dashes.length > 0) {
-                    viewDOM.setAttribute(this.zzz.elem as T, 'stroke-dasharray', this.dashes.join(' '));
+                    viewDOM.setAttribute(this.zzz.viewee as T, 'stroke-dasharray', this.dashes.join(' '));
                 }
                 else {
-                    viewDOM.removeAttribute(this.zzz.elem as T, 'stroke-dasharray');
+                    viewDOM.removeAttribute(this.zzz.viewee as T, 'stroke-dasharray');
                 }
                 return function () {
                     // No cleanup to be done.
@@ -181,10 +181,10 @@ export abstract class ColoredShapeBase extends ShapeBase {
             this.zzz.disposables.push(effect(() => {
                 const fillOpacity = this.fillOpacity;
                 if (fillOpacity !== 1) {
-                    viewDOM.setAttribute(this.zzz.elem as T, 'fill-opacity', `${fillOpacity}`);
+                    viewDOM.setAttribute(this.zzz.viewee as T, 'fill-opacity', `${fillOpacity}`);
                 }
                 else {
-                    viewDOM.removeAttribute(this.zzz.elem as T, 'fill-opacity');
+                    viewDOM.removeAttribute(this.zzz.viewee as T, 'fill-opacity');
                 }
                 return function () {
                     // No cleanup to be done.
@@ -203,10 +203,10 @@ export abstract class ColoredShapeBase extends ShapeBase {
             this.zzz.disposables.push(effect(() => {
                 const strokeOpacity = this.strokeOpacity;
                 if (strokeOpacity !== 1) {
-                    viewDOM.setAttribute(this.zzz.elem as T, 'stroke-opacity', `${strokeOpacity}`);
+                    viewDOM.setAttribute(this.zzz.viewee as T, 'stroke-opacity', `${strokeOpacity}`);
                 }
                 else {
-                    viewDOM.removeAttribute(this.zzz.elem as T, 'stroke-opacity');
+                    viewDOM.removeAttribute(this.zzz.viewee as T, 'stroke-opacity');
                 }
                 return function () {
                     // No cleanup to be done.
@@ -217,10 +217,10 @@ export abstract class ColoredShapeBase extends ShapeBase {
             this.zzz.disposables.push(effect(() => {
                 const strokeWidth = this.strokeWidth;
                 if (strokeWidth !== 1) {
-                    viewDOM.setAttribute(this.zzz.elem as T, 'stroke-width', `${strokeWidth}`);
+                    viewDOM.setAttribute(this.zzz.viewee as T, 'stroke-width', `${strokeWidth}`);
                 }
                 else {
-                    viewDOM.removeAttribute(this.zzz.elem as T, 'stroke-width');
+                    viewDOM.removeAttribute(this.zzz.viewee as T, 'stroke-width');
                 }
                 return function () {
                     // No cleanup to be done.
@@ -231,10 +231,10 @@ export abstract class ColoredShapeBase extends ShapeBase {
             this.zzz.disposables.push(effect(() => {
                 const vectorEffect = this.vectorEffect;
                 if (typeof vectorEffect === 'string') {
-                    viewDOM.setAttribute(this.zzz.elem as T, 'vector-effect', `${vectorEffect}`);
+                    viewDOM.setAttribute(this.zzz.viewee as T, 'vector-effect', `${vectorEffect}`);
                 }
                 else {
-                    viewDOM.removeAttribute(this.zzz.elem as T, 'vector-effect');
+                    viewDOM.removeAttribute(this.zzz.viewee as T, 'vector-effect');
                 }
                 return function () {
                     // No cleanup to be done.

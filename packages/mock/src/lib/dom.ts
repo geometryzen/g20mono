@@ -1,66 +1,19 @@
-import { ElementDOM, GraphicsBoard, Group, SVGAttributes, View, ViewDOM, ViewFactory } from "../src/index";
-
-class MockNode {
-    parent: MockElement | null = null;
-}
-
-class MockElement extends MockNode {
-    readonly #attributes = new Map<string, string>();
-    readonly #children: MockNode[] = [];
-    constructor(readonly qualifiedName: string) {
-        super();
-    }
-    get children(): MockNode[] {
-        return this.#children;
-    }
-    appendChild(child: MockNode) {
-        this.#children.push(child);
-        child.parent = this;
-    }
-    removeAttribute(qualifiedName: string): void {
-        this.#attributes.delete(qualifiedName);
-    }
-    setAttribute(qualifiedName: string, value: string): void {
-        this.#attributes.set(qualifiedName, value);
-    }
-}
-
-class MockView implements View<MockElement> {
-    /**
-     * The svg element.
-     */
-    domElement: MockElement;
-    height: number;
-    width: number;
-    readonly #svgElement: MockElement;
-    constructor(readonly viewBox: Group, readonly containerId: string, readonly viewDOM: ViewDOM<MockElement>) {
-        this.#svgElement = viewDOM.createSVGElement('svg', {}) as MockElement;
-        const defs = viewDOM.createSVGElement('defs', {}) as MockElement;
-        // this.#svgElement.appendChild(defs);
-        viewDOM.appendChild(this.#svgElement, defs);
-    }
-    render(): void {
-        this.viewBox.render(this.viewDOM, this.#svgElement, this.#svgElement);
-    }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    setSize(size: { width: number; height: number; }, ratio: number): void {
-    }
-}
-
-class MockViewFactory implements ViewFactory<MockElement> {
-    constructor(readonly viewDOM: ViewDOM<MockElement>) {
-
-    }
-    createView(viewBox: Group, containerId: string): View<MockElement> {
-        return new MockView(viewBox, containerId, this.viewDOM);
-    }
-}
+import { ElementDOM, SVGAttributes, ViewDOM } from "g2o";
+import { MockElement, MockNode } from "./nodes";
 
 /**
  * TODO: Can ViewDOM was be parameterized while keeping Shape unparameterized?
  * This would allow us to avoid casting.
  */
-class MockViewDOM implements ViewDOM<MockElement> {
+export class MockViewDOM implements ViewDOM<MockElement> {
+    downcast(element: unknown): MockElement {
+        if (element instanceof MockElement) {
+            return element;
+        }
+        else {
+            throw new Error("element is not a MockElement");
+        }
+    }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     createSVGElement(qualifiedName: string, attrs: SVGAttributes): MockElement {
         return new MockElement(qualifiedName);
@@ -142,33 +95,33 @@ class MockViewDOM implements ViewDOM<MockElement> {
     }
 }
 
-describe("GraphicsBoard", function () {
-    it("constructor", function () {
-        expect(typeof GraphicsBoard === 'function').toBe(true);
+export class MockElementDOM implements ElementDOM<MockElement, MockElement> {
+    constructor() {
 
-        const elementOrId = void 0 as string;
-        const elementDOM = void 0 as ElementDOM<unknown, MockElement>;
-        const viewDOM = new MockViewDOM();
-        const viewFactory = new MockViewFactory(viewDOM);
-
-        const board = new GraphicsBoard(elementOrId, elementDOM, viewDOM, viewFactory, {});
-
-        board.rectangle();
-    });
-    it("point", function () {
-        expect(typeof GraphicsBoard === 'function').toBe(true);
-
-        const elementOrId = void 0 as string;
-        const elementDOM = void 0 as ElementDOM<unknown, MockElement>;
-        const viewDOM = new MockViewDOM();
-        const viewFactory = new MockViewFactory(viewDOM);
-
-        const board = new GraphicsBoard(elementOrId, elementDOM, viewDOM, viewFactory, {});
-
-        const x = Math.random();
-        const y = Math.random();
-        const P = board.point([x, y]);
-        expect(P.X.x).toBe(x);
-        expect(P.X.y).toBe(y);
-    });
-});
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    getElementById(elementId: string): MockElement {
+        throw new Error("Method not implemented.");
+    }
+    getAttribute(element: MockElement, qualifiedName: string): string {
+        return element.getAttribute(qualifiedName);
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    getBoundingClientRect(element: MockElement): { width: number; height: number; } {
+        return { width: 640, height: 480 };
+    }
+    appendChild(parent: MockElement, child: MockElement): void {
+        parent.appendChild(child);
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    addEventListener(target: MockElement, name: "resize", callback: () => void): void {
+        // Do nothing yet.
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    removeEventListener(target: MockElement, name: "resize", callback: () => void): void {
+        // Do nothing yet.
+    }
+    isDocumentBody(element: MockElement): boolean {
+        return element.qualifiedName === 'body';
+    }
+}

@@ -42,6 +42,10 @@ In the meantime, a search of `g2o` in the STEMCarXiv (STEMCstudio archive) at [S
 
 The core library that renders SVG. Required.
 
+### [g2o-svg](https://geometryzen.github.io/g2o-mono/svg)
+
+The SVG librray for creating SVG in the browser.
+
 ### [g2o-reactive](https://geometryzen.github.io/g2o-mono/reactive)
 
 The shared reactive signals library. Required. You will only need to use this directly if you are creating your own shape extensions.
@@ -91,3 +95,5 @@ Provides a coordinate grid. Optional. The Grid class extends Group and provides 
 Provides a Player for controlling animation frame start, and pause. Optional.
 
 [Live Demo of Player in STEMCstudio](https://www.stemcstudio.com/gists/a88d400bc9176836bb4ff7f88340428a)
+
+### [g2o-mock](https://geometryzen.github.io/g2o-mono/mock)

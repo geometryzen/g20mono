@@ -72,6 +72,10 @@ export interface SVGAttributes {
 }
 
 export interface ViewDOM<T> {
+    /**
+     * A runtime typesafe assertion that the element has the type required. 
+     */
+    downcast(element: unknown): T;
     createSVGElement(qualifiedName: string, attributes: { [name: string]: string }): T;
     setAttribute(element: T, qualifiedName: string, value: string): void;
     setAttributes(element: T, attributes: { [name: string]: string }): void;
@@ -109,5 +113,6 @@ export interface Shape extends Disposable {
     hasBoundingBox(): boolean;
     hide(): this;
     render<T>(viewDOM: ViewDOM<T>, parentElement: T, svgElement: T): void;
+    viewee(): unknown;
     show(): this;
 }

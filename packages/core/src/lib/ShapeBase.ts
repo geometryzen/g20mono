@@ -171,20 +171,20 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
             if (mask) {
                 this.mask.render(viewDOM, parentElement, svgElement);
                 // TODO: Consider the shape returning a serialized value for the clip-path?
-                viewDOM.setAttribute(this.zzz.elem as T, 'clip-path', 'url(#' + this.mask.id + ')');
+                viewDOM.setAttribute(this.zzz.viewee as T, 'clip-path', 'url(#' + this.mask.id + ')');
             }
             else {
-                viewDOM.removeAttribute(this.zzz.elem as T, 'clip-path');
+                viewDOM.removeAttribute(this.zzz.viewee as T, 'clip-path');
             }
         }));
 
         // id
         this.zzz.disposables.push(effect(() => {
             if (typeof this.id === 'string') {
-                viewDOM.setAttribute(this.zzz.elem as T, 'id', this.id);
+                viewDOM.setAttribute(this.zzz.viewee as T, 'id', this.id);
             }
             else {
-                viewDOM.removeAttribute(this.zzz.elem as T, 'id');
+                viewDOM.removeAttribute(this.zzz.viewee as T, 'id');
             }
         }));
 
@@ -193,10 +193,10 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
             const opacity = this.opacity;
             const change: SVGAttributes = { opacity: `${opacity}` };
             if (opacity === 1) {
-                viewDOM.removeAttribute(this.zzz.elem as T, 'opacity');
+                viewDOM.removeAttribute(this.zzz.viewee as T, 'opacity');
             }
             else {
-                viewDOM.setAttributes(this.zzz.elem as T, change);
+                viewDOM.setAttributes(this.zzz.viewee as T, change);
             }
             return function () {
                 // No cleanup to be done.
@@ -206,10 +206,10 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
         // transform
         this.zzz.disposables.push(effect(() => {
             if (this.matrix.isOne()) {
-                viewDOM.removeAttribute(this.zzz.elem as T, 'transform');
+                viewDOM.removeAttribute(this.zzz.viewee as T, 'transform');
             }
             else {
-                viewDOM.setAttribute(this.zzz.elem as T, 'transform', transform_value_of_matrix(this.matrix));
+                viewDOM.setAttribute(this.zzz.viewee as T, 'transform', transform_value_of_matrix(this.matrix));
             }
         }));
 
@@ -219,12 +219,12 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
             switch (visibility) {
                 case 'visible': {
                     const change: SVGAttributes = { visibility };
-                    viewDOM.removeAttributes(this.zzz.elem as T, change);
+                    viewDOM.removeAttributes(this.zzz.viewee as T, change);
                     break;
                 }
                 default: {
                     const change: SVGAttributes = { visibility };
-                    viewDOM.setAttributes(this.zzz.elem as T, change);
+                    viewDOM.setAttributes(this.zzz.viewee as T, change);
                     break;
                 }
             }
@@ -237,6 +237,10 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
     update(): this {
         // There's no update on the super type.
         return this;
+    }
+
+    viewee(): unknown {
+        return this.zzz.viewee;
     }
 
     flagReset(dirtyFlag = false): this {

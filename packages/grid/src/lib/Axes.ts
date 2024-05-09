@@ -61,7 +61,7 @@ export class Axes extends Group {
         super.dispose();
     }
     override render<T>(viewDOM: ViewDOM<T>, parentElement: unknown, svgElement: unknown): void {
-        if (this.zzz.elem) {
+        if (this.zzz.viewee) {
             // The element has already been defined.
         }
         else {

@@ -158,14 +158,14 @@ export class Path extends ColoredShapeBase {
             }
         }
 
-        if (this.zzz.elem) {
+        if (this.zzz.viewee) {
             // When completely reactive, this will not be needed
-            viewDOM.setAttributes(this.zzz.elem as T, changed);
+            viewDOM.setAttributes(this.zzz.viewee as T, changed);
         }
         else {
             changed.id = this.id;
             const path = viewDOM.createSVGElement('path', changed);
-            this.zzz.elem = path;
+            this.zzz.viewee = path;
             viewDOM.appendChild(parentElement, path);
             super.render(viewDOM, parentElement, svgElement);
 
@@ -208,7 +208,7 @@ export class Path extends ColoredShapeBase {
 
         if (this.zzz.flags[Flag.ClipFlag]) {
             const clip = svg.getClip(viewDOM, this, svgElement);
-            const elem = this.zzz.elem as T;
+            const elem = this.zzz.viewee as T;
 
             if (this.zzz.ismask) {
                 viewDOM.removeAttribute(elem, 'id');
@@ -224,7 +224,7 @@ export class Path extends ColoredShapeBase {
                     viewDOM.removeAttribute(elem, 'id');
                 }
                 if (this.parent && this.parent instanceof ElementBase) {
-                    viewDOM.appendChild(this.parent.zzz.elem as T, elem); // TODO: should be insertBefore
+                    viewDOM.appendChild(this.parent.zzz.viewee as T, elem); // TODO: should be insertBefore
                 }
             }
         }
@@ -237,10 +237,10 @@ export class Path extends ColoredShapeBase {
         if (this.zzz.flags[Flag.ClipPath]) {
             if (this.mask) {
                 this.mask.render(viewDOM, parentElement, svgElement);
-                viewDOM.setAttribute(this.zzz.elem as T, 'clip-path', 'url(#' + this.mask.id + ')');
+                viewDOM.setAttribute(this.zzz.viewee as T, 'clip-path', 'url(#' + this.mask.id + ')');
             }
             else {
-                viewDOM.removeAttribute(this.zzz.elem as T, 'clip-path');
+                viewDOM.removeAttribute(this.zzz.viewee as T, 'clip-path');
             }
         }
 

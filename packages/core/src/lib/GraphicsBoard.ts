@@ -97,6 +97,9 @@ export class GraphicsBoard<E, T> implements Board {
 
         if (viewFactory) {
             this.#view = viewFactory.createView(this.#viewBox, container_id);
+            if (typeof this.#view.domElement === 'undefined' || this.#view.domElement === null) {
+                throw new Error("view.domElement must be defined");
+            }
         }
         else {
             throw new Error("viewFactory must be defined");
@@ -267,7 +270,12 @@ export class GraphicsBoard<E, T> implements Board {
 
     appendTo(container: E): this {
         if (container) {
-            this.#elementDOM.appendChild(container, this.#view.domElement);
+            if (this.#view.domElement) {
+                this.#elementDOM.appendChild(container, this.#view.domElement);
+            }
+            else {
+                throw new Error("view.domElement must be defined");
+            }
             if (!this.#fitter.is_target_body()) {
                 this.#fitter.set_target(container);
             }
@@ -429,7 +437,12 @@ class Fitter<E, T> {
     #target_resize: Disposable | null = null;
     constructor(board: GraphicsBoard<E, T>, elementDOM: ElementDOM<E, T>, view: View<T>, viewDOM: ViewDOM<T>) {
         this.#board = board;
-        this.#elementDOM = elementDOM;
+        if (elementDOM) {
+            this.#elementDOM = elementDOM;
+        }
+        else {
+            throw new Error("elementDOM must be defined");
+        }
         this.#view = view;
         this.#viewDOM = viewDOM;
         this.#domElement = view.domElement;

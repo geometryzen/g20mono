@@ -48,10 +48,10 @@ export abstract class Gradient extends ElementBase implements ColorProvider {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    render<T>(viewDOM: ViewDOM<T>, defs: unknown): void {
+    render<T>(viewDOM: ViewDOM<T>, defs: T): void {
         this.zzz.disposables.push(effect(() => {
-            while (viewDOM.getLastChild(this.zzz.elem as T)) {
-                viewDOM.removeChild(this.zzz.elem as T, viewDOM.getLastChild(this.zzz.elem as T));
+            while (viewDOM.getLastChild(this.zzz.viewee as T)) {
+                viewDOM.removeChild(this.zzz.viewee as T, viewDOM.getLastChild(this.zzz.viewee as T));
             }
 
             const stops = this.stops;
@@ -61,18 +61,18 @@ export abstract class Gradient extends ElementBase implements ColorProvider {
                 {
                     const attrs: SVGAttributes = { id: stop.id };
                     const stopElement = viewDOM.createSVGElement('stop', attrs);
-                    stop.zzz.elem = stopElement;
-                    viewDOM.appendChild(this.zzz.elem as T, stopElement);
+                    stop.zzz.viewee = stopElement;
+                    viewDOM.appendChild(this.zzz.viewee as T, stopElement);
+                    stop.zzz.disposables.push(effect(() => {
+                        viewDOM.setAttribute(stopElement, 'offset', 100 * stop.offset + '%');
+                    }));
+                    stop.zzz.disposables.push(effect(() => {
+                        viewDOM.setAttribute(stopElement, 'stop-color', stop.color);
+                    }));
+                    stop.zzz.disposables.push(effect(() => {
+                        viewDOM.setAttribute(stopElement, 'stop-opacity', `${stop.opacity}`);
+                    }));
                 }
-                stop.zzz.disposables.push(effect(() => {
-                    viewDOM.setAttribute(stop.zzz.elem as T, 'offset', 100 * stop.offset + '%');
-                }));
-                stop.zzz.disposables.push(effect(() => {
-                    viewDOM.setAttribute(stop.zzz.elem as T, 'stop-color', stop.color);
-                }));
-                stop.zzz.disposables.push(effect(() => {
-                    viewDOM.setAttribute(stop.zzz.elem as T, 'stop-opacity', `${stop.opacity}`);
-                }));
                 stop.flagReset();
             }
         }));
@@ -88,8 +88,8 @@ export abstract class Gradient extends ElementBase implements ColorProvider {
     decrementUse<T>(viewDOM: ViewDOM<T>, defs: T): void {
         this.#refCount--;
         if (this.#refCount === 0) {
-            viewDOM.removeChild(defs, this.zzz.elem as T);
-            this.zzz.elem = null;
+            viewDOM.removeChild(defs, viewDOM.downcast(this.zzz.viewee));
+            this.zzz.viewee = null;
         }
     }
 

@@ -72,7 +72,7 @@ export class Texture extends ElementBase implements ColorProvider {
         this.#refCount++;
         if (this.#refCount == 1) {
             const pattern = viewDOM.createSVGElement('pattern', {});
-            this.zzz.elem = pattern;
+            this.zzz.viewee = pattern;
             viewDOM.setAttribute(pattern, 'id', this.id);
             viewDOM.setAttribute(pattern, 'patternUnits', 'userSpaceOnUse');
             viewDOM.setAttribute(pattern, 'width', `${this.image.width}`);
@@ -96,13 +96,13 @@ export class Texture extends ElementBase implements ColorProvider {
             else {
                 throw new Error();
             }
-            viewDOM.appendChild(this.zzz.elem as T, this.zzz.image as T);
+            viewDOM.appendChild(pattern, this.zzz.image as T);
         }
     }
     decrementUse<T>(viewDOM: ViewDOM<T>, defs: T): void {
         this.#refCount--;
         if (this.#refCount === 0) {
-            viewDOM.removeChild(defs, this.zzz.elem as T);
+            viewDOM.removeChild(defs, viewDOM.downcast(this.zzz.viewee));
         }
     }
     use<T>(viewDOM: ViewDOM<T>, svgElement: T): this {
@@ -207,22 +207,22 @@ export class Texture extends ElementBase implements ColorProvider {
         changed.y = `${changed_y}`;
         changed.width = `${changed_width}`;
         changed.height = `${changed_height}`;
-        if (!this.zzz.elem) {
+        if (!this.zzz.viewee) {
             changed.id = this.id;
             changed.x = `${changed_x}`;
             // changed.patternUnits = 'userSpaceOnUse';
-            this.zzz.elem = viewDOM.createSVGElement('pattern', changed);
+            this.zzz.viewee = viewDOM.createSVGElement('pattern', changed);
         }
         else if (Object.keys(changed).length !== 0) {
-            viewDOM.setAttributes(this.zzz.elem as T, changed);
+            viewDOM.setAttributes(this.zzz.viewee as T, changed);
         }
 
-        if (viewDOM.getParentNode(this.zzz.elem as T) === null) {
-            viewDOM.appendChild(viewDOM.getElementDefs(svgElement), this.zzz.elem as T);
+        if (viewDOM.getParentNode(this.zzz.viewee as T) === null) {
+            viewDOM.appendChild(viewDOM.getElementDefs(svgElement), this.zzz.viewee as T);
         }
 
-        if (this.zzz.elem && this.zzz.image && !this.zzz.appended) {
-            viewDOM.appendChild(this.zzz.elem as T, this.zzz.image as T);
+        if (this.zzz.viewee && this.zzz.image && !this.zzz.appended) {
+            viewDOM.appendChild(this.zzz.viewee as T, this.zzz.image as T);
             this.zzz.appended = true;
         }
 

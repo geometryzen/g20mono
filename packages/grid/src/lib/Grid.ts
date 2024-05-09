@@ -1,4 +1,4 @@
-import { Board, Group, Line } from "g2o";
+import { Board, Group, Line, ViewDOM } from "g2o";
 
 export interface GridOptions {
     id?: string
@@ -33,6 +33,17 @@ export class Grid extends Group {
                 strokeOpacity: 0.5
             });
             this.add(line);
+        }
+    }
+    override dispose(): void {
+        super.dispose();
+    }
+    override render<T>(viewDOM: ViewDOM<T>, parentElement: unknown, svgElement: unknown): void {
+        if (this.zzz.viewee) {
+            // The element has already been defined.
+        }
+        else {
+            super.render(viewDOM, parentElement, svgElement);
         }
     }
 }

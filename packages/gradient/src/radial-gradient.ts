@@ -50,16 +50,15 @@ export class RadialGradient extends Gradient implements ColorProvider {
         }
     }
     override render<T>(viewDOM: ViewDOM<T>, defs: T): this {
-        if (this.zzz.elem) {
+        if (this.zzz.viewee) {
             // Nothing to see here.
         }
         else {
             const changed: SVGAttributes = {};
             changed.id = this.id;
-            this.zzz.elem = viewDOM.createSVGElement('radialGradient', changed);
-            if (viewDOM.getParentNode(this.zzz.elem as T) === null) {
-                viewDOM.appendChild(defs, this.zzz.elem as T);
-            }
+            const viewee = viewDOM.createSVGElement('radialGradient', changed);
+            this.zzz.viewee = viewee;
+            viewDOM.appendChild(defs, viewee);
 
             super.render(viewDOM, defs);
 
@@ -68,7 +67,7 @@ export class RadialGradient extends Gradient implements ColorProvider {
                 const change: SVGAttributes = {};
                 change.cx = `${this.center.x}`;
                 change.cy = `${this.center.y}`;
-                viewDOM.setAttributes(this.zzz.elem as T, change);
+                viewDOM.setAttributes(viewee, change);
             }));
 
             // focal
@@ -76,28 +75,28 @@ export class RadialGradient extends Gradient implements ColorProvider {
                 const change: SVGAttributes = {};
                 change.fx = `${this.focal.x}`;
                 change.fy = `${this.focal.y}`;
-                viewDOM.setAttributes(this.zzz.elem as T, change);
+                viewDOM.setAttributes(viewee, change);
             }));
 
             // gradientUnits
             this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = {};
                 change.gradientUnits = this.units;
-                viewDOM.setAttributes(this.zzz.elem as T, change);
+                viewDOM.setAttributes(viewee, change);
             }));
 
             // radius
             this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = {};
                 change.r = `${this.radius}`;
-                viewDOM.setAttributes(this.zzz.elem as T, change);
+                viewDOM.setAttributes(viewee, change);
             }));
 
             // spreadMethod
             this.zzz.disposables.push(effect(() => {
                 const change: SVGAttributes = {};
                 change.spreadMethod = this.spreadMethod;
-                viewDOM.setAttributes(this.zzz.elem as T, change);
+                viewDOM.setAttributes(viewee, change);
             }));
         }
         return this.flagReset();

@@ -32,6 +32,14 @@ function setAttributes(elem: Element, attrs: SVGAttributes): void {
 }
 
 export class SVGViewDOM implements ViewDOM<SVGElement> {
+    downcast(element: unknown): SVGElement {
+        if (element instanceof SVGElement) {
+            return element as SVGElement;
+        }
+        else {
+            throw new Error("element is not an SVGElement");
+        }
+    }
     createSVGElement(qualifiedName: string, attributes: SVGAttributes = {}): SVGElement {
         return createSVGElement(qualifiedName, attributes);
     }

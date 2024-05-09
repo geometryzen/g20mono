@@ -39,10 +39,9 @@ export class ZZZ implements Disposable {
      */
     effect?: CanvasPattern;
     /**
-     * The element corresponding to some Shape and used by the SVG renderer. It will share the same identifier.
-     * This is a handle to some kind of SVG element.
+     * The visual element corresponding to some Shape.
      */
-    elem?: unknown;
+    viewee?: unknown;
     /**
      * A flag that reminds us that the fill (ColorProvider) has been rendered into the SVGDefsElement.
      */

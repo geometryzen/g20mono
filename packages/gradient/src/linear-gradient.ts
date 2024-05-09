@@ -28,41 +28,42 @@ export class LinearGradient extends Gradient implements ColorProvider {
 
         // If there is no attached DOM element yet,
         // create it with all necessary attributes.
-        if (this.zzz.elem) {
+        if (this.zzz.viewee) {
             // Nothing to do.
         }
         else {
             {
                 const changed: SVGAttributes = {};
                 changed.id = this.id;
-                this.zzz.elem = viewDOM.createSVGElement('linearGradient', changed);
-                if (viewDOM.getParentNode(this.zzz.elem as T) === null) {
-                    viewDOM.appendChild(defs, this.zzz.elem as T);
+                const viewee = viewDOM.createSVGElement('linearGradient', changed);
+                this.zzz.viewee = viewee;
+                if (viewDOM.getParentNode(viewee) === null) {
+                    viewDOM.appendChild(defs, viewee);
                 }
 
                 this.zzz.disposables.push(effect(() => {
                     const change: SVGAttributes = {};
                     change.x1 = `${this.point1.x}`;
                     change.y1 = `${this.point1.y}`;
-                    viewDOM.setAttributes(this.zzz.elem as T, change);
+                    viewDOM.setAttributes(viewee, change);
                 }));
 
                 this.zzz.disposables.push(effect(() => {
                     const change: SVGAttributes = {};
                     change.x2 = `${this.point2.x}`;
                     change.y2 = `${this.point2.y}`;
-                    viewDOM.setAttributes(this.zzz.elem as T, change);
+                    viewDOM.setAttributes(viewee, change);
                 }));
 
                 this.zzz.disposables.push(effect(() => {
                     const change: SVGAttributes = {};
                     change.gradientUnits = this.units;
-                    viewDOM.setAttributes(this.zzz.elem as T, change);
+                    viewDOM.setAttributes(viewee, change);
                 }));
                 this.zzz.disposables.push(effect(() => {
                     const change: SVGAttributes = {};
                     change.spreadMethod = this.spreadMethod;
-                    viewDOM.setAttributes(this.zzz.elem as T, change);
+                    viewDOM.setAttributes(viewee, change);
                 }));
                 super.render(viewDOM, defs);
             }
