@@ -53,7 +53,8 @@
         "lint": "eslint .",
         "pages": "npm run docs:typedoc && gh-pages --dist docs --dest reactive",
         "pretest": "npm run build",
-        "release": "release-it"
+        "release": "release-it",
+        "test": "jest"
     },
     "repository": {
         "type": "git",

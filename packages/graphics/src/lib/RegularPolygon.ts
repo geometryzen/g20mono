@@ -10,8 +10,8 @@ import {
     PathOptions,
     SpinorLike,
     VectorLike
-} from 'g2o';
-import { effect, state } from 'g2o-reactive';
+} from "g2o";
+import { effect, state } from "g2o-reactive";
 
 const cos = Math.cos;
 const sin = Math.sin;

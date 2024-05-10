@@ -1,7 +1,6 @@
 export enum Flag {
     Beginning,
     Cap,
-    ClassName,
     ClipFlag,
     ClipPath,
     Columns,

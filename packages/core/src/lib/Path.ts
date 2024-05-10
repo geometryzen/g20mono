@@ -1,4 +1,4 @@
-import { effect, state } from 'g2o-reactive';
+import { effect, signal } from "g2o-reactive";
 import { Anchor } from './anchor';
 import { Board } from './Board';
 import { Collection } from './collection';
@@ -9,7 +9,6 @@ import { Flag } from './Flag';
 import { SpinorLike, VectorLike } from './math/G20';
 import { G20 } from './math/G20.js';
 import { Disposable } from './reactive/Disposable';
-import { variable } from './reactive/variable';
 import { svg } from './renderers/SVGViewDOM';
 import { SVGAttributes, ViewDOM } from './Shape';
 import { getComponentOnCubicBezier, getCurveBoundingBox, getCurveFromPoints } from './utils/curves';
@@ -54,27 +53,24 @@ export class Path extends ColoredShapeBase {
     /**
      * stroke-linecap
      */
-    readonly #cap = variable('round' as 'butt' | 'round' | 'square');
+    readonly #cap = signal('round' as 'butt' | 'round' | 'square');
 
     /**
      * stroke-linejoin
      */
-    readonly #join = variable('round' as 'arcs' | 'bevel' | 'miter' | 'miter-clip' | 'round');
+    readonly #join = signal('round' as 'arcs' | 'bevel' | 'miter' | 'miter-clip' | 'round');
 
     /**
      * stroke-miterlimit
      */
-    readonly #miterLimit = variable(4);
+    readonly #miterLimit = signal(4);
 
-    readonly #closed = state(true);
-    #curved = false;
-    #automatic = true;
-    #beginning = 0.0;
-    #ending = 1.0;
+    readonly #closed = signal(true);
+    readonly #curved = signal(false);
+    readonly #automatic = signal(true);
+    readonly #beginning = signal(0.0);
+    readonly #ending = signal(1.0);
 
-    /**
-     * The hidden variable behind the `vertices` property.
-     */
     #vertices: Collection<Anchor>;
     // TODO; These could be unified into e.g. vertices_disposables.
     #vertices_insert: Disposable | null = null;
@@ -123,24 +119,19 @@ export class Path extends ColoredShapeBase {
         this.ending = 1;
 
         /**
-         * A class to be applied to the element to be compatible with CSS styling.
-         */
-        this.className = '';
-
-        /**
          * @see {@link https://www.w3.org/TR/SVG11/painting.html#StrokeLinecapProperty}
          */
-        this.cap = 'butt';      // Default of Adobe Illustrator
+        this.cap = 'butt';
 
         /**
          * @see {@link https://www.w3.org/TR/SVG11/painting.html#StrokeLinejoinProperty}
          */
-        this.join = 'miter';    // Default of Adobe Illustrator
+        this.join = 'miter';
 
         /**
          * @see {@link https://www.w3.org/TR/SVG11/painting.html#StrokeMiterlimitProperty}
          */
-        this.miterLimit = 4;         // Default of Adobe Illustrator
+        this.miterLimit = 4;
 
         this.vertices = new Collection(vertices);
 
@@ -149,20 +140,8 @@ export class Path extends ColoredShapeBase {
 
     override render<T>(viewDOM: ViewDOM<T>, parentElement: T, svgElement: T): void {
 
-        // Collect any attribute that needs to be changed here
-        const changed: SVGAttributes = {};
-
-        if (this.zzz.flags[Flag.ClassName]) {
-            if (Array.isArray(this.classList) && this.classList.length > 0) {
-                changed['class'] = this.classList.join(' ');
-            }
-        }
-
-        if (this.zzz.viewee) {
-            // When completely reactive, this will not be needed
-            viewDOM.setAttributes(this.zzz.viewee as T, changed);
-        }
-        else {
+        if (!this.zzz.viewee) {
+            const changed: SVGAttributes = {};
             changed.id = this.id;
             const path = viewDOM.createSVGElement('path', changed);
             this.zzz.viewee = path;
@@ -439,7 +418,7 @@ export class Path extends ColoredShapeBase {
                 b = this.vertices.getAt(ib);
 
                 // We'll be breaking out of the loop and target will not be used anymore,
-                // so we could introduce a new variable here. The goal seems to be to re-use t for some lerping
+                // so we could introduce a new const here. The goal seems to be to re-use t for some lerping
                 // later on, so this new t value must somehow be better?
                 target -= sum;
                 if (this.#lengths[i] !== 0) {
@@ -810,24 +789,20 @@ export class Path extends ColoredShapeBase {
         return this;
     }
 
-    override flagReset(dirtyFlag = false): this {
-
+    flagReset(dirtyFlag = false): this {
         this.zzz.flags[Flag.ClipFlag] = dirtyFlag;
         this.zzz.flags[Flag.ClipPath] = dirtyFlag;
-
-        super.flagReset(dirtyFlag);
-
         return this;
-
     }
+
     get automatic(): boolean {
-        return this.#automatic;
+        return this.#automatic.get();
     }
     set automatic(automatic: boolean) {
         if (automatic === this.automatic) {
             return;
         }
-        this.#automatic = !!automatic;
+        this.#automatic.set(automatic);
         this.vertices.forEach(function (v: Anchor) {
             if (automatic) {
                 v.ignore();
@@ -838,10 +813,10 @@ export class Path extends ColoredShapeBase {
         });
     }
     get beginning(): number {
-        return this.#beginning;
+        return this.#beginning.get();
     }
     set beginning(beginning: number) {
-        this.#beginning = beginning;
+        this.#beginning.set(beginning);
     }
     /**
      * Defines the shape to be used at the end of open subpaths when they are stroked.
@@ -862,16 +837,18 @@ export class Path extends ColoredShapeBase {
         }
     }
     get curved(): boolean {
-        return this.#curved;
+        return this.#curved.get();
     }
     set curved(curved: boolean) {
-        this.#curved = !!curved;
+        if (typeof curved === 'boolean') {
+            this.#curved.set(curved);
+        }
     }
     get ending(): number {
-        return this.#ending;
+        return this.#ending.get();
     }
     set ending(ending: number) {
-        this.#ending = ending;
+        this.#ending.set(ending);
     }
     get join(): 'arcs' | 'bevel' | 'miter' | 'miter-clip' | 'round' {
         return this.#join.get();

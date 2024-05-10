@@ -1,4 +1,4 @@
-import { State, state } from 'g2o-reactive';
+import { State, state } from "g2o-reactive";
 import { Board } from './Board';
 import { Flag } from './Flag';
 import { transform_value_of_matrix } from './renderers/SVGViewDOM';
@@ -58,66 +58,12 @@ export class Group extends ShapeBase {
             }
         }
 
-        /*
-        const dom_context: DomContext = {
-            domElement: domElement,
-            elem: this.zzz.elem
-        };
-        */
-
-        // dom_context.elem.appendChild(child.zzz.elem);
-        // dom_context.elem.removeChild(child.zzz.elem);
-
         const children = this.children;
         const N = children.length;
         const childParentElement = this.zzz.viewee;
         for (let i = 0; i < N; i++) {
             const child = children[i];
             child.render(viewDOM, childParentElement, svgElement);
-        }
-
-        // TODO: Why are we doing this here and why isn't it reactive?
-        if (this.zzz.flags[Flag.ClassName]) {
-            if (this.classList.length > 0) {
-                viewDOM.setAttribute(this.zzz.viewee as T, 'class', this.classList.join(' '));
-            }
-            else {
-                viewDOM.removeAttribute(this.zzz.viewee as T, 'class');
-            }
-        }
-
-        // Commented two-way functionality of clips / masks with groups and
-        // polygons. Uncomment when this bug is fixed:
-        // https://code.google.com/p/chromium/issues/detail?id=370951
-
-        // if (this._flagClip) {
-
-        //   clip = svg.getClip(this, domElement);
-        //   elem = this._renderer.elem;
-
-        //   if (this.clip) {
-        //     elem.removeAttribute('id');
-        //     clip.setAttribute('id', this.id);
-        //     clip.appendChild(elem);
-        //   }
-        else {
-            //     clip.removeAttribute('id');
-            //     elem.setAttribute('id', this.id);
-            //     this.parent._renderer.elem.appendChild(elem); // TODO: should be insertBefore
-            //   }
-
-            // }
-
-            // This code is a candidate for being put in Shape?
-            if (this.zzz.flags[Flag.ClipPath]) {
-                if (this.mask) {
-                    this.mask.render(viewDOM, parentElement, svgElement);
-                    viewDOM.setAttribute(this.zzz.viewee as T, 'clip-path', 'url(#' + this.mask.id + ')');
-                }
-                else {
-                    viewDOM.removeAttribute(this.zzz.viewee as T, 'clip-path');
-                }
-            }
         }
 
         this.flagReset();
@@ -159,23 +105,6 @@ export class Group extends ShapeBase {
                 }
             }
             return null;
-        }
-        return search(this);
-    }
-
-    getByClassName(className: string): Shape[] {
-        const found: Shape[] = [];
-        function search(node: Shape) {
-            if (Array.prototype.indexOf.call(node.classList, className) >= 0) {
-                found.push(node);
-            }
-            if (node instanceof Group && node.children) {
-                for (let i = 0; i < node.children.length; i++) {
-                    const child = node.children[i];
-                    search(child);
-                }
-            }
-            return found;
         }
         return search(this);
     }
@@ -279,15 +208,11 @@ export class Group extends ShapeBase {
         return super.update();
     }
 
-    override flagReset(dirtyFlag = false) {
+    flagReset(dirtyFlag = false) {
         this.zzz.flags[Flag.ClipPath] = dirtyFlag;
         this.zzz.flags[Flag.Beginning] = dirtyFlag;
         this.zzz.flags[Flag.Ending] = dirtyFlag;
-
-        super.flagReset(dirtyFlag);
-
         return this;
-
     }
     /**
      * A list of all the children in the scenegraph.
@@ -329,7 +254,8 @@ export function update_shape_group(child: Shape, parent?: Group) {
 
 function shape_attributes(options: Partial<GroupOptions>): ShapeOptions {
     const retval: ShapeOptions = {
-        id: options.id
+        id: options.id,
+        position: options.position
     };
     return retval;
 }

@@ -1,4 +1,4 @@
-import { signal, State } from 'g2o-reactive';
+import { signal, State } from "g2o-reactive";
 
 const cos = Math.cos;
 const sin = Math.sin;

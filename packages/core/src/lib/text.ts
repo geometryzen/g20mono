@@ -1,4 +1,4 @@
-import { effect, state } from 'g2o-reactive';
+import { effect, state } from "g2o-reactive";
 import { Board } from './Board';
 import { ColoredShapeBase, ColoredShapeOptions } from './ColoredShapeBase';
 import { Color } from './effects/ColorProvider';
@@ -145,20 +145,14 @@ export class Text extends ColoredShapeBase implements TextProperties {
 
         this.update();
 
-        // The styles that will be applied to an SVG
-        const changed: SVGAttributes = {};
-
-        if (this.zzz.flags[Flag.ClassName]) {
-            changed['class'] = this.classList.join(' ');
-        }
-
         if (this.zzz.viewee) {
+            const changed: SVGAttributes = {};
+            // These should not be needed...
             viewDOM.setAttributes(this.zzz.viewee as T, changed);
             viewDOM.setAttribute(this.zzz.viewee as T, 'transform', transform_value_of_matrix(this.matrix));
         }
         else {
-            changed.id = this.id;
-            const text = viewDOM.createSVGElement('text', changed);
+            const text = viewDOM.createSVGElement('text', {});
             this.zzz.viewee = text;
             viewDOM.appendChild(parentElement, text);
 
@@ -459,12 +453,11 @@ export class Text extends ColoredShapeBase implements TextProperties {
         throw new Error('Method not implemented.');
     }
 
-    override flagReset(dirtyFlag = false) {
-        super.flagReset(dirtyFlag);
+    flagReset(dirtyFlag = false) {
         this.zzz.flags[Flag.ClipFlag] = dirtyFlag;
-        this.zzz.flags[Flag.ClassName] = dirtyFlag;
         return this;
     }
+
     get anchor(): 'start' | 'middle' | 'end' {
         return this.#anchor.get();
     }

@@ -1,5 +1,5 @@
-import { ColorProvider, ElementBase, variable, ViewDOM } from 'g2o';
-import { effect, State, state } from 'g2o-reactive';
+import { ColorProvider, ElementBase, variable, ViewDOM } from "g2o";
+import { effect, State, state } from "g2o-reactive";
 import { Constants } from './constants';
 import { Stop } from './stop';
 import { SVGAttributes } from './svg';
@@ -28,14 +28,16 @@ export abstract class Gradient extends ElementBase implements ColorProvider {
     readonly change$ = this._change.asObservable();
 
     constructor(stops: (Stop | [offset: number, color: string, opacity: number])[] = [], options: GradientOptions = {}) {
+
         super(ensure_identifier(options));
-        this.classList = [];
+
         if (typeof options.spreadMethod === 'string') {
             this.spreadMethod = options.spreadMethod;
         }
         if (typeof options.units === 'string') {
             this.units = options.units;
         }
+
         this.#stops = state(map_to_stops(stops));
     }
 
@@ -73,7 +75,6 @@ export abstract class Gradient extends ElementBase implements ColorProvider {
                         viewDOM.setAttribute(stopElement, 'stop-opacity', `${stop.opacity}`);
                     }));
                 }
-                stop.flagReset();
             }
         }));
     }
@@ -100,11 +101,11 @@ export abstract class Gradient extends ElementBase implements ColorProvider {
         return this;
     }
 
-    override flagReset(dirtyFlag = false): this {
+    flagReset(dirtyFlag = false): this {
         this._flagStops = dirtyFlag;
-        super.flagReset(dirtyFlag);
         return this;
     }
+
     /**
      * Indicates what happens if the gradient starts or ends inside the bounds of the target rectangle.
      * @see {@link https://www.w3.org/TR/SVG11/pservers.html#LinearGradientElementSpreadMethodAttribute} for more information

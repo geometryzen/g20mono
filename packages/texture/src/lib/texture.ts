@@ -33,8 +33,6 @@ export class Texture extends ElementBase implements ColorProvider {
     constructor(src?: string | HTMLCanvasElement | HTMLImageElement | HTMLVideoElement) {
         super(Constants.Identifier + Constants.uniqueId());
 
-        this.classList = [];
-
         this.loaded = false;
 
         /**
@@ -263,10 +261,9 @@ export class Texture extends ElementBase implements ColorProvider {
         return this;
     }
 
-    override flagReset(dirtyFlag = false) {
+    flagReset(dirtyFlag = false) {
         this._flagSrc = this._flagImage = this._flagLoaded = this._flagRepeat
-            = this._flagVideo = this._flagScale = this._flagOffset = false;
-        super.flagReset(dirtyFlag);
+            = this._flagVideo = this._flagScale = this._flagOffset = dirtyFlag;
         return this;
     }
     get image(): HTMLCanvasElement | HTMLImageElement | HTMLVideoElement {

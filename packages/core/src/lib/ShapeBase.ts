@@ -1,4 +1,4 @@
-import { effect, state } from 'g2o-reactive';
+import { effect, state } from "g2o-reactive";
 import { Board } from './Board';
 import { Constants } from './constants';
 import { ElementBase } from './element';
@@ -92,8 +92,6 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
     constructor(readonly board: Board, options: ShapeOptions = {}) {
 
         super(options.id);
-
-        this.flagReset(true);
 
         /**
          * The transformation matrix of the shape in the scene.
@@ -243,10 +241,6 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
         return this.zzz.viewee;
     }
 
-    flagReset(dirtyFlag = false): this {
-        super.flagReset(dirtyFlag);
-        return this;
-    }
     get X(): G20 {
         return this.#position;
     }

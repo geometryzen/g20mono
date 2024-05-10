@@ -83,7 +83,7 @@ export interface ViewDOM<T> {
     removeAttributes(element: T, attributes: { [name: string]: string }): void;
     appendChild(parent: T, child: T): void;
     removeChild(parent: T, child: T): void;
-    setTextContent(element: T, textContent: string): void;
+    setTextContent(element: T, content: string): void;
     getParentNode(element: T): T | null;
     getLastChild(element: T): T | null;
     getElementDefs(svg: T): T;
@@ -95,7 +95,6 @@ export interface ViewDOM<T> {
  */
 export interface Shape extends Disposable {
     id: string | null;
-    classList: string[];
     parent: unknown;
     get matrix(): Matrix;
     get X(): G20;

@@ -10,8 +10,8 @@ import {
     PathOptions,
     SpinorLike,
     VectorLike
-} from 'g2o';
-import { effect, state } from 'g2o-reactive';
+} from "g2o";
+import { effect, state } from "g2o-reactive";
 
 export interface RoundedRectangleOptions extends PathOptions {
     id?: string;

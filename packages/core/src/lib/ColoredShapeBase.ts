@@ -125,7 +125,12 @@ export abstract class ColoredShapeBase extends ShapeBase {
     }
     set strokeWidth(strokeWidth: number) {
         if (typeof strokeWidth === 'number') {
-            this.#strokeWidth.set(strokeWidth);
+            if (isNaN(strokeWidth)) {
+                // Do nothing.
+            }
+            else {
+                this.#strokeWidth.set(strokeWidth);
+            }
         }
     }
     get vectorEffect(): null | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position' | 'none' {

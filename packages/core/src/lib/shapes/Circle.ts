@@ -1,4 +1,4 @@
-import { effect, state } from 'g2o-reactive';
+import { effect, state } from "g2o-reactive";
 import { Anchor } from '../anchor';
 import { Collection } from '../collection';
 import { Color } from '../effects/ColorProvider';

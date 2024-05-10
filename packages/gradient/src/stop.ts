@@ -1,5 +1,5 @@
-import { ElementBase, variable } from 'g2o';
-import { state } from 'g2o-reactive';
+import { ElementBase, variable } from "g2o";
+import { state } from "g2o-reactive";
 import { Constants } from './constants';
 import { Gradient } from './gradient';
 
@@ -35,10 +35,6 @@ export class Stop extends ElementBase {
      */
     static Index = 0;
 
-    override flagReset(dirtyFlag = false) {
-        super.flagReset(dirtyFlag);
-        return this;
-    }
     get color(): string {
         return this.#color.get();
     }
