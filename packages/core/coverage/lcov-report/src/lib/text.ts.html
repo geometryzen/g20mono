@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">52.47% </span>
+                <span class="strong">52.52% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>127/242</span>
+                <span class='fraction'>125/238</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">22.12% </span>
+                <span class="strong">22.32% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>25/113</span>
+                <span class='fraction'>25/112</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">52.28% </span>
+                <span class="strong">52.32% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>126/241</span>
+                <span class='fraction'>124/237</span>
             </div>
         
             
@@ -663,11 +663,7 @@
 <a name='L598'></a><a href='#L598'>598</a>
 <a name='L599'></a><a href='#L599'>599</a>
 <a name='L600'></a><a href='#L600'>600</a>
-<a name='L601'></a><a href='#L601'>601</a>
-<a name='L602'></a><a href='#L602'>602</a>
-<a name='L603'></a><a href='#L603'>603</a>
-<a name='L604'></a><a href='#L604'>604</a>
-<a name='L605'></a><a href='#L605'>605</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">6x</span>
+<a name='L601'></a><a href='#L601'>601</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -816,10 +812,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1123,13 +1116,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -1420,9 +1412,6 @@ export class Text extends ColoredShapeBase implements TextProperties {
 &nbsp;
         <span class="missing-if-branch" title="if path not taken" >I</span>if (this.zzz.viewee) {
             const changed: SVGAttributes = <span class="cstat-no" title="statement not covered" >{};</span>
-<span class="cstat-no" title="statement not covered" >            <span class="missing-if-branch" title="if path not taken" >I</span>if (this.zzz.flags[Flag.ClassName]) {</span>
-<span class="cstat-no" title="statement not covered" >                changed['class'] = this.classList.join(' ');</span>
-            }
             // These should not be needed...
 <span class="cstat-no" title="statement not covered" >            viewDOM.setAttributes(this.zzz.viewee as T, changed);</span>
 <span class="cstat-no" title="statement not covered" >            viewDOM.setAttribute(this.zzz.viewee as T, 'transform', transform_value_of_matrix(this.matrix));</span>
@@ -1729,12 +1718,11 @@ export class Text extends ColoredShapeBase implements TextProperties {
 <span class="cstat-no" title="statement not covered" >        throw new Error('Method not implemented.');</span>
     }
 &nbsp;
-    override flagReset(dirtyFlag = false) {
-        super.flagReset(dirtyFlag);
+    flagReset(dirtyFlag = false) {
         this.zzz.flags[Flag.ClipFlag] = dirtyFlag;
-        this.zzz.flags[Flag.ClassName] = dirtyFlag;
         return this;
     }
+&nbsp;
     get anchor(): 'start' | 'middle' | 'end' {
         return this.#anchor.get();
     }
@@ -1882,7 +1870,7 @@ function shape_options_from_text_options(options: Partial&lt;TextOptions&gt;, ow
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-05-10T01:20:11.986Z
+                at 2024-05-11T19:11:59.271Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

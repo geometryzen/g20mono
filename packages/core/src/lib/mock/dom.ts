@@ -1,4 +1,5 @@
-import { ElementDOM, SVGAttributes, ViewDOM } from "../../src/index";
+import { ElementDOM } from "../ElementDOM";
+import { SVGAttributes, ViewDOM } from "../Shape";
 import { MockElement, MockNode } from "./nodes";
 
 /**

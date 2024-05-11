@@ -1,6 +1,6 @@
 import { Anchor } from "../anchor";
-import { Color } from "../effects/ColorProvider";
 import { Board } from "../Board";
+import { Color } from "../effects/ColorProvider";
 import { VectorLike, vector_from_like } from "../math/G20";
 import { Path, PathOptions } from "../Path";
 import { default_color } from "../utils/default_color";
@@ -33,12 +33,20 @@ export class Polygon extends Path {
 function path_attributes(options: PolygonOptions, owner: Board): PathOptions {
     const retval: PathOptions = {
         id: options.id,
-        opacity: options.opacity,
+        position: options.position,
+        attitude: options.attitude,
+        dashes: options.dashes,
         fillColor: default_color(options.fillColor, 'none'),
         fillOpacity: options.fillOpacity,
+        opacity: options.opacity,
+        plumb: options.plumb,
         strokeColor: default_color(options.strokeColor, 'gray'),
         strokeOpacity: options.strokeOpacity,
-        strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner)
+        strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
+        sx: options.sx,
+        sy: options.sy,
+        vectorEffect: options.vectorEffect,
+        visibility: options.visibility,
     };
     return retval;
 }

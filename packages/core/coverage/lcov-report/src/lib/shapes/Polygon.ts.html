@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">42.85% </span>
+                <span class="strong">85.71% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>6/14</span>
+                <span class='fraction'>12/14</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>2/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">42.85% </span>
+                <span class="strong">85.71% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/14</span>
+                <span class='fraction'>12/14</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -107,7 +107,15 @@
 <a name='L42'></a><a href='#L42'>42</a>
 <a name='L43'></a><a href='#L43'>43</a>
 <a name='L44'></a><a href='#L44'>44</a>
-<a name='L45'></a><a href='#L45'>45</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">6x</span>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
@@ -128,32 +136,40 @@
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Anchor } from "../anchor";
-import { Color } from "../effects/ColorProvider";
 import { Board } from "../Board";
+import { Color } from "../effects/ColorProvider";
 import { VectorLike, vector_from_like } from "../math/G20";
 import { Path, PathOptions } from "../Path";
 import { default_color } from "../utils/default_color";
@@ -170,30 +186,38 @@ export interface PolygonOptions extends PathOptions {
 }
 &nbsp;
 export class Polygon extends Path {
-<span class="fstat-no" title="function not covered" >    constructor(o</span>wner: Board, points: VectorLike[] = <span class="branch-0 cbranch-no" title="branch not covered" >[],</span> options: PolygonOptions = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span> {
+    constructor(owner: Board, points: VectorLike[] = <span class="branch-0 cbranch-no" title="branch not covered" >[],</span> options: PolygonOptions = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span> {
 &nbsp;
-        const vertices = <span class="cstat-no" title="statement not covered" >points</span>
+        const vertices = points
             .map(<span class="fstat-no" title="function not covered" >(p</span>oint) =&gt; <span class="cstat-no" title="statement not covered" >vector_from_like(point))</span>
             .map(<span class="fstat-no" title="function not covered" >(p</span>osition, index) =&gt; <span class="cstat-no" title="statement not covered" >new Anchor(position, index === 0 ? 'M' : 'L'))</span>;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        super(owner, vertices, true, false, false, path_attributes(options, owner));</span>
+        super(owner, vertices, true, false, false, path_attributes(options, owner));
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        this.flagReset(true);</span>
-<span class="cstat-no" title="statement not covered" >        this.update();</span>
+        this.flagReset(true);
+        this.update();
     }
 }
 &nbsp;
-function <span class="fstat-no" title="function not covered" >path_attributes(</span>options: PolygonOptions, owner: Board): PathOptions {
-    const retval: PathOptions = <span class="cstat-no" title="statement not covered" >{</span>
+function path_attributes(options: PolygonOptions, owner: Board): PathOptions {
+    const retval: PathOptions = {
         id: options.id,
-        opacity: options.opacity,
+        position: options.position,
+        attitude: options.attitude,
+        dashes: options.dashes,
         fillColor: default_color(options.fillColor, 'none'),
         fillOpacity: options.fillOpacity,
+        opacity: options.opacity,
+        plumb: options.plumb,
         strokeColor: default_color(options.strokeColor, 'gray'),
         strokeOpacity: options.strokeOpacity,
-        strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner)
+        strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
+        sx: options.sx,
+        sy: options.sy,
+        vectorEffect: options.vectorEffect,
+        visibility: options.visibility,
     };
-<span class="cstat-no" title="statement not covered" >    return retval;</span>
+    return retval;
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -202,7 +226,7 @@ function <span class="fstat-no" title="function not covered" >path_attributes(</
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-05-10T01:20:11.986Z
+                at 2024-05-11T19:11:59.271Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

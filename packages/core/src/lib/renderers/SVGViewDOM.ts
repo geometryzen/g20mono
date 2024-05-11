@@ -101,7 +101,7 @@ export const svg = {
         const l = anchors.length;
         const last = l - 1;
         let d: Anchor; // The elusive last Commands.move point
-        let string = '';
+        const parts: string[] = [];
 
         for (let i = 0; i < l; i++) {
 
@@ -214,10 +214,10 @@ export const svg = {
                     command += ' Z';
                 }
             }
-            string += command + ' ';
+            parts.push(command)
         }
 
-        return string;
+        return parts.join(' ');
 
     },
 

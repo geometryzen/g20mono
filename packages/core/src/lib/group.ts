@@ -26,6 +26,9 @@ export class Group extends ShapeBase {
     }
 
     override dispose() {
+        for (const child of this.children) {
+            child.dispose();
+        }
         super.dispose();
     }
 

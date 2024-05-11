@@ -83,6 +83,7 @@ export class GraphicsBoard<E, T> implements Board {
         const container_id = get_container_id(elementOrId, elementDOM);
 
         this.#viewBox = new Group(this, [], { id: `${container_id}-viewbox` });
+        this.#disposables.push(this.#viewBox);
 
         if (typeof options.boundingBox === 'object') {
             const left = default_number(options.boundingBox.left, -1);

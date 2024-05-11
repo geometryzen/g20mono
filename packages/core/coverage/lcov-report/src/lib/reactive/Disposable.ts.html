@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
+                <span class="strong">83.33% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>4/12</span>
+                <span class='fraction'>10/12</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">20% </span>
+                <span class="strong">60% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/5</span>
+                <span class='fraction'>3/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">36.36% </span>
+                <span class="strong">81.81% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>4/11</span>
+                <span class='fraction'>9/11</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -120,24 +120,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">46x</span>
+<span class="cline-any cline-yes">46x</span>
+<span class="cline-any cline-yes">246x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">46x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -154,16 +154,16 @@ export interface Disposable {
  * Calls `dispose()` on each element of `disposables`, traversing the array in reverse order.
  * When all dispose() calls have been made, the length of the disposables is set to zero.
  */
-export function <span class="fstat-no" title="function not covered" >dispose&lt;</span>T extends Disposable&gt;(disposables: T[]): void {
+export function dispose&lt;T extends Disposable&gt;(disposables: T[]): void {
     // Our convention is to push disposables onto a $references array.
     // This means that the last disposable pushed is at the end of the array.
     // It is more appropriate to dispose in LIFO (Last In First Out) order.
     // So we iterate the disposables in reverse.
-    const length = <span class="cstat-no" title="statement not covered" >disposables.length;</span>
-<span class="cstat-no" title="statement not covered" >    for (let i = <span class="cstat-no" title="statement not covered" >length - 1;</span> i &gt;= 0; i--) {</span>
-<span class="cstat-no" title="statement not covered" >        disposables[i].dispose();</span>
+    const length = disposables.length;
+    for (let i = length - 1; i &gt;= 0; i--) {
+        disposables[i].dispose();
     }
-<span class="cstat-no" title="statement not covered" >    disposables.length = 0;</span>
+    disposables.length = 0;
 }
 &nbsp;
 export function <span class="fstat-no" title="function not covered" >disposable_from_disposables(</span>disposables: Disposable[]): Disposable {
@@ -175,8 +175,8 @@ export function <span class="fstat-no" title="function not covered" >disposable_
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function disposableFromFunction(f: Function): Disposable {
     return {
-        dispose: <span class="fstat-no" title="function not covered" >() =</span>&gt; {
-<span class="cstat-no" title="statement not covered" >            f();</span>
+        dispose: () =&gt; {
+            f();
         },
     };
 }
@@ -187,7 +187,7 @@ export function disposableFromFunction(f: Function): Disposable {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-05-10T01:20:11.986Z
+                at 2024-05-11T19:11:59.271Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

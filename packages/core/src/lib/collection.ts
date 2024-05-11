@@ -76,7 +76,7 @@ export class Collection<T> {
     }
 
     splice(start: number, deleteCount?: number, ...more: T[]): T[] {
-        // TODO: This needs some care because the behavior dependes on ...
+        // TODO: This needs some care because the behavior depends on ...
         if (typeof deleteCount === 'number') {
             const xs = this.#items.splice(start, deleteCount, ...more);
             this.#remove.next(xs);

@@ -1,4 +1,7 @@
-import { Group, View, ViewDOM, ViewFactory } from "../../src/index";
+import { Group } from "../group";
+import { View } from "../renderers/View";
+import { ViewFactory } from "../renderers/ViewFactory";
+import { ViewDOM } from "../Shape";
 import { MockElement } from "./nodes";
 
 export class MockView implements View<MockElement> {

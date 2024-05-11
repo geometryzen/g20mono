@@ -5,26 +5,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const board = initBoard("my-board", {
     });
 
-    board.circle();
-    /*
-    board.path(false,
-        [
-            new Anchor([10, 10], 'M'),
-            G20.vector(90,90),
-            [90, 10],
-            [50, 10]
-        ],
-        {
-            strokeWidth: 2,
-            vectorEffect: 'non-scaling-stroke'
-        }
-    );
-    */
-    /*
-    function animate() {
-        window.requestAnimationFrame(animate);
-    }
-    
-    window.requestAnimationFrame(animate);
-    */
+    const L = board.line([0, 0], [1, 0]);
+
+    // FIXME: This does not trigger 
+    L.point1 = [-0.9, -0.9];
+    L.point2 = [0.9, 0.9];
+
+    board.dispose();
 });
