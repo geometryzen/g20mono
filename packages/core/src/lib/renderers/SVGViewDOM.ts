@@ -214,7 +214,7 @@ export const svg = {
                     command += ' Z';
                 }
             }
-            parts.push(command)
+            parts.push(command);
         }
 
         return parts.join(' ');
