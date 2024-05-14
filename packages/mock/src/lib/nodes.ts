@@ -3,6 +3,7 @@ export class MockNode {
 }
 
 export class MockElement extends MockNode {
+    readonly style = new Map<string, string>();
     readonly #attributes = new Map<string, string>();
     readonly #children: MockNode[] = [];
     constructor(readonly qualifiedName: string) {

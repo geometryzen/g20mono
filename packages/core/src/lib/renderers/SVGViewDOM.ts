@@ -112,35 +112,33 @@ export const svg = {
 
             let command: string;
             let c; Anchor;
-            let vx, vy, ux, uy, ar, bl, br, cl;
-            let rx, ry, xAxisRotation, largeArcFlag, sweepFlag;
 
             let x = toFixed(screenX(b.x, b.y));
             let y = toFixed(screenY(b.x, b.y));
 
             switch (b.command) {
-
-                case Commands.close:
+                case Commands.close: {
                     command = Commands.close;
                     break;
-
-                case Commands.arc:
-
-                    rx = b.rx;
-                    ry = b.ry;
-                    xAxisRotation = b.xAxisRotation;
-                    largeArcFlag = b.largeArcFlag;
-                    sweepFlag = b.sweepFlag;
-
-                    command = Commands.arc + ' ' + rx + ' ' + ry + ' '
-                        + xAxisRotation + ' ' + largeArcFlag + ' ' + sweepFlag + ' '
-                        + x + ' ' + y;
+                }
+                case Commands.arc: {
+                    const rx = b.rx;
+                    const ry = b.ry;
+                    const xAxisRotation = b.xAxisRotation;
+                    const largeArcFlag = b.largeArcFlag;
+                    const sweepFlag = b.sweepFlag;
+                    command = Commands.arc + ' ' + rx + ' ' + ry + ' ' + xAxisRotation + ' ' + largeArcFlag + ' ' + sweepFlag + ' ' + x + ' ' + y;
                     break;
+                }
+                case Commands.curve: {
 
-                case Commands.curve:
+                    const ar = (a.controls && a.controls.b) || G20.zero;
+                    const bl = (b.controls && b.controls.a) || G20.zero;
 
-                    ar = (a.controls && a.controls.b) || G20.zero;
-                    bl = (b.controls && b.controls.a) || G20.zero;
+                    let vx: number;
+                    let vy: number;
+                    let ux: number;
+                    let uy: number;
 
                     if (a.relative) {
                         vx = toFixed(screenX(ar.x + a.x, ar.y + a.y));
@@ -160,10 +158,9 @@ export const svg = {
                         uy = toFixed(screenY(bl.x, bl.y));
                     }
 
-                    command = ((i === 0) ? Commands.move : Commands.curve) +
-                        ' ' + vx + ' ' + vy + ' ' + ux + ' ' + uy + ' ' + x + ' ' + y;
+                    command = ((i === 0) ? Commands.move : Commands.curve) + ' ' + vx + ' ' + vy + ' ' + ux + ' ' + uy + ' ' + x + ' ' + y;
                     break;
-
+                }
                 case Commands.move: {
                     d = b;
                     command = Commands.move + ' ' + x + ' ' + y;
@@ -183,8 +180,13 @@ export const svg = {
                     // Make sure we close to the most previous Commands.move
                     c = d;
 
-                    br = (b.controls && b.controls.b) || b;
-                    cl = (c.controls && c.controls.a) || c;
+                    const br = (b.controls && b.controls.b) || b;
+                    const cl = (c.controls && c.controls.a) || c;
+
+                    let vx: number;
+                    let vy: number;
+                    let ux: number;
+                    let uy: number;
 
                     if (b.relative) {
                         vx = toFixed(screenX(br.x + b.x, br.y + b.y));

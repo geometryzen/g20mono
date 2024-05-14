@@ -89,9 +89,8 @@ export class MockViewDOM implements ViewDOM<MockElement> {
         }
         throw new Error();
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    setStyle(element: unknown, name: "display" | "overflow" | "top", value: string): void {
-        throw new Error("Method not implemented.");
+    setStyle(element: MockElement, name: "display" | "overflow" | "top", value: string): void {
+        element.style.set(name, value);
     }
 }
 

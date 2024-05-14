@@ -367,7 +367,9 @@
 <a name='L302'></a><a href='#L302'>302</a>
 <a name='L303'></a><a href='#L303'>303</a>
 <a name='L304'></a><a href='#L304'>304</a>
-<a name='L305'></a><a href='#L305'>305</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">6x</span>
+<a name='L305'></a><a href='#L305'>305</a>
+<a name='L306'></a><a href='#L306'>306</a>
+<a name='L307'></a><a href='#L307'>307</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -482,28 +484,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">96x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">96x</span>
 <span class="cline-any cline-yes">96x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">96x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -511,13 +506,9 @@
 <span class="cline-any cline-yes">18x</span>
 <span class="cline-any cline-yes">18x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">18x</span>
-<span class="cline-any cline-yes">18x</span>
-<span class="cline-any cline-yes">18x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">18x</span>
@@ -530,7 +521,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">18x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18x</span>
 <span class="cline-any cline-yes">18x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -554,6 +553,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
@@ -785,35 +789,33 @@ export const svg = {
 &nbsp;
             let command: string;
             let c; Anchor;
-            let vx, vy, ux, uy, ar, bl, br, cl;
-            let rx, ry, xAxisRotation, largeArcFlag, sweepFlag;
 &nbsp;
             let x = toFixed(screenX(b.x, b.y));
             let y = toFixed(screenY(b.x, b.y));
 &nbsp;
             switch (b.command) {
-&nbsp;
-<span class="branch-0 cbranch-no" title="branch not covered" >                case Commands.close:</span>
+<span class="branch-0 cbranch-no" title="branch not covered" >                case Commands.close: {</span>
 <span class="cstat-no" title="statement not covered" >                    command = Commands.close;</span>
 <span class="cstat-no" title="statement not covered" >                    break;</span>
-&nbsp;
-<span class="branch-1 cbranch-no" title="branch not covered" >                case Commands.arc:</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >                    rx = b.rx;</span>
-<span class="cstat-no" title="statement not covered" >                    ry = b.ry;</span>
-<span class="cstat-no" title="statement not covered" >                    xAxisRotation = b.xAxisRotation;</span>
-<span class="cstat-no" title="statement not covered" >                    largeArcFlag = b.largeArcFlag;</span>
-<span class="cstat-no" title="statement not covered" >                    sweepFlag = b.sweepFlag;</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >                    command = Commands.arc + ' ' + rx + ' ' + ry + ' '</span>
-                        + xAxisRotation + ' ' + largeArcFlag + ' ' + sweepFlag + ' '
-                        + x + ' ' + y;
+                }
+<span class="branch-1 cbranch-no" title="branch not covered" >                case Commands.arc: {</span>
+                    const rx = <span class="cstat-no" title="statement not covered" >b.rx;</span>
+                    const ry = <span class="cstat-no" title="statement not covered" >b.ry;</span>
+                    const xAxisRotation = <span class="cstat-no" title="statement not covered" >b.xAxisRotation;</span>
+                    const largeArcFlag = <span class="cstat-no" title="statement not covered" >b.largeArcFlag;</span>
+                    const sweepFlag = <span class="cstat-no" title="statement not covered" >b.sweepFlag;</span>
+<span class="cstat-no" title="statement not covered" >                    command = Commands.arc + ' ' + rx + ' ' + ry + ' ' + xAxisRotation + ' ' + largeArcFlag + ' ' + sweepFlag + ' ' + x + ' ' + y;</span>
 <span class="cstat-no" title="statement not covered" >                    break;</span>
+                }
+                case Commands.curve: {
 &nbsp;
-                case Commands.curve:
+                    let ar = (a.controls &amp;&amp; a.controls.b) || <span class="branch-2 cbranch-no" title="branch not covered" >G20.zero;</span>
+                    let bl = (b.controls &amp;&amp; b.controls.a) || <span class="branch-2 cbranch-no" title="branch not covered" >G20.zero;</span>
 &nbsp;
-                    ar = (a.controls &amp;&amp; a.controls.b) || <span class="branch-2 cbranch-no" title="branch not covered" >G20.zero;</span>
-                    bl = (b.controls &amp;&amp; b.controls.a) || <span class="branch-2 cbranch-no" title="branch not covered" >G20.zero;</span>
+                    let vx: Number;
+                    let vy: number;
+                    let ux: number;
+                    let uy: number;
 &nbsp;
                     if (a.relative) {
                         vx = toFixed(screenX(ar.x + a.x, ar.y + a.y));
@@ -833,10 +835,9 @@ export const svg = {
 <span class="cstat-no" title="statement not covered" >                        uy = toFixed(screenY(bl.x, bl.y));</span>
                     }
 &nbsp;
-                    command = ((i === 0) ? <span class="branch-0 cbranch-no" title="branch not covered" >Commands.move </span>: Commands.curve) +
-                        ' ' + vx + ' ' + vy + ' ' + ux + ' ' + uy + ' ' + x + ' ' + y;
+                    command = ((i === 0) ? <span class="branch-0 cbranch-no" title="branch not covered" >Commands.move </span>: Commands.curve) + ' ' + vx + ' ' + vy + ' ' + ux + ' ' + uy + ' ' + x + ' ' + y;
                     break;
-&nbsp;
+                }
                 case Commands.move: {
                     d = b;
                     command = Commands.move + ' ' + x + ' ' + y;
@@ -856,8 +857,13 @@ export const svg = {
                     // Make sure we close to the most previous Commands.move
                     c = d;
 &nbsp;
-                    br = (b.controls &amp;&amp; b.controls.b) || <span class="branch-2 cbranch-no" title="branch not covered" >b;</span>
-                    cl = (c.controls &amp;&amp; c.controls.a) || <span class="branch-2 cbranch-no" title="branch not covered" >c;</span>
+                    const br = (b.controls &amp;&amp; b.controls.b) || <span class="branch-2 cbranch-no" title="branch not covered" >b;</span>
+                    const cl = (c.controls &amp;&amp; c.controls.a) || <span class="branch-2 cbranch-no" title="branch not covered" >c;</span>
+&nbsp;
+                    let vx: number;
+                    let vy: number;
+                    let ux: number;
+                    let uy: number;
 &nbsp;
                     if (b.relative) {
                         vx = toFixed(screenX(br.x + b.x, br.y + b.y));
@@ -887,7 +893,7 @@ export const svg = {
                     command += ' Z';
                 }
             }
-            parts.push(command)
+            parts.push(command);
         }
 &nbsp;
         return parts.join(' ');
@@ -982,7 +988,7 @@ export function screen_functions(board: Board) {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-05-11T19:11:59.271Z
+                at 2024-05-11T21:51:39.747Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

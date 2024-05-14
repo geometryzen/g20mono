@@ -17,7 +17,7 @@ export { Disposable, dispose } from './lib/reactive/Disposable';
 export { Observable } from './lib/reactive/Observable';
 export { State } from './lib/reactive/types';
 export { Variable, variable } from './lib/reactive/variable';
-export { TreeView, TreeViewParams } from './lib/renderers/TreeView';
+export { TreeView } from './lib/renderers/TreeView';
 export { View } from './lib/renderers/View';
 export { ViewFactory } from './lib/renderers/ViewFactory';
 export { ZZZ } from './lib/renderers/ZZZ';

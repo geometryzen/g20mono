@@ -4,10 +4,6 @@ import { ViewDOM } from "../Shape";
 import { sizeEquals } from "./Size";
 import { View } from "./View";
 
-export interface TreeViewParams<T> {
-    domElement?: T;
-}
-
 /**
  * 
  */
@@ -23,21 +19,11 @@ export class TreeView<T> implements View<T> {
 
     readonly #viewDOM: ViewDOM<T>;
 
-    constructor(viewDOM: ViewDOM<T>, viewBox: Group, containerId: string, params: TreeViewParams<T> = {}) {
+    constructor(viewDOM: ViewDOM<T>, viewBox: Group, containerId: string) {
         this.#viewDOM = viewDOM;
-        if (viewBox instanceof Group) {
-            this.viewBox = viewBox;
-            this.viewBox.parent = null;
-        }
-        else {
-            throw new Error("viewBox must be a Group");
-        }
-        if (params.domElement) {
-            this.domElement = params.domElement;
-        }
-        else {
-            this.domElement = this.#viewDOM.createSVGElement('svg', { id: `${containerId}-svg` });
-        }
+        this.viewBox = viewBox;
+        this.viewBox.parent = null;
+        this.domElement = this.#viewDOM.createSVGElement('svg', { id: `${containerId}-svg` });
 
         this.#defs = this.#viewDOM.createSVGElement('defs', {});
         // set_defs_dirty_flag(this.#defs, false);

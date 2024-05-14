@@ -1,0 +1,529 @@
+0 silly argv {
+0 silly argv   _: [ 'publish' ],
+0 silly argv   yes: true,
+0 silly argv   y: true,
+0 silly argv   composed: 'publish',
+0 silly argv   lernaVersion: '8.1.2',
+0 silly argv   '$0': 'lerna',
+0 silly argv   bump: 'from-package'
+0 silly argv }
+1 notice cli v8.1.2
+2 verbose packageConfigs Resolving packages based on package.json "workspaces" configuration.
+3 verbose rootPath /home/david/Development/g2o-mono
+4 verbose session f2c3c3f77fa9fe0f
+5 verbose user-agent lerna/8.1.2/node@v20.12.2+x64 (linux)
+6 verbose git-describe undefined => "v0.9.260-0-gc938969"
+7 silly git-describe parsed => {"lastTagName":"v0.9.260","lastVersion":"v0.9.260","refCount":"0","sha":"c938969","isDirty":false}
+8 silly getProjectsWithUnpublishedPackages
+9 info auto-confirmed
+10 info publish Publishing packages to npm...
+11 silly getCurrentSHA
+12 verbose getCurrentSHA c9389695f39c939392bb5737cdffbbbb93fa3b34
+13 silly lifecycle No script for "prepublish" in "root", continuing
+14 silly lifecycle No script for "prepare" in "root", continuing
+15 silly lifecycle "prepublishOnly" starting in "root"
+16 info lifecycle root@undefined~prepublishOnly: root@undefined
+17 silly lifecycle "prepublishOnly" finished in "root"
+18 silly lifecycle No script for "prepack" in "root", continuing
+19 verbose pack-directory packages/canvas
+20 verbose pack-directory packages/core
+21 verbose pack-directory packages/euclid
+22 verbose pack-directory packages/gradient
+23 verbose pack-directory packages/graphics
+24 verbose pack-directory packages/grid
+25 verbose pack-directory packages/mock
+26 verbose pack-directory packages/player
+27 silly lifecycle No script for "prepublish" in "g2o-canvas", continuing
+28 silly lifecycle No script for "prepublish" in "g2o", continuing
+29 silly lifecycle No script for "prepublish" in "g2o-euclid", continuing
+30 silly lifecycle No script for "prepublish" in "g2o-gradient", continuing
+31 silly lifecycle No script for "prepublish" in "g2o-graphics", continuing
+32 silly lifecycle No script for "prepublish" in "g2o-grid", continuing
+33 silly lifecycle No script for "prepublish" in "g2o-mock", continuing
+34 silly lifecycle No script for "prepublish" in "g2o-player", continuing
+35 silly lifecycle No script for "prepare" in "g2o-canvas", continuing
+36 silly lifecycle No script for "prepare" in "g2o", continuing
+37 silly lifecycle No script for "prepare" in "g2o-euclid", continuing
+38 silly lifecycle No script for "prepare" in "g2o-gradient", continuing
+39 silly lifecycle No script for "prepare" in "g2o-graphics", continuing
+40 silly lifecycle No script for "prepare" in "g2o-grid", continuing
+41 silly lifecycle No script for "prepare" in "g2o-mock", continuing
+42 silly lifecycle No script for "prepare" in "g2o-player", continuing
+43 silly lifecycle No script for "prepublishOnly" in "g2o-canvas", continuing
+44 silly lifecycle No script for "prepublishOnly" in "g2o", continuing
+45 silly lifecycle No script for "prepublishOnly" in "g2o-euclid", continuing
+46 silly lifecycle No script for "prepublishOnly" in "g2o-gradient", continuing
+47 silly lifecycle No script for "prepublishOnly" in "g2o-graphics", continuing
+48 silly lifecycle No script for "prepublishOnly" in "g2o-grid", continuing
+49 silly lifecycle No script for "prepublishOnly" in "g2o-mock", continuing
+50 silly lifecycle No script for "prepublishOnly" in "g2o-player", continuing
+51 silly lifecycle No script for "prepack" in "g2o-canvas", continuing
+52 silly lifecycle No script for "prepack" in "g2o-euclid", continuing
+53 silly lifecycle No script for "prepack" in "g2o", continuing
+54 silly lifecycle No script for "prepack" in "g2o-gradient", continuing
+55 silly lifecycle No script for "prepack" in "g2o-grid", continuing
+56 silly lifecycle No script for "prepack" in "g2o-player", continuing
+57 silly lifecycle No script for "prepack" in "g2o-mock", continuing
+58 silly lifecycle No script for "prepack" in "g2o-graphics", continuing
+59 silly lifecycle No script for "postpack" in "g2o-euclid", continuing
+60 verbose packed packages/euclid
+61 silly lifecycle No script for "postpack" in "g2o-grid", continuing
+62 verbose packed packages/grid
+63 silly lifecycle No script for "postpack" in "g2o-player", continuing
+64 verbose packed packages/player
+65 silly lifecycle No script for "postpack" in "g2o-mock", continuing
+66 verbose packed packages/mock
+67 silly lifecycle No script for "postpack" in "g2o-graphics", continuing
+68 verbose packed packages/graphics
+69 silly lifecycle No script for "postpack" in "g2o-gradient", continuing
+70 verbose packed packages/gradient
+71 verbose pack-directory packages/reactive
+72 silly lifecycle No script for "prepublish" in "g2o-reactive", continuing
+73 silly lifecycle No script for "prepare" in "g2o-reactive", continuing
+74 verbose pack-directory packages/server
+75 silly lifecycle No script for "prepublish" in "g2o-server", continuing
+76 silly lifecycle No script for "prepare" in "g2o-server", continuing
+77 verbose pack-directory packages/svg
+78 silly lifecycle No script for "prepublish" in "g2o-svg", continuing
+79 silly lifecycle No script for "prepare" in "g2o-svg", continuing
+80 verbose pack-directory packages/texture
+81 silly lifecycle No script for "prepublish" in "g2o-texture", continuing
+82 silly lifecycle No script for "prepare" in "g2o-texture", continuing
+83 silly lifecycle No script for "prepublishOnly" in "g2o-reactive", continuing
+84 silly lifecycle No script for "prepublishOnly" in "g2o-server", continuing
+85 silly lifecycle No script for "prepublishOnly" in "g2o-texture", continuing
+86 silly lifecycle No script for "prepublishOnly" in "g2o-svg", continuing
+87 silly lifecycle No script for "prepack" in "g2o-reactive", continuing
+88 silly lifecycle No script for "prepack" in "g2o-server", continuing
+89 silly lifecycle No script for "prepack" in "g2o-svg", continuing
+90 silly lifecycle No script for "prepack" in "g2o-texture", continuing
+91 silly lifecycle No script for "postpack" in "g2o", continuing
+92 verbose packed packages/core
+93 silly lifecycle No script for "postpack" in "g2o-server", continuing
+94 verbose packed packages/server
+95 silly lifecycle No script for "postpack" in "g2o-reactive", continuing
+96 verbose packed packages/reactive
+97 silly lifecycle No script for "postpack" in "g2o-texture", continuing
+98 verbose packed packages/texture
+99 silly lifecycle No script for "postpack" in "g2o-svg", continuing
+100 verbose packed packages/svg
+101 silly lifecycle No script for "postpack" in "g2o-canvas", continuing
+102 verbose packed packages/canvas
+103 silly lifecycle No script for "postpack" in "root", continuing
+104 verbose publish g2o-canvas
+105 verbose publish g2o
+106 verbose publish g2o-euclid
+107 verbose publish g2o-gradient
+108 verbose publish g2o-graphics
+109 verbose publish g2o-grid
+110 verbose publish g2o-mock
+111 verbose publish g2o-player
+112 silly lifecycle No script for "publish" in "g2o-graphics", continuing
+113 silly lifecycle No script for "postpublish" in "g2o-graphics", continuing
+114 success published g2o-graphics 0.9.260
+115 notice
+116 notice 📦  g2o-graphics@0.9.260
+117 notice === Tarball Contents ===
+118 notice 1.1kB  LICENSE
+118 notice 9.5kB  ./dist/commonjs/index.js
+118 notice 11.1kB ./dist/umd/index.js
+118 notice 9.5kB  dist/commonjs/index.js
+118 notice 9.3kB  dist/esm/index.js
+118 notice 13.5kB dist/system/index.js
+118 notice 11.1kB dist/umd/index.js
+118 notice 4.5kB  dist/esm/index.min.js
+118 notice 4.6kB  dist/system/index.min.js
+118 notice 2.5kB  package.json
+118 notice 12.5kB dist/commonjs/index.js.map
+118 notice 12.4kB dist/esm/index.js.map
+118 notice 12.5kB dist/system/index.js.map
+118 notice 12.5kB dist/umd/index.js.map
+118 notice 7.2kB  dist/esm/index.min.js.map
+118 notice 7.1kB  dist/system/index.min.js.map
+118 notice 481B   README.md
+118 notice 2.5kB  dist/index.d.ts
+119 notice === Tarball Details ===
+120 notice name:          g2o-graphics
+120 notice version:       0.9.260
+120 notice filename:      g2o-graphics-0.9.260.tgz
+120 notice package size:  16.0 kB
+120 notice unpacked size: 143.9 kB
+120 notice shasum:        de7d2500e6ad44f6765dc4302580cfbfb7a8e8bc
+120 notice integrity:     sha512-vCwUxyzIr4Pmd[...]e7v/66MDl4Ubw==
+120 notice total files:   18
+121 notice
+122 verbose publish g2o-reactive
+123 silly lifecycle No script for "publish" in "g2o-player", continuing
+124 silly lifecycle No script for "postpublish" in "g2o-player", continuing
+125 success published g2o-player 0.9.260
+126 notice
+127 notice 📦  g2o-player@0.9.260
+128 notice === Tarball Contents ===
+129 notice 1.1kB LICENSE
+129 notice 1.1kB ./dist/commonjs/index.js
+129 notice 1.5kB ./dist/umd/index.js
+129 notice 1.1kB dist/commonjs/index.js
+129 notice 1.1kB dist/esm/index.js
+129 notice 1.7kB dist/system/index.js
+129 notice 1.5kB dist/umd/index.js
+129 notice 435B  dist/esm/index.min.js
+129 notice 518B  dist/system/index.min.js
+129 notice 2.5kB package.json
+129 notice 1.0kB dist/commonjs/index.js.map
+129 notice 994B  dist/esm/index.js.map
+129 notice 1.0kB dist/system/index.js.map
+129 notice 1.0kB dist/umd/index.js.map
+129 notice 705B  dist/esm/index.min.js.map
+129 notice 713B  dist/system/index.min.js.map
+129 notice 426B  README.md
+129 notice 218B  dist/index.d.ts
+130 notice === Tarball Details ===
+131 notice name:          g2o-player
+131 notice version:       0.9.260
+131 notice filename:      g2o-player-0.9.260.tgz
+131 notice package size:  4.4 kB
+131 notice unpacked size: 18.8 kB
+131 notice shasum:        65e479fdb605bcf8bc795e56b7c97378597e0e72
+131 notice integrity:     sha512-BRqcWcDSUGKad[...]aLHu++EhfxeGg==
+131 notice total files:   18
+132 notice
+133 verbose publish g2o-server
+134 silly lifecycle No script for "publish" in "g2o-mock", continuing
+135 silly lifecycle No script for "postpublish" in "g2o-mock", continuing
+136 success published g2o-mock 0.9.260
+137 notice
+138 notice 📦  g2o-mock@0.9.260
+139 notice === Tarball Contents ===
+140 notice 1.1kB LICENSE
+140 notice 6.2kB ./dist/commonjs/index.js
+140 notice 7.3kB ./dist/umd/index.js
+140 notice 6.2kB dist/commonjs/index.js
+140 notice 6.1kB dist/esm/index.js
+140 notice 8.8kB dist/system/index.js
+140 notice 7.3kB dist/umd/index.js
+140 notice 2.3kB dist/esm/index.min.js
+140 notice 2.4kB dist/system/index.min.js
+140 notice 2.5kB package.json
+140 notice 5.3kB dist/commonjs/index.js.map
+140 notice 5.2kB dist/esm/index.js.map
+140 notice 5.3kB dist/system/index.js.map
+140 notice 5.3kB dist/umd/index.js.map
+140 notice 3.8kB dist/esm/index.min.js.map
+140 notice 3.9kB dist/system/index.min.js.map
+140 notice 426B  README.md
+140 notice 2.4kB dist/index.d.ts
+141 notice === Tarball Details ===
+142 notice name:          g2o-mock
+142 notice version:       0.9.260
+142 notice filename:      g2o-mock-0.9.260.tgz
+142 notice package size:  11.8 kB
+142 notice unpacked size: 81.8 kB
+142 notice shasum:        cfd604e3493623d5245a8da8d93ec20f669e1657
+142 notice integrity:     sha512-XTnyPDJTaJe0b[...]U0GZWCRzoBrYg==
+142 notice total files:   18
+143 notice
+144 verbose publish g2o-svg
+145 silly lifecycle No script for "publish" in "g2o-grid", continuing
+146 silly lifecycle No script for "postpublish" in "g2o-grid", continuing
+147 success published g2o-grid 0.9.260
+148 notice
+149 notice 📦  g2o-grid@0.9.260
+150 notice === Tarball Contents ===
+151 notice 1.1kB LICENSE
+151 notice 3.4kB ./dist/commonjs/index.js
+151 notice 4.1kB ./dist/umd/index.js
+151 notice 3.4kB dist/commonjs/index.js
+151 notice 3.4kB dist/esm/index.js
+151 notice 4.9kB dist/system/index.js
+151 notice 4.1kB dist/umd/index.js
+151 notice 1.5kB dist/esm/index.min.js
+151 notice 1.6kB dist/system/index.min.js
+151 notice 2.5kB package.json
+151 notice 4.6kB dist/commonjs/index.js.map
+151 notice 4.5kB dist/esm/index.js.map
+151 notice 4.6kB dist/system/index.js.map
+151 notice 4.6kB dist/umd/index.js.map
+151 notice 2.7kB dist/esm/index.min.js.map
+151 notice 2.7kB dist/system/index.min.js.map
+151 notice 416B  README.md
+151 notice 712B  dist/index.d.ts
+152 notice === Tarball Details ===
+153 notice name:          g2o-grid
+153 notice version:       0.9.260
+153 notice filename:      g2o-grid-0.9.260.tgz
+153 notice package size:  8.4 kB
+153 notice unpacked size: 54.8 kB
+153 notice shasum:        9030dc12b63473498ef8908c949ffc8137da3c70
+153 notice integrity:     sha512-Ub3s2Tq65tLGw[...]rFklRCsBd3zSA==
+153 notice total files:   18
+154 notice
+155 verbose publish g2o-texture
+156 silly lifecycle No script for "publish" in "g2o-euclid", continuing
+157 silly lifecycle No script for "postpublish" in "g2o-euclid", continuing
+158 success published g2o-euclid 0.9.260
+159 notice
+160 notice 📦  g2o-euclid@0.9.260
+161 notice === Tarball Contents ===
+162 notice 1.1kB LICENSE
+162 notice 2.7kB ./dist/commonjs/index.js
+162 notice 3.2kB ./dist/umd/index.js
+162 notice 2.7kB dist/commonjs/index.js
+162 notice 2.6kB dist/esm/index.js
+162 notice 3.7kB dist/system/index.js
+162 notice 3.2kB dist/umd/index.js
+162 notice 852B  dist/esm/index.min.js
+162 notice 940B  dist/system/index.min.js
+162 notice 2.5kB package.json
+162 notice 2.6kB dist/commonjs/index.js.map
+162 notice 2.6kB dist/esm/index.js.map
+162 notice 2.6kB dist/system/index.js.map
+162 notice 2.6kB dist/umd/index.js.map
+162 notice 1.6kB dist/esm/index.min.js.map
+162 notice 1.6kB dist/system/index.min.js.map
+162 notice 448B  README.md
+162 notice 561B  dist/index.d.ts
+163 notice === Tarball Details ===
+164 notice name:          g2o-euclid
+164 notice version:       0.9.260
+164 notice filename:      g2o-euclid-0.9.260.tgz
+164 notice package size:  6.6 kB
+164 notice unpacked size: 38.0 kB
+164 notice shasum:        df9761720634d8f6a3fccf3a16fd8ce22742d0e4
+164 notice integrity:     sha512-ChDwK1wr33SPj[...]ivlxiHBaimamg==
+164 notice total files:   18
+165 notice
+166 silly lifecycle No script for "publish" in "g2o-gradient", continuing
+167 silly lifecycle No script for "postpublish" in "g2o-gradient", continuing
+168 success published g2o-gradient 0.9.260
+169 notice
+170 notice 📦  g2o-gradient@0.9.260
+171 notice === Tarball Contents ===
+172 notice 1.1kB  LICENSE
+172 notice 12.9kB ./dist/commonjs/index.js
+172 notice 14.6kB ./dist/umd/index.js
+172 notice 12.9kB dist/commonjs/index.js
+172 notice 12.5kB dist/esm/index.js
+172 notice 17.5kB dist/system/index.js
+172 notice 14.6kB dist/umd/index.js
+172 notice 4.9kB  dist/esm/index.min.js
+172 notice 5.0kB  dist/system/index.min.js
+172 notice 2.6kB  package.json
+172 notice 12.6kB dist/commonjs/index.js.map
+172 notice 12.4kB dist/esm/index.js.map
+172 notice 12.6kB dist/system/index.js.map
+172 notice 12.6kB dist/umd/index.js.map
+172 notice 7.3kB  dist/esm/index.min.js.map
+172 notice 7.3kB  dist/system/index.min.js.map
+172 notice 461B   README.md
+172 notice 4.6kB  dist/index.d.ts
+173 notice === Tarball Details ===
+174 notice name:          g2o-gradient
+174 notice version:       0.9.260
+174 notice filename:      g2o-gradient-0.9.260.tgz
+174 notice package size:  20.1 kB
+174 notice unpacked size: 168.3 kB
+174 notice shasum:        7ebbe6c1e22a09114135bf2df4550e342e3fdced
+174 notice integrity:     sha512-PjMfNAAhheCBm[...]ak6tV1vO1jmEA==
+174 notice total files:   18
+175 notice
+176 silly FetchError: request to https://registry.npmjs.org/g2o-canvas failed, reason: read ECONNRESET
+176 silly     at ClientRequest.<anonymous> (/home/david/Development/g2o-mono/node_modules/minipass-fetch/lib/index.js:130:14)
+176 silly     at ClientRequest.emit (node:events:518:28)
+176 silly     at TLSSocket.socketErrorListener (node:_http_client:500:9)
+176 silly     at TLSSocket.emit (node:events:530:35)
+176 silly     at emitErrorNT (node:internal/streams/destroy:169:8)
+176 silly     at emitErrorCloseNT (node:internal/streams/destroy:128:3)
+176 silly     at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+176 silly  FetchError: request to https://registry.npmjs.org/g2o-canvas failed, reason: read ECONNRESET
+176 silly     at ClientRequest.<anonymous> (/home/david/Development/g2o-mono/node_modules/minipass-fetch/lib/index.js:130:14)
+176 silly     at ClientRequest.emit (node:events:518:28)
+176 silly     at TLSSocket.socketErrorListener (node:_http_client:500:9)
+176 silly     at TLSSocket.emit (node:events:530:35)
+176 silly     at emitErrorNT (node:internal/streams/destroy:169:8)
+176 silly     at emitErrorCloseNT (node:internal/streams/destroy:128:3)
+176 silly     at process.processTicksAndRejections (node:internal/process/task_queues:82:21) {
+176 silly   code: 'ECONNRESET',
+176 silly   errno: 'ECONNRESET',
+176 silly   syscall: 'read',
+176 silly   type: 'system'
+176 silly }
+177 warn notice Package failed to publish: g2o-canvas
+178 error ECONNRESET request to https://registry.npmjs.org/g2o-canvas failed, reason: read ECONNRESET
+179 error errno "ECONNRESET" is not a valid exit code - exiting with code 1
+180 silly lifecycle No script for "publish" in "g2o-server", continuing
+181 silly lifecycle No script for "postpublish" in "g2o-server", continuing
+182 success published g2o-server 0.9.260
+183 notice
+184 notice 📦  g2o-server@0.9.260
+185 notice === Tarball Contents ===
+186 notice 1.1kB LICENSE
+186 notice 564B  ./dist/commonjs/index.js
+186 notice 837B  ./dist/umd/index.js
+186 notice 564B  dist/commonjs/index.js
+186 notice 540B  dist/esm/index.js
+186 notice 801B  dist/system/index.js
+186 notice 837B  dist/umd/index.js
+186 notice 97B   dist/esm/index.min.js
+186 notice 166B  dist/system/index.min.js
+186 notice 2.6kB package.json
+186 notice 232B  dist/commonjs/index.js.map
+186 notice 230B  dist/esm/index.js.map
+186 notice 243B  dist/system/index.js.map
+186 notice 235B  dist/umd/index.js.map
+186 notice 218B  dist/esm/index.min.js.map
+186 notice 201B  dist/system/index.min.js.map
+186 notice 441B  README.md
+186 notice 527B  dist/index.d.ts
+187 notice === Tarball Details ===
+188 notice name:          g2o-server
+188 notice version:       0.9.260
+188 notice filename:      g2o-server-0.9.260.tgz
+188 notice package size:  3.3 kB
+188 notice unpacked size: 10.4 kB
+188 notice shasum:        178ac5afc9726ff42f4dc6b88db55485ffc2b069
+188 notice integrity:     sha512-dHRdyKy1Tkoph[...]dHS0/QX4xEDYg==
+188 notice total files:   18
+189 notice
+190 silly lifecycle No script for "publish" in "g2o-texture", continuing
+191 silly lifecycle No script for "postpublish" in "g2o-texture", continuing
+192 success published g2o-texture 0.9.260
+193 notice
+194 notice 📦  g2o-texture@0.9.260
+195 notice === Tarball Contents ===
+196 notice 1.1kB  LICENSE
+196 notice 10.5kB ./dist/commonjs/index.js
+196 notice 12.0kB ./dist/umd/index.js
+196 notice 10.5kB dist/commonjs/index.js
+196 notice 10.4kB dist/esm/index.js
+196 notice 14.5kB dist/system/index.js
+196 notice 12.0kB dist/umd/index.js
+196 notice 4.2kB  dist/esm/index.min.js
+196 notice 4.3kB  dist/system/index.min.js
+196 notice 2.5kB  package.json
+196 notice 10.1kB dist/commonjs/index.js.map
+196 notice 10.1kB dist/esm/index.js.map
+196 notice 10.2kB dist/system/index.js.map
+196 notice 10.1kB dist/umd/index.js.map
+196 notice 6.0kB  dist/esm/index.min.js.map
+196 notice 6.0kB  dist/system/index.min.js.map
+196 notice 431B   README.md
+196 notice 1.7kB  dist/index.d.ts
+197 notice === Tarball Details ===
+198 notice name:          g2o-texture
+198 notice version:       0.9.260
+198 notice filename:      g2o-texture-0.9.260.tgz
+198 notice package size:  17.6 kB
+198 notice unpacked size: 136.4 kB
+198 notice shasum:        3dccb47a576e4a75b7a7f0bedf37fa314f86bfa1
+198 notice integrity:     sha512-noTffUkOHXZOk[...]jRYJv3TvHAIRQ==
+198 notice total files:   18
+199 notice
+200 silly lifecycle No script for "publish" in "g2o", continuing
+201 silly lifecycle No script for "postpublish" in "g2o", continuing
+202 success published g2o 0.9.260
+203 notice
+204 notice 📦  g2o@0.9.260
+205 notice === Tarball Contents ===
+206 notice 1.1kB   LICENSE
+206 notice 229.2kB ./dist/commonjs/index.js
+206 notice 257.2kB ./dist/umd/index.js
+206 notice 229.2kB dist/commonjs/index.js
+206 notice 227.9kB dist/esm/index.js
+206 notice 311.7kB dist/system/index.js
+206 notice 257.2kB dist/umd/index.js
+206 notice 79.3kB  dist/esm/index.min.js
+206 notice 79.4kB  dist/system/index.min.js
+206 notice 2.7kB   package.json
+206 notice 279.9kB dist/commonjs/index.js.map
+206 notice 279.7kB dist/esm/index.js.map
+206 notice 281.9kB dist/system/index.js.map
+206 notice 280.3kB dist/umd/index.js.map
+206 notice 177.3kB dist/esm/index.min.js.map
+206 notice 177.6kB dist/system/index.min.js.map
+206 notice 425B    README.md
+206 notice 44.6kB  dist/index.d.ts
+207 notice === Tarball Details ===
+208 notice name:          g2o
+208 notice version:       0.9.260
+208 notice filename:      g2o-0.9.260.tgz
+208 notice package size:  612.4 kB
+208 notice unpacked size: 3.2 MB
+208 notice shasum:        be47a0d34683e0ffd9268b1b1b9652a87e3f855d
+208 notice integrity:     sha512-QUC5QsIw8Bioz[...]GKGjtZktq1vWw==
+208 notice total files:   18
+209 notice
+210 silly lifecycle No script for "publish" in "g2o-svg", continuing
+211 silly lifecycle No script for "postpublish" in "g2o-svg", continuing
+212 success published g2o-svg 0.9.260
+213 notice
+214 notice 📦  g2o-svg@0.9.260
+215 notice === Tarball Contents ===
+216 notice 1.1kB  LICENSE
+216 notice 13.1kB ./dist/commonjs/index.js
+216 notice 14.8kB ./dist/umd/index.js
+216 notice 13.1kB dist/commonjs/index.js
+216 notice 13.0kB dist/esm/index.js
+216 notice 17.7kB dist/system/index.js
+216 notice 14.8kB dist/umd/index.js
+216 notice 4.2kB  dist/esm/index.min.js
+216 notice 4.3kB  dist/system/index.min.js
+216 notice 2.6kB  package.json
+216 notice 12.7kB dist/commonjs/index.js.map
+216 notice 12.7kB dist/esm/index.js.map
+216 notice 12.8kB dist/system/index.js.map
+216 notice 12.7kB dist/umd/index.js.map
+216 notice 8.1kB  dist/esm/index.min.js.map
+216 notice 8.1kB  dist/system/index.min.js.map
+216 notice 432B   README.md
+216 notice 1.8kB  dist/index.d.ts
+217 notice === Tarball Details ===
+218 notice name:          g2o-svg
+218 notice version:       0.9.260
+218 notice filename:      g2o-svg-0.9.260.tgz
+218 notice package size:  21.3 kB
+218 notice unpacked size: 167.8 kB
+218 notice shasum:        4a2932ff29c71d2873962921292f0c81c8c329df
+218 notice integrity:     sha512-M0CyXJZvZ+DBh[...]QjTwnFlVG0y5Q==
+218 notice total files:   18
+219 notice
+220 silly lifecycle No script for "publish" in "g2o-reactive", continuing
+221 silly lifecycle No script for "postpublish" in "g2o-reactive", continuing
+222 success published g2o-reactive 0.9.260
+223 notice
+224 notice 📦  g2o-reactive@0.9.260
+225 notice === Tarball Contents ===
+226 notice 1.1kB  LICENSE
+226 notice 15.5kB ./dist/commonjs/index.js
+226 notice 16.7kB ./dist/umd/index.js
+226 notice 15.5kB dist/commonjs/index.js
+226 notice 15.4kB dist/esm/index.js
+226 notice 18.5kB dist/system/index.js
+226 notice 16.7kB dist/umd/index.js
+226 notice 10.3kB dist/esm/index.min.js
+226 notice 10.6kB dist/system/index.min.js
+226 notice 2.5kB  package.json
+226 notice 34.6kB dist/commonjs/index.js.map
+226 notice 34.6kB dist/esm/index.js.map
+226 notice 34.6kB dist/system/index.js.map
+226 notice 34.6kB dist/umd/index.js.map
+226 notice 25.8kB dist/esm/index.min.js.map
+226 notice 25.8kB dist/system/index.min.js.map
+226 notice 491B   README.md
+226 notice 1.1kB  dist/index.d.ts
+227 notice === Tarball Details ===
+228 notice name:          g2o-reactive
+228 notice version:       0.9.260
+228 notice filename:      g2o-reactive-0.9.260.tgz
+228 notice package size:  52.6 kB
+228 notice unpacked size: 314.4 kB
+228 notice shasum:        6c974b89498a41bda4cefbe57a54d5438252aa59
+228 notice integrity:     sha512-sNkvJtFY15wBA[...]of9KH8vhqHvIQ==
+228 notice total files:   18
+229 notice
+230 error FetchError: request to https://registry.npmjs.org/g2o-canvas failed, reason: read ECONNRESET
+230 error     at ClientRequest.<anonymous> (/home/david/Development/g2o-mono/node_modules/minipass-fetch/lib/index.js:130:14)
+230 error     at ClientRequest.emit (node:events:518:28)
+230 error     at TLSSocket.socketErrorListener (node:_http_client:500:9)
+230 error     at TLSSocket.emit (node:events:530:35)
+230 error     at emitErrorNT (node:internal/streams/destroy:169:8)
+230 error     at emitErrorCloseNT (node:internal/streams/destroy:128:3)
