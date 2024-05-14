@@ -1,7 +1,7 @@
-import { G20, GraphicsBoard, Group, Shape } from "../../core/src/index";
-import { MockViewDOM } from "../src/lib/mock/dom";
-import { initBoard } from '../src/lib/mock/initBoard';
-import { MockElement } from '../src/lib/mock/nodes';
+import { G20, GraphicsBoard, Group, Shape } from "g2o";
+import { MockViewDOM } from "./dom";
+import { initBoard } from './initBoard';
+import { MockElement } from './nodes';
 
 describe("GraphicsBoard", function () {
     it("constructor", function () {

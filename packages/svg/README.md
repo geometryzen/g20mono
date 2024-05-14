@@ -1,4 +1,4 @@
-g2o Scalable Vector Graphics
+Scalable Vector Graphics Renderer
 
 [![version](https://img.shields.io/npm/v/g2o-svg.svg)](https://www.npmjs.com/package/g2o-svg) 
 

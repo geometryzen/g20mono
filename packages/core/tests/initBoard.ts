@@ -1,5 +1,4 @@
-import { Board } from "../Board";
-import { GraphicsBoard, GraphicsBoardOptions } from "../GraphicsBoard";
+import { Board, GraphicsBoard, GraphicsBoardOptions } from "g2o";
 import { MockElementDOM, MockViewDOM } from "./dom";
 import { MockElement } from "./nodes";
 import { MockViewFactory } from "./view";

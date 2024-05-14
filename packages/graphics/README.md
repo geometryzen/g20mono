@@ -1,5 +1,3 @@
-g2o Graphics
-
 RegularPolygon, RoundedRectangle, and Star.
 
 [![version](https://img.shields.io/npm/v/g2o-graphics.svg)](https://www.npmjs.com/package/g2o-graphics) 

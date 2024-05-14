@@ -1,4 +1,4 @@
-g2o Texture
+Texture Color Provider
 
 [![version](https://img.shields.io/npm/v/g2o-texture.svg)](https://www.npmjs.com/package/g2o-texture) 
 

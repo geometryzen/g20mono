@@ -1,4 +1,4 @@
-g2o Canvas View
+Canvas Renderer (for generating PNG files)
 
 [![version](https://img.shields.io/npm/v/g2o-canvas.svg)](https://www.npmjs.com/package/g2o-canvas) 
 

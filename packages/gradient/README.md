@@ -1,4 +1,4 @@
-g2o LinearGradient and RadialGradient
+LinearGradient and RadialGradient
 
 [![version](https://img.shields.io/npm/v/g2o-gradient.svg)](https://www.npmjs.com/package/g2o-gradient) 
 
