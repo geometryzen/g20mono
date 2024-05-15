@@ -75,5 +75,5 @@
         "g2o": "file:../core",
         "g2o-svg": "file:../svg"
     },
-    "gitHead": "c9389695f39c939392bb5737cdffbbbb93fa3b34"
+    "gitHead": "bf7ddf6aa4671b9e7bfa0d0c617f5e0e504415da"
 }
