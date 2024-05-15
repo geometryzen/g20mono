@@ -1,6 +1,6 @@
 {
     "name": "g2o-mock",
-    "version": "0.9.274",
+    "version": "0.9.275",
     "description": "MockElement, MockNode, and initBoard",
     "exports": {
         ".": {
