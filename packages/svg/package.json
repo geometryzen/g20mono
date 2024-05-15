@@ -78,5 +78,5 @@
     "peerDependencies": {
         "g2o": "file:../core"
     },
-    "gitHead": "c3d62acde04045e2232bec259346e8da25489607"
+    "gitHead": "ced07891c3562d271f162c46be81cbb98f397375"
 }
