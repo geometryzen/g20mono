@@ -70,7 +70,7 @@
     },
     "homepage": "https://github.com/geometryzen/reactive#readme",
     "dependencies": {
-        "signal-polyfill": "^0.1.0"
+        "signal-polyfill": "^0.1.1"
     },
     "gitHead": "c9389695f39c939392bb5737cdffbbbb93fa3b34"
 }

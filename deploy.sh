@@ -3,14 +3,14 @@ echo "Please enter a commit message"
 read message
 npm install
 npm update
-lerna run build
-lerna run lint
-lerna run test
+npm run build
+npm run lint
+npm run test
 git status
 git add --all
 git commit -m "'$message'"
 git push origin main
-lerna version --no-private --force-publish --yes
-lerna publish from-package --yes
-lerna run docs
-lerna run pages --concurrency=1
+npm run version
+npm run publish
+npm run docs
+npm run pages

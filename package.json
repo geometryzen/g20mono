@@ -2,10 +2,14 @@
     "name": "root",
     "private": true,
     "scripts": {
-        "build": "lerna run clean && lerna run build",
+        "build": "lerna run build",
         "lint": "lerna run lint",
         "test": "lerna run test",
-        "prepublishOnly": "npm run lint && npm run build && lerna run test"
+        "docs": "lerna run docs",
+        "pages": "lerna run pages --concurrency=1",
+        "prepublishOnly": "npm run lint && npm run build && lerna run test",
+        "publish": "lerna publish from-package --yes",
+        "version": "lerna version --no-private --force-publish --yes"
     },
     "workspaces": [
         "packages/canvas",

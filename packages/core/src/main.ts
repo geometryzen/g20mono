@@ -3,13 +3,26 @@ import { initBoard } from '../../svg/src/lib/initBoard';
 document.addEventListener('DOMContentLoaded', function () {
 
     const board = initBoard("my-board", {
+        // boundingBox: { left: -1, top: 1, right: 1, bottom: -1 } // Cartesian
+        // boundingBox: { left: -1, top: -1, right: 1, bottom: 1 } // SVG
+        // boundingBox: { left: 1, top: -1, right: -1, bottom: 1 } // crazy
+        // boundingBox: { left: 1, top: 1, right: -1, bottom: -1 } // crazy and goofy
     });
 
-    const L = board.line([0, 0], [1, 0]);
+    board.rectangle({
+        fillColor: "#FFFF00",
+        fillOpacity: 0.3,
+        strokeColor: "#FFCC00",
+        strokeOpacity: 0.6,
+        strokeWidth: 4 / board.sx,
+        // vectorEffect:'non-scaling-stroke'
+    });
 
-    // FIXME: This does not trigger 
-    L.point1 = [-0.9, -0.9];
-    L.point2 = [0.9, 0.9];
-
-    board.dispose();
+    /*
+    function animate() {
+        window.requestAnimationFrame(animate);
+    }
+    
+    window.requestAnimationFrame(animate);
+    */
 });
