@@ -1,7 +1,7 @@
 {
     "name": "@g20/player",
     "version": "1.0.1-alpha.0",
-    "description": "g2o Player",
+    "description": "Window Animation Frame Player",
     "exports": {
         ".": {
             "types": "./dist/index.d.ts",
@@ -73,5 +73,5 @@
         "@g20/core": "file:../core",
         "@g20/reactive": "file:../reactive"
     },
-    "gitHead": "a29076ca2cf2e3afc5734e2e0c2a3957f10b642a"
+    "gitHead": "68b0d08feff08bc93907a44ab105987653618458"
 }

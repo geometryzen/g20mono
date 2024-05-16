@@ -1,7 +1,7 @@
 {
     "name": "@g20/parser",
     "version": "0.9.210",
-    "description": "g2o Player",
+    "description": "Parser",
     "exports": {
         ".": {
             "types": "./dist/index.d.ts",

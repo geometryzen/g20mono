@@ -1,4 +1,4 @@
-g2o Player
+Window Animation Frame Player
 
 [![version](https://img.shields.io/npm/v/@g20/player.svg)](https://www.npmjs.com/package/@g20/player) 
 

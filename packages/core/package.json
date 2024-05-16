@@ -78,5 +78,5 @@
     "peerDependencies": {
         "@g20/reactive": "file:../reactive"
     },
-    "gitHead": "a29076ca2cf2e3afc5734e2e0c2a3957f10b642a"
+    "gitHead": "68b0d08feff08bc93907a44ab105987653618458"
 }

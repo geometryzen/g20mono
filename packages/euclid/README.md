@@ -1,4 +1,4 @@
-g2o Euclidean Geometry Utilities
+Euclidean Geometry Utilities
 
 [![version](https://img.shields.io/npm/v/@g20/euclid.svg)](https://www.npmjs.com/package/@g20/euclid) 
 

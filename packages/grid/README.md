@@ -1,4 +1,4 @@
-g2o Grid
+Grid
 
 [![version](https://img.shields.io/npm/v/@g20/grid.svg)](https://www.npmjs.com/package/@g20/grid) 
 

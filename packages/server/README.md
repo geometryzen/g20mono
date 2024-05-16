@@ -1,4 +1,4 @@
-g2o Server Side Rendering
+Server Side Rendering
 
 [![version](https://img.shields.io/npm/v/@g20/server.svg)](https://www.npmjs.com/package/@g20/server) 
 
