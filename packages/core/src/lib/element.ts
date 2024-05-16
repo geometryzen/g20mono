@@ -1,4 +1,4 @@
-import { signal, State } from "g2o-reactive";
+import { signal, State } from "@g20/reactive";
 import { Disposable } from './reactive/Disposable';
 import { ZZZ } from './renderers/ZZZ';
 

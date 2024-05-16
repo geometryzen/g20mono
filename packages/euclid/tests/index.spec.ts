@@ -1,5 +1,5 @@
-import { CircleProperties, Color, G20 } from "g2o";
-import { state } from "g2o-reactive";
+import { CircleProperties, Color, G20 } from "@g20/core";
+import { state } from "@g20/reactive";
 import { CircleCircleIntersection } from "../src/index";
 
 class MockCircle implements CircleProperties {

@@ -3,7 +3,7 @@ let next_unique_id = 0;
 
 export const Constants = {
 
-    Identifier: 'g2o-gradient-',
+    Identifier: 'g20-gradient-',
 
     /**
      * Default amount of vertices to be used for interpreting Arcs and ArcSegments.

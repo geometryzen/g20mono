@@ -1,5 +1,5 @@
 {
-    "name": "g2o-reactive",
+    "name": "@g20/reactive",
     "version": "1.0.0-alpha.0",
     "description": "Wrapper around signal-polyfill to support different module formats",
     "exports": {

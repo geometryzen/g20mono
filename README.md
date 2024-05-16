@@ -22,9 +22,9 @@ A modern JavaScript (TypeScript) suite of ESM modules for rendering 2D graphics 
 
 All packages are published together with the same version number.
 
-[![version](https://img.shields.io/npm/v/g2o.svg)](https://www.npmjs.com/package/g2o) 
+[![version](https://img.shields.io/npm/v/@g20/core.svg)](https://www.npmjs.com/package/@g20/core) 
 
-[![npm downloads](https://img.shields.io/npm/dm/g2o.svg)](https://npm-stat.com/charts.html?package=g2o&from=2024-03-27)
+[![npm downloads](https://img.shields.io/npm/dm/@g20/core.svg)](https://npm-stat.com/charts.html?package=@g20/core&from=2024-03-27)
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
@@ -34,23 +34,23 @@ All packages are published together with the same version number.
 
 A book is in the works.
 
-In the meantime, a search of `g2o` in the STEMCarXiv (STEMCstudio archive) at [STEMCstudio](https://www.stemcstudio.com) should produce many working examples.
+In the meantime, a search of `@g20` in the STEMCarXiv (STEMCstudio archive) at [STEMCstudio](https://www.stemcstudio.com) should produce many working examples.
 
 ## Packages and API Documentation
 
-### [g2o](https://geometryzen.github.io/g2o-mono)
+### [@g20/core](https://geometryzen.github.io/g2o-mono)
 
 The core library that renders SVG. Required.
 
-### [g2o-svg](https://geometryzen.github.io/g2o-mono/svg)
+### [@g20/svg](https://geometryzen.github.io/g2o-mono/svg)
 
 The SVG librray for creating SVG in the browser.
 
-### [g2o-reactive](https://geometryzen.github.io/g2o-mono/reactive)
+### [@g20/reactive](https://geometryzen.github.io/g2o-mono/reactive)
 
 The shared reactive signals library. Required. You will only need to use this directly if you are creating your own shape extensions.
 
-### [g2o-canvas](https://geometryzen.github.io/g2o-mono/canvas)
+### [@g20/canvas](https://geometryzen.github.io/g2o-mono/canvas)
 
 The HTML Canvas rendering library. Optional. Facilitates the generation of png images.
 
@@ -58,7 +58,7 @@ The HTML Canvas rendering library. Optional. Facilitates the generation of png i
 
 Hint: Launch the Program from the toolbar then right-click the output to obtain an image.
 
-### [g2o-euclid](https://geometryzen.github.io/g2o-mono/euclid)
+### [@g20/euclid](https://geometryzen.github.io/g2o-mono/euclid)
 
 Provides functions for computing circle and line intersections. Optional.
 
@@ -66,7 +66,7 @@ Provides functions for computing circle and line intersections. Optional.
 
 [Live Demo of Euclid's Elements Construction in STEMCstudio](https://www.stemcstudio.com/gists/28890bad7794270d959330e2eba82cc7)
 
-### [g2o-gradient](https://geometryzen.github.io/g2o-mono/gradient)
+### [@g20/gradient](https://geometryzen.github.io/g2o-mono/gradient)
 
 Provides Linear and Radial Gradients. Optional. Gradients are instances of ColorProvider(s), which can be used for shape `fill` and `stroke` properties. You may extend g2o with custom ColorProvider(s).
 
@@ -74,7 +74,7 @@ Provides Linear and Radial Gradients. Optional. Gradients are instances of Color
 
 [Live Demo of Linear and Radial Gradients in STEMCstudio](https://www.stemcstudio.com/gists/e82033ebe82bc5fd991a33a820cb7f83)
 
-### [g2o-graphics](https://geometryzen.github.io/g2o-mono/graphics)
+### [@g20/graphics](https://geometryzen.github.io/g2o-mono/graphics)
 
 Provides RegularPolygon, RoundedRectangle, and Star shapes. Optional. Shapes such as these are extensions of the Path class. You may extend g2o with custom Path based classes.
 
@@ -82,7 +82,7 @@ Provides RegularPolygon, RoundedRectangle, and Star shapes. Optional. Shapes suc
 
 [Live Demo of Graphics shapes in STEMCstudio](https://www.stemcstudio.com/gists/8f873d1ef37536795b40883aa2e77c01)
 
-### [g2o-grid](https://geometryzen.github.io/g2o-mono/grid)
+### [@g20/grid](https://geometryzen.github.io/g2o-mono/grid)
 
 Provides a coordinate grid. Optional. The Grid class extends Group and provides an example of extending g2o with custom shapes based upon composition of existing shapes.
 
@@ -90,10 +90,10 @@ Provides a coordinate grid. Optional. The Grid class extends Group and provides 
 
 [Live Demo of Grid in STEMCstudio](https://www.stemcstudio.com/gists/7106f94b7639ce77bbcf2fcc88b217db)
 
-### [g2o-player](https://geometryzen.github.io/g2o-mono/player)
+### [@g20/player](https://geometryzen.github.io/g2o-mono/player)
 
 Provides a Player for controlling animation frame start, and pause. Optional.
 
 [Live Demo of Player in STEMCstudio](https://www.stemcstudio.com/gists/a88d400bc9176836bb4ff7f88340428a)
 
-### [g2o-mock](https://geometryzen.github.io/g2o-mono/mock)
+### [@g20/mock](https://geometryzen.github.io/g2o-mono/mock)

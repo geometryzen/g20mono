@@ -1,5 +1,5 @@
-import { ColorProvider, G20, VectorLike, vector_from_like, ViewDOM } from "g2o";
-import { effect } from "g2o-reactive";
+import { ColorProvider, G20, VectorLike, vector_from_like, ViewDOM } from "@g20/core";
+import { effect } from "@g20/reactive";
 import { Gradient, GradientOptions } from './gradient';
 import { Stop } from './stop';
 import { SVGAttributes } from './svg';

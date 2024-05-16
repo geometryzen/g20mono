@@ -1,5 +1,5 @@
-import { Anchor, Board, Circle, Ellipse, G20, Group, Path, Rectangle, Shape, Text } from "g2o";
-import { Gradient, LinearGradient, RadialGradient, Stop } from 'g2o-gradient';
+import { Anchor, Board, Circle, Ellipse, G20, Group, Path, Rectangle, Shape, Text } from "@g20/core";
+import { Gradient, LinearGradient, RadialGradient, Stop } from '@g20/gradient';
 
 // https://github.com/jonobr1/two.js/issues/507#issuecomment-777159213
 const regex = {

@@ -1,4 +1,4 @@
-import { Shape } from "g2o";
+import { Shape } from "@g20/core";
 import { GraphicsBoard } from "../../core/src/index";
 import { initBoard, MockElement, MockViewDOM } from '../src/index';
 

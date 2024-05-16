@@ -1,5 +1,5 @@
-import { ElementBase, variable } from "g2o";
-import { state } from "g2o-reactive";
+import { ElementBase, variable } from "@g20/core";
+import { state } from "@g20/reactive";
 import { Constants } from './constants';
 import { Gradient } from './gradient';
 

@@ -1,8 +1,8 @@
 #!/bin/sh
 echo "Please enter a commit message"
 read message
-# npm --registry=http://localhost:4873/ install
-# npm --registry=http://localhost:4873/ update
+npm --registry=http://localhost:4873/ install
+npm --registry=http://localhost:4873/ update
 npm run build
 npm run lint
 npm run test

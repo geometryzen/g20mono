@@ -1,5 +1,5 @@
 {
-    "name": "g2o-texture",
+    "name": "@g20/texture",
     "version": "1.0.0-alpha.0",
     "description": "g2o Texture",
     "exports": {
@@ -70,8 +70,8 @@
     },
     "homepage": "https://github.com/geometryzen/g2o-mono#readme",
     "peerDependencies": {
-        "g2o": "file:../core",
-        "g2o-reactive": "file:../reactive"
+        "@g20/core": "file:../core",
+        "@g20/reactive": "file:../reactive"
     },
     "gitHead": "a29076ca2cf2e3afc5734e2e0c2a3957f10b642a"
 }

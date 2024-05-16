@@ -1,4 +1,4 @@
-import { computed, effect, Readable, state, State } from "g2o-reactive";
+import { computed, effect, Readable, state, State } from "@g20/reactive";
 import { Anchor } from './anchor';
 import { Board, PointOptions } from './Board';
 import { Constants } from './constants';

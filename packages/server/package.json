@@ -1,5 +1,5 @@
 {
-    "name": "g2o-server",
+    "name": "@g20/server",
     "version": "1.0.0-alpha.0",
     "description": "g2o Server Side Rendering",
     "exports": {
@@ -76,7 +76,7 @@
         "@types/jsdom": "^21.1.6"
     },
     "peerDependencies": {
-        "g2o": "file:../core"
+        "@g20/core": "file:../core"
     },
     "gitHead": "a29076ca2cf2e3afc5734e2e0c2a3957f10b642a"
 }

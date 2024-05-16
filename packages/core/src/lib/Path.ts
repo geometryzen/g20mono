@@ -1,4 +1,4 @@
-import { effect, signal } from "g2o-reactive";
+import { effect, signal } from "@g20/reactive";
 import { Anchor } from './anchor';
 import { Board } from './Board';
 import { Collection } from './collection';

@@ -1,4 +1,4 @@
-import { signal, State } from "g2o-reactive";
+import { signal, State } from "@g20/reactive";
 import { variable } from '../reactive/variable';
 import { Bivector } from './Bivector';
 import { gauss } from './gauss';

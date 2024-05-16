@@ -1,6 +1,6 @@
 import { Canvg } from 'canvg';
-import { Group, View } from "g2o";
-import { SVGViewFactory } from "g2o-svg";
+import { Group, View } from "@g20/core";
+import { SVGViewFactory } from "@g20/svg";
 
 export class CanvasView implements View<HTMLCanvasElement> {
     domElement: HTMLCanvasElement;

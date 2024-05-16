@@ -1,4 +1,4 @@
-import { effect } from "g2o-reactive";
+import { effect } from "@g20/reactive";
 import { Anchor } from '../anchor';
 import { Collection } from '../collection';
 import { Color } from '../effects/ColorProvider';

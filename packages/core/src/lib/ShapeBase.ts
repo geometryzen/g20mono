@@ -1,4 +1,4 @@
-import { effect, state } from "g2o-reactive";
+import { effect, state } from "@g20/reactive";
 import { Board } from './Board';
 import { Constants } from './constants';
 import { ElementBase } from './element';

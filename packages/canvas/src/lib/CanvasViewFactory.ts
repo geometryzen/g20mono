@@ -1,4 +1,4 @@
-import { Group, View, ViewFactory } from "g2o";
+import { Group, View, ViewFactory } from "@g20/core";
 import { CanvasView } from "./CanvasView";
 
 export class CanvasViewFactory implements ViewFactory<HTMLCanvasElement> {

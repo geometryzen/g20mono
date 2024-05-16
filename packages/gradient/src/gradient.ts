@@ -1,5 +1,5 @@
-import { ColorProvider, ElementBase, variable, ViewDOM } from "g2o";
-import { effect, State, state } from "g2o-reactive";
+import { ColorProvider, ElementBase, variable, ViewDOM } from "@g20/core";
+import { effect, State, state } from "@g20/reactive";
 import { Constants } from './constants';
 import { Stop } from './stop';
 import { SVGAttributes } from './svg';

@@ -1,4 +1,4 @@
-import { Board, GraphicsBoard } from "g2o";
+import { Board, GraphicsBoard } from "@g20/core";
 import { HTMLElementDOM } from "./HTMLElementDOM";
 import { SVGViewDOM } from "./SVGViewDOM";
 import { SVGViewFactory } from "./SVGViewFactory";

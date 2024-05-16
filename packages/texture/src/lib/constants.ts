@@ -3,7 +3,7 @@ let next_unique_id = 0;
 
 export const Constants = {
 
-    Identifier: 'g2o-texture-',
+    Identifier: 'g20-texture-',
 
     /**
      * Default amount of vertices to be used for interpreting Arcs and ArcSegments.

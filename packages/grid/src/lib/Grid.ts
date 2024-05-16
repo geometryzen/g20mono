@@ -1,4 +1,4 @@
-import { Board, Group, Line, ViewDOM } from "g2o";
+import { Board, Group, Line, ViewDOM } from "@g20/core";
 
 export interface GridOptions {
     id?: string

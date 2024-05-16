@@ -1,4 +1,4 @@
-import { ElementDOM, SVGAttributes, ViewDOM } from "g2o";
+import { ElementDOM, SVGAttributes, ViewDOM } from "@g20/core";
 import { MockElement, MockNode } from "./nodes";
 
 /**

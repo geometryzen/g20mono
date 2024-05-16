@@ -1,4 +1,4 @@
-import { G20, GraphicsBoard, Group, Shape } from "g2o";
+import { G20, GraphicsBoard, Group, Shape } from "@g20/core";
 import { MockViewDOM } from "./dom";
 import { initBoard } from './initBoard';
 import { MockElement } from './nodes';

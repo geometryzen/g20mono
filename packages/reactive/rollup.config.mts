@@ -58,7 +58,7 @@ const options: RollupOptions[] = [
             {
                 file: pkg.browser,
                 format: 'umd',
-                name: 'REACTIVE',
+                name: 'G20',
                 sourcemap: true
             }
         ],

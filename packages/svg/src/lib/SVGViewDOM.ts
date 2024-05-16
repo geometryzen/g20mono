@@ -1,4 +1,4 @@
-import { Anchor, Board, Commands, G20, Matrix, ShapeBase, SVGAttributes, ViewDOM } from "g2o";
+import { Anchor, Board, Commands, G20, Matrix, ShapeBase, SVGAttributes, ViewDOM } from "@g20/core";
 import { mod, toFixed } from "./math";
 
 type DOMElement = HTMLElement | SVGElement;

@@ -1,4 +1,4 @@
-import { ColorProvider, Disposable, ElementBase, G20, SVGAttributes, variable, ViewDOM } from "g2o";
+import { ColorProvider, Disposable, ElementBase, G20, SVGAttributes, variable, ViewDOM } from "@g20/core";
 import { Constants } from "./constants";
 import { is_canvas } from "./is_canvas";
 import { is_img } from "./is_img";

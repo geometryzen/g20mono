@@ -1,4 +1,4 @@
-import { computed, state } from "g2o-reactive";
+import { computed, state } from "@g20/reactive";
 
 describe("Signal", function () {
     it("state", function () {

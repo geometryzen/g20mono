@@ -1,4 +1,4 @@
-import { state } from "g2o-reactive";
+import { state } from "@g20/reactive";
 import { Group } from "../group";
 import { ViewDOM } from "../Shape";
 import { sizeEquals } from "./Size";

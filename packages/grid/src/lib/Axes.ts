@@ -1,4 +1,4 @@
-import { Arrow, Board, G20, Group, Shape, Text, ViewDOM } from "g2o";
+import { Arrow, Board, G20, Group, Shape, Text, ViewDOM } from "@g20/core";
 
 export interface AxesOptions {
     id?: string

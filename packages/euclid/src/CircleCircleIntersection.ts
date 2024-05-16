@@ -1,5 +1,5 @@
-import { CircleProperties, Disposable, dispose, G20, variable } from "g2o";
-import { effect } from "g2o-reactive";
+import { CircleProperties, Disposable, dispose, G20, variable } from "@g20/core";
+import { effect } from "@g20/reactive";
 
 export class CircleCircleIntersection implements Disposable {
     readonly #disposables: Disposable[] = [];

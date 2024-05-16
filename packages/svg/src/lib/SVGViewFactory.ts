@@ -1,4 +1,4 @@
-import { Group, TreeView, View, ViewFactory } from "g2o";
+import { Group, TreeView, View, ViewFactory } from "@g20/core";
 import { SVGViewDOM } from "./SVGViewDOM";
 
 export class SVGViewFactory implements ViewFactory<SVGElement> {

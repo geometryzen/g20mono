@@ -1,5 +1,5 @@
 {
-    "name": "g2o-parser",
+    "name": "@g20/parser",
     "version": "0.9.210",
     "description": "g2o Player",
     "exports": {
@@ -70,8 +70,8 @@
     },
     "homepage": "https://github.com/geometryzen/g2o-mono#readme",
     "peerDependencies": {
-        "g2o": "file:../core",
-        "g2o-reactive": "file:../reactive"
+        "@g20/core": "file:../core",
+        "@g20/reactive": "file:../reactive"
     },
     "gitHead": "140e6f0a2366598efa2623600d4127a567883c4c"
 }

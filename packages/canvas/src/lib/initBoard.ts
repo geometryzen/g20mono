@@ -1,5 +1,5 @@
-import { Board, GraphicsBoard, ViewDOM, ViewFactory } from "g2o";
-import { SVGViewDOM } from "g2o-svg";
+import { Board, GraphicsBoard, ViewDOM, ViewFactory } from "@g20/core";
+import { SVGViewDOM } from "@g20/svg";
 import { CanvasViewFactory } from "./CanvasViewFactory";
 import { HTMLElementDOM } from "./HTMLElementDOM";
 

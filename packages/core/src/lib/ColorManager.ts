@@ -1,4 +1,4 @@
-import { state, State } from "g2o-reactive";
+import { state, State } from "@g20/reactive";
 import { Color, ColorProvider, is_color_provider } from "./effects/ColorProvider";
 import { ViewDOM } from "./Shape";
 

@@ -1,4 +1,4 @@
-import { ElementDOM } from "g2o";
+import { ElementDOM } from "@g20/core";
 
 export class HTMLElementDOM implements ElementDOM<HTMLElement, HTMLCanvasElement> {
     addEventListener(target: HTMLElement, name: "resize", callback: () => void): void {

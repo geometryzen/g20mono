@@ -1,4 +1,4 @@
-import { effect, State, state } from "g2o-reactive";
+import { effect, State, state } from "@g20/reactive";
 import { Board } from "./Board";
 import { ColorManager } from "./ColorManager";
 import { Color } from "./effects/ColorProvider";

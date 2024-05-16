@@ -1,4 +1,4 @@
-import { Board, GraphicsBoard, GraphicsBoardOptions } from "g2o";
+import { Board, GraphicsBoard, GraphicsBoardOptions } from "@g20/core";
 import { MockElementDOM, MockViewDOM } from "./dom";
 import { MockElement } from "./nodes";
 import { MockViewFactory } from "./view";

@@ -1,5 +1,5 @@
-import { Board, Disposable } from "g2o";
-import { effect } from "g2o-reactive";
+import { Board, Disposable } from "@g20/core";
+import { effect } from "@g20/reactive";
 
 export class Player {
     readonly #board: Board;
