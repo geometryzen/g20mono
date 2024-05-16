@@ -1,7 +1,7 @@
 import { Anchor } from '../anchor';
 import { Board } from '../Board';
 import { Color } from '../effects/ColorProvider';
-import { VectorLike, vector_from_like } from '../math/G20';
+import { G20, VectorLike, vector_from_like } from '../math/G20';
 import { Path, PathOptions } from '../Path';
 import { default_color } from '../utils/default_color';
 import { default_open_path_stroke_width } from '../utils/default_stroke_width';
@@ -37,26 +37,27 @@ export class Line extends Path implements LineProperties {
     override dispose(): void {
         super.dispose();
     }
-    get point1(): Anchor {
-        return this.vertices.getAt(0);
+    get point1(): G20 {
+        return this.vertices.getAt(0).origin;
     }
-    set point1(point1: Anchor | VectorLike) {
-        this.vertices.splice(0, 1, anchor_from_like(point1, 'M'));
+    set point1(point1: VectorLike) {
+        if (point1 instanceof G20) {
+            this.vertices.getAt(0).origin.copyVector(point1);
+        }
+        else if (Array.isArray(point1)) {
+            this.vertices.getAt(0).origin.set(point1[0], point1[1]);
+        }
     }
-    get point2(): Anchor {
-        return this.vertices.getAt(1);
+    get point2(): G20 {
+        return this.vertices.getAt(1).origin;
     }
-    set point2(point2: Anchor | VectorLike) {
-        this.vertices.splice(1, 1, anchor_from_like(point2, 'L'));
-    }
-}
-
-function anchor_from_like(like: Anchor | VectorLike, command: 'M' | 'L'): Anchor {
-    if (like instanceof Anchor) {
-        return like;
-    }
-    else {
-        return new Anchor(vector_from_like(like), command);
+    set point2(point2: VectorLike) {
+        if (point2 instanceof G20) {
+            this.vertices.getAt(1).origin.copyVector(point2);
+        }
+        else if (Array.isArray(point2)) {
+            this.vertices.getAt(1).origin.set(point2[0], point2[1]);
+        }
     }
 }
 

@@ -1,4 +1,8 @@
-import { Group, TreeView, View, ViewDOM, ViewFactory } from "@g20/core";
+import { Group } from "../src/lib/group";
+import { TreeView } from "../src/lib/renderers/TreeView";
+import { View } from "../src/lib/renderers/View";
+import { ViewFactory } from "../src/lib/renderers/ViewFactory";
+import { ViewDOM } from "../src/lib/Shape";
 import { MockElement } from "./nodes";
 
 export class MockViewFactory implements ViewFactory<MockElement> {

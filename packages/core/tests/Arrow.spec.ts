@@ -6,16 +6,14 @@ describe("Arrow", () => {
     it("constructor", () => {
         const element = new MockElement('div');
         const board = initBoard(element);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const arrow = new Arrow(board as any, [1, 0]);
+        const arrow = new Arrow(board, [1, 0]);
         arrow.show();
         expect(arrow.X.x).toBe(0);
         expect(arrow.X.y).toBe(0);
         expect(arrow.R.a).toBe(1);
         expect(arrow.R.b).toBe(0);
         expect(arrow.headLength).toBe(0.2);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        board.add(arrow as any);
+        board.add(arrow);
         board.dispose();
     });
     it("axis", () => {

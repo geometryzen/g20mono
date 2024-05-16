@@ -11,7 +11,7 @@
         "docs": "lerna run docs",
         "pages": "lerna run pages --concurrency=1",
         "prepublishOnly": "npm run lint && npm run build && lerna run test",
-        "publish": "lerna publish from-package --yes",
+        "publish": "lerna publish from-package --yes --exact",
         "version": "lerna version --no-private --force-publish --yes",
         "lerna-version": "lerna --version"
     },

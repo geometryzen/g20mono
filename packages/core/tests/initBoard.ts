@@ -1,4 +1,5 @@
-import { Board, GraphicsBoard, GraphicsBoardOptions } from "@g20/core";
+import { Board } from "../src/lib/Board";
+import { GraphicsBoard, GraphicsBoardOptions } from "../src/lib/GraphicsBoard";
 import { MockElementDOM, MockViewDOM } from "./dom";
 import { MockElement } from "./nodes";
 import { MockViewFactory } from "./view";

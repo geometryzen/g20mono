@@ -1,4 +1,7 @@
-import { G20, GraphicsBoard, Group, Shape } from "@g20/core";
+import { GraphicsBoard } from "../src/lib/GraphicsBoard";
+import { Group } from "../src/lib/group";
+import { G20 } from "../src/lib/math/G20";
+import { Shape } from "../src/lib/Shape";
 import { MockViewDOM } from "./dom";
 import { initBoard } from './initBoard';
 import { MockElement } from './nodes';

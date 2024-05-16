@@ -11,10 +11,12 @@ export abstract class ElementBase implements Disposable {
 
     readonly zzz: ZZZ = new ZZZ();
 
-    readonly #id: State<string | null>;
+    readonly #id: State<string | null> = signal(null);
 
     constructor(id: string | null) {
-        this.#id = signal(id);
+        if (typeof id === 'string') {
+            this.#id = signal(id);
+        }
     }
 
     dispose(): void {
