@@ -1,6 +1,6 @@
 {
     "name": "@g20/server",
-    "version": "1.0.0-alpha.0",
+    "version": "1.0.1-alpha.0",
     "description": "g2o Server Side Rendering",
     "exports": {
         ".": {
