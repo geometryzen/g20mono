@@ -1,4 +1,4 @@
-import { effect, state } from "@g20/reactive";
+import { effect, signal } from "@g20/reactive";
 import { Anchor } from '../anchor';
 import { Collection } from '../collection';
 import { Color } from '../effects/ColorProvider';
@@ -38,7 +38,7 @@ export class Circle extends Path implements CircleProperties {
 
     readonly #disposables: Disposable[] = [];
 
-    readonly #radius = state(1);
+    readonly #radius = signal(1);
 
     constructor(owner: Board, options: CircleOptions = {}) {
 

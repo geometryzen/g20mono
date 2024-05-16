@@ -11,7 +11,7 @@ import {
     SpinorLike,
     VectorLike
 } from "@g20/core";
-import { effect, state } from "@g20/reactive";
+import { effect, signal } from "@g20/reactive";
 
 export interface StarOptions extends PathOptions {
     id?: string;
@@ -37,10 +37,10 @@ export class Star extends Path {
 
     readonly #trash: Disposable[] = [];
 
-    readonly #innerRadius = state(0.5);
-    readonly #outerRadius = state(1);
-    readonly #points = state(8);
-    readonly #twist = state(0);
+    readonly #innerRadius = signal(0.5);
+    readonly #outerRadius = signal(1);
+    readonly #points = signal(8);
+    readonly #twist = signal(0);
 
     constructor(board: Board, options: StarOptions = {}) {
 

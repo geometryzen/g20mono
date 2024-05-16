@@ -677,31 +677,31 @@
 <a name='L612'></a><a href='#L612'>612</a>
 <a name='L613'></a><a href='#L613'>613</a>
 <a name='L614'></a><a href='#L614'>614</a>
-<a name='L615'></a><a href='#L615'>615</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
+<a name='L615'></a><a href='#L615'>615</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -709,7 +709,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1291,7 +1291,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { computed, effect, Readable, state, State } from "@g20/reactive";
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { computed, effect, Readable, signal, State } from "@g20/reactive";
 import { Anchor } from './anchor';
 import { Board, PointOptions } from './Board';
 import { Constants } from './constants';
@@ -1340,21 +1340,21 @@ export class GraphicsBoard&lt;E, T&gt; implements Board {
      */
     readonly #scene: Group;
 &nbsp;
-    readonly #size = <span class="cstat-no" title="statement not covered" >state({ width: 0, height: 0 }, { equals: sizeEquals });</span>
-    readonly #ratio = <span class="cstat-no" title="statement not covered" >state(1);</span>
+    readonly #size = <span class="cstat-no" title="statement not covered" >signal({ width: 0, height: 0 }, { equals: sizeEquals });</span>
+    readonly #ratio = <span class="cstat-no" title="statement not covered" >signal(1);</span>
 &nbsp;
     /**
      * A helper to handle sizing.
      */
     readonly #fitter: Fitter&lt;E, T&gt;;
 &nbsp;
-    readonly #frameCount = <span class="cstat-no" title="statement not covered" >state(0);</span>
+    readonly #frameCount = <span class="cstat-no" title="statement not covered" >signal(0);</span>
 &nbsp;
     // Used to compute the elapsed time between frames.
     #curr_now: number | null = <span class="cstat-no" title="statement not covered" >null;</span>
     #prev_now: number | null = <span class="cstat-no" title="statement not covered" >null;</span>
 &nbsp;
-    readonly #boundingBox: State&lt;BoundingBox&gt; = <span class="cstat-no" title="statement not covered" >state({ left: -1, top: 1, right: 1, bottom: -1 });</span>
+    readonly #boundingBox: State&lt;BoundingBox&gt; = <span class="cstat-no" title="statement not covered" >signal({ left: -1, top: 1, right: 1, bottom: -1 });</span>
     /**
      * 'goofy' is actually regular SVG coordinates where the y coordinate increases downwards.
      */
@@ -1912,7 +1912,7 @@ function <span class="fstat-no" title="function not covered" >points_to_anchors(
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-05-16T15:36:21.142Z
+                at 2024-05-16T19:08:01.477Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

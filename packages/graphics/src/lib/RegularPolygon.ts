@@ -11,7 +11,7 @@ import {
     SpinorLike,
     VectorLike
 } from "@g20/core";
-import { effect, state } from "@g20/reactive";
+import { effect, signal } from "@g20/reactive";
 
 const cos = Math.cos;
 const sin = Math.sin;
@@ -36,9 +36,9 @@ export class RegularPolygon extends Path {
 
     readonly #trash: Disposable[] = [];
 
-    readonly #radius = state(1);
-    readonly #twist = state(0);
-    readonly #sides = state(6);
+    readonly #radius = signal(1);
+    readonly #twist = signal(0);
+    readonly #sides = signal(6);
 
     constructor(board: Board, options: RegularPolygonOptions = {}) {
 

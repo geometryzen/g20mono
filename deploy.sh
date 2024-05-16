@@ -10,7 +10,7 @@ git status
 git add --all
 git commit -m "'$message'"
 git push origin main
-#npm run version
-#npm run publish
+npm run version
+npm run publish
 npm run docs
 npm run pages

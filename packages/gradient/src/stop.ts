@@ -1,13 +1,13 @@
 import { ElementBase, variable } from "@g20/core";
-import { state } from "@g20/reactive";
+import { signal } from "@g20/reactive";
 import { Constants } from './constants';
 import { Gradient } from './gradient';
 
 export class Stop extends ElementBase {
 
-    readonly #offset = state(0);
-    readonly #opacity = state(1);
-    readonly #color = state('#fff');
+    readonly #offset = signal(0);
+    readonly #opacity = signal(1);
+    readonly #color = signal('#fff');
 
     readonly #change = variable(this);
     readonly change$ = this.#change.asObservable();

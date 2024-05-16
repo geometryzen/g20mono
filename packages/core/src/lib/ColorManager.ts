@@ -1,4 +1,4 @@
-import { state, State } from "@g20/reactive";
+import { signal, State } from "@g20/reactive";
 import { Color, ColorProvider, is_color_provider } from "./effects/ColorProvider";
 import { ViewDOM } from "./Shape";
 
@@ -28,7 +28,7 @@ export class ColorManager {
      * @param qualifiedName 
      */
     constructor(initialValue: Color, readonly qualifiedName: 'fill' | 'stroke') {
-        this.#color = state(initialValue);
+        this.#color = signal(initialValue);
     }
     get(): Color {
         return this.#color.get();

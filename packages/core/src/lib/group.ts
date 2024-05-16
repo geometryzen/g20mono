@@ -1,4 +1,4 @@
-import { State, state } from "@g20/reactive";
+import { State, signal } from "@g20/reactive";
 import { Board } from './Board';
 import { Flag } from './Flag';
 import { transform_value_of_matrix } from './renderers/SVGViewDOM';
@@ -22,7 +22,7 @@ export class Group extends ShapeBase {
         this.zzz.flags[Flag.Ending] = false;
         this.zzz.flags[Flag.ClipPath] = false;
 
-        this.#shapes = state(shapes);
+        this.#shapes = signal(shapes);
     }
 
     override dispose() {

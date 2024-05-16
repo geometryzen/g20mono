@@ -1,4 +1,4 @@
-import { computed, effect, Readable, state, State } from "@g20/reactive";
+import { computed, effect, Readable, signal, State } from "@g20/reactive";
 import { Anchor } from './anchor';
 import { Board, PointOptions } from './Board';
 import { Constants } from './constants';
@@ -47,21 +47,21 @@ export class GraphicsBoard<E, T> implements Board {
      */
     readonly #scene: Group;
 
-    readonly #size = state({ width: 0, height: 0 }, { equals: sizeEquals });
-    readonly #ratio = state(1);
+    readonly #size = signal({ width: 0, height: 0 }, { equals: sizeEquals });
+    readonly #ratio = signal(1);
 
     /**
      * A helper to handle sizing.
      */
     readonly #fitter: Fitter<E, T>;
 
-    readonly #frameCount = state(0);
+    readonly #frameCount = signal(0);
 
     // Used to compute the elapsed time between frames.
     #curr_now: number | null = null;
     #prev_now: number | null = null;
 
-    readonly #boundingBox: State<BoundingBox> = state({ left: -1, top: 1, right: 1, bottom: -1 });
+    readonly #boundingBox: State<BoundingBox> = signal({ left: -1, top: 1, right: 1, bottom: -1 });
     /**
      * 'goofy' is actually regular SVG coordinates where the y coordinate increases downwards.
      */

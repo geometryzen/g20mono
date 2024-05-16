@@ -1,4 +1,4 @@
-import { effect, state } from "@g20/reactive";
+import { effect, signal } from "@g20/reactive";
 import { Board } from './Board';
 import { Constants } from './constants';
 import { ElementBase } from './element';
@@ -78,12 +78,12 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
      */
     readonly #skew: G20 = new G20(0, 0);
 
-    readonly #opacity = state(1);
-    readonly #visibility = state('visible' as 'visible' | 'hidden' | 'collapse');
+    readonly #opacity = signal(1);
+    readonly #visibility = signal('visible' as 'visible' | 'hidden' | 'collapse');
 
-    readonly #plumb = state(false);
+    readonly #plumb = signal(false);
 
-    readonly #mask = state(null as Shape | null);
+    readonly #mask = signal(null as Shape | null);
 
     // TODO: Remove the properties that don't generally apply
     abstract getBoundingBox(shallow?: boolean): { top?: number; left?: number; right?: number; bottom?: number };

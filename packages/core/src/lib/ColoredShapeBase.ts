@@ -1,4 +1,4 @@
-import { effect, State, state } from "@g20/reactive";
+import { effect, State, signal } from "@g20/reactive";
 import { Board } from "./Board";
 import { ColorManager } from "./ColorManager";
 import { Color } from "./effects/ColorProvider";
@@ -28,18 +28,18 @@ export abstract class ColoredShapeBase extends ShapeBase {
      * @see {@link https://developer.mozilla.org/en-US/docs/Web/CSS/color_value} for more information on CSS's colors as `String`.
      */
     readonly #fillColor = new ColorManager(null, 'fill');
-    readonly #fillOpacity = state(1.0);
+    readonly #fillOpacity = signal(1.0);
 
     /**
      * @see {@link https://developer.mozilla.org/en-US/docs/Web/CSS/color_value} for more information on CSS's colors as `String`.
      */
     readonly #strokeColor = new ColorManager(null, 'stroke');
-    readonly #strokeWidth = state(1);
-    readonly #strokeOpacity = state(1.0);
+    readonly #strokeWidth = signal(1);
+    readonly #strokeOpacity = signal(1.0);
 
-    readonly #dashes: State<number[]> = state([]);
+    readonly #dashes: State<number[]> = signal([]);
 
-    readonly #vectorEffect: State<null | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position' | 'none'> = state(null);
+    readonly #vectorEffect: State<null | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position' | 'none'> = signal(null);
 
     constructor(board: Board, options: ColoredShapeOptions = {}) {
         super(board, shape_attribs_from_colored_attribs(options));

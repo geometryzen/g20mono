@@ -11,7 +11,7 @@ import {
     SpinorLike,
     VectorLike
 } from "@g20/core";
-import { effect, state } from "@g20/reactive";
+import { effect, signal } from "@g20/reactive";
 
 export interface RoundedRectangleOptions extends PathOptions {
     id?: string;
@@ -33,10 +33,10 @@ export class RoundedRectangle extends Path {
 
     readonly #trash: Disposable[] = [];
 
-    readonly #width = state(Math.SQRT2);
-    readonly #height = state(Math.SQRT2);
+    readonly #width = signal(Math.SQRT2);
+    readonly #height = signal(Math.SQRT2);
 
-    readonly #radius = state(0.2);
+    readonly #radius = signal(0.2);
 
     constructor(board: Board, options: RoundedRectangleOptions = {}) {
 

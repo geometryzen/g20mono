@@ -1,5 +1,5 @@
 import { ColorProvider, G20, VectorLike, vector_from_like, ViewDOM } from "@g20/core";
-import { effect, state } from "@g20/reactive";
+import { effect, signal } from "@g20/reactive";
 import { Gradient, GradientOptions } from './gradient';
 import { Stop } from './stop';
 import { SVGAttributes } from './svg';
@@ -22,7 +22,7 @@ export interface RadialGradientOptions extends GradientOptions {
 export class RadialGradient extends Gradient implements ColorProvider {
 
     readonly #center: G20;
-    readonly #radius = state(1);
+    readonly #radius = signal(1);
     readonly #focal: G20;
 
     /**

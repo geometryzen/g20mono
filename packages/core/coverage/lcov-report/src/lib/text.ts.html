@@ -663,19 +663,19 @@
 <a name='L598'></a><a href='#L598'>598</a>
 <a name='L599'></a><a href='#L599'>599</a>
 <a name='L600'></a><a href='#L600'>600</a>
-<a name='L601'></a><a href='#L601'>601</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">5x</span>
+<a name='L601'></a><a href='#L601'>601</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -727,7 +727,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1263,7 +1263,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { effect, state } from "@g20/reactive";
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { effect, signal } from "@g20/reactive";
 import { Board } from './Board';
 import { ColoredShapeBase, ColoredShapeOptions } from './ColoredShapeBase';
 import { Color } from './effects/ColorProvider';
@@ -1332,30 +1332,30 @@ export class Text extends ColoredShapeBase implements TextProperties {
     ending: number;
     length: number;
 &nbsp;
-    readonly #content = <span class="cstat-no" title="statement not covered" >state('');</span>
+    readonly #content = <span class="cstat-no" title="statement not covered" >signal('');</span>
 &nbsp;
-    readonly #fontFamily = <span class="cstat-no" title="statement not covered" >state('sans-serif');</span>
+    readonly #fontFamily = <span class="cstat-no" title="statement not covered" >signal('sans-serif');</span>
 &nbsp;
-    readonly #fontSize = <span class="cstat-no" title="statement not covered" >state(18);</span>
+    readonly #fontSize = <span class="cstat-no" title="statement not covered" >signal(18);</span>
 &nbsp;
-    readonly #anchor = <span class="cstat-no" title="statement not covered" >state('start' as 'start' | 'middle' | 'end');</span>
+    readonly #anchor = <span class="cstat-no" title="statement not covered" >signal('start' as 'start' | 'middle' | 'end');</span>
 &nbsp;
-    readonly #baseline = <span class="cstat-no" title="statement not covered" >state('auto' as 'auto' | 'text-bottom' | 'alphabetic' | 'ideographic' | 'middle' | 'central' | 'mathematical' | 'hanging' | 'text-top');</span>
+    readonly #baseline = <span class="cstat-no" title="statement not covered" >signal('auto' as 'auto' | 'text-bottom' | 'alphabetic' | 'ideographic' | 'middle' | 'central' | 'mathematical' | 'hanging' | 'text-top');</span>
 &nbsp;
-    readonly #fontStyle = <span class="cstat-no" title="statement not covered" >state('normal' as 'normal' | 'italic' | 'oblique');</span>
+    readonly #fontStyle = <span class="cstat-no" title="statement not covered" >signal('normal' as 'normal' | 'italic' | 'oblique');</span>
 &nbsp;
-    readonly #fontWeight = <span class="cstat-no" title="statement not covered" >state('normal' as 'normal' | 'bold' | 'bolder' | 'lighter' | number);</span>
+    readonly #fontWeight = <span class="cstat-no" title="statement not covered" >signal('normal' as 'normal' | 'bold' | 'bolder' | 'lighter' | number);</span>
 &nbsp;
-    readonly #decoration = <span class="cstat-no" title="statement not covered" >state(['none' as TextDecoration]);</span>
+    readonly #decoration = <span class="cstat-no" title="statement not covered" >signal(['none' as TextDecoration]);</span>
 &nbsp;
     /**
      * determine what direction the text should run.
      * Possibly values are `'ltr'` for left-to-right and `'rtl'` for right-to-left. Defaults to `'ltr'`.
      */
-    readonly #direction = <span class="cstat-no" title="statement not covered" >state('ltr' as 'ltr' | 'rtl');</span>
+    readonly #direction = <span class="cstat-no" title="statement not covered" >signal('ltr' as 'ltr' | 'rtl');</span>
 &nbsp;
-    readonly #dx = <span class="cstat-no" title="statement not covered" >state(0 as number | string);</span>
-    readonly #dy = <span class="cstat-no" title="statement not covered" >state(0 as number | string);</span>
+    readonly #dx = <span class="cstat-no" title="statement not covered" >signal(0 as number | string);</span>
+    readonly #dy = <span class="cstat-no" title="statement not covered" >signal(0 as number | string);</span>
 &nbsp;
 <span class="fstat-no" title="function not covered" >    constructor(o</span>wner: Board, content: string, options: Partial&lt;TextOptions&gt; = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span> {
 &nbsp;
@@ -1870,7 +1870,7 @@ function <span class="fstat-no" title="function not covered" >shape_options_from
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-05-16T15:36:21.142Z
+                at 2024-05-16T19:08:01.477Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

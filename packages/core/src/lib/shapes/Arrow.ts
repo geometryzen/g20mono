@@ -1,7 +1,7 @@
 import { Anchor } from "../anchor";
+import { Board } from "../Board";
 import { Collection } from "../collection";
 import { Color } from "../effects/ColorProvider";
-import { Board } from "../Board";
 import { G20, SpinorLike, VectorLike, vector_from_like } from "../math/G20";
 import { Path, PathOptions } from "../Path";
 import { Disposable, dispose } from '../reactive/Disposable';
@@ -93,9 +93,12 @@ export class Arrow extends Path implements ArrowProperties {
     get axis(): G20 {
         return this.#axis;
     }
-    set axis(axis: G20) {
+    set axis(axis: VectorLike) {
         if (axis instanceof G20) {
             this.#axis.copyVector(axis);
+        }
+        else if (Array.isArray(axis)) {
+            this.#axis.set(axis[0], axis[1]);
         }
     }
     get headLength(): number {
@@ -111,9 +114,12 @@ export class Arrow extends Path implements ArrowProperties {
     get origin(): G20 {
         return this.#origin;
     }
-    set origin(origin: G20) {
+    set origin(origin: VectorLike) {
         if (origin instanceof G20) {
             this.#origin.copyVector(origin);
+        }
+        else if (Array.isArray(origin)) {
+            this.#origin.set(origin[0], origin[1]);
         }
     }
 }

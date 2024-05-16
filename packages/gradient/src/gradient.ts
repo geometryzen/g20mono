@@ -1,5 +1,5 @@
 import { ColorProvider, ElementBase, variable, ViewDOM } from "@g20/core";
-import { effect, State, state } from "@g20/reactive";
+import { effect, State, signal } from "@g20/reactive";
 import { Constants } from './constants';
 import { Stop } from './stop';
 import { SVGAttributes } from './svg';
@@ -19,10 +19,10 @@ export abstract class Gradient extends ElementBase implements ColorProvider {
 
     _flagStops = false;
 
-    readonly #spreadMethod = state('pad' as 'pad' | 'reflect' | 'repeat');
-    readonly #units = state('userSpaceOnUse' as 'userSpaceOnUse' | 'objectBoundingBox');
+    readonly #spreadMethod = signal('pad' as 'pad' | 'reflect' | 'repeat');
+    readonly #units = signal('userSpaceOnUse' as 'userSpaceOnUse' | 'objectBoundingBox');
 
-    readonly #stops: State<Stop[]> = state([]);
+    readonly #stops: State<Stop[]> = signal([]);
 
     readonly _change = variable(this);
     readonly change$ = this._change.asObservable();
@@ -38,7 +38,7 @@ export abstract class Gradient extends ElementBase implements ColorProvider {
             this.units = options.units;
         }
 
-        this.#stops = state(map_to_stops(stops));
+        this.#stops = signal(map_to_stops(stops));
     }
 
     override dispose(): void {

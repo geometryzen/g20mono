@@ -1,11 +1,11 @@
 import { CircleProperties, Color, G20 } from "@g20/core";
-import { state } from "@g20/reactive";
+import { signal } from "@g20/reactive";
 import { CircleCircleIntersection } from "../src/index";
 
 class MockCircle implements CircleProperties {
     readonly X = G20.zero.clone();
     readonly R = G20.one.clone();
-    readonly #radius = state(1);
+    readonly #radius = signal(1);
     // radius$ = this.#radius.asObservable();
     fillColor: Color;
     fillOpacity: number;

@@ -1,4 +1,4 @@
-import { effect, state } from "@g20/reactive";
+import { effect, signal } from "@g20/reactive";
 import { Board } from './Board';
 import { ColoredShapeBase, ColoredShapeOptions } from './ColoredShapeBase';
 import { Color } from './effects/ColorProvider';
@@ -67,30 +67,30 @@ export class Text extends ColoredShapeBase implements TextProperties {
     ending: number;
     length: number;
 
-    readonly #content = state('');
+    readonly #content = signal('');
 
-    readonly #fontFamily = state('sans-serif');
+    readonly #fontFamily = signal('sans-serif');
 
-    readonly #fontSize = state(18);
+    readonly #fontSize = signal(18);
 
-    readonly #anchor = state('start' as 'start' | 'middle' | 'end');
+    readonly #anchor = signal('start' as 'start' | 'middle' | 'end');
 
-    readonly #baseline = state('auto' as 'auto' | 'text-bottom' | 'alphabetic' | 'ideographic' | 'middle' | 'central' | 'mathematical' | 'hanging' | 'text-top');
+    readonly #baseline = signal('auto' as 'auto' | 'text-bottom' | 'alphabetic' | 'ideographic' | 'middle' | 'central' | 'mathematical' | 'hanging' | 'text-top');
 
-    readonly #fontStyle = state('normal' as 'normal' | 'italic' | 'oblique');
+    readonly #fontStyle = signal('normal' as 'normal' | 'italic' | 'oblique');
 
-    readonly #fontWeight = state('normal' as 'normal' | 'bold' | 'bolder' | 'lighter' | number);
+    readonly #fontWeight = signal('normal' as 'normal' | 'bold' | 'bolder' | 'lighter' | number);
 
-    readonly #decoration = state(['none' as TextDecoration]);
+    readonly #decoration = signal(['none' as TextDecoration]);
 
     /**
      * determine what direction the text should run.
      * Possibly values are `'ltr'` for left-to-right and `'rtl'` for right-to-left. Defaults to `'ltr'`.
      */
-    readonly #direction = state('ltr' as 'ltr' | 'rtl');
+    readonly #direction = signal('ltr' as 'ltr' | 'rtl');
 
-    readonly #dx = state(0 as number | string);
-    readonly #dy = state(0 as number | string);
+    readonly #dx = signal(0 as number | string);
+    readonly #dy = signal(0 as number | string);
 
     constructor(owner: Board, content: string, options: Partial<TextOptions> = {}) {
 

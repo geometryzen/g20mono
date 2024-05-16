@@ -1,4 +1,4 @@
-import { state } from "@g20/reactive";
+import { signal } from "@g20/reactive";
 import { Group } from "../group";
 import { ViewDOM } from "../Shape";
 import { sizeEquals } from "./Size";
@@ -15,7 +15,7 @@ export class TreeView<T> implements View<T> {
     readonly viewBox: Group;
     readonly #defs: T;
 
-    readonly #size = state({ width: 0, height: 0 }, { equals: sizeEquals });
+    readonly #size = signal({ width: 0, height: 0 }, { equals: sizeEquals });
 
     readonly #viewDOM: ViewDOM<T>;
 
