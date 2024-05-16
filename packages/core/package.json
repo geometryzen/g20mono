@@ -76,10 +76,10 @@
         "rxjs": "^7.8.1"
     },
     "devDependencies": {
-        "g2o-reactive": "file:../reactive"
+        "g2o-reactive": "0.9.280"
     },
     "peerDependencies": {
         "g2o-reactive": "file:../reactive"
     },
-    "gitHead": "ced07891c3562d271f162c46be81cbb98f397375"
+    "gitHead": "f61b9d2680f9d9603ed5b2d974bfc0c91e99295e"
 }
