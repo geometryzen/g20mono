@@ -2,6 +2,7 @@
 0 silly argv   _: [ 'publish' ],
 0 silly argv   yes: true,
 0 silly argv   y: true,
+0 silly argv   exact: true,
 0 silly argv   composed: 'publish',
 0 silly argv   lernaVersion: '999.9.9',
 0 silly argv   '$0': 'node_modules/.bin/lerna',
@@ -10,15 +11,15 @@
 1 notice cli v999.9.9
 2 verbose packageConfigs Resolving packages based on package.json "workspaces" configuration.
 3 verbose rootPath /home/david/Development/g2o-mono
-4 verbose session 3f30275d5a6fab0d
+4 verbose session fde7fb0dc45d09b4
 5 verbose user-agent lerna/999.9.9/node@v20.12.2+x64 (linux)
-6 verbose git-describe undefined => "v0.9.274-0-ge470074"
-7 silly git-describe parsed => {"lastTagName":"v0.9.274","lastVersion":"v0.9.274","refCount":"0","sha":"e470074","isDirty":false}
+6 verbose git-describe undefined => "v0.9.283-0-gef837e5"
+7 silly git-describe parsed => {"lastTagName":"v0.9.283","lastVersion":"v0.9.283","refCount":"0","sha":"ef837e5","isDirty":false}
 8 silly getProjectsWithUnpublishedPackages
 9 info auto-confirmed
 10 info publish Publishing packages to npm...
 11 error TypeError: Cannot set properties of undefined (setting 'g2o')
-11 error     at _Package.updateLocalDependency (/home/david/Development/g2o-mono/node_modules/lerna/dist/index.js:955:34)
-11 error     at /home/david/Development/g2o-mono/node_modules/lerna/dist/index.js:9786:18
+11 error     at _Package.updateLocalDependency (/home/david/Development/g2o-mono/node_modules/lerna/dist/index.js:957:34)
+11 error     at /home/david/Development/g2o-mono/node_modules/lerna/dist/index.js:9787:18
 11 error     at Array.forEach (<anonymous>)
-11 error     at /home/david/Development/g2o-mono/node_modules/lerna/dist/index.js:9783:24
+11 error     at /home/david/Development/g2o-mono/node_modules/lerna/dist/index.js:9784:24
