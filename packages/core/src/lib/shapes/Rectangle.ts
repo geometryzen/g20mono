@@ -45,14 +45,14 @@ export class Rectangle extends Path implements RectangleProperties, Disposable {
 
     constructor(owner: Board, attributes: RectangleOptions = {}) {
 
-        const points = [
+        const anchors = [
             new Anchor(G20.vector(0, 0), 'M'),
             new Anchor(G20.vector(0, 0), 'L'),
             new Anchor(G20.vector(0, 0), 'L'),
             new Anchor(G20.vector(0, 0), 'L')
         ];
 
-        super(owner, points, true, false, true, path_attribs_from_rectangle_attribs(attributes, owner));
+        super(owner, anchors, true, false, true, path_attribs_from_rectangle_attribs(attributes, owner));
 
         if (typeof attributes.width === 'number') {
             this.width = attributes.width;
@@ -75,7 +75,7 @@ export class Rectangle extends Path implements RectangleProperties, Disposable {
     }
 
     override update(): this {
-        update_rectangle_vertices(this.width, this.height, this.origin, this.closed, this.vertices);
+        update_rectangle_vertices(this.width, this.height, this.origin, this.vertices);
         super.update();
         return this;
     }
@@ -96,8 +96,13 @@ export class Rectangle extends Path implements RectangleProperties, Disposable {
     get origin(): G20 {
         return this.#origin;
     }
-    set origin(origin: G20) {
-        this.#origin.copyVector(origin);
+    set origin(origin: VectorLike) {
+        if (origin instanceof G20) {
+            this.#origin.copyVector(origin);
+        }
+        else if (Array.isArray(origin)) {
+            this.#origin.set(origin[0], origin[1]);
+        }
     }
     get width(): number {
         return this.#width.get();
@@ -126,23 +131,13 @@ function path_attribs_from_rectangle_attribs(attributes: RectangleOptions, owner
     return retval;
 }
 
-function update_rectangle_vertices(sizeX: number, sizeY: number, origin: G20, closed: boolean, vertices: Collection<Anchor>): void {
+function update_rectangle_vertices(width: number, height: number, origin: G20, vertices: Collection<Anchor>): void {
 
-    const x = sizeX / 2;
-    const y = sizeY / 2;
-
-    if (!closed && vertices.length === 4) {
-        vertices.push(new Anchor(G20.vector(0, 0)));
-    }
+    const x = width / 2;
+    const y = height / 2;
 
     vertices.getAt(0).origin.set(-x, -y).sub(origin);
     vertices.getAt(1).origin.set(x, -y).sub(origin);
     vertices.getAt(2).origin.set(x, y).sub(origin);
     vertices.getAt(3).origin.set(-x, y).sub(origin);
-
-    const anchor = vertices.getAt(4);
-    if (anchor) {
-        anchor.origin.set(-x, -y).sub(origin);
-        anchor.command = 'L';
-    }
 }
