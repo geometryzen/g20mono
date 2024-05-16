@@ -1,6 +1,6 @@
 {
     "name": "@g20/server",
-    "version": "1.0.0-alpha.1",
+    "version": "1.0.0-alpha.2",
     "description": "Server Side Rendering",
     "exports": {
         ".": {
