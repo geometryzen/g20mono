@@ -7,7 +7,7 @@
         "test": "lerna run test",
         "docs": "lerna run docs",
         "pages": "lerna run pages --concurrency=1",
-        "prepublishOnlyXXX": "npm run lint && npm run build && lerna run test",
+        "prepublishOnly": "npm run lint && npm run build && lerna run test",
         "publish": "lerna publish from-package --yes",
         "version": "lerna version --no-private --force-publish --yes",
         "lerna-version": "lerna --version"
