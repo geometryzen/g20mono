@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>@g20 scripting</title>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-    <script src="https://cdn.jsdelivr.net/npm/@g20/browser/dist/umd/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@g20/browser@1.0.0-alpha.6/dist/umd/index.js"></script>
     <style>
         body {
             background-color: #cccccc;
@@ -15,7 +15,7 @@
         .board {
             background-color: #ffffff;
             border-style: solid;
-            border-width: 0px;
+            border-width: 1px;
             border-color: #0066ff;
             border-radius: 10px;
         }
@@ -27,7 +27,22 @@
 </body>
 
 <script>
-    var board = G20.initBoard('my-board')
+    const board = G20.initBoard('my-board')
+    board.rectangle({
+        fillColor: "#FFFF00",
+        fillOpacity: 0.3,
+        strokeColor: "#FFFF00",
+        strokeOpacity: 0.6
+    })
+
+    window.onunload = function () {
+        try {
+            board.dispose()
+        }
+        catch (e) {
+            console.warn(`${e}`)
+        }
+    }
 </script>
 
 </html>
