@@ -1,6 +1,6 @@
 {
     "name": "@g20/browser",
-    "version": "1.0.0-alpha.5",
+    "version": "1.0.0-alpha.6",
     "description": "Everything in a UMD bundle",
     "exports": {
         ".": {
@@ -68,15 +68,15 @@
     },
     "homepage": "https://github.com/geometryzen/g20mono#readme",
     "dependencies": {
-        "canvg": "^4.0.2",
-        "jsdom": "^24.0.0",
         "@g20/canvas": "file:../canvas",
         "@g20/core": "file:../core",
         "@g20/gradient": "file:../gradient",
         "@g20/graphics": "file:../graphics",
         "@g20/grid": "file:../grid",
         "@g20/reactive": "file:../reactive",
-        "@g20/svg": "file:../svg"
+        "@g20/svg": "file:../svg",
+        "canvg": "^4.0.2",
+        "jsdom": "^24.0.0"
     },
     "devDependencies": {
         "@types/jsdom": "^21.1.6"
