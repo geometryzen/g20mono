@@ -54,12 +54,6 @@ const options: RollupOptions[] = [
                 file: pkg.main,
                 format: 'commonjs',
                 sourcemap: true
-            },
-            {
-                file: pkg.browser,
-                format: 'umd',
-                name: 'MYLIB',
-                sourcemap: true
             }
         ],
         plugins: [

@@ -27,12 +27,12 @@ const options: RollupOptions[] = [
         output: [
             {
                 banner,
-                file: non_minified_file(pkg.exports['.'].import),
+                file: non_minified_file(pkg.exports['.'].default),
                 format: 'esm',
                 sourcemap: true
             },
             {
-                file: pkg.exports['.'].import,
+                file: pkg.exports['.'].default,
                 format: 'esm',
                 sourcemap: true,
                 plugins: [terser()]
@@ -54,6 +54,12 @@ const options: RollupOptions[] = [
                 file: pkg.main,
                 format: 'commonjs',
                 sourcemap: true
+            },
+            {
+                file: non_minified_file(pkg.browser),
+                format: 'umd',
+                name: 'G20',
+                sourcemap: true
             }
         ],
         plugins: [
@@ -64,7 +70,7 @@ const options: RollupOptions[] = [
             typescript({ tsconfig: './tsconfig.json', exclude: ['**/*.spec.ts'], noEmitOnError: true })
         ]
     },
-    // Bundle the generated type definitions.
+    // Bundle the generated ESM type definitions.
     {
         input: './dist/esm/types/src/index.d.ts',
         output: [{ file: pkg.types, format: "esm" }],

@@ -3,6 +3,7 @@
     "private": true,
     "scripts": {
         "build": "lerna run build",
+        "check": "lerna run check",
         "clean": "lerna run clean",
         "dev-start": "lerna run dev-start",
         "lint": "lerna run lint",
@@ -27,7 +28,8 @@
         "packages/reactive",
         "packages/server",
         "packages/svg",
-        "packages/texture"
+        "packages/texture",
+        "packages/browser"
     ],
     "dependencies": {},
     "devDependencies": {

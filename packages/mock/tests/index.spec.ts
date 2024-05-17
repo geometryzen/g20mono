@@ -1,5 +1,5 @@
-import { initBoard } from "../src/index";
+import { initMockBoard } from "../src/index";
 
 test("index", function () {
-    expect(typeof initBoard === 'function').toBe(true);
+    expect(typeof initMockBoard === 'function').toBe(true);
 });

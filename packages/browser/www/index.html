@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@g20 scripting</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <script src="https://cdn.jsdelivr.net/npm/@g20/browser/dist/umd/index.js"></script>
+    <style>
+        body {
+            background-color: #cccccc;
+            margin: 8px;
+        }
+
+        .board {
+            background-color: #ffffff;
+            border-style: solid;
+            border-width: 0px;
+            border-color: #0066ff;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='my-board' class='board' style='width:500px; height:500px'></div>
+</body>
+
+<script>
+    var board = G20.initBoard('my-board')
+</script>
+
+</html>

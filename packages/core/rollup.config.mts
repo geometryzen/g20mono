@@ -58,12 +58,6 @@ const options: RollupOptions[] = [
                 file: non_minified_file(pkg.main),
                 format: 'commonjs',
                 sourcemap: true
-            },
-            {
-                file: non_minified_file(pkg.browser),
-                format: 'umd',
-                name: 'G20',
-                sourcemap: true
             }
         ],
         plugins: [

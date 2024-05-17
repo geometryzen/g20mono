@@ -9,7 +9,6 @@
             "default": "./dist/esm/index.min.js"
         }
     },
-    "browser": "./dist/umd/index.js",
     "main": "./dist/commonjs/index.js",
     "module": "./dist/esm/index.min.js",
     "type": "module",
@@ -57,7 +56,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/geometryzen/g2o-mono.git"
+        "url": "git+https://github.com/geometryzen/g20mono.git"
     },
     "author": {
         "name": "David Geo Holmes",
@@ -65,9 +64,9 @@
     },
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/geometryzen/g2o-mono/issues"
+        "url": "https://github.com/geometryzen/g20mono/issues"
     },
-    "homepage": "https://github.com/geometryzen/g2o-mono#readme",
+    "homepage": "https://github.com/geometryzen/g20mono#readme",
     "dependencies": {
         "canvg": "^4.0.2"
     },

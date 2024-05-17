@@ -1,7 +1,7 @@
 {
-    "name": "@g20/svg",
+    "name": "@g20/browser",
     "version": "1.0.0-alpha.5",
-    "description": "Scalable Vector Graphics Renderer",
+    "description": "Everything in a UMD bundle",
     "exports": {
         ".": {
             "types": "./dist/index.d.ts",
@@ -9,6 +9,7 @@
             "default": "./dist/esm/index.min.js"
         }
     },
+    "browser": "./dist/umd/index.js",
     "main": "./dist/commonjs/index.js",
     "module": "./dist/esm/index.min.js",
     "type": "module",
@@ -51,8 +52,7 @@
         "lint": "eslint .",
         "pages": "npm run docs:typedoc && gh-pages --dist docs --dest svg",
         "pretest": "npm run build",
-        "release": "release-it",
-        "test": "jest"
+        "release": "release-it"
     },
     "repository": {
         "type": "git",
@@ -69,13 +69,17 @@
     "homepage": "https://github.com/geometryzen/g20mono#readme",
     "dependencies": {
         "canvg": "^4.0.2",
-        "jsdom": "^24.0.0"
+        "jsdom": "^24.0.0",
+        "@g20/canvas": "file:../canvas",
+        "@g20/core": "file:../core",
+        "@g20/gradient": "file:../gradient",
+        "@g20/graphics": "file:../graphics",
+        "@g20/grid": "file:../grid",
+        "@g20/reactive": "file:../reactive",
+        "@g20/svg": "file:../svg"
     },
     "devDependencies": {
         "@types/jsdom": "^21.1.6"
-    },
-    "peerDependencies": {
-        "@g20/core": "file:../core"
     },
     "gitHead": "68b0d08feff08bc93907a44ab105987653618458"
 }
