@@ -4,14 +4,12 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
     <script src="https://cdn.jsdelivr.net/npm/@g20/browser@1.0.0-alpha.6/dist/umd/index.js"></script>
     <style>
         body {
             background-color: #cccccc;
             margin: 8px;
         }
-
         .board {
             background-color: #ffffff;
             border-style: solid;
@@ -34,14 +32,8 @@
         strokeColor: "#FFFF00",
         strokeOpacity: 0.6
     })
-
-    window.onunload = function () {
-        try {
-            board.dispose()
-        }
-        catch (e) {
-            console.warn(`${e}`)
-        }
+    window.onunload = () => {
+        board.dispose()
     }
 </script>
 
