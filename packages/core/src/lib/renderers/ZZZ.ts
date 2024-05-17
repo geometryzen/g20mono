@@ -1,4 +1,4 @@
-import { Anchor } from "../anchor";
+import { Anchor } from "../Anchor";
 import { Flag } from '../Flag';
 import { G20 } from "../math/G20";
 import { Disposable, dispose } from "../reactive/Disposable";

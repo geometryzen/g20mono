@@ -3,7 +3,7 @@ import { Rectangle } from "../src/lib/shapes/Rectangle";
 import { initBoard } from "./initBoard";
 import { MockElement } from "./nodes";
 
-describe("Line", function () {
+describe("Rectangle", function () {
     it("constructor", function () {
         const element = new MockElement('div');
         const board = initBoard(element);

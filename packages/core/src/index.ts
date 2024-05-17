@@ -1,4 +1,4 @@
-export { Anchor } from './lib/anchor';
+export { Anchor } from './lib/Anchor';
 export { Board, PointOptions } from './lib/Board';
 export { Collection } from './lib/collection';
 export { Color, ColorProvider } from './lib/effects/ColorProvider';

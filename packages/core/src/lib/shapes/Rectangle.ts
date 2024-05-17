@@ -1,5 +1,5 @@
 import { effect, signal } from "@g20/reactive";
-import { Anchor } from '../anchor';
+import { Anchor } from '../Anchor';
 import { Board } from '../Board';
 import { Collection } from '../collection';
 import { Color } from '../effects/ColorProvider';

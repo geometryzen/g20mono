@@ -1,8 +1,8 @@
 import { effect, signal } from "@g20/reactive";
-import { Anchor } from '../anchor';
+import { Anchor } from '../Anchor';
+import { Board } from '../Board';
 import { Collection } from '../collection';
 import { Color } from '../effects/ColorProvider';
-import { Board } from '../Board';
 import { G20, SpinorLike, VectorLike } from '../math/G20';
 import { Path, PathOptions } from '../Path';
 import { Disposable, dispose } from '../reactive/Disposable';
@@ -50,7 +50,7 @@ export class Circle extends Path implements CircleProperties {
             points.push(new Anchor(G20.vector(0, 0)));
         }
 
-        super(owner, points, true, true, true, path_attributes(options, owner));
+        super(owner, points, true, true, true, path_options_from_circle_options(options, owner));
 
         if (typeof options.radius === 'number') {
             this.#radius.set(options.radius);
@@ -89,53 +89,55 @@ export class Circle extends Path implements CircleProperties {
     }
 }
 
-function path_attributes(options: CircleOptions, owner: Board): PathOptions {
+function path_options_from_circle_options(options: CircleOptions, owner: Board): PathOptions {
     const retval: PathOptions = {
+        id: options.id,
         attitude: options.attitude,
         position: options.position,
         fillColor: default_color(options.fillColor, 'none'),
         fillOpacity: options.fillOpacity,
         strokeColor: default_color(options.strokeColor, 'gray'),
         strokeOpacity: options.strokeOpacity,
-        strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner)
+        strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
+        dashes: options.dashes,
+        opacity: options.opacity,
+        plumb: options.plumb,
+        sx: options.sx,
+        sy: options.sy,
+        vectorEffect: options.vectorEffect,
+        visibility: options.visibility
     };
     return retval;
 }
 
 function update_circle_vertices(radius: number, closed: boolean, vertices: Collection<Anchor>): void {
 
-    let length = vertices.length;
-
-    if (!closed && length > 2) {
-        length -= 1;
-    }
+    const N = vertices.length;
 
     // Coefficient for approximating circular arcs with Bezier curves
-    const c = (4 / 3) * Math.tan(Math.PI / (length * 2));
+    const c = (4 / 3) * Math.tan(Math.PI / (N * 2));
     const rc = radius * c;
 
     const cos = Math.cos;
     const sin = Math.sin;
 
-    for (let i = 0; i < vertices.length; i++) {
-        const pct = i / length;
-        const theta = pct * TWO_PI;
+    for (let i = 0; i < N; i++) {
+        const theta = i * TWO_PI / N;
 
         const x = radius * cos(theta);
         const y = radius * sin(theta);
 
-        const lx = rc * cos(theta - HALF_PI);
-        const ly = rc * sin(theta - HALF_PI);
+        const ax = rc * cos(theta - HALF_PI);
+        const ay = rc * sin(theta - HALF_PI);
 
-        const rx = rc * cos(theta + HALF_PI);
-        const ry = rc * sin(theta + HALF_PI);
+        const bx = rc * cos(theta + HALF_PI);
+        const by = rc * sin(theta + HALF_PI);
 
         const v = vertices.getAt(i);
 
         v.command = i === 0 ? Commands.move : Commands.curve;
         v.origin.set(x, y);
-        v.controls.a.set(lx, ly);
-        v.controls.b.set(rx, ry);
+        v.controls.a.set(ax, ay);
+        v.controls.b.set(bx, by);
     }
-
 }

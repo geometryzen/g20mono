@@ -1,4 +1,4 @@
-import { Anchor } from '../anchor.js';
+import { Anchor } from '../Anchor.js';
 import { G20 } from '../math/G20.js';
 import { Path } from '../Path.js';
 import { getCurveLength as gcl, subdivide } from './curves.js';

@@ -1,4 +1,4 @@
-import { Anchor } from '../anchor';
+import { Anchor } from '../Anchor';
 import { Board } from '../Board';
 import { G20 } from '../math/G20';
 import { Matrix } from '../math/Matrix';

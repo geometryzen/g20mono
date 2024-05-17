@@ -1,4 +1,4 @@
-import { Anchor } from '../anchor.js';
+import { Anchor } from '../Anchor.js';
 import { Constants } from '../constants.js';
 import { Color } from '../effects/ColorProvider.js';
 import { Board } from '../Board.js';

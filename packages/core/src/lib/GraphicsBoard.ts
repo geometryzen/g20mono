@@ -1,5 +1,5 @@
 import { computed, effect, Readable, signal, State } from "@g20/reactive";
-import { Anchor } from './anchor';
+import { Anchor } from './Anchor';
 import { Board, PointOptions } from './Board';
 import { Constants } from './constants';
 import { ElementDOM } from './ElementDOM';

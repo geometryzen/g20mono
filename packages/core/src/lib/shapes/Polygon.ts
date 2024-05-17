@@ -1,4 +1,4 @@
-import { Anchor } from "../anchor";
+import { Anchor } from "../Anchor";
 import { Board } from "../Board";
 import { Color } from "../effects/ColorProvider";
 import { VectorLike, vector_from_like } from "../math/G20";

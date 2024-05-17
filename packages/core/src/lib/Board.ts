@@ -1,4 +1,4 @@
-import { Anchor } from './anchor';
+import { Anchor } from './Anchor';
 import { Color } from './effects/ColorProvider';
 import { Group } from './group';
 import { G20, VectorLike } from './math/G20';

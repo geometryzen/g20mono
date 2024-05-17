@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-loss-of-precision */
-import { Anchor } from '../anchor.js';
+import { Anchor } from '../Anchor.js';
 import { Collection } from '../collection.js';
 import { Constants } from '../constants.js';
 import { G20 } from '../math/G20.js';
