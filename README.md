@@ -38,7 +38,7 @@ In the meantime, a search of `@g20` in the STEMCarXiv (STEMCstudio archive) at [
 
 ## Packages and API Documentation
 
-### [@g20/core](https://geometryzen.github.io/g2o-mono)
+### [@g20/core](https://geometryzen.github.io/g2o-mono/core)
 
 The core library that renders SVG. Required.
 
@@ -84,7 +84,7 @@ Provides RegularPolygon, RoundedRectangle, and Star shapes. Optional. Shapes suc
 
 ### [@g20/grid](https://geometryzen.github.io/g2o-mono/grid)
 
-Provides a coordinate grid. Optional. The Grid class extends Group and provides an example of extending @g20 with custom shapes based upon composition of existing shapes.
+Provides a coordinate grid (Grid) and coordinate axes (Axes). Optional. The Axes and Grid classes extends Group and provide examples of extending @g20 with custom shapes based upon composition of existing shapes.
 
 ![](./images/grid.png)
 

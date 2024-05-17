@@ -50,7 +50,7 @@
         "docs": "npm run docs:typedoc && open-cli docs/index.html",
         "docs:typedoc": "rm -rf docs && typedoc --options typedoc.json",
         "lint": "eslint .",
-        "pages": "npm run docs:typedoc && gh-pages --dist docs --dest canvas",
+        "pages": "npm run docs:typedoc && gh-pages --dist docs --dest svg",
         "pretest": "npm run build",
         "release": "release-it",
         "test": "jest"
