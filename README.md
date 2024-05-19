@@ -1,4 +1,4 @@
-# Geometric Algebra 2D Graphics Monorepo
+# G20 Geometric Algebra 2D Graphics Monorepo
 
 ## Overview
 
@@ -97,3 +97,9 @@ Provides a Player for controlling animation frame start, and pause. Optional.
 [Live Demo of Player in STEMCstudio](https://www.stemcstudio.com/gists/a88d400bc9176836bb4ff7f88340428a)
 
 ### [@g20/mock](https://geometryzen.github.io/g20mono/mock)
+
+Mock SVG DOM for Unit Testing
+
+### [@g20/browser](https://geometryzen.github.io/g20mono/browser)
+
+A bundle containing most of the modules described here especially designed for use in web pages without a module loader. The Universal Module Definition is supported.
