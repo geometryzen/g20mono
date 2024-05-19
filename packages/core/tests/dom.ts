@@ -16,13 +16,13 @@ export class MockViewDOM implements ViewDOM<MockElement> {
         }
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    createSVGElement(qualifiedName: string, attrs: SVGAttributes): MockElement {
-        return new MockElement(qualifiedName);
+    createSVGElement(name: string, attrs: SVGAttributes): MockElement {
+        return new MockElement(name);
     }
-    setAttribute(unk: unknown, qualifiedName: string, value: string): void {
+    setAttribute(unk: unknown, name: string, value: string): void {
         if (unk instanceof MockElement) {
             const element = unk as MockElement;
-            element.setAttribute(qualifiedName, value);
+            element.setAttribute(name, value);
         }
         else {
             throw new Error();
@@ -31,23 +31,23 @@ export class MockViewDOM implements ViewDOM<MockElement> {
     setAttributes(unk: unknown, attributes: SVGAttributes): void {
         if (unk instanceof MockElement) {
             const element = unk as MockElement;
-            for (const qualifiedName of Object.keys(attributes)) {
-                const value = attributes[qualifiedName];
-                element.setAttribute(qualifiedName, value);
+            for (const name of Object.keys(attributes)) {
+                const value = attributes[name];
+                element.setAttribute(name, value);
             }
         }
         else {
             throw new Error();
         }
     }
-    removeAttribute(element: MockElement, qualifiedName: string): void {
-        element.removeAttribute(qualifiedName);
+    removeAttribute(element: MockElement, name: string): void {
+        element.removeAttribute(name);
     }
     removeAttributes(unk: unknown, attributes: SVGAttributes): void {
         if (unk instanceof MockElement) {
             const element = unk as MockElement;
-            for (const qualifiedName of Object.keys(attributes)) {
-                element.removeAttribute(qualifiedName);
+            for (const name of Object.keys(attributes)) {
+                element.removeAttribute(name);
             }
         }
         else {
@@ -82,7 +82,7 @@ export class MockViewDOM implements ViewDOM<MockElement> {
         for (let i = 0; i < N; i++) {
             const child = children[i];
             if (child instanceof MockElement) {
-                if (child.qualifiedName === 'defs') {
+                if (child.name === 'defs') {
                     return child;
                 }
             }
@@ -102,8 +102,8 @@ export class MockElementDOM implements ElementDOM<MockElement, MockElement> {
     getElementById(elementId: string): MockElement {
         throw new Error("Method not implemented.");
     }
-    getAttribute(element: MockElement, qualifiedName: string): string {
-        return element.getAttribute(qualifiedName);
+    getAttribute(element: MockElement, name: string): string {
+        return element.getAttribute(name);
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getBoundingClientRect(element: MockElement): { width: number; height: number; } {
@@ -121,6 +121,6 @@ export class MockElementDOM implements ElementDOM<MockElement, MockElement> {
         // Do nothing yet.
     }
     isDocumentBody(element: MockElement): boolean {
-        return element.qualifiedName === 'body';
+        return element.name === 'body';
     }
 }

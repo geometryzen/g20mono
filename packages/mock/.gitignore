@@ -4,5 +4,6 @@ coverage/
 dist/
 docs/
 node_modules/
+packages/core/coverage/
 system/
 types/

@@ -25,9 +25,9 @@ export class ColorManager {
     /**
      * 
      * @param initialValue 
-     * @param qualifiedName 
+     * @param name 
      */
-    constructor(initialValue: Color, readonly qualifiedName: 'fill' | 'stroke') {
+    constructor(initialValue: Color, readonly name: 'fill' | 'stroke') {
         this.#color = signal(initialValue);
     }
     get(): Color {
@@ -72,13 +72,13 @@ export class ColorManager {
     update(): void {
         const color = this.#color.get();
         if (typeof color === 'string') {
-            this.#viewDOM.setAttribute(this.#hostElement, this.qualifiedName, color);
+            this.#viewDOM.setAttribute(this.#hostElement, this.name, color);
         }
         else if (is_color_provider(color)) {
-            this.#viewDOM.setAttribute(this.#hostElement, this.qualifiedName, color.serialize());
+            this.#viewDOM.setAttribute(this.#hostElement, this.name, color.serialize());
         }
         else {
-            this.#viewDOM.removeAttribute(this.#hostElement, this.qualifiedName);
+            this.#viewDOM.removeAttribute(this.#hostElement, this.name);
         }
     }
 }

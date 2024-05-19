@@ -52,8 +52,8 @@ export const svg = {
     xlink: 'http://www.w3.org/1999/xlink',
 
     // Create an svg namespaced element.
-    createElement: function (qualifiedName: string, attrs: SVGAttributes = {}) {
-        const elem = document.createElementNS(svg.ns, qualifiedName);
+    createElement: function (name: string, attrs: SVGAttributes = {}) {
+        const elem = document.createElementNS(svg.ns, name);
         if (attrs && Object.keys(attrs).length > 0) {
             svg.setAttributes(elem, attrs);
         }
@@ -66,13 +66,13 @@ export const svg = {
         const styles = attrs as { [name: string]: string };
         const keys = Object.keys(attrs);
         for (let i = 0; i < keys.length; i++) {
-            const qualifiedName = keys[i];
-            const value = styles[qualifiedName];
+            const name = keys[i];
+            const value = styles[name];
             if (/href/.test(keys[i])) {
-                elem.setAttributeNS(svg.xlink, qualifiedName, value);
+                elem.setAttributeNS(svg.xlink, name, value);
             }
             else {
-                elem.setAttribute(qualifiedName, value);
+                elem.setAttribute(name, value);
             }
         }
         return this;

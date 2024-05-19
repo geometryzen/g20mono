@@ -1,5 +1,6 @@
 import { G20 } from "../src/lib/math/G20";
 import { Rectangle } from "../src/lib/shapes/Rectangle";
+import { MockViewDOM } from "./dom";
 import { initBoard } from "./initBoard";
 import { MockElement } from "./nodes";
 
@@ -40,8 +41,23 @@ describe("Rectangle", function () {
             expect(vertex3.origin.a).toBe(0);
             expect(vertex3.origin.b).toBe(0);
         }
-
-        board.dispose();
+        return new Promise<void>((resolve, reject) => {
+            setTimeout(() => {
+                try {
+                    const viewDOM = new MockViewDOM();
+                    const viewee = viewDOM.downcast(rectangle.zzz.viewee);
+                    expect(viewee.getAttribute('fill')).toBe('none');
+                    expect(viewee.getAttribute('stroke')).toBe('gray');
+                    expect(viewee.getAttribute('stroke-width')).toBe('0.009375');
+                    expect(viewee.getAttribute('d')).toBe("M -0.5 -0.5 L -0.5 0.5 L 0.5 0.5 L 0.5 -0.5 Z");
+                    board.dispose();
+                    resolve();
+                }
+                catch (e) {
+                    reject(e);
+                }
+            });
+        });
     });
     it("options", function () {
         const element = new MockElement('div');
@@ -81,8 +97,23 @@ describe("Rectangle", function () {
             expect(vertex3.origin.a).toBe(0);
             expect(vertex3.origin.b).toBe(0);
         }
-
-        board.dispose();
+        return new Promise<void>((resolve, reject) => {
+            setTimeout(() => {
+                try {
+                    const viewDOM = new MockViewDOM();
+                    const viewee = viewDOM.downcast(rectangle.zzz.viewee);
+                    expect(viewee.getAttribute('fill')).toBe('none');
+                    expect(viewee.getAttribute('stroke')).toBe('gray');
+                    expect(viewee.getAttribute('stroke-width')).toBe('0.009375');
+                    expect(viewee.getAttribute('d')).toBe("M -1 -2 L -1 2 L 1 2 L 1 -2 Z");
+                    board.dispose();
+                    resolve();
+                }
+                catch (e) {
+                    reject(e);
+                }
+            });
+        });
     });
     it("height", function () {
         const element = new MockElement('div');
@@ -128,7 +159,16 @@ describe("Rectangle", function () {
                         expect(vertex3.origin.b).toBe(0);
                     }
 
+                    const viewDOM = new MockViewDOM();
+                    const viewee = viewDOM.downcast(rectangle.zzz.viewee);
+                    expect(viewee.getAttributeNames()).toStrictEqual(["d", "fill", "stroke", "stroke-width"]);
+                    expect(viewee.getAttribute('fill')).toBe('none');
+                    expect(viewee.getAttribute('stroke')).toBe('gray');
+                    expect(viewee.getAttribute('stroke-width')).toBe('0.009375');
+                    expect(viewee.getAttribute('d')).toBe("M -1 -0.5 L -1 0.5 L 1 0.5 L 1 -0.5 Z");
+
                     board.dispose();
+
                     resolve();
                 }
                 catch (e) {
@@ -180,6 +220,14 @@ describe("Rectangle", function () {
                         expect(vertex3.origin.a).toBe(0);
                         expect(vertex3.origin.b).toBe(0);
                     }
+
+                    const viewDOM = new MockViewDOM();
+                    const viewee = viewDOM.downcast(rectangle.zzz.viewee);
+                    expect(viewee.getAttributeNames()).toStrictEqual(["d", "fill", "stroke", "stroke-width"]);
+                    expect(viewee.getAttribute('fill')).toBe('none');
+                    expect(viewee.getAttribute('stroke')).toBe('gray');
+                    expect(viewee.getAttribute('stroke-width')).toBe('0.009375');
+                    expect(viewee.getAttribute('d')).toBe("M -0.5 -1 L -0.5 1 L 0.5 1 L 0.5 -1 Z");
 
                     board.dispose();
                     resolve();
@@ -235,6 +283,14 @@ describe("Rectangle", function () {
                         expect(vertex3.origin.a).toBe(0);
                         expect(vertex3.origin.b).toBe(0);
                     }
+
+                    const viewDOM = new MockViewDOM();
+                    const viewee = viewDOM.downcast(rectangle.zzz.viewee);
+                    expect(viewee.getAttributeNames()).toStrictEqual(["d", "fill", "stroke", "stroke-width"]);
+                    expect(viewee.getAttribute('fill')).toBe('none');
+                    expect(viewee.getAttribute('stroke')).toBe('gray');
+                    expect(viewee.getAttribute('stroke-width')).toBe('0.009375');
+                    expect(viewee.getAttribute('d')).toBe("M -1 -1 L -1 0 L 0 0 L 0 -1 Z");
 
                     board.dispose();
                     resolve();

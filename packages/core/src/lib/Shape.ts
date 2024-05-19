@@ -76,10 +76,10 @@ export interface ViewDOM<T> {
      * A runtime typesafe assertion that the element has the type required. 
      */
     downcast(element: unknown): T;
-    createSVGElement(qualifiedName: string, attributes: { [name: string]: string }): T;
-    setAttribute(element: T, qualifiedName: string, value: string): void;
+    createSVGElement(name: string, attributes: { [name: string]: string }): T;
+    setAttribute(element: T, name: string, value: string): void;
     setAttributes(element: T, attributes: { [name: string]: string }): void;
-    removeAttribute(element: T, qualifiedName: string): void;
+    removeAttribute(element: T, name: string): void;
     removeAttributes(element: T, attributes: { [name: string]: string }): void;
     appendChild(parent: T, child: T): void;
     removeChild(parent: T, child: T): void;

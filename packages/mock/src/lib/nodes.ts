@@ -6,7 +6,7 @@ export class MockElement extends MockNode {
     readonly style = new Map<string, string>();
     readonly #attributes = new Map<string, string>();
     readonly #children: MockNode[] = [];
-    constructor(readonly qualifiedName: string) {
+    constructor(readonly name: string) {
         super();
     }
     get children(): MockNode[] {
@@ -16,18 +16,21 @@ export class MockElement extends MockNode {
         this.#children.push(child);
         child.parent = this;
     }
-    getAttribute(qualifiedName: string): string | null {
-        if (this.#attributes.has(qualifiedName)) {
-            return this.#attributes.get(qualifiedName);
+    getAttribute(name: string): string | null {
+        if (this.#attributes.has(name)) {
+            return this.#attributes.get(name);
         }
         else {
             return null;
         }
     }
-    removeAttribute(qualifiedName: string): void {
-        this.#attributes.delete(qualifiedName);
+    getAttributeNames(): string[] {
+        return [...this.#attributes.keys()].sort();
     }
-    setAttribute(qualifiedName: string, value: string): void {
-        this.#attributes.set(qualifiedName, value);
+    removeAttribute(name: string): void {
+        this.#attributes.delete(name);
+    }
+    setAttribute(name: string, value: string): void {
+        this.#attributes.set(name, value);
     }
 }

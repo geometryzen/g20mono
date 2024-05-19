@@ -35,7 +35,7 @@ describe("GraphicsBoard", function () {
         expect(arc.X.x).toBe(x);
         expect(arc.X.y).toBe(y);
         const viewee = viewDOM.downcast(arc.viewee());
-        expect(viewee.qualifiedName).toBe('path');
+        expect(viewee.name).toBe('path');
         // FIXME: null would be more consistent with the DOM.
         expect(viewee.getAttribute('id')).toBe(null);
 
@@ -81,7 +81,7 @@ describe("GraphicsBoard", function () {
         expect(arrow.X.x).toBe(x);
         expect(arrow.X.y).toBe(y);
         const viewee = viewDOM.downcast(arrow.viewee());
-        expect(viewee.qualifiedName).toBe('path');
+        expect(viewee.name).toBe('path');
         // FIXME: null would be more consistent with the DOM.
         expect(viewee.getAttribute('id')).toBe(null);
 
@@ -126,7 +126,7 @@ describe("GraphicsBoard", function () {
         expect(circle.X.x).toBe(x);
         expect(circle.X.y).toBe(y);
         const viewee = viewDOM.downcast(circle.viewee());
-        expect(viewee.qualifiedName).toBe('path');
+        expect(viewee.name).toBe('path');
         // FIXME: null would be more consistent with the DOM.
         expect(viewee.getAttribute('id')).toBe(null);
 
@@ -171,7 +171,7 @@ describe("GraphicsBoard", function () {
         expect(ellipse.X.x).toBe(x);
         expect(ellipse.X.y).toBe(y);
         const viewee = viewDOM.downcast(ellipse.viewee());
-        expect(viewee.qualifiedName).toBe('path');
+        expect(viewee.name).toBe('path');
 
         expect(viewee.getAttribute('id')).toBe(null);
         ellipse.id = 'P';
@@ -217,7 +217,7 @@ describe("GraphicsBoard", function () {
         board.add(group);
         const viewee = viewDOM.downcast(group.viewee());
         // This may change in future...
-        expect(viewee.qualifiedName).toBe('g');
+        expect(viewee.name).toBe('g');
         // FIXME: null would be more consistent with the DOM.
         // expect(viewee.getAttribute('id')).toBe(null);
 
@@ -262,7 +262,7 @@ describe("GraphicsBoard", function () {
         expect(L.X.y).toBe(y);
 
         const viewee = viewDOM.downcast(L.viewee());
-        expect(viewee.qualifiedName).toBe("path");
+        expect(viewee.name).toBe("path");
         expect(viewee.getAttribute('id')).toBe(null);
         expect(viewee.getAttribute('fill')).toBe("none");
         expect(viewee.getAttribute('stroke')).toBe("gray");
@@ -337,7 +337,7 @@ describe("GraphicsBoard", function () {
         expect(path.X.y).toBe(y);
 
         const viewee = viewDOM.downcast(path.viewee());
-        expect(viewee.qualifiedName).toBe("path");
+        expect(viewee.name).toBe("path");
         expect(viewee.getAttribute('id')).toBe(null);
         expect(viewee.getAttribute('fill')).toBe("none");
         expect(viewee.getAttribute('stroke')).toBe("gray");
@@ -404,7 +404,7 @@ describe("GraphicsBoard", function () {
         expect(P.X.y).toBe(y);
         const viewee = viewDOM.downcast(P.viewee());
         // This may change in future...
-        expect(viewee.qualifiedName).toBe('path');
+        expect(viewee.name).toBe('path');
         expect(viewee.getAttribute('id')).toBe(null);
 
         P.id = 'P';
@@ -447,7 +447,7 @@ describe("GraphicsBoard", function () {
         expect(polygon.X.y).toBe(y);
         const viewee = viewDOM.downcast(polygon.viewee());
         // This may change in future...
-        expect(viewee.qualifiedName).toBe('path');
+        expect(viewee.name).toBe('path');
         expect(viewee.getAttribute('id')).toBe(null);
 
         polygon.id = 'P';
@@ -490,7 +490,7 @@ describe("GraphicsBoard", function () {
         expect(rectangle.X.y).toBe(y);
         const viewee = viewDOM.downcast(rectangle.viewee());
         // This may change in future...
-        expect(viewee.qualifiedName).toBe('path');
+        expect(viewee.name).toBe('path');
         expect(viewee.getAttribute('id')).toBe(null);
 
         rectangle.id = 'P';
@@ -534,7 +534,7 @@ describe("GraphicsBoard", function () {
         expect(text.X.y).toBe(y);
         const viewee = viewDOM.downcast(text.viewee());
         // This may change in future...
-        expect(viewee.qualifiedName).toBe('text');
+        expect(viewee.name).toBe('text');
         // FIXME: null would be more consistent with the DOM.
         // expect(viewee.getAttribute('id')).toBe(null);
 

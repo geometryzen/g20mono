@@ -7,8 +7,8 @@ export class HTMLElementDOM implements ElementDOM<HTMLElement, HTMLCanvasElement
     appendChild(parent: HTMLElement, child: HTMLCanvasElement | SVGElement): void {
         parent.appendChild(child);
     }
-    getAttribute(element: HTMLElement, qualifiedName: string): string {
-        return element.getAttribute(qualifiedName);
+    getAttribute(element: HTMLElement, name: string): string {
+        return element.getAttribute(name);
     }
     getBoundingClientRect(element: HTMLElement): { width: number; height: number; } {
         return element.getBoundingClientRect();
