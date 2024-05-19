@@ -59,14 +59,14 @@ describe("Rectangle", function () {
             });
         });
     });
-    it("options", function () {
+    it("options I", function () {
         const element = new MockElement('div');
         const board = initBoard(element);
         const rectangle = new Rectangle(board, { width: 4, height: 2, id: 'rectangle' });
         board.add(rectangle);
         expect(rectangle.id).toBe("rectangle");
-        expect(rectangle.width).toBe(4);
-        expect(rectangle.height).toBe(2);
+        expect(rectangle.width.magnitude()).toBe(4);
+        expect(rectangle.height.magnitude()).toBe(2);
 
         // The vertices on the zzz property are computed from the vertices defined in the Rectangle (Path).
         const vertices = rectangle.zzz.vertices;
@@ -115,6 +115,124 @@ describe("Rectangle", function () {
             });
         });
     });
+    it("options II", function () {
+        const element = new MockElement('div');
+        const board = initBoard(element);
+        const rectangle = new Rectangle(board, { width: [4, 0], height: [0, 2], id: 'rectangle' });
+        board.add(rectangle);
+        expect(rectangle.id).toBe("rectangle");
+        expect(rectangle.width.magnitude()).toBe(4);
+        expect(rectangle.height.magnitude()).toBe(2);
+
+        // The vertices on the zzz property are computed from the vertices defined in the Rectangle (Path).
+        const vertices = rectangle.zzz.vertices;
+        expect(vertices.length).toBe(4);
+        {
+            const vertex0 = vertices[0];
+            const vertex1 = vertices[1];
+            const vertex2 = vertices[2];
+            const vertex3 = vertices[3];
+
+            expect(vertex0.origin.x).toBe(-2);
+            expect(vertex0.origin.y).toBe(-1);
+            expect(vertex0.origin.a).toBe(0);
+            expect(vertex0.origin.b).toBe(0);
+
+            expect(vertex1.origin.x).toBe(2);
+            expect(vertex1.origin.y).toBe(-1);
+            expect(vertex1.origin.a).toBe(0);
+            expect(vertex1.origin.b).toBe(0);
+
+            expect(vertex2.origin.x).toBe(2);
+            expect(vertex2.origin.y).toBe(1);
+            expect(vertex2.origin.a).toBe(0);
+            expect(vertex2.origin.b).toBe(0);
+
+            expect(vertex3.origin.x).toBe(-2);
+            expect(vertex3.origin.y).toBe(1);
+            expect(vertex3.origin.a).toBe(0);
+            expect(vertex3.origin.b).toBe(0);
+        }
+        return new Promise<void>((resolve, reject) => {
+            setTimeout(() => {
+                try {
+                    const viewDOM = new MockViewDOM();
+                    const viewee = viewDOM.downcast(rectangle.zzz.viewee);
+                    expect(viewee.getAttribute('fill')).toBe('none');
+                    expect(viewee.getAttribute('stroke')).toBe('gray');
+                    expect(viewee.getAttribute('stroke-width')).toBe('0.009375');
+                    expect(viewee.getAttribute('d')).toBe("M -1 -2 L -1 2 L 1 2 L 1 -2 Z");
+                    board.dispose();
+                    resolve();
+                }
+                catch (e) {
+                    reject(e);
+                }
+            });
+        });
+    });
+    it("options III", function () {
+        const element = new MockElement('div');
+        const board = initBoard(element);
+        const width = G20.ex.clone();
+        const height = G20.ey.clone();
+        const rectangle = new Rectangle(board, { width, height, id: 'rectangle' });
+        board.add(rectangle);
+        expect(rectangle.id).toBe("rectangle");
+
+        width.scale(4);
+        height.scale(2);
+
+        expect(rectangle.width.magnitude()).toBe(4);
+        expect(rectangle.height.magnitude()).toBe(2);
+
+        return new Promise<void>((resolve, reject) => {
+            setTimeout(() => {
+                try {
+                    // The vertices on the zzz property are computed from the vertices defined in the Rectangle (Path).
+                    const vertices = rectangle.zzz.vertices;
+                    expect(vertices.length).toBe(4);
+                    {
+                        const vertex0 = vertices[0];
+                        const vertex1 = vertices[1];
+                        const vertex2 = vertices[2];
+                        const vertex3 = vertices[3];
+
+                        expect(vertex0.origin.x).toBe(-2);
+                        expect(vertex0.origin.y).toBe(-1);
+                        expect(vertex0.origin.a).toBe(0);
+                        expect(vertex0.origin.b).toBe(0);
+
+                        expect(vertex1.origin.x).toBe(2);
+                        expect(vertex1.origin.y).toBe(-1);
+                        expect(vertex1.origin.a).toBe(0);
+                        expect(vertex1.origin.b).toBe(0);
+
+                        expect(vertex2.origin.x).toBe(2);
+                        expect(vertex2.origin.y).toBe(1);
+                        expect(vertex2.origin.a).toBe(0);
+                        expect(vertex2.origin.b).toBe(0);
+
+                        expect(vertex3.origin.x).toBe(-2);
+                        expect(vertex3.origin.y).toBe(1);
+                        expect(vertex3.origin.a).toBe(0);
+                        expect(vertex3.origin.b).toBe(0);
+                    }
+                    const viewDOM = new MockViewDOM();
+                    const viewee = viewDOM.downcast(rectangle.zzz.viewee);
+                    expect(viewee.getAttribute('fill')).toBe('none');
+                    expect(viewee.getAttribute('stroke')).toBe('gray');
+                    expect(viewee.getAttribute('stroke-width')).toBe('0.009375');
+                    expect(viewee.getAttribute('d')).toBe("M -1 -2 L -1 2 L 1 2 L 1 -2 Z");
+                    board.dispose();
+                    resolve();
+                }
+                catch (e) {
+                    reject(e);
+                }
+            });
+        });
+    });
     it("height", function () {
         const element = new MockElement('div');
         const board = initBoard(element);
@@ -122,9 +240,23 @@ describe("Rectangle", function () {
         board.add(rectangle);
         expect(rectangle.id).toBe(null);
 
-        expect(rectangle.height).toBe(1);
+        expect(rectangle.height.magnitude()).toBe(1);
         rectangle.height = 2;
-        expect(rectangle.height).toBe(2);
+        expect(rectangle.height.x).toBe(0);
+        expect(rectangle.height.y).toBe(2);
+        expect(rectangle.height.a).toBe(0);
+        expect(rectangle.height.b).toBe(0);
+        rectangle.height = [1, 3];
+        expect(rectangle.height.x).toBe(1);
+        expect(rectangle.height.y).toBe(3);
+        expect(rectangle.height.a).toBe(0);
+        expect(rectangle.height.b).toBe(0);
+        rectangle.height = G20.vector(0, 2);
+        expect(rectangle.height.x).toBe(0);
+        expect(rectangle.height.y).toBe(2);
+        expect(rectangle.height.a).toBe(0);
+        expect(rectangle.height.b).toBe(0);
+        expect(rectangle.height.magnitude()).toBe(2);
 
         return new Promise<void>((resolve, reject) => {
             setTimeout(() => {
@@ -184,9 +316,23 @@ describe("Rectangle", function () {
         board.add(rectangle);
         expect(rectangle.id).toBe(null);
 
-        expect(rectangle.width).toBe(1);
+        expect(rectangle.width.magnitude()).toBe(1);
         rectangle.width = 2;
-        expect(rectangle.width).toBe(2);
+        expect(rectangle.width.x).toBe(2);
+        expect(rectangle.width.y).toBe(0);
+        expect(rectangle.width.a).toBe(0);
+        expect(rectangle.width.b).toBe(0);
+        rectangle.width = [3, 1];
+        expect(rectangle.width.x).toBe(3);
+        expect(rectangle.width.y).toBe(1);
+        expect(rectangle.width.a).toBe(0);
+        expect(rectangle.width.b).toBe(0);
+        rectangle.width = G20.vector(2, 0);
+        expect(rectangle.width.x).toBe(2);
+        expect(rectangle.width.y).toBe(0);
+        expect(rectangle.width.a).toBe(0);
+        expect(rectangle.width.b).toBe(0);
+        expect(rectangle.width.magnitude()).toBe(2);
 
         return new Promise<void>((resolve, reject) => {
             setTimeout(() => {

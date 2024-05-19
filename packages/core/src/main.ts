@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // boundingBox: { left: 1, top: 1, right: -1, bottom: -1 } // crazy and goofy
     });
 
-    board.rectangle({
+    const rectangle = board.rectangle({
         fillColor: "#FFFF00",
         fillOpacity: 0.3,
         strokeColor: "#FFCC00",
@@ -17,6 +17,10 @@ document.addEventListener('DOMContentLoaded', function () {
         strokeWidth: 4 / board.sx,
         // vectorEffect:'non-scaling-stroke'
     });
+
+    rectangle.height.set(0.5, 1)
+    rectangle.width.set(1, 0.5)
+    rectangle.origin = [0, 0]
 
     /*
     function animate() {
