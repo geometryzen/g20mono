@@ -12,7 +12,6 @@ describe("Ellipse", function () {
         board.add(ellipse);
         expect(ellipse.id).toBe(null);
 
-        // The vertices on the zzz property are computed from the vertices defined in the Ellipse (Path).
         const vertices = ellipse.zzz.vertices;
         expect(vertices.length).toBe(4);
         {
@@ -85,10 +84,7 @@ describe("Ellipse", function () {
         const ellipse = new Ellipse(board, { id: 'ellipse', resolution: 4 });
         board.add(ellipse);
         expect(ellipse.id).toBe("ellipse");
-        // expect(rectangle.width.magnitude()).toBe(4);
-        // expect(rectangle.height.magnitude()).toBe(2);
 
-        // The vertices on the zzz property are computed from the vertices defined in the Ellipse (Path).
         const vertices = ellipse.zzz.vertices;
         expect(vertices.length).toBe(4);
         {
@@ -141,10 +137,7 @@ describe("Ellipse", function () {
         const ellipse = new Ellipse(board, { rx: 1, ry: 0.5, id: 'ellipse' });
         board.add(ellipse);
         expect(ellipse.id).toBe("ellipse");
-        // expect(rectangle.width.magnitude()).toBe(4);
-        // expect(rectangle.height.magnitude()).toBe(2);
 
-        // The vertices on the zzz property are computed from the vertices defined in the Ellipse (Path).
         const vertices = ellipse.zzz.vertices;
         expect(vertices.length).toBe(4);
         {
@@ -197,10 +190,7 @@ describe("Ellipse", function () {
         const ellipse = new Ellipse(board, { rx: [1, 0], ry: [0, 0.5], id: 'ellipse' });
         board.add(ellipse);
         expect(ellipse.id).toBe("ellipse");
-        // expect(rectangle.width.magnitude()).toBe(4);
-        // expect(rectangle.height.magnitude()).toBe(2);
 
-        // The vertices on the zzz property are computed from the vertices defined in the Ellipse (Path).
         const vertices = ellipse.zzz.vertices;
         expect(vertices.length).toBe(4);
         {
@@ -264,7 +254,6 @@ describe("Ellipse", function () {
         return new Promise<void>((resolve, reject) => {
             setTimeout(() => {
                 try {
-                    // The vertices on the zzz property are computed from the vertices defined in the Ellipse (Path).
                     const vertices = ellipse.zzz.vertices;
                     expect(vertices.length).toBe(4);
                     {
@@ -320,7 +309,6 @@ describe("Ellipse", function () {
         return new Promise<void>((resolve, reject) => {
             setTimeout(() => {
                 try {
-                    // The vertices on the zzz property are computed from the vertices defined in the Ellipse (Path).
                     const vertices = ellipse.zzz.vertices;
                     expect(vertices.length).toBe(4);
                     {
@@ -380,7 +368,6 @@ describe("Ellipse", function () {
         return new Promise<void>((resolve, reject) => {
             setTimeout(() => {
                 try {
-                    // The vertices on the zzz property are computed from the vertices defined in the Ellipse (Path).
                     const vertices = ellipse.zzz.vertices;
                     expect(vertices.length).toBe(4);
                     {
@@ -435,7 +422,6 @@ describe("Ellipse", function () {
         board.add(ellipse);
         expect(ellipse.id).toBe(null);
 
-        // The vertices on the zzz property are computed from the vertices defined in the Ellipse (Path).
         const vertices = ellipse.zzz.vertices;
         expect(vertices.length).toBe(4);
         {
@@ -519,7 +505,6 @@ describe("Ellipse", function () {
         return new Promise<void>((resolve, reject) => {
             setTimeout(() => {
                 try {
-                    // The vertices on the zzz property are computed from the vertices defined in the Rectangle (Path).
                     const vertices = rectangle.zzz.vertices;
                     expect(vertices.length).toBe(4);
                     {
@@ -582,7 +567,6 @@ describe("Ellipse", function () {
         return new Promise<void>((resolve, reject) => {
             setTimeout(() => {
                 try {
-                    // The vertices on the zzz property are computed from the vertices defined in the Rectangle (Path).
                     const vertices = rectangle.zzz.vertices;
                     expect(vertices.length).toBe(4);
                     {

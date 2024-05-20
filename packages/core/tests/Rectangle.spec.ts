@@ -12,7 +12,6 @@ describe("Rectangle", function () {
         board.add(rectangle);
         expect(rectangle.id).toBe(null);
 
-        // The vertices on the zzz property are computed from the vertices defined in the Rectangle (Path).
         const vertices = rectangle.zzz.vertices;
         expect(vertices.length).toBe(4);
         {
@@ -68,7 +67,6 @@ describe("Rectangle", function () {
         expect(rectangle.width.magnitude()).toBe(4);
         expect(rectangle.height.magnitude()).toBe(2);
 
-        // The vertices on the zzz property are computed from the vertices defined in the Rectangle (Path).
         const vertices = rectangle.zzz.vertices;
         expect(vertices.length).toBe(4);
         {
@@ -124,7 +122,6 @@ describe("Rectangle", function () {
         expect(rectangle.width.magnitude()).toBe(4);
         expect(rectangle.height.magnitude()).toBe(2);
 
-        // The vertices on the zzz property are computed from the vertices defined in the Rectangle (Path).
         const vertices = rectangle.zzz.vertices;
         expect(vertices.length).toBe(4);
         {
@@ -189,7 +186,6 @@ describe("Rectangle", function () {
         return new Promise<void>((resolve, reject) => {
             setTimeout(() => {
                 try {
-                    // The vertices on the zzz property are computed from the vertices defined in the Rectangle (Path).
                     const vertices = rectangle.zzz.vertices;
                     expect(vertices.length).toBe(4);
                     {
@@ -261,7 +257,6 @@ describe("Rectangle", function () {
         return new Promise<void>((resolve, reject) => {
             setTimeout(() => {
                 try {
-                    // The vertices on the zzz property are computed from the vertices defined in the Rectangle (Path).
                     const vertices = rectangle.zzz.vertices;
                     expect(vertices.length).toBe(4);
                     {
@@ -337,7 +332,6 @@ describe("Rectangle", function () {
         return new Promise<void>((resolve, reject) => {
             setTimeout(() => {
                 try {
-                    // The vertices on the zzz property are computed from the vertices defined in the Rectangle (Path).
                     const vertices = rectangle.zzz.vertices;
                     expect(vertices.length).toBe(4);
                     {
@@ -400,7 +394,6 @@ describe("Rectangle", function () {
         return new Promise<void>((resolve, reject) => {
             setTimeout(() => {
                 try {
-                    // The vertices on the zzz property are computed from the vertices defined in the Rectangle (Path).
                     const vertices = rectangle.zzz.vertices;
                     expect(vertices.length).toBe(4);
                     {
@@ -463,7 +456,6 @@ describe("Rectangle", function () {
         return new Promise<void>((resolve, reject) => {
             setTimeout(() => {
                 try {
-                    // The vertices on the zzz property are computed from the vertices defined in the Rectangle (Path).
                     const vertices = rectangle.zzz.vertices;
                     expect(vertices.length).toBe(4);
                     {

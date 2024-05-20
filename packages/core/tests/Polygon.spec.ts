@@ -11,7 +11,6 @@ describe("Polygon", function () {
         board.add(polygon);
         expect(polygon.id).toBe(null);
 
-        // The vertices on the zzz property are computed from the vertices defined in the Rectangle (Path).
         const vertices = polygon.zzz.vertices;
         expect(vertices.length).toBe(0);
         {
@@ -52,7 +51,6 @@ describe("Polygon", function () {
         board.add(polygon);
         expect(polygon.id).toBe(null);
 
-        // The vertices on the zzz property are computed from the vertices defined in the Rectangle (Path).
         const vertices = polygon.zzz.vertices;
         expect(vertices.length).toBe(3);
         {

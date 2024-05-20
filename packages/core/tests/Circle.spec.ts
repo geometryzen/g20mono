@@ -11,7 +11,6 @@ describe("Circle", function () {
         board.add(circle);
         expect(circle.id).toBe(null);
 
-        // The vertices on the zzz property are computed from the vertices defined in the Rectangle (Path).
         const vertices = circle.zzz.vertices;
         expect(vertices.length).toBe(4);
         {
@@ -114,7 +113,6 @@ describe("Circle", function () {
         board.add(circle);
         expect(circle.id).toBe("circle");
 
-        // The vertices on the zzz property are computed from the vertices defined in the Rectangle (Path).
         const vertices = circle.zzz.vertices;
         expect(vertices.length).toBe(4);
         {
@@ -159,7 +157,6 @@ describe("Circle", function () {
         return new Promise<void>((resolve, reject) => {
             setTimeout(() => {
                 try {
-                    // The vertices on the zzz property are computed from the vertices defined in the Circle (Path).
                     const vertices = circle.zzz.vertices;
                     expect(vertices.length).toBe(4);
                     {

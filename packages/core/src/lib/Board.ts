@@ -5,7 +5,7 @@ import { G20, VectorLike } from './math/G20';
 import { Path, PathOptions } from './Path';
 import { Disposable } from './reactive/Disposable';
 import { Shape } from './Shape';
-import { ArcSegment } from './shapes/ArcSegment';
+import { ArcSegment, ArcSegmentOptions } from './shapes/ArcSegment';
 import { Arrow, ArrowOptions } from './shapes/Arrow';
 import { Circle, CircleOptions } from './shapes/Circle';
 import { Ellipse, EllipseOptions } from './shapes/Ellipse';
@@ -25,7 +25,7 @@ export interface PointOptions extends PathOptions {
 }
 
 export interface Board extends Disposable {
-    arc(innerRadius: number, outerRadius: number, startAngle: number, endAngle: number, resolution?: number): ArcSegment;
+    arc(options?: ArcSegmentOptions): ArcSegment;
     arrow(axis: VectorLike, options?: ArrowOptions): Arrow;
     circle(options?: CircleOptions): Circle;
     curve(closed: boolean, points: (Anchor | G20 | [x: number, y: number])[], options?: PathOptions): Path;

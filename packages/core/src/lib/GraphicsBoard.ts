@@ -1,7 +1,6 @@
 import { computed, effect, Readable, signal, State } from "@g20/reactive";
 import { Anchor } from './Anchor';
 import { Board, PointOptions } from './Board';
-import { Constants } from './constants';
 import { ElementDOM } from './ElementDOM';
 import { Group } from './group';
 import { G20, VectorLike } from './math/G20';
@@ -11,7 +10,7 @@ import { sizeEquals } from './renderers/Size';
 import { View } from './renderers/View';
 import { ViewFactory } from './renderers/ViewFactory';
 import { Shape, ViewDOM } from './Shape';
-import { ArcSegment } from './shapes/ArcSegment';
+import { ArcSegment, ArcSegmentOptions } from './shapes/ArcSegment';
 import { Arrow, ArrowOptions } from './shapes/Arrow';
 import { Circle, CircleOptions } from './shapes/Circle';
 import { Ellipse, EllipseOptions } from './shapes/Ellipse';
@@ -415,8 +414,8 @@ export class GraphicsBoard<E, T> implements Board {
         return path;
     }
 
-    arc(innerRadius: number, outerRadius: number, startAngle: number, endAngle: number, resolution: number = Constants.Resolution): ArcSegment {
-        const arcSegment = new ArcSegment(this, innerRadius, outerRadius, startAngle, endAngle, resolution);
+    arc(options: ArcSegmentOptions = {}): ArcSegment {
+        const arcSegment = new ArcSegment(this, options);
         this.add(arcSegment);
         return arcSegment;
     }

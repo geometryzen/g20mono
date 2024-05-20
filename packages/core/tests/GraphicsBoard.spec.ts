@@ -31,7 +31,7 @@ describe("GraphicsBoard", function () {
 
         const x = 0;
         const y = 0;
-        const arc = board.arc(0.5, 1.0, 0, Math.PI);
+        const arc = board.arc({ innerRadius: 0.5, outerRadius: 1.0, startAngle: 0, endAngle: Math.PI });
         expect(arc.X.x).toBe(x);
         expect(arc.X.y).toBe(y);
         const viewee = viewDOM.downcast(arc.viewee());

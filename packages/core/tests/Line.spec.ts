@@ -15,7 +15,6 @@ describe("Line", function () {
         board.add(line);
         expect(line.id).toBe(null);
 
-        // The vertices on the zzz property are computed from the vertices defined in the Line (Path).
         const vertices = line.zzz.vertices;
         expect(vertices.length).toBe(2);
         {
