@@ -8,8 +8,8 @@ document.addEventListener('DOMContentLoaded', function () {
         // boundingBox: { left: 1, top: -1, right: -1, bottom: 1 } // crazy
         // boundingBox: { left: 1, top: 1, right: -1, bottom: -1 } // crazy and goofy
     });
-    board.point([0, 0])
-    board.point([0.5, 0])
+    board.point([0, 0]);
+    board.point([0.5, 0]);
     // board.point([0, 0.5])
     // board.point([0.75, 0.75])
     /*
