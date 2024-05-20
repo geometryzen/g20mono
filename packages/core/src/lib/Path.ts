@@ -605,7 +605,7 @@ export class Path extends ColoredShapeBase {
             this.plot();
         }
 
-        this.#updateLength(undefined, true);
+        this.#updateLength(undefined);
 
         const closed = this.closed;
 
@@ -742,11 +742,7 @@ export class Path extends ColoredShapeBase {
         return this;
     }
 
-    #updateLength(limit?: number, silent = false): this {
-        // TODO: DRYness (function above)
-        if (!silent) {
-            this.update();
-        }
+    #updateLength(limit?: number): this {
 
         const length = this.vertices.length;
         const last = length - 1;

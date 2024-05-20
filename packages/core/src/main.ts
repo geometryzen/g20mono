@@ -1,5 +1,4 @@
 import { initBoard } from '../../svg/src/lib/initBoard';
-import { G20 } from './lib/math/G20';
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -9,20 +8,51 @@ document.addEventListener('DOMContentLoaded', function () {
         // boundingBox: { left: 1, top: -1, right: -1, bottom: 1 } // crazy
         // boundingBox: { left: 1, top: 1, right: -1, bottom: -1 } // crazy and goofy
     });
+    board.point([0, 0])
+    board.point([0.5, 0])
+    // board.point([0, 0.5])
+    // board.point([0.75, 0.75])
+    /*
 
-    const ellipse = board.ellipse({
-        fillColor: "#FFFF00",
-        fillOpacity: 0.3,
-        strokeColor: "#FFCC00",
-        strokeOpacity: 0.6,
-        strokeWidth: 4 / board.sx,
-        // vectorEffect:'non-scaling-stroke'
-    });
+    board.line([0, 0], [0.75, 0.75])
 
-    const theta = Math.PI / 4;
-    ellipse.rx = G20.vector(Math.cos(theta), Math.sin(theta));
-    ellipse.ry = G20.vector(-Math.sin(theta), Math.cos(theta)).scale(0.5);
+    board.arrow([1, 0])
+    board.arrow([0, 1])
 
+    // board.rectangle()
+
+    // board.circle()
+
+    // board.ellipse()
+
+    board.polygon([
+        [0, 1],
+        [-Math.cos(Math.PI / 6), -Math.sin(Math.PI / 6)],
+        [Math.cos(Math.PI / 6), -Math.sin(Math.PI / 6)]
+    ])
+
+    board.text("Hello, World")
+
+    board.arc(0.45, 0.5, 0, Math.PI / 2)
+
+    board.path(true,
+        [
+            [0, -0.5],
+            [-0.25, -0.75],
+            [0, -1],
+            [0.25, -0.75]
+        ]
+    )
+
+    board.curve(true,
+        [
+            [0, 0],
+            [0, 0.8],
+            [-0.8, 0],
+            [0, -0.8]
+        ]
+    )
+        */
     // rectangle.height.set(0.5, 1);
     // rectangle.width.set(1, 0.5);
     // rectangle.origin = [0, 0];

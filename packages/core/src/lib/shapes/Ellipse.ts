@@ -1,4 +1,4 @@
-import { effect } from "@g20/reactive";
+// import { effect } from "@g20/reactive";
 import { Anchor } from '../Anchor';
 import { Board } from '../Board';
 import { Collection } from '../collection';
@@ -41,7 +41,6 @@ export class Ellipse extends Path {
     readonly #ry: G20;
 
     constructor(owner: Board, options: EllipseOptions = {}) {
-
         const N = options.resolution ? Math.max(options.resolution, 2) : 4;
         const vertices: Anchor[] = [];
         for (let i = 0; i < N; i++) {
@@ -82,7 +81,11 @@ export class Ellipse extends Path {
             }
         }
 
-        this.#disposables.push(effect(() => {
+        this.#disposables.push(this.rx.change$.subscribe(() => {
+            this.update();
+        }));
+
+        this.#disposables.push(this.ry.change$.subscribe(() => {
             this.update();
         }));
 

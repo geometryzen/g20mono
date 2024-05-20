@@ -1,4 +1,3 @@
-import { effect } from "@g20/reactive";
 import { Anchor } from '../Anchor';
 import { Board } from '../Board';
 import { Collection } from '../collection';
@@ -94,7 +93,15 @@ export class Rectangle extends Path implements RectangleProperties, Disposable {
             }
         }
 
-        this.#disposables.push(effect(() => {
+        this.#disposables.push(this.#width.change$.subscribe(() => {
+            this.update();
+        }));
+
+        this.#disposables.push(this.#height.change$.subscribe(() => {
+            this.update();
+        }));
+
+        this.#disposables.push(this.#origin.change$.subscribe(() => {
             this.update();
         }));
 
