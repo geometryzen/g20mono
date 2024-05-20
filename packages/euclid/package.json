@@ -1,6 +1,6 @@
 {
     "name": "@g20/euclid",
-    "version": "1.0.0-alpha.8",
+    "version": "1.0.0-alpha.9",
     "description": "Euclidean Geometry Utilities",
     "exports": {
         ".": {
@@ -67,8 +67,8 @@
     },
     "homepage": "https://github.com/geometryzen/g20mono#readme",
     "peerDependencies": {
-        "@g20/core": "1.0.0-alpha.8",
-        "@g20/reactive": "1.0.0-alpha.8"
+        "@g20/core": "file:../core",
+        "@g20/reactive": "file:../reactive"
     },
     "gitHead": "2ee14713de7d596ee797817e6f0c852105f2c00f"
 }

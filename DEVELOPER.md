@@ -57,3 +57,7 @@ Generated from this repository.
 
 https://github.com/Pomax/BezierInfo-2
 
+Interesting...
+
+https://github.com/Pomax/bezierjs
+
