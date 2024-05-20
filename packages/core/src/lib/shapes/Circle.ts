@@ -1,4 +1,3 @@
-import { effect, signal } from "@g20/reactive";
 import { Anchor } from '../Anchor';
 import { Board } from '../Board';
 import { Collection } from '../collection';
@@ -38,7 +37,7 @@ export class Circle extends Path implements CircleProperties {
 
     readonly #disposables: Disposable[] = [];
 
-    readonly #radius = signal(1);
+    readonly #radius = G20.scalar(1);
 
     constructor(owner: Board, options: CircleOptions = {}) {
 
@@ -53,10 +52,10 @@ export class Circle extends Path implements CircleProperties {
         super(owner, points, true, true, true, path_options_from_circle_options(options, owner));
 
         if (typeof options.radius === 'number') {
-            this.#radius.set(options.radius);
+            this.#radius.set(0, 0, options.radius, 0);
         }
 
-        this.#disposables.push(effect(() => {
+        this.#disposables.push(this.#radius.change$.subscribe(() => {
             this.update();
         }));
 
@@ -69,22 +68,17 @@ export class Circle extends Path implements CircleProperties {
     }
 
     override update(): this {
-        update_circle_vertices(this.radius, this.closed, this.vertices);
+        update_circle_vertices(this.radius, this.vertices);
         super.update();
         return this;
     }
 
-    flagReset(dirtyFlag = false): this {
-        super.flagReset(dirtyFlag);
-        return this;
-    }
-
     get radius(): number {
-        return this.#radius.get();
+        return this.#radius.a;
     }
     set radius(radius: number) {
         if (typeof radius === 'number') {
-            this.#radius.set(radius);
+            this.#radius.set(0, 0, radius, 0);
         }
     }
 }
@@ -110,7 +104,7 @@ function path_options_from_circle_options(options: CircleOptions, owner: Board):
     return retval;
 }
 
-function update_circle_vertices(radius: number, closed: boolean, vertices: Collection<Anchor>): void {
+function update_circle_vertices(radius: number, vertices: Collection<Anchor>): void {
 
     const N = vertices.length;
 
