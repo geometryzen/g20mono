@@ -47,3 +47,13 @@ In order to allow Jest testing in consuming libraries, it is necessary to make s
 1. Must remove "type": "module".
 2. Must point the default export to the commonjs distribution.
 
+## A Primer on Bezier Curves
+
+The Path class makes use of Bezier curves.
+
+https://pomax.github.io/bezierinfo/#circles_cubic
+
+Generated from this repository.
+
+https://github.com/Pomax/BezierInfo-2
+
