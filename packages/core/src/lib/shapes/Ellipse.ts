@@ -8,6 +8,7 @@ import { Path, PathOptions } from "../Path";
 import { Disposable, dispose } from "../reactive/Disposable";
 import { Commands } from "../utils/Commands";
 import { default_color } from "../utils/default_color";
+import { default_number } from "../utils/default_number";
 import { default_closed_path_stroke_width } from "../utils/default_stroke_width";
 import { HALF_PI, TWO_PI } from "../utils/math";
 
@@ -163,13 +164,13 @@ function update_ellipse_vertices(radiusX: G20, radiusY: G20, vertices: Collectio
 function path_options_from_ellipse_options(options: EllipseOptions, owner: Board): PathOptions {
     const retval: PathOptions = {
         id: options.id,
-        fillColor: default_color(options.fillColor, "none"),
-        fillOpacity: options.fillOpacity,
+        fillColor: default_color(options.fillColor, owner.defaults.ellipse.fillColor),
+        fillOpacity: default_number(options.fillOpacity, owner.defaults.ellipse.fillOpacity),
         attitude: options.attitude,
         position: options.position,
-        strokeColor: default_color(options.strokeColor, "gray"),
-        strokeOpacity: options.strokeOpacity,
-        strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
+        strokeColor: default_color(options.strokeColor, owner.defaults.ellipse.strokeColor),
+        strokeOpacity: default_number(options.strokeOpacity, owner.defaults.ellipse.strokeOpacity),
+        strokeWidth: default_closed_path_stroke_width(default_number(options.strokeWidth, owner.defaults.ellipse.strokeWidth), owner),
         visibility: options.visibility,
     };
     return retval;
