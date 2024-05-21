@@ -69,7 +69,7 @@ export class ArcSegment extends Path {
                 if (enabled) {
                     this.update();
                 }
-            })
+            }),
         );
 
         this.#disposables.push(
@@ -77,7 +77,7 @@ export class ArcSegment extends Path {
                 if (enabled) {
                     this.update();
                 }
-            })
+            }),
         );
 
         this.#disposables.push(
@@ -85,7 +85,7 @@ export class ArcSegment extends Path {
                 if (enabled) {
                     this.update();
                 }
-            })
+            }),
         );
 
         this.#disposables.push(
@@ -93,7 +93,7 @@ export class ArcSegment extends Path {
                 if (enabled) {
                     this.update();
                 }
-            })
+            }),
         );
 
         enabled = true;
@@ -142,13 +142,17 @@ function path_options_from_arc_options(options: ArcSegmentOptions, owner: Board)
     const retval: PathOptions = {
         id: options.id,
         attitude: options.attitude,
-        opacity: options.opacity,
-        position: options.position,
+        dashes: options.dashes,
         fillColor: default_color(options.fillColor, owner.defaults.arc.fillColor),
         fillOpacity: default_number(options.fillOpacity, owner.defaults.arc.fillOpacity),
+        opacity: options.opacity,
+        plumb: options.plumb,
+        position: options.position,
         strokeColor: default_color(options.strokeColor, owner.defaults.arc.strokeColor),
         strokeOpacity: default_number(options.strokeOpacity, owner.defaults.arc.strokeOpacity),
         strokeWidth: default_closed_path_stroke_width(default_number(options.strokeWidth, owner.defaults.arc.strokeWidth), owner),
+        sx: options.sx,
+        sy: options.sy,
         vectorEffect: options.vectorEffect,
         visibility: options.visibility,
     };

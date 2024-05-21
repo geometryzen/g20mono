@@ -142,7 +142,7 @@ export class GraphicsBoard<E, T> implements Board {
                 this.height = height;
                 this.#update_view_box();
                 this.#size.set({ width, height });
-            })
+            }),
         );
     }
 

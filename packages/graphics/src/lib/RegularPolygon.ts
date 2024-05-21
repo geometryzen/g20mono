@@ -50,7 +50,7 @@ export class RegularPolygon extends Path {
         this.#trash.push(
             effect(() => {
                 this.update();
-            })
+            }),
         );
 
         this.flagReset(true);

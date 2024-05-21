@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
             [0, "red", 1],
             [1, "orange", 1],
         ],
-        { id: "LinA" }
+        { id: "LinA" },
     );
 
     const gradLinB = new LinearGradient(
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
             [0.5, "red", 1],
             [0.5, "orange", 1],
         ],
-        { id: "LinB" }
+        { id: "LinB" },
     );
 
     const gradLinC = new LinearGradient(
@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
             [0.84, "orange", 1],
             [0.98, "red", 1],
         ],
-        { id: "LinC" }
+        { id: "LinC" },
     );
 
     const gradRadA = new RadialGradient(
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
             [0, "red", 1],
             [1, "black", 1],
         ],
-        { id: "RadA", radius: 100 }
+        { id: "RadA", radius: 100 },
     );
 
     const gradRadB = new RadialGradient(
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
             [0, "orange", 1],
             [1, "red", 1],
         ],
-        { id: "RadB", radius: 100 }
+        { id: "RadB", radius: 100 },
     );
 
     const gradRadC = new RadialGradient(
@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
         {
             id: "RadC",
             radius: 200,
-        }
+        },
     );
 
     board.rectangle({

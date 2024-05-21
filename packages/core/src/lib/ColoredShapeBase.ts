@@ -168,7 +168,7 @@ export abstract class ColoredShapeBase extends ShapeBase {
                     return function () {
                         // No cleanup to be done.
                     };
-                })
+                }),
             );
 
             // fill
@@ -178,7 +178,7 @@ export abstract class ColoredShapeBase extends ShapeBase {
                     return function () {
                         // No cleanup to be done.
                     };
-                })
+                }),
             );
 
             // fill-opacity
@@ -193,7 +193,7 @@ export abstract class ColoredShapeBase extends ShapeBase {
                     return function () {
                         // No cleanup to be done.
                     };
-                })
+                }),
             );
 
             // stroke
@@ -203,7 +203,7 @@ export abstract class ColoredShapeBase extends ShapeBase {
                     return function () {
                         // No cleanup to be done.
                     };
-                })
+                }),
             );
 
             // stroke-opacity
@@ -218,7 +218,7 @@ export abstract class ColoredShapeBase extends ShapeBase {
                     return function () {
                         // No cleanup to be done.
                     };
-                })
+                }),
             );
 
             // stroke-width
@@ -233,7 +233,7 @@ export abstract class ColoredShapeBase extends ShapeBase {
                     return function () {
                         // No cleanup to be done.
                     };
-                })
+                }),
             );
 
             // vector-effect
@@ -248,7 +248,7 @@ export abstract class ColoredShapeBase extends ShapeBase {
                     return function () {
                         // No cleanup to be done.
                     };
-                })
+                }),
             );
 
             super.render(viewDOM, parentElement, svgElement);

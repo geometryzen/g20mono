@@ -15,6 +15,6 @@ if (mode === "write") {
     console.log(
         await esbuild.analyzeMetafile(result.metafile, {
             verbose: false,
-        })
+        }),
     );
 }

@@ -57,7 +57,7 @@ export class RoundedRectangle extends Path {
         this.#trash.push(
             effect(() => {
                 this.update();
-            })
+            }),
         );
     }
 

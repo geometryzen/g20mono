@@ -29,7 +29,7 @@ export class ColorManager {
      */
     constructor(
         initialValue: Color,
-        readonly name: "fill" | "stroke"
+        readonly name: "fill" | "stroke",
     ) {
         this.#color = signal(initialValue);
     }

@@ -67,21 +67,21 @@ export abstract class Gradient extends ElementBase implements ColorProvider {
                         stop.zzz.disposables.push(
                             effect(() => {
                                 viewDOM.setAttribute(stopElement, "offset", 100 * stop.offset + "%");
-                            })
+                            }),
                         );
                         stop.zzz.disposables.push(
                             effect(() => {
                                 viewDOM.setAttribute(stopElement, "stop-color", stop.color);
-                            })
+                            }),
                         );
                         stop.zzz.disposables.push(
                             effect(() => {
                                 viewDOM.setAttribute(stopElement, "stop-opacity", `${stop.opacity}`);
-                            })
+                            }),
                         );
                     }
                 }
-            })
+            }),
         );
     }
 

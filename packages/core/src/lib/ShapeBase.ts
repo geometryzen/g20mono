@@ -80,7 +80,7 @@ export abstract class ShapeBase extends ElementBase implements Shape {
 
     constructor(
         readonly board: Board,
-        options: ShapeOptions = {}
+        options: ShapeOptions = {},
     ) {
         super(options.id);
 
@@ -135,22 +135,22 @@ export abstract class ShapeBase extends ElementBase implements Shape {
         this.#disposables.push(
             this.#position.change$.subscribe(() => {
                 update_matrix(this.#position, this.#attitude, this.#scale, this.skewX, this.skewY, this.plumb, this.board.goofy, this.board.crazy, this.#matrix);
-            })
+            }),
         );
         this.#disposables.push(
             this.#attitude.change$.subscribe(() => {
                 update_matrix(this.#position, this.#attitude, this.#scale, this.skewX, this.skewY, this.plumb, this.board.goofy, this.board.crazy, this.#matrix);
-            })
+            }),
         );
         this.#disposables.push(
             this.#scale.change$.subscribe(() => {
                 update_matrix(this.#position, this.#attitude, this.#scale, this.skewX, this.skewY, this.plumb, this.board.goofy, this.board.crazy, this.#matrix);
-            })
+            }),
         );
         this.#disposables.push(
             this.#skew.change$.subscribe(() => {
                 update_matrix(this.#position, this.#attitude, this.#scale, this.skewX, this.skewY, this.plumb, this.board.goofy, this.board.crazy, this.#matrix);
-            })
+            }),
         );
     }
 
@@ -171,7 +171,7 @@ export abstract class ShapeBase extends ElementBase implements Shape {
                 } else {
                     viewDOM.removeAttribute(this.zzz.viewee as T, "clip-path");
                 }
-            })
+            }),
         );
 
         // id
@@ -182,7 +182,7 @@ export abstract class ShapeBase extends ElementBase implements Shape {
                 } else {
                     viewDOM.removeAttribute(this.zzz.viewee as T, "id");
                 }
-            })
+            }),
         );
 
         // opacity
@@ -198,7 +198,7 @@ export abstract class ShapeBase extends ElementBase implements Shape {
                 return function () {
                     // No cleanup to be done.
                 };
-            })
+            }),
         );
 
         // transform
@@ -209,7 +209,7 @@ export abstract class ShapeBase extends ElementBase implements Shape {
                 } else {
                     viewDOM.setAttribute(this.zzz.viewee as T, "transform", transform_value_of_matrix(this.matrix));
                 }
-            })
+            }),
         );
 
         // visibility
@@ -231,7 +231,7 @@ export abstract class ShapeBase extends ElementBase implements Shape {
                 return function () {
                     // No cleanup to be done.
                 };
-            })
+            }),
         );
     }
 

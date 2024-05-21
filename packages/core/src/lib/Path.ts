@@ -153,7 +153,7 @@ export class Path extends ColoredShapeBase {
                     } else {
                         viewDOM.removeAttribute(path, "stroke-linecap");
                     }
-                })
+                }),
             );
 
             // stroke-linejoin
@@ -164,7 +164,7 @@ export class Path extends ColoredShapeBase {
                     } else {
                         viewDOM.removeAttribute(path, "stroke-linejoin");
                     }
-                })
+                }),
             );
 
             // stroke-miterlimit
@@ -175,7 +175,7 @@ export class Path extends ColoredShapeBase {
                     } else {
                         viewDOM.removeAttribute(path, "stroke-miterlimit");
                     }
-                })
+                }),
             );
 
             this.zzz.disposables.push(
@@ -183,7 +183,7 @@ export class Path extends ColoredShapeBase {
                     const change: SVGAttributes = {};
                     change.d = svg.path_from_anchors(this.board, this.X, this.R, this.zzz.vertices, this.closed);
                     viewDOM.setAttributes(path, change);
-                })
+                }),
             );
         }
 

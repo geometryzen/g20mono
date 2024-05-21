@@ -333,7 +333,7 @@ describe("GraphicsBoard", function () {
             ],
             {
                 position: [x, y],
-            }
+            },
         );
         expect(path.X.x).toBe(x);
         expect(path.X.y).toBe(y);

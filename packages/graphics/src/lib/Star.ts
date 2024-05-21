@@ -55,7 +55,7 @@ export class Star extends Path {
         this.#trash.push(
             effect(() => {
                 this.update();
-            })
+            }),
         );
     }
 

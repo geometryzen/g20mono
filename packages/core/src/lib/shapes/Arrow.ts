@@ -57,17 +57,17 @@ export class Arrow extends Path {
         this.#disposables.push(
             this.axis.change$.subscribe(() => {
                 this.update();
-            })
+            }),
         );
         this.#disposables.push(
             this.#headLength.change$.subscribe(() => {
                 this.update();
-            })
+            }),
         );
         this.#disposables.push(
             this.#origin.change$.subscribe(() => {
                 this.update();
-            })
+            }),
         );
     }
     override dispose(): void {
@@ -143,17 +143,18 @@ function update_arrow_vertices(axis: G20, headLength: number, origin: G20, verti
 function path_attribs_from_arrow_attribs(options: ArrowOptions, owner: Board): PathOptions {
     const retval: PathOptions = {
         id: options.id,
-        // attitude: attributes.attitude,
-        // opacity: attributes.opacity,
-        position: options.position,
-        // visibility: attributes.visibility,
-        // fill: attributes.fill,
-        // fillOpacity: attributes.fillOpacity,
+        attitude: options.attitude,
+        dashes: options.dashes,
         fillColor: default_color(options.fillColor, owner.defaults.arrow.fillColor),
         fillOpacity: default_number(options.fillOpacity, owner.defaults.arrow.fillOpacity),
+        opacity: options.opacity,
+        plumb: options.plumb,
+        position: options.position,
         strokeColor: default_color(options.strokeColor, owner.defaults.arrow.strokeColor),
         strokeOpacity: default_number(options.strokeOpacity, owner.defaults.arrow.strokeOpacity),
-        strokeWidth: default_open_path_stroke_width(options.strokeWidth, owner),
+        strokeWidth: default_open_path_stroke_width(default_number(options.strokeWidth, owner.defaults.arrow.strokeWidth), owner),
+        sx: options.sx,
+        sy: options.sy,
         vectorEffect: options.vectorEffect,
         visibility: options.visibility,
     };

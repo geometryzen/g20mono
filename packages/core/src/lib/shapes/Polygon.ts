@@ -40,7 +40,7 @@ function path_attributes(options: PolygonOptions, owner: Board): PathOptions {
         plumb: options.plumb,
         strokeColor: default_color(options.strokeColor, owner.defaults.polygon.strokeColor),
         strokeOpacity: default_number(options.strokeOpacity, owner.defaults.polygon.strokeOpacity),
-        strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
+        strokeWidth: default_closed_path_stroke_width(default_number(options.strokeWidth, owner.defaults.polygon.strokeWidth), owner),
         sx: options.sx,
         sy: options.sy,
         vectorEffect: options.vectorEffect,

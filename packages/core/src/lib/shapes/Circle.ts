@@ -57,7 +57,7 @@ export class Circle extends Path implements CircleProperties {
         this.#disposables.push(
             this.#radius.change$.subscribe(() => {
                 this.update();
-            })
+            }),
         );
 
         this.flagReset(true);
@@ -88,15 +88,15 @@ function path_options_from_circle_options(options: CircleOptions, owner: Board):
     const retval: PathOptions = {
         id: options.id,
         attitude: options.attitude,
-        position: options.position,
+        dashes: options.dashes,
         fillColor: default_color(options.fillColor, owner.defaults.circle.fillColor),
         fillOpacity: default_number(options.fillOpacity, owner.defaults.circle.fillOpacity),
+        opacity: options.opacity,
+        position: options.position,
+        plumb: options.plumb,
         strokeColor: default_color(options.strokeColor, owner.defaults.circle.strokeColor),
         strokeOpacity: default_number(options.strokeOpacity, owner.defaults.circle.strokeOpacity),
         strokeWidth: default_closed_path_stroke_width(default_number(options.strokeWidth, owner.defaults.circle.strokeWidth), owner),
-        dashes: options.dashes,
-        opacity: options.opacity,
-        plumb: options.plumb,
         sx: options.sx,
         sy: options.sy,
         vectorEffect: options.vectorEffect,

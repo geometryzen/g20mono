@@ -66,7 +66,7 @@ export class RadialGradient extends Gradient implements ColorProvider {
                     change.cx = `${this.center.x}`;
                     change.cy = `${this.center.y}`;
                     viewDOM.setAttributes(viewee, change);
-                })
+                }),
             );
 
             // focal
@@ -76,7 +76,7 @@ export class RadialGradient extends Gradient implements ColorProvider {
                     change.fx = `${this.focal.x}`;
                     change.fy = `${this.focal.y}`;
                     viewDOM.setAttributes(viewee, change);
-                })
+                }),
             );
 
             // gradientUnits
@@ -85,7 +85,7 @@ export class RadialGradient extends Gradient implements ColorProvider {
                     const change: SVGAttributes = {};
                     change.gradientUnits = this.units;
                     viewDOM.setAttributes(viewee, change);
-                })
+                }),
             );
 
             // radius
@@ -94,7 +94,7 @@ export class RadialGradient extends Gradient implements ColorProvider {
                     const change: SVGAttributes = {};
                     change.r = `${this.radius}`;
                     viewDOM.setAttributes(viewee, change);
-                })
+                }),
             );
 
             // spreadMethod
@@ -103,7 +103,7 @@ export class RadialGradient extends Gradient implements ColorProvider {
                     const change: SVGAttributes = {};
                     change.spreadMethod = this.spreadMethod;
                     viewDOM.setAttributes(viewee, change);
-                })
+                }),
             );
         }
         return this.flagReset();

@@ -59,13 +59,13 @@ export class Line extends Path implements LineProperties {
 function path_options_from_line_options(options: LineOptions, owner: Board): PathOptions {
     const retval: PathOptions = {
         id: options.id,
-        position: options.position,
         attitude: options.attitude,
         dashes: options.dashes,
         fillColor: default_color(options.fillColor, owner.defaults.line.fillColor),
         fillOpacity: default_number(options.fillOpacity, owner.defaults.line.fillOpacity),
         opacity: options.opacity,
         plumb: options.plumb,
+        position: options.position,
         strokeColor: default_color(options.strokeColor, owner.defaults.line.strokeColor),
         strokeOpacity: default_number(options.strokeOpacity, owner.defaults.line.strokeOpacity),
         strokeWidth: default_open_path_stroke_width(default_number(options.strokeWidth, owner.defaults.line.strokeWidth), owner),

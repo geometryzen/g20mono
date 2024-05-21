@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function () {
     disposables.push(
         box.X.change$.subscribe(() => {
             textFn.position.copyVector(box.X).add(N.scale(1.6));
-        })
+        }),
     );
 
     const Fs = board.arrow(S.scale(1.5), {

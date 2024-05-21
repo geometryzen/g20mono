@@ -42,7 +42,7 @@ export class LinearGradient extends Gradient implements ColorProvider {
                         change.x1 = `${this.point1.x}`;
                         change.y1 = `${this.point1.y}`;
                         viewDOM.setAttributes(viewee, change);
-                    })
+                    }),
                 );
 
                 this.zzz.disposables.push(
@@ -51,7 +51,7 @@ export class LinearGradient extends Gradient implements ColorProvider {
                         change.x2 = `${this.point2.x}`;
                         change.y2 = `${this.point2.y}`;
                         viewDOM.setAttributes(viewee, change);
-                    })
+                    }),
                 );
 
                 this.zzz.disposables.push(
@@ -59,14 +59,14 @@ export class LinearGradient extends Gradient implements ColorProvider {
                         const change: SVGAttributes = {};
                         change.gradientUnits = this.units;
                         viewDOM.setAttributes(viewee, change);
-                    })
+                    }),
                 );
                 this.zzz.disposables.push(
                     effect(() => {
                         const change: SVGAttributes = {};
                         change.spreadMethod = this.spreadMethod;
                         viewDOM.setAttributes(viewee, change);
-                    })
+                    }),
                 );
                 super.render(viewDOM, defs);
             }

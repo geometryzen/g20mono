@@ -84,19 +84,19 @@ export class Rectangle extends Path implements RectangleProperties, Disposable {
         this.#disposables.push(
             this.#width.change$.subscribe(() => {
                 this.update();
-            })
+            }),
         );
 
         this.#disposables.push(
             this.#height.change$.subscribe(() => {
                 this.update();
-            })
+            }),
         );
 
         this.#disposables.push(
             this.#origin.change$.subscribe(() => {
                 this.update();
-            })
+            }),
         );
 
         this.flagReset(true);
@@ -158,15 +158,19 @@ function path_options_from_rectangle_options(options: RectangleOptions, owner: B
     const retval: PathOptions = {
         id: options.id,
         attitude: options.attitude,
-        opacity: options.opacity,
-        position: options.position,
-        visibility: options.visibility,
+        dashes: options.dashes,
         fillColor: default_color(options.fillColor, owner.defaults.rectangle.fillColor),
         fillOpacity: default_number(options.fillOpacity, owner.defaults.rectangle.fillOpacity),
+        opacity: options.opacity,
+        plumb: options.plumb,
+        position: options.position,
         strokeColor: default_color(options.strokeColor, owner.defaults.rectangle.strokeColor),
         strokeOpacity: default_number(options.strokeOpacity, owner.defaults.rectangle.strokeOpacity),
-        strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
+        strokeWidth: default_closed_path_stroke_width(default_number(options.strokeWidth, owner.defaults.rectangle.strokeWidth), owner),
+        sx: options.sx,
+        sy: options.sy,
         vectorEffect: options.vectorEffect,
+        visibility: options.visibility,
     };
     return retval;
 }
