@@ -4,6 +4,7 @@ import { Color } from "../effects/ColorProvider";
 import { G20, VectorLike, vector_from_like } from "../math/G20";
 import { Path, PathOptions } from "../Path";
 import { default_color } from "../utils/default_color";
+import { default_number } from "../utils/default_number";
 import { default_open_path_stroke_width } from "../utils/default_stroke_width";
 
 export interface LineOptions extends PathOptions {
@@ -62,11 +63,11 @@ function path_options_from_line_options(options: LineOptions, owner: Board): Pat
         attitude: options.attitude,
         dashes: options.dashes,
         fillColor: default_color(options.fillColor, owner.defaults.line.fillColor),
-        fillOpacity: options.fillOpacity,
+        fillOpacity: default_number(options.fillOpacity, owner.defaults.line.fillOpacity),
         opacity: options.opacity,
         plumb: options.plumb,
         strokeColor: default_color(options.strokeColor, owner.defaults.line.strokeColor),
-        strokeOpacity: options.strokeOpacity,
+        strokeOpacity: default_number(options.strokeOpacity, owner.defaults.line.strokeOpacity),
         strokeWidth: default_open_path_stroke_width(options.strokeWidth, owner),
         sx: options.sx,
         sy: options.sy,

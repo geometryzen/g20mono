@@ -12,7 +12,7 @@ describe("Point", function () {
         board.add(point);
         expect(point.id).toBe(null);
         expect(point.icon.id).toBe(null);
-        expect(point.text).toBe(null);
+        expect(point.text.id).toBe(null);
 
         return new Promise<void>((resolve, reject) => {
             setTimeout(() => {

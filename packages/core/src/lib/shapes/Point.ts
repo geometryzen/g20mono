@@ -5,10 +5,11 @@ import { VectorLike } from "../math/G20";
 import { Text, TextOptions } from "../Text";
 import { default_color } from "../utils/default_color";
 import { default_number } from "../utils/default_number";
+import { default_string } from "../utils/default_string";
 import { Ellipse, EllipseOptions } from "./Ellipse";
 import { Rectangle, RectangleOptions } from "./Rectangle";
 
-export interface PointOptions {
+export interface PointOptions extends Pick<TextOptions, "anchor" | "baseline" | "dx" | "dy" | "fontFamily" | "fontSize"> {
     id?: string;
     fillColor?: Color;
     fillOpacity?: number;
@@ -60,7 +61,7 @@ export class Point extends Group {
         }
         this.X = position;
     }
-    get icon(): Ellipse | Rectangle | null {
+    get icon(): Ellipse | Rectangle {
         for (const child of this.children) {
             if (child instanceof Text) {
                 // Ignore.
@@ -71,15 +72,21 @@ export class Point extends Group {
             }
         }
         /* istanbul ignore next */
-        return null;
+        throw new Error();
     }
-    get text(): Text | null {
+    get text(): Text {
         for (const child of this.children) {
             if (child instanceof Text) {
                 return child;
             }
         }
-        return null;
+        const text_options: TextOptions = text_options_from_point_options({}, this.board);
+        if (typeof this.id === "string") {
+            text_options.id = `${this.id}-text`;
+        }
+        const text = new Text(this.board, "", text_options);
+        this.add(text);
+        return text;
     }
 }
 
@@ -109,8 +116,14 @@ function rectangle_options_from_point_options(options: PointOptions, owner: Boar
 
 function text_options_from_point_options(options: PointOptions, owner: Board): TextOptions {
     const retval: TextOptions = {
+        anchor: options.anchor,
+        baseline: options.baseline,
+        dx: options.dx,
+        dy: options.dy,
         fillColor: default_color(options.fillColor, owner.defaults.text.fillColor),
         fillOpacity: default_number(options.fillOpacity, owner.defaults.text.fillOpacity),
+        fontFamily: default_string(options.fontFamily, owner.defaults.text.fontFamily),
+        fontSize: default_number(options.fontSize, owner.defaults.text.fontSize),
         strokeColor: default_color(options.strokeColor, owner.defaults.text.strokeColor),
         strokeOpacity: default_number(options.strokeOpacity, owner.defaults.text.strokeOpacity),
         strokeWidth: options.strokeWidth,
