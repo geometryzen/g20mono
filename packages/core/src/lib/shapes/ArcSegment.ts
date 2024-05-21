@@ -106,13 +106,7 @@ export class ArcSegment extends Path {
     }
 
     override update() {
-        update_arc_vertices(
-            this.innerRadius,
-            this.outerRadius,
-            this.startAngle,
-            this.endAngle,
-            this.vertices
-        );
+        update_arc_vertices(this.innerRadius, this.outerRadius, this.startAngle, this.endAngle, this.vertices);
         super.update();
         return this;
     }
@@ -160,13 +154,7 @@ function path_options_from_arc_options(options: ArcSegmentOptions, owner: Board)
     return retval;
 }
 
-function update_arc_vertices(
-    innerRadiues: number,
-    outerRadius: number,
-    startAngle: number,
-    endAngle: number,
-    vertices: Collection<Anchor>
-) {
+function update_arc_vertices(innerRadiues: number, outerRadius: number, startAngle: number, endAngle: number, vertices: Collection<Anchor>) {
     const connected = mod(startAngle, TWO_PI) === mod(endAngle, TWO_PI);
     const punctured = innerRadiues > 0;
 

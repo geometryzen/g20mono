@@ -8,6 +8,7 @@ import { SpinorLike, VectorLike } from "./math/G20";
 import { svg, transform_value_of_matrix } from "./renderers/SVGViewDOM";
 import { SVGAttributes, ViewDOM } from "./Shape";
 import { default_color } from "./utils/default_color";
+import { default_number } from "./utils/default_number";
 import { default_open_path_stroke_width } from "./utils/default_stroke_width";
 
 const min = Math.min,
@@ -17,16 +18,7 @@ export type TextDecoration = "none" | "underline" | "overline" | "line-through";
 
 export interface TextOptions extends ColoredShapeOptions {
     anchor?: "start" | "middle" | "end";
-    baseline?:
-        | "auto"
-        | "text-bottom"
-        | "alphabetic"
-        | "ideographic"
-        | "middle"
-        | "central"
-        | "mathematical"
-        | "hanging"
-        | "text-top";
+    baseline?: "auto" | "text-bottom" | "alphabetic" | "ideographic" | "middle" | "central" | "mathematical" | "hanging" | "text-top";
     decoration?: TextDecoration[];
     direction?: "ltr" | "rtl";
     dx?: number | string;
@@ -52,16 +44,7 @@ export interface TextOptions extends ColoredShapeOptions {
 
 export interface TextProperties {
     anchor: "start" | "middle" | "end";
-    baseline:
-        | "auto"
-        | "text-bottom"
-        | "alphabetic"
-        | "ideographic"
-        | "middle"
-        | "central"
-        | "mathematical"
-        | "hanging"
-        | "text-top";
+    baseline: "auto" | "text-bottom" | "alphabetic" | "ideographic" | "middle" | "central" | "mathematical" | "hanging" | "text-top";
     decoration: TextDecoration[];
     direction: "ltr" | "rtl";
     dx: number | string;
@@ -90,22 +73,11 @@ export class Text extends ColoredShapeBase implements TextProperties {
 
     readonly #fontFamily = signal("sans-serif");
 
-    readonly #fontSize = signal(18);
+    readonly #fontSize = signal(20);
 
     readonly #anchor = signal("start" as "start" | "middle" | "end");
 
-    readonly #baseline = signal(
-        "auto" as
-            | "auto"
-            | "text-bottom"
-            | "alphabetic"
-            | "ideographic"
-            | "middle"
-            | "central"
-            | "mathematical"
-            | "hanging"
-            | "text-top"
-    );
+    readonly #baseline = signal("auto" as "auto" | "text-bottom" | "alphabetic" | "ideographic" | "middle" | "central" | "mathematical" | "hanging" | "text-top");
 
     readonly #fontStyle = signal("normal" as "normal" | "italic" | "oblique");
 
@@ -122,7 +94,7 @@ export class Text extends ColoredShapeBase implements TextProperties {
     readonly #dx = signal(0 as number | string);
     readonly #dy = signal(0 as number | string);
 
-    constructor(owner: Board, content: string, options: Partial<TextOptions> = {}) {
+    constructor(owner: Board, content: string, options: TextOptions = {}) {
         super(owner, shape_options_from_text_options(options, owner));
 
         this.content = content;
@@ -147,12 +119,16 @@ export class Text extends ColoredShapeBase implements TextProperties {
         }
         if (options.fontFamily) {
             this.fontFamily = options.fontFamily;
+        } else {
+            this.fontFamily = owner.defaults.text.fontFamily;
         }
         if (options.opacity) {
             this.opacity = options.opacity;
         }
         if (options.fontSize) {
             this.fontSize = options.fontSize;
+        } else {
+            this.fontSize = owner.defaults.text.fontSize;
         }
         if (options.fontStyle) {
             this.fontStyle = options.fontStyle;
@@ -511,30 +487,10 @@ export class Text extends ColoredShapeBase implements TextProperties {
             }
         }
     }
-    get baseline():
-        | "auto"
-        | "text-bottom"
-        | "alphabetic"
-        | "ideographic"
-        | "middle"
-        | "central"
-        | "mathematical"
-        | "hanging"
-        | "text-top" {
+    get baseline(): "auto" | "text-bottom" | "alphabetic" | "ideographic" | "middle" | "central" | "mathematical" | "hanging" | "text-top" {
         return this.#baseline.get();
     }
-    set baseline(
-        baseline:
-            | "auto"
-            | "text-bottom"
-            | "alphabetic"
-            | "ideographic"
-            | "middle"
-            | "central"
-            | "mathematical"
-            | "hanging"
-            | "text-top"
-    ) {
+    set baseline(baseline: "auto" | "text-bottom" | "alphabetic" | "ideographic" | "middle" | "central" | "mathematical" | "hanging" | "text-top") {
         if (typeof baseline === "string") {
             switch (baseline) {
                 case "alphabetic":
@@ -633,21 +589,18 @@ export class Text extends ColoredShapeBase implements TextProperties {
     }
 }
 
-function shape_options_from_text_options(
-    options: Partial<TextOptions>,
-    owner: Board
-): Partial<ColoredShapeOptions> {
+function shape_options_from_text_options(options: Partial<TextOptions>, owner: Board): Partial<ColoredShapeOptions> {
     const retval: Partial<ColoredShapeOptions> = {
         id: options.id,
         dashes: options.dashes,
         plumb: true, //options.plumb,
         position: options.position,
         attitude: options.attitude,
-        fillColor: default_color(options.fillColor, "gray"),
-        fillOpacity: options.fillOpacity,
+        fillColor: default_color(options.fillColor, owner.defaults.text.fillColor),
+        fillOpacity: default_number(options.fillOpacity, owner.defaults.text.fillOpacity),
         opacity: options.opacity,
-        strokeColor: default_color(options.strokeColor, "gray"),
-        strokeOpacity: options.strokeOpacity,
+        strokeColor: default_color(options.strokeColor, owner.defaults.text.strokeColor),
+        strokeOpacity: default_number(options.strokeOpacity, owner.defaults.text.strokeOpacity),
         strokeWidth: default_open_path_stroke_width(options.strokeWidth, owner),
         sx: typeof options.sx === "number" ? options.sx : 1 / owner.sx,
         sy: typeof options.sy === "number" ? options.sy : 1 / owner.sy,

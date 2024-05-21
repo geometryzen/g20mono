@@ -854,12 +854,7 @@ export class G20 {
      */
     isZero(eps?: number): boolean {
         if (typeof eps === "number") {
-            return (
-                Math.abs(this.a) < eps &&
-                Math.abs(this.x) < eps &&
-                Math.abs(this.y) < eps &&
-                Math.abs(this.b) < eps
-            );
+            return Math.abs(this.a) < eps && Math.abs(this.x) < eps && Math.abs(this.y) < eps && Math.abs(this.b) < eps;
         } else {
             return this.a === 0 && this.x === 0 && this.y === 0 && this.b === 0;
         }

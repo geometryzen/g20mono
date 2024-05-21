@@ -39,9 +39,7 @@ export abstract class ColoredShapeBase extends ShapeBase {
 
     readonly #dashes: State<number[]> = signal([]);
 
-    readonly #vectorEffect: State<
-        null | "non-scaling-stroke" | "non-scaling-size" | "non-rotation" | "fixed-position" | "none"
-    > = signal(null);
+    readonly #vectorEffect: State<null | "non-scaling-stroke" | "non-scaling-size" | "non-rotation" | "fixed-position" | "none"> = signal(null);
 
     constructor(board: Board, options: ColoredShapeOptions = {}) {
         super(board, shape_attribs_from_colored_attribs(options));
@@ -131,24 +129,10 @@ export abstract class ColoredShapeBase extends ShapeBase {
             }
         }
     }
-    get vectorEffect():
-        | null
-        | "non-scaling-stroke"
-        | "non-scaling-size"
-        | "non-rotation"
-        | "fixed-position"
-        | "none" {
+    get vectorEffect(): null | "non-scaling-stroke" | "non-scaling-size" | "non-rotation" | "fixed-position" | "none" {
         return this.#vectorEffect.get();
     }
-    set vectorEffect(
-        vectorEffect:
-            | null
-            | "non-scaling-stroke"
-            | "non-scaling-size"
-            | "non-rotation"
-            | "fixed-position"
-            | "none"
-    ) {
+    set vectorEffect(vectorEffect: null | "non-scaling-stroke" | "non-scaling-size" | "non-rotation" | "fixed-position" | "none") {
         this.#vectorEffect.set(vectorEffect);
     }
     /**

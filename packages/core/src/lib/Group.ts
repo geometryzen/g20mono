@@ -12,8 +12,8 @@ export interface GroupOptions extends ShapeOptions {
 export class Group extends ShapeBase {
     readonly #shapes: State<Shape[]>;
 
-    constructor(board: Board, shapes: Shape[] = [], options: GroupOptions = {}) {
-        super(board, shape_attributes(options));
+    constructor(owner: Board, shapes: Shape[] = [], options: GroupOptions = {}) {
+        super(owner, shape_attributes(options));
 
         this.flagReset(true);
         this.zzz.flags[Flag.Beginning] = false;

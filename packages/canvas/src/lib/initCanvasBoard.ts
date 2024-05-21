@@ -17,11 +17,5 @@ export function initCanvasBoard(elementOrId: string | HTMLElement, options: Boar
     // The casting is a bit wierd. The viewDOM will build an SVG tree, but the viewFactory will render it into a canvas.
     const viewDOM: ViewDOM<HTMLCanvasElement> = new SVGViewDOM() as unknown as ViewDOM<HTMLCanvasElement>;
     const viewFactory: ViewFactory<HTMLCanvasElement> = new CanvasViewFactory();
-    return new GraphicsBoard<HTMLElement, HTMLCanvasElement>(
-        elementOrId,
-        elementDOM,
-        viewDOM,
-        viewFactory,
-        options
-    );
+    return new GraphicsBoard<HTMLElement, HTMLCanvasElement>(elementOrId, elementDOM, viewDOM, viewFactory, options);
 }

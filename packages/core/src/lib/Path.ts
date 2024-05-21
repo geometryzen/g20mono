@@ -88,14 +88,7 @@ export class Path extends ColoredShapeBase {
      * @param curved Describes whether the path automatically calculates bezier handles for each vertex.
      * @param manual Describes whether the developer controls how vertices are plotted.
      */
-    constructor(
-        owner: Board,
-        vertices: Anchor[] = [],
-        closed?: boolean,
-        curved?: boolean,
-        manual?: boolean,
-        options: PathOptions = {}
-    ) {
+    constructor(owner: Board, vertices: Anchor[] = [], closed?: boolean, curved?: boolean, manual?: boolean, options: PathOptions = {}) {
         super(owner, colored_shape_attribs_from_path_attribs(options));
 
         this.flagReset(true);
@@ -188,13 +181,7 @@ export class Path extends ColoredShapeBase {
             this.zzz.disposables.push(
                 this.zzz.vertices$.subscribe(() => {
                     const change: SVGAttributes = {};
-                    change.d = svg.path_from_anchors(
-                        this.board,
-                        this.X,
-                        this.R,
-                        this.zzz.vertices,
-                        this.closed
-                    );
+                    change.d = svg.path_from_anchors(this.board, this.X, this.R, this.zzz.vertices, this.closed);
                     viewDOM.setAttributes(path, change);
                 })
             );
@@ -302,12 +289,7 @@ export class Path extends ColoredShapeBase {
         let border = (this.strokeWidth || 0) / 2;
         const l = this.zzz.vertices.length;
 
-        if (
-            this.strokeWidth > 0 ||
-            (this.strokeColor &&
-                typeof this.strokeColor === "string" &&
-                !/(transparent|none)/i.test(this.strokeColor))
-        ) {
+        if (this.strokeWidth > 0 || (this.strokeColor && typeof this.strokeColor === "string" && !/(transparent|none)/i.test(this.strokeColor))) {
             border *= max(this.sx, this.sy);
         }
 
@@ -660,13 +642,9 @@ export class Path extends ColoredShapeBase {
                             }
 
                             if (prev.relative) {
-                                this.#anchors[i - 1].controls.b
-                                    .copyVector(prev.controls.b)
-                                    .lerp(G20.zero, 1 - v.t);
+                                this.#anchors[i - 1].controls.b.copyVector(prev.controls.b).lerp(G20.zero, 1 - v.t);
                             } else {
-                                this.#anchors[i - 1].controls.b
-                                    .copyVector(prev.controls.b)
-                                    .lerp(prev.origin, 1 - v.t);
+                                this.#anchors[i - 1].controls.b.copyVector(prev.controls.b).lerp(prev.origin, 1 - v.t);
                             }
                         }
                     } else if (i >= lBound && i <= uBound) {

@@ -1,5 +1,5 @@
 import { GraphicsBoard } from "../src/lib/GraphicsBoard";
-import { Group } from "../src/lib/group";
+import { Group } from "../src/lib/Group";
 import { G20 } from "../src/lib/math/G20";
 import { Shape } from "../src/lib/Shape";
 import { MockViewDOM } from "./dom";
@@ -217,7 +217,6 @@ describe("GraphicsBoard", function () {
         // We must add the Group to the Board to get a viewee.
         board.add(group);
         const viewee = viewDOM.downcast(group.viewee());
-        // This may change in future...
         expect(viewee.name).toBe("g");
         // FIXME: null would be more consistent with the DOM.
         // expect(viewee.getAttribute('id')).toBe(null);
@@ -405,8 +404,7 @@ describe("GraphicsBoard", function () {
         expect(P.X.x).toBe(x);
         expect(P.X.y).toBe(y);
         const viewee = viewDOM.downcast(P.viewee());
-        // This may change in future...
-        expect(viewee.name).toBe("path");
+        expect(viewee.name).toBe("g");
         expect(viewee.getAttribute("id")).toBe(null);
 
         P.id = "P";
@@ -447,7 +445,6 @@ describe("GraphicsBoard", function () {
         expect(polygon.X.x).toBe(x);
         expect(polygon.X.y).toBe(y);
         const viewee = viewDOM.downcast(polygon.viewee());
-        // This may change in future...
         expect(viewee.name).toBe("path");
         expect(viewee.getAttribute("id")).toBe(null);
 
@@ -489,7 +486,6 @@ describe("GraphicsBoard", function () {
         expect(rectangle.X.x).toBe(x);
         expect(rectangle.X.y).toBe(y);
         const viewee = viewDOM.downcast(rectangle.viewee());
-        // This may change in future...
         expect(viewee.name).toBe("path");
         expect(viewee.getAttribute("id")).toBe(null);
 
@@ -532,7 +528,6 @@ describe("GraphicsBoard", function () {
         expect(text.X.x).toBe(x);
         expect(text.X.y).toBe(y);
         const viewee = viewDOM.downcast(text.viewee());
-        // This may change in future...
         expect(viewee.name).toBe("text");
         // FIXME: null would be more consistent with the DOM.
         // expect(viewee.getAttribute('id')).toBe(null);

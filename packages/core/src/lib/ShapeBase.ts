@@ -26,20 +26,6 @@ export interface ShapeOptions {
     sy?: number;
 }
 
-export interface ShapeProperties {
-    id: string;
-    opacity: number;
-    /**
-     * position.
-     */
-    X: G20;
-    /**
-     * attitude.
-     */
-    R: G20;
-    visibility: "visible" | "hidden" | "collapse";
-}
-
 export function ensure_identifier(options: ShapeOptions): string {
     if (typeof options.id === "string") {
         return options.id;
@@ -48,7 +34,7 @@ export function ensure_identifier(options: ShapeOptions): string {
     }
 }
 
-export abstract class ShapeBase extends ElementBase implements Shape, ShapeProperties {
+export abstract class ShapeBase extends ElementBase implements Shape {
     readonly #disposables: Disposable[] = [];
 
     /**
@@ -148,62 +134,22 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
 
         this.#disposables.push(
             this.#position.change$.subscribe(() => {
-                update_matrix(
-                    this.#position,
-                    this.#attitude,
-                    this.#scale,
-                    this.skewX,
-                    this.skewY,
-                    this.plumb,
-                    this.board.goofy,
-                    this.board.crazy,
-                    this.#matrix
-                );
+                update_matrix(this.#position, this.#attitude, this.#scale, this.skewX, this.skewY, this.plumb, this.board.goofy, this.board.crazy, this.#matrix);
             })
         );
         this.#disposables.push(
             this.#attitude.change$.subscribe(() => {
-                update_matrix(
-                    this.#position,
-                    this.#attitude,
-                    this.#scale,
-                    this.skewX,
-                    this.skewY,
-                    this.plumb,
-                    this.board.goofy,
-                    this.board.crazy,
-                    this.#matrix
-                );
+                update_matrix(this.#position, this.#attitude, this.#scale, this.skewX, this.skewY, this.plumb, this.board.goofy, this.board.crazy, this.#matrix);
             })
         );
         this.#disposables.push(
             this.#scale.change$.subscribe(() => {
-                update_matrix(
-                    this.#position,
-                    this.#attitude,
-                    this.#scale,
-                    this.skewX,
-                    this.skewY,
-                    this.plumb,
-                    this.board.goofy,
-                    this.board.crazy,
-                    this.#matrix
-                );
+                update_matrix(this.#position, this.#attitude, this.#scale, this.skewX, this.skewY, this.plumb, this.board.goofy, this.board.crazy, this.#matrix);
             })
         );
         this.#disposables.push(
             this.#skew.change$.subscribe(() => {
-                update_matrix(
-                    this.#position,
-                    this.#attitude,
-                    this.#scale,
-                    this.skewX,
-                    this.skewY,
-                    this.plumb,
-                    this.board.goofy,
-                    this.board.crazy,
-                    this.#matrix
-                );
+                update_matrix(this.#position, this.#attitude, this.#scale, this.skewX, this.skewY, this.plumb, this.board.goofy, this.board.crazy, this.#matrix);
             })
         );
     }
@@ -261,11 +207,7 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
                 if (this.matrix.isOne()) {
                     viewDOM.removeAttribute(this.zzz.viewee as T, "transform");
                 } else {
-                    viewDOM.setAttribute(
-                        this.zzz.viewee as T,
-                        "transform",
-                        transform_value_of_matrix(this.matrix)
-                    );
+                    viewDOM.setAttribute(this.zzz.viewee as T, "transform", transform_value_of_matrix(this.matrix));
                 }
             })
         );
@@ -439,17 +381,7 @@ function compute_matrix(position: G20, attitude: G20, scale: G20, skewX: number,
 }
 */
 
-function update_matrix(
-    position: G20,
-    attitude: G20,
-    scale: G20,
-    skewX: number,
-    skewY: number,
-    plumb: boolean,
-    goofy: boolean,
-    crazy: boolean,
-    M: Matrix
-): void {
+function update_matrix(position: G20, attitude: G20, scale: G20, skewX: number, skewY: number, plumb: boolean, goofy: boolean, crazy: boolean, M: Matrix): void {
     // For performance, the matrix product has been pre-computed.
     // M = T * S * R * skewX * skewY
     const x = position.x;

@@ -88,13 +88,7 @@ export const svg = {
         }
     },
 
-    path_from_anchors: function (
-        board: Board,
-        position: G20,
-        attitude: G20,
-        anchors: Anchor[],
-        closed: boolean
-    ): string {
+    path_from_anchors: function (board: Board, position: G20, attitude: G20, anchors: Anchor[], closed: boolean): string {
         // The anchors are user coordinates and don't include the position and attitude of the body.
         // By switching x amd y here we handle a 90 degree coordinate rotation.
         // We are not completely done because Text and Images are rotated.
@@ -129,22 +123,7 @@ export const svg = {
                     const xAxisRotation = b.xAxisRotation;
                     const largeArcFlag = b.largeArcFlag;
                     const sweepFlag = b.sweepFlag;
-                    command =
-                        Commands.arc +
-                        " " +
-                        rx +
-                        " " +
-                        ry +
-                        " " +
-                        xAxisRotation +
-                        " " +
-                        largeArcFlag +
-                        " " +
-                        sweepFlag +
-                        " " +
-                        x +
-                        " " +
-                        y;
+                    command = Commands.arc + " " + rx + " " + ry + " " + xAxisRotation + " " + largeArcFlag + " " + sweepFlag + " " + x + " " + y;
                     break;
                 }
                 case Commands.curve: {
@@ -172,20 +151,7 @@ export const svg = {
                         uy = toFixed(screenY(bl.x, bl.y));
                     }
 
-                    command =
-                        (i === 0 ? Commands.move : Commands.curve) +
-                        " " +
-                        vx +
-                        " " +
-                        vy +
-                        " " +
-                        ux +
-                        " " +
-                        uy +
-                        " " +
-                        x +
-                        " " +
-                        y;
+                    command = (i === 0 ? Commands.move : Commands.curve) + " " + vx + " " + vy + " " + ux + " " + uy + " " + x + " " + y;
                     break;
                 }
                 case Commands.move: {

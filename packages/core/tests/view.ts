@@ -1,4 +1,4 @@
-import { Group } from "../src/lib/group";
+import { Group } from "../src/lib/Group";
 import { TreeView } from "../src/lib/renderers/TreeView";
 import { View } from "../src/lib/renderers/View";
 import { ViewFactory } from "../src/lib/renderers/ViewFactory";

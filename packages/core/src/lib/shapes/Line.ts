@@ -28,7 +28,7 @@ export class Line extends Path implements LineProperties {
     constructor(owner: Board, point1: VectorLike, point2: VectorLike, options: LineOptions = {}) {
         const vertex1 = new Anchor(vector_from_like(point1), "M");
         const vertex2 = new Anchor(vector_from_like(point2), "L");
-        super(owner, [vertex1, vertex2], false, false, false, path_attribs_from_line_attribs(options, owner));
+        super(owner, [vertex1, vertex2], false, false, false, path_options_from_line_options(options, owner));
     }
     override dispose(): void {
         super.dispose();
@@ -55,17 +55,17 @@ export class Line extends Path implements LineProperties {
     }
 }
 
-function path_attribs_from_line_attribs(options: LineOptions, owner: Board): PathOptions {
+function path_options_from_line_options(options: LineOptions, owner: Board): PathOptions {
     const retval: PathOptions = {
         id: options.id,
         position: options.position,
         attitude: options.attitude,
         dashes: options.dashes,
-        fillColor: default_color(options.fillColor, "none"),
+        fillColor: default_color(options.fillColor, owner.defaults.line.fillColor),
         fillOpacity: options.fillOpacity,
         opacity: options.opacity,
         plumb: options.plumb,
-        strokeColor: default_color(options.strokeColor, "gray"),
+        strokeColor: default_color(options.strokeColor, owner.defaults.line.strokeColor),
         strokeOpacity: options.strokeOpacity,
         strokeWidth: default_open_path_stroke_width(options.strokeWidth, owner),
         sx: options.sx,

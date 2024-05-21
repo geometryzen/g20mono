@@ -1,4 +1,4 @@
-import { Group } from "../group";
+import { Group } from "../Group";
 import { View } from "./View";
 
 export interface ViewFactory<T> {

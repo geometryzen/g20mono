@@ -223,9 +223,7 @@ function applySvgAttributes(this: Board, node: SVGElement, elem: Shape, parentSt
 
     // Similarly visibility is influenced by the value of both display and visibility.
     // Calculate a unified value here which defaults to `true`.
-    styles.visible =
-        !(typeof styles.display === "undefined" && /none/i.test(styles.display)) ||
-        (typeof styles.visibility === "undefined" && /hidden/i.test(styles.visibility));
+    styles.visible = !(typeof styles.display === "undefined" && /none/i.test(styles.display)) || (typeof styles.visibility === "undefined" && /hidden/i.test(styles.visibility));
 
     // Now iterate the whole thing
     for (key in styles) {
@@ -235,14 +233,7 @@ function applySvgAttributes(this: Board, node: SVGElement, elem: Shape, parentSt
             case "gradientTransform":
                 // TODO: Check this out https://github.com/paperjs/paper.js/blob/develop/src/svg/SvgImport.js#L315
                 if (/none/i.test(value)) break;
-                m =
-                    node.gradientTransform &&
-                    node.gradientTransform.baseVal &&
-                    node.gradientTransform.baseVal.length > 0
-                        ? node.gradientTransform.baseVal[0].matrix
-                        : node.getCTM
-                          ? node.getCTM()
-                          : null;
+                m = node.gradientTransform && node.gradientTransform.baseVal && node.gradientTransform.baseVal.length > 0 ? node.gradientTransform.baseVal[0].matrix : node.getCTM ? node.getCTM() : null;
 
                 if (m === null) break;
 
@@ -268,12 +259,7 @@ function applySvgAttributes(this: Board, node: SVGElement, elem: Shape, parentSt
             case "transform":
                 // TODO: Check this out https://github.com/paperjs/paper.js/blob/develop/src/svg/SvgImport.js#L315
                 if (/none/i.test(value)) break;
-                m =
-                    node.transform && node.transform.baseVal && node.transform.baseVal.length > 0
-                        ? node.transform.baseVal[0].matrix
-                        : node.getCTM
-                          ? node.getCTM()
-                          : null;
+                m = node.transform && node.transform.baseVal && node.transform.baseVal.length > 0 ? node.transform.baseVal[0].matrix : node.getCTM ? node.getCTM() : null;
 
                 // Might happen when transform string is empty or not valid.
                 if (m === null) break;
@@ -764,15 +750,7 @@ export const read = {
                         } else {
                             x = coord.x;
                             y = coord.y;
-                            result = new Anchor(
-                                x,
-                                y,
-                                undefined,
-                                undefined,
-                                undefined,
-                                undefined,
-                                Commands.close
-                            );
+                            result = new Anchor(x, y, undefined, undefined, undefined, undefined, Commands.close);
                             // Make coord be the last `m` command
                             for (let j = points.length - 1; j >= 0; j--) {
                                 const point = points[j];
@@ -791,15 +769,7 @@ export const read = {
                         x = parseFloat(coords[0]);
                         y = parseFloat(coords[1]);
 
-                        result = new Anchor(
-                            x,
-                            y,
-                            undefined,
-                            undefined,
-                            undefined,
-                            undefined,
-                            /m/i.test(lower) ? Commands.move : Commands.line
-                        );
+                        result = new Anchor(x, y, undefined, undefined, undefined, undefined, /m/i.test(lower) ? Commands.move : Commands.line);
 
                         if (relative) {
                             result.addSelf(coord);
@@ -816,15 +786,7 @@ export const read = {
                         a = /h/i.test(lower) ? "x" : "y";
                         b = /x/i.test(a) ? "y" : "x";
 
-                        result = new Anchor(
-                            undefined,
-                            undefined,
-                            undefined,
-                            undefined,
-                            undefined,
-                            undefined,
-                            Commands.line
-                        );
+                        result = new Anchor(undefined, undefined, undefined, undefined, undefined, undefined, Commands.line);
                         result[a] = parseFloat(coords[0]);
                         result[b] = coord[b];
 

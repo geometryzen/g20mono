@@ -26,10 +26,7 @@ export abstract class Gradient extends ElementBase implements ColorProvider {
     readonly _change = variable(this);
     readonly change$ = this._change.asObservable();
 
-    constructor(
-        stops: (Stop | [offset: number, color: string, opacity: number])[] = [],
-        options: GradientOptions = {}
-    ) {
+    constructor(stops: (Stop | [offset: number, color: string, opacity: number])[] = [], options: GradientOptions = {}) {
         super(ensure_identifier(options));
 
         if (typeof options.spreadMethod === "string") {

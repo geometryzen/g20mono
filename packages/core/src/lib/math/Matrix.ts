@@ -4,30 +4,10 @@ const cos = Math.cos;
 const sin = Math.sin;
 const tan = Math.tan;
 
-type ELEMENTS = [
-    a11: number,
-    a12: number,
-    a13: number,
-    a21: number,
-    a22: number,
-    a23: number,
-    a31: number,
-    a32: number,
-    a33: number,
-];
+type ELEMENTS = [a11: number, a12: number, a13: number, a21: number, a22: number, a23: number, a31: number, a32: number, a33: number];
 
 function equalsValue(P: ELEMENTS, Q: ELEMENTS): boolean {
-    return (
-        P[0] === Q[0] &&
-        P[1] === Q[1] &&
-        P[2] === Q[2] &&
-        P[3] === Q[3] &&
-        P[4] === Q[4] &&
-        P[5] === Q[5] &&
-        P[6] === Q[6] &&
-        P[7] === Q[7] &&
-        P[8] === Q[8]
-    );
+    return P[0] === Q[0] && P[1] === Q[1] && P[2] === Q[2] && P[3] === Q[3] && P[4] === Q[4] && P[5] === Q[5] && P[6] === Q[6] && P[7] === Q[7] && P[8] === Q[8];
 }
 
 /**
@@ -114,17 +94,7 @@ export class Matrix {
         ]);
     }
 
-    set(
-        a11: number,
-        a12: number,
-        a13: number,
-        a21: number,
-        a22: number,
-        a23: number,
-        a31: number,
-        a32: number,
-        a33: number
-    ): this {
+    set(a11: number, a12: number, a13: number, a21: number, a22: number, a23: number, a31: number, a32: number, a33: number): this {
         const olds: ELEMENTS = this.#signalValue[0];
         const news: ELEMENTS = this.#signalValue[1];
         news[0] = a11;
@@ -162,30 +132,10 @@ export class Matrix {
     }
 
     isOne(): boolean {
-        return (
-            this.a11 === 1 &&
-            this.a12 === 0 &&
-            this.a13 == 0 &&
-            this.a21 === 0 &&
-            this.a22 === 1 &&
-            this.a23 === 0 &&
-            this.a31 === 0 &&
-            this.a32 === 0 &&
-            this.a33 === 1
-        );
+        return this.a11 === 1 && this.a12 === 0 && this.a13 == 0 && this.a21 === 0 && this.a22 === 1 && this.a23 === 0 && this.a31 === 0 && this.a32 === 0 && this.a33 === 1;
     }
 
-    multiply(
-        b11: number,
-        b12: number,
-        b13: number,
-        b21: number,
-        b22: number,
-        b23: number,
-        b31: number,
-        b32: number,
-        b33: number
-    ): this {
+    multiply(b11: number, b12: number, b13: number, b21: number, b22: number, b23: number, b31: number, b32: number, b33: number): this {
         const elements: ELEMENTS = this.#signalValue[0];
 
         const a11 = elements[0];

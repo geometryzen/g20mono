@@ -1,6 +1,6 @@
 import { Anchor } from "./Anchor";
-import { Color } from "./effects/ColorProvider";
-import { Group } from "./group";
+import { Defaults } from "./Defaults";
+import { Group } from "./Group";
 import { G20, VectorLike } from "./math/G20";
 import { Path, PathOptions } from "./Path";
 import { Disposable } from "./reactive/Disposable";
@@ -10,19 +10,10 @@ import { Arrow, ArrowOptions } from "./shapes/Arrow";
 import { Circle, CircleOptions } from "./shapes/Circle";
 import { Ellipse, EllipseOptions } from "./shapes/Ellipse";
 import { Line, LineOptions } from "./shapes/Line";
+import { Point, PointOptions } from "./shapes/Point";
 import { Polygon, PolygonOptions } from "./shapes/Polygon";
 import { Rectangle, RectangleOptions } from "./shapes/Rectangle";
-import { Text, TextOptions } from "./text";
-
-export interface PointOptions extends PathOptions {
-    id?: string;
-    fillColor?: Color;
-    fillOpacity?: number;
-    strokeColor?: Color;
-    strokeOpacity?: number;
-    strokeWidth?: number;
-    visibility?: "visible" | "hidden" | "collapse";
-}
+import { Text, TextOptions } from "./Text";
 
 export interface Board extends Disposable {
     arc(options?: ArcSegmentOptions): ArcSegment;
@@ -32,7 +23,7 @@ export interface Board extends Disposable {
     ellipse(options?: EllipseOptions): Ellipse;
     line(point1: VectorLike, point2: VectorLike, options?: LineOptions): Line;
     path(closed: boolean, points: (Anchor | G20 | [x: number, y: number])[], options?: PathOptions): Path;
-    point(position: VectorLike, options?: PointOptions): Shape;
+    point(position: VectorLike, options?: PointOptions): Point;
     polygon(points: VectorLike[], options?: PolygonOptions): Polygon;
     rectangle(options?: RectangleOptions): Rectangle;
     text(message: string, options?: TextOptions): Text;
@@ -48,6 +39,7 @@ export interface Board extends Disposable {
     };
     update(): void;
     get crazy(): boolean;
+    get defaults(): Defaults;
     get goofy(): boolean;
     get frameCount(): number;
     get scene(): Group;

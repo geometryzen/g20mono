@@ -31,8 +31,6 @@ describe("GraphicsBoard", function () {
         expect(P.X.x).toBe(x);
         expect(P.X.y).toBe(y);
         const viewee = viewDOM.downcast(P.viewee());
-        // This may change in future...
-        expect(viewee.name).toBe("path");
         expect(viewee.getAttribute("id")).toBe(null);
 
         P.id = "P";

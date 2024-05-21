@@ -39,12 +39,7 @@ export const Register = {
             throw new Error("unable to load " + texture.src);
         };
 
-        if (
-            typeof image.width === "number" &&
-            image.width > 0 &&
-            typeof image.height === "number" &&
-            image.height > 0
-        ) {
+        if (typeof image.width === "number" && image.width > 0 && typeof image.height === "number" && image.height > 0) {
             loaded();
         } else if (typeof image.addEventListener === "function") {
             image.addEventListener("load", loaded, false);

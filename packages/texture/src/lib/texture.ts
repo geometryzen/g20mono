@@ -49,12 +49,7 @@ export class Texture extends ElementBase implements ColorProvider {
             this.src = src;
         } else if (typeof src === "object") {
             const elemString = Object.prototype.toString.call(src);
-            if (
-                elemString === "[object HTMLImageElement]" ||
-                elemString === "[object HTMLCanvasElement]" ||
-                elemString === "[object HTMLVideoElement]" ||
-                elemString === "[object Image]"
-            ) {
+            if (elemString === "[object HTMLImageElement]" || elemString === "[object HTMLCanvasElement]" || elemString === "[object HTMLVideoElement]" || elemString === "[object Image]") {
                 this.image = src;
             }
         }
@@ -212,13 +207,9 @@ export class Texture extends ElementBase implements ColorProvider {
      * @param image The image to infer the tag name from.
      * @returns the tag name of an image, video, or canvas node.
      */
-    static getTag(
-        image: HTMLCanvasElement | HTMLImageElement | HTMLVideoElement
-    ): "canvas" | "img" | "video" {
+    static getTag(image: HTMLCanvasElement | HTMLImageElement | HTMLVideoElement): "canvas" | "img" | "video" {
         // Headless environments
-        return (
-            ((image && image.nodeName && image.nodeName.toLowerCase()) as "canvas" | "img" | "video") || "img"
-        );
+        return ((image && image.nodeName && image.nodeName.toLowerCase()) as "canvas" | "img" | "video") || "img";
     }
 
     update(): this {
@@ -245,14 +236,7 @@ export class Texture extends ElementBase implements ColorProvider {
     }
 
     flagReset(dirtyFlag = false) {
-        this._flagSrc =
-            this._flagImage =
-            this._flagLoaded =
-            this._flagRepeat =
-            this._flagVideo =
-            this._flagScale =
-            this._flagOffset =
-                dirtyFlag;
+        this._flagSrc = this._flagImage = this._flagLoaded = this._flagRepeat = this._flagVideo = this._flagScale = this._flagOffset = dirtyFlag;
         return this;
     }
     get image(): HTMLCanvasElement | HTMLImageElement | HTMLVideoElement {

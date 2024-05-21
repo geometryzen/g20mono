@@ -1,8 +1,9 @@
 import { computed, effect, Readable, signal, State } from "@g20/reactive";
 import { Anchor } from "./Anchor";
-import { Board, PointOptions } from "./Board";
+import { Board } from "./Board";
+import { Defaults } from "./Defaults";
 import { ElementDOM } from "./ElementDOM";
-import { Group } from "./group";
+import { Group } from "./Group";
 import { G20, VectorLike } from "./math/G20";
 import { Path, PathOptions } from "./Path";
 import { Disposable, disposableFromFunction, dispose } from "./reactive/Disposable";
@@ -15,15 +16,13 @@ import { Arrow, ArrowOptions } from "./shapes/Arrow";
 import { Circle, CircleOptions } from "./shapes/Circle";
 import { Ellipse, EllipseOptions } from "./shapes/Ellipse";
 import { Line, LineOptions } from "./shapes/Line";
+import { Point, PointOptions } from "./shapes/Point";
 import { Polygon, PolygonOptions } from "./shapes/Polygon";
 import { Rectangle, RectangleOptions } from "./shapes/Rectangle";
-import { Text, TextOptions } from "./text";
+import { Text, TextOptions } from "./Text";
 import { default_color } from "./utils/default_color";
 import { default_number } from "./utils/default_number";
-import {
-    default_closed_path_stroke_width,
-    default_open_path_stroke_width,
-} from "./utils/default_stroke_width";
+import { default_closed_path_stroke_width, default_open_path_stroke_width } from "./utils/default_stroke_width";
 import { dateTime } from "./utils/performance";
 
 export type BoundingBox = {
@@ -38,6 +37,7 @@ export interface GraphicsBoardOptions {
 }
 
 export class GraphicsBoard<E, T> implements Board {
+    readonly defaults = new Defaults();
     readonly #disposables: Disposable[] = [];
 
     readonly #view: View<T>;
@@ -85,13 +85,7 @@ export class GraphicsBoard<E, T> implements Board {
         return bbox.left > bbox.right;
     });
 
-    constructor(
-        elementOrId: string | E,
-        elementDOM: ElementDOM<E, T>,
-        viewDOM: ViewDOM<T>,
-        viewFactory: ViewFactory<T>,
-        options: GraphicsBoardOptions = {}
-    ) {
+    constructor(elementOrId: string | E, elementDOM: ElementDOM<E, T>, viewDOM: ViewDOM<T>, viewFactory: ViewFactory<T>, options: GraphicsBoardOptions = {}) {
         this.#elementDOM = elementDOM;
         this.#viewDOM = viewDOM;
 
@@ -373,20 +367,10 @@ export class GraphicsBoard<E, T> implements Board {
         return line;
     }
 
-    point(position: VectorLike, options: PointOptions = {}): Shape {
-        const { left, top, right, bottom } = this.getBoundingBox();
-        const sx = this.width / Math.abs(right - left);
-        const sy = this.height / Math.abs(bottom - top);
-        const rx = 4 / sx;
-        const ry = 4 / sy;
-        const ellipse_attribs = ellipse_attribs_from_point_attribs(options);
-        ellipse_attribs.fillColor = default_color(ellipse_attribs.fillColor, "gray");
-        ellipse_attribs.position = position;
-        ellipse_attribs.rx = rx;
-        ellipse_attribs.ry = ry;
-        const ellipse = new Ellipse(this, ellipse_attribs);
-        this.add(ellipse);
-        return ellipse;
+    point(position: VectorLike, options: PointOptions = {}): Point {
+        const point = new Point(this, position, options);
+        this.add(point);
+        return point;
     }
 
     polygon(points: VectorLike[] = [], options: PolygonOptions = {}): Polygon {
@@ -413,32 +397,20 @@ export class GraphicsBoard<E, T> implements Board {
         return arrow;
     }
 
-    curve(
-        closed: boolean,
-        points: (Anchor | G20 | [x: number, y: number])[],
-        options: PathOptions = {}
-    ): Path {
+    curve(closed: boolean, points: (Anchor | G20 | [x: number, y: number])[], options: PathOptions = {}): Path {
         const curved = true;
         options.fillColor = default_color(options.fillColor, closed ? "none" : "gray");
         options.strokeColor = default_color(options.strokeColor, "gray");
-        options.strokeWidth = closed
-            ? default_closed_path_stroke_width(options.strokeWidth, this)
-            : default_open_path_stroke_width(options.strokeWidth, this);
+        options.strokeWidth = closed ? default_closed_path_stroke_width(options.strokeWidth, this) : default_open_path_stroke_width(options.strokeWidth, this);
         const curve = new Path(this, points_to_anchors(points), closed, curved, false, options);
         this.add(curve);
         return curve;
     }
 
-    path(
-        closed: boolean,
-        points: (Anchor | G20 | [x: number, y: number])[],
-        options: PathOptions = {}
-    ): Path {
+    path(closed: boolean, points: (Anchor | G20 | [x: number, y: number])[], options: PathOptions = {}): Path {
         options.fillColor = default_color(options.fillColor, closed ? "none" : "none");
         options.strokeColor = default_color(options.strokeColor, "gray");
-        options.strokeWidth = closed
-            ? default_closed_path_stroke_width(options.strokeWidth, this)
-            : default_open_path_stroke_width(options.strokeWidth, this);
+        options.strokeWidth = closed ? default_closed_path_stroke_width(options.strokeWidth, this) : default_open_path_stroke_width(options.strokeWidth, this);
         const path = new Path(this, points_to_anchors(points), closed, false, false, options);
         this.add(path);
         return path;
@@ -465,12 +437,7 @@ class Fitter<E, T> {
     readonly #domElement: T;
     #target: E | null = null;
     #target_resize: Disposable | null = null;
-    constructor(
-        board: GraphicsBoard<E, T>,
-        elementDOM: ElementDOM<E, T>,
-        view: View<T>,
-        viewDOM: ViewDOM<T>
-    ) {
+    constructor(board: GraphicsBoard<E, T>, elementDOM: ElementDOM<E, T>, view: View<T>, viewDOM: ViewDOM<T>) {
         this.#board = board;
         if (elementDOM) {
             this.#elementDOM = elementDOM;
@@ -602,21 +569,6 @@ function get_container_id<E, T>(elementOrId: string | E, elementDOM: ElementDOM<
             return null;
         }
     }
-}
-
-function ellipse_attribs_from_point_attribs(options: PointOptions): EllipseOptions {
-    const retval: EllipseOptions = {
-        id: options.id,
-        fillColor: options.fillColor,
-        fillOpacity: options.fillOpacity,
-        // attitude: attributes.attitude,
-        // position: attributes.position,
-        strokeColor: options.strokeColor,
-        strokeOpacity: options.strokeOpacity,
-        strokeWidth: options.strokeWidth,
-        visibility: options.visibility,
-    };
-    return retval;
 }
 
 function points_to_anchors(points: (Anchor | G20 | [x: number, y: number])[]): Anchor[] {

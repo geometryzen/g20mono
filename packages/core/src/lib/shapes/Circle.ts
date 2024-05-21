@@ -5,10 +5,10 @@ import { Color } from "../effects/ColorProvider";
 import { G20, SpinorLike, VectorLike } from "../math/G20";
 import { Path, PathOptions } from "../Path";
 import { Disposable, dispose } from "../reactive/Disposable";
+import { Commands } from "../utils/Commands";
 import { default_color } from "../utils/default_color";
 import { default_closed_path_stroke_width } from "../utils/default_stroke_width";
 import { HALF_PI, TWO_PI } from "../utils/math";
-import { Commands } from "../utils/Commands";
 
 export interface CircleOptions extends PathOptions {
     position?: VectorLike;
@@ -88,9 +88,9 @@ function path_options_from_circle_options(options: CircleOptions, owner: Board):
         id: options.id,
         attitude: options.attitude,
         position: options.position,
-        fillColor: default_color(options.fillColor, "none"),
+        fillColor: default_color(options.fillColor, owner.defaults.circle.fillColor),
         fillOpacity: options.fillOpacity,
-        strokeColor: default_color(options.strokeColor, "gray"),
+        strokeColor: default_color(options.strokeColor, owner.defaults.circle.strokeColor),
         strokeOpacity: options.strokeOpacity,
         strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
         dashes: options.dashes,

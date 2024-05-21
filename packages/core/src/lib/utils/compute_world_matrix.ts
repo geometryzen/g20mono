@@ -1,4 +1,4 @@
-import { Group } from "../group";
+import { Group } from "../Group";
 import { Matrix } from "../math/Matrix";
 import { Shape } from "../Shape";
 

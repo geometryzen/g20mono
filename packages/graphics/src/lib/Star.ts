@@ -1,16 +1,4 @@
-import {
-    Anchor,
-    Board,
-    Collection,
-    Color,
-    Disposable,
-    dispose,
-    G20,
-    Path,
-    PathOptions,
-    SpinorLike,
-    VectorLike,
-} from "@g20/core";
+import { Anchor, Board, Collection, Color, Disposable, dispose, G20, Path, PathOptions, SpinorLike, VectorLike } from "@g20/core";
 import { effect, signal } from "@g20/reactive";
 import { default_color } from "./default_color";
 import { default_closed_path_stroke_width } from "./default_stroke_width";
@@ -107,13 +95,7 @@ export class Star extends Path {
     }
 }
 
-function update_vertices(
-    points: number,
-    innerRadius: number,
-    outerRadius: number,
-    twist: number,
-    vertices: Collection<Anchor>
-) {
+function update_vertices(points: number, innerRadius: number, outerRadius: number, twist: number, vertices: Collection<Anchor>) {
     const sides = 2 * points;
     const N = sides + 1;
     if (vertices.length > N) {

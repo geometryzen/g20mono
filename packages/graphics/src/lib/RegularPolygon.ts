@@ -1,16 +1,4 @@
-import {
-    Anchor,
-    Board,
-    Collection,
-    Color,
-    Disposable,
-    dispose,
-    G20,
-    Path,
-    PathOptions,
-    SpinorLike,
-    VectorLike,
-} from "@g20/core";
+import { Anchor, Board, Collection, Color, Disposable, dispose, G20, Path, PathOptions, SpinorLike, VectorLike } from "@g20/core";
 import { effect, signal } from "@g20/reactive";
 import { default_color } from "./default_color";
 import { default_closed_path_stroke_width } from "./default_stroke_width";
@@ -103,10 +91,7 @@ export class RegularPolygon extends Path {
     }
 }
 
-function path_attribs_from_regular_polygon_attribs(
-    options: RegularPolygonOptions,
-    owner: Board
-): PathOptions {
+function path_attribs_from_regular_polygon_attribs(options: RegularPolygonOptions, owner: Board): PathOptions {
     const retval: PathOptions = {
         id: options.id,
         attitude: options.attitude,

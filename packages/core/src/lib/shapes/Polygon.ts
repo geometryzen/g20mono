@@ -18,9 +18,7 @@ export interface PolygonOptions extends PathOptions {
 
 export class Polygon extends Path {
     constructor(owner: Board, points: VectorLike[] = [], options: PolygonOptions = {}) {
-        const vertices = points
-            .map((point) => vector_from_like(point))
-            .map((position, index) => new Anchor(position, index === 0 ? "M" : "L"));
+        const vertices = points.map((point) => vector_from_like(point)).map((position, index) => new Anchor(position, index === 0 ? "M" : "L"));
 
         super(owner, vertices, true, false, false, path_attributes(options, owner));
 

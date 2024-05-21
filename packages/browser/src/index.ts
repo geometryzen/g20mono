@@ -2,9 +2,9 @@ export { initCanvasBoard } from "@g20/canvas";
 export {
     Anchor,
     ArcSegment,
+    ArcSegmentOptions,
     Arrow,
     ArrowOptions,
-    ArrowProperties,
     Bivector,
     Board,
     Circle,
@@ -14,6 +14,7 @@ export {
     Color,
     ColorProvider,
     Commands,
+    Defaults,
     dispose,
     ElementBase,
     ElementDOM,
@@ -24,6 +25,8 @@ export {
     GraphicsBoardOptions,
     Group,
     GroupOptions,
+    is_color,
+    is_color_provider,
     Line,
     LineOptions,
     LineProperties,
@@ -32,6 +35,7 @@ export {
     Parent,
     Path,
     PathOptions,
+    Point,
     PointOptions,
     Polygon,
     PolygonOptions,
@@ -42,7 +46,6 @@ export {
     Shape,
     ShapeBase,
     ShapeOptions,
-    ShapeProperties,
     Spinor,
     SpinorLike,
     spinor_from_like,
@@ -63,23 +66,8 @@ export {
     ZZZ,
 } from "@g20/core";
 export { CircleCircleIntersection } from "@g20/euclid";
-export {
-    Gradient,
-    GradientOptions,
-    LinearGradient,
-    LinearGradientOptions,
-    RadialGradient,
-    RadialGradientOptions,
-    Stop,
-} from "@g20/gradient";
-export {
-    RegularPolygon,
-    RegularPolygonOptions,
-    RoundedRectangle,
-    RoundedRectangleOptions,
-    Star,
-    StarOptions,
-} from "@g20/graphics";
+export { Gradient, GradientOptions, LinearGradient, LinearGradientOptions, RadialGradient, RadialGradientOptions, Stop } from "@g20/gradient";
+export { RegularPolygon, RegularPolygonOptions, RoundedRectangle, RoundedRectangleOptions, Star, StarOptions } from "@g20/graphics";
 export { Axes, AxesOptions, Grid, GridOptions } from "@g20/grid";
 export { initMockBoard, MockElement, MockNode, MockViewDOM, MockViewFactory } from "@g20/mock";
 export { Player } from "@g20/player";

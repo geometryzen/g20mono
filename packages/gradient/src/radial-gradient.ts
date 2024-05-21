@@ -30,11 +30,7 @@ export class RadialGradient extends Gradient implements ColorProvider {
      * @param stops A list of {@link Stop}s that contain the gradient fill pattern for the gradient.
      * @param options
      */
-    constructor(
-        center: VectorLike,
-        stops: (Stop | [offset: number, color: string, opacity: number])[] = [],
-        options: RadialGradientOptions = {}
-    ) {
+    constructor(center: VectorLike, stops: (Stop | [offset: number, color: string, opacity: number])[] = [], options: RadialGradientOptions = {}) {
         super(stops, options);
 
         this.#center = vector_from_like(center);

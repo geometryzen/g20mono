@@ -1,16 +1,4 @@
-import {
-    Anchor,
-    Board,
-    Collection,
-    Color,
-    Disposable,
-    dispose,
-    G20,
-    Path,
-    PathOptions,
-    SpinorLike,
-    VectorLike,
-} from "@g20/core";
+import { Anchor, Board, Collection, Color, Disposable, dispose, G20, Path, PathOptions, SpinorLike, VectorLike } from "@g20/core";
 import { effect, signal } from "@g20/reactive";
 import { default_color } from "./default_color";
 import { default_closed_path_stroke_width } from "./default_stroke_width";
@@ -40,11 +28,7 @@ export class RoundedRectangle extends Path {
     readonly #radius = signal(0.2);
 
     constructor(owner: Board, options: RoundedRectangleOptions = {}) {
-        if (
-            typeof options.radius === "undefined" &&
-            typeof options.width === "number" &&
-            typeof options.height === "number"
-        ) {
+        if (typeof options.radius === "undefined" && typeof options.width === "number" && typeof options.height === "number") {
             options.radius = Math.floor(Math.min(options.width, options.height) / 12);
         }
 
@@ -109,10 +93,7 @@ export class RoundedRectangle extends Path {
     }
 }
 
-function path_options_from_rounded_rectangle_options(
-    options: RoundedRectangleOptions,
-    owner: Board
-): PathOptions {
+function path_options_from_rounded_rectangle_options(options: RoundedRectangleOptions, owner: Board): PathOptions {
     const retval: PathOptions = {
         id: options.id,
         attitude: options.attitude,

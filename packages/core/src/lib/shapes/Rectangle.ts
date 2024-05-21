@@ -50,12 +50,7 @@ export class Rectangle extends Path implements RectangleProperties, Disposable {
     readonly #origin = G20.zero.clone();
 
     constructor(owner: Board, attributes: RectangleOptions = {}) {
-        const anchors = [
-            new Anchor(G20.vector(0, 0), "M"),
-            new Anchor(G20.vector(0, 0), "L"),
-            new Anchor(G20.vector(0, 0), "L"),
-            new Anchor(G20.vector(0, 0), "L"),
-        ];
+        const anchors = [new Anchor(G20.vector(0, 0), "M"), new Anchor(G20.vector(0, 0), "L"), new Anchor(G20.vector(0, 0), "L"), new Anchor(G20.vector(0, 0), "L")];
 
         super(owner, anchors, true, false, true, path_options_from_rectangle_options(attributes, owner));
 

@@ -39,14 +39,7 @@ export class Anchor {
      * @param by The y position of the right handle point.
      * @param command The command to describe how to render. Applicable commands are {@link Commands}
      */
-    constructor(
-        origin: G20 | [x: number, y: number],
-        command: "M" | "L" | "C" | "A" | "Z" = Commands.move,
-        ax = 0,
-        ay = 0,
-        bx = 0,
-        by = 0
-    ) {
+    constructor(origin: G20 | [x: number, y: number], command: "M" | "L" | "C" | "A" | "Z" = Commands.move, ax = 0, ay = 0, bx = 0, by = 0) {
         this.origin = vector_like(origin);
         this.controls.a.set(ax, ay);
         this.controls.b.set(bx, by);

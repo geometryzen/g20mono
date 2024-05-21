@@ -53,9 +53,7 @@ describe("RoundedRectangle", function () {
                     expect(viewee.getAttribute("fill")).toBe("none");
                     expect(viewee.getAttribute("stroke")).toBe("gray");
                     expect(viewee.getAttribute("stroke-width")).toBe("0.009375");
-                    expect(viewee.getAttribute("d")).toBe(
-                        "M -0.5 -0.3 L -0.5 0.3 L -0.3 0.5 L 0.3 0.5 L 0.5 0.3 L 0.5 -0.3 L 0.3 -0.5 L -0.3 -0.5 L -0.5 -0.3 L -0.5 -0.3 Z"
-                    );
+                    expect(viewee.getAttribute("d")).toBe("M -0.5 -0.3 L -0.5 0.3 L -0.3 0.5 L 0.3 0.5 L 0.5 0.3 L 0.5 -0.3 L 0.3 -0.5 L -0.3 -0.5 L -0.5 -0.3 L -0.5 -0.3 Z");
                     board.dispose();
                     resolve();
                 } catch (e) {

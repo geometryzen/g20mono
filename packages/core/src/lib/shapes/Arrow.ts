@@ -5,9 +5,10 @@ import { Color } from "../effects/ColorProvider";
 import { G20, SpinorLike, VectorLike, vector_from_like } from "../math/G20";
 import { Path, PathOptions } from "../Path";
 import { Disposable, dispose } from "../reactive/Disposable";
-import { default_color } from "../utils/default_color";
-import { default_open_path_stroke_width } from "../utils/default_stroke_width";
 import { Commands } from "../utils/Commands";
+import { default_color } from "../utils/default_color";
+import { default_number } from "../utils/default_number";
+import { default_open_path_stroke_width } from "../utils/default_stroke_width";
 
 export interface ArrowOptions extends PathOptions {
     id?: string;
@@ -21,19 +22,7 @@ export interface ArrowOptions extends PathOptions {
     visibility?: "hidden" | "visible" | "collapse";
 }
 
-export interface ArrowProperties {
-    X: G20;
-    R: G20;
-    axis: G20;
-    headLength: number;
-    fillColor: Color;
-    fillOpacity: number;
-    strokeColor: Color;
-    strokeOpacity: number;
-    strokeWidth: number;
-}
-
-export class Arrow extends Path implements ArrowProperties {
+export class Arrow extends Path {
     readonly #disposables: Disposable[] = [];
     readonly #axis: G20;
     readonly #headLength: G20;
@@ -126,12 +115,7 @@ export class Arrow extends Path implements ArrowProperties {
     }
 }
 
-function update_arrow_vertices(
-    axis: G20,
-    headLength: number,
-    origin: G20,
-    vertices: Collection<Anchor>
-): void {
+function update_arrow_vertices(axis: G20, headLength: number, origin: G20, vertices: Collection<Anchor>): void {
     const θ = Math.atan2(axis.y, axis.x);
     // This angle gives an arrow head that is an equilateral triangle.
     // const φ = Math.PI / 6;
@@ -150,14 +134,10 @@ function update_arrow_vertices(
     head.origin.copyVector(axis).sub(origin);
 
     port_head.origin.copyVector(axis).sub(origin);
-    port_tail.origin
-        .set(axis.x - headLength * Math.cos(θ - φ), axis.y - headLength * Math.sin(θ - φ))
-        .sub(origin);
+    port_tail.origin.set(axis.x - headLength * Math.cos(θ - φ), axis.y - headLength * Math.sin(θ - φ)).sub(origin);
 
     stbd_head.origin.copyVector(axis).sub(origin);
-    stbd_tail.origin
-        .set(axis.x - headLength * Math.cos(θ + φ), axis.y - headLength * Math.sin(θ + φ))
-        .sub(origin);
+    stbd_tail.origin.set(axis.x - headLength * Math.cos(θ + φ), axis.y - headLength * Math.sin(θ + φ)).sub(origin);
 }
 
 function path_attribs_from_arrow_attribs(options: ArrowOptions, owner: Board): PathOptions {
@@ -169,8 +149,10 @@ function path_attribs_from_arrow_attribs(options: ArrowOptions, owner: Board): P
         // visibility: attributes.visibility,
         // fill: attributes.fill,
         // fillOpacity: attributes.fillOpacity,
-        strokeColor: default_color(options.strokeColor, "gray"),
-        strokeOpacity: options.strokeOpacity,
+        fillColor: default_color(options.fillColor, owner.defaults.arrow.fillColor),
+        fillOpacity: default_number(options.fillOpacity, owner.defaults.arrow.fillOpacity),
+        strokeColor: default_color(options.strokeColor, owner.defaults.arrow.strokeColor),
+        strokeOpacity: default_number(options.strokeOpacity, owner.defaults.arrow.strokeOpacity),
         strokeWidth: default_open_path_stroke_width(options.strokeWidth, owner),
         vectorEffect: options.vectorEffect,
         visibility: options.visibility,

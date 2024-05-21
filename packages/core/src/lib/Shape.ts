@@ -21,16 +21,7 @@ export interface SVGAttributes {
     /**
      * @see https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/dominant-baseline
      */
-    "dominant-baseline"?:
-        | "auto"
-        | "text-bottom"
-        | "alphabetic"
-        | "ideographic"
-        | "middle"
-        | "central"
-        | "mathematical"
-        | "hanging"
-        | "text-top";
+    "dominant-baseline"?: "auto" | "text-bottom" | "alphabetic" | "ideographic" | "middle" | "central" | "mathematical" | "hanging" | "text-top";
     dx?: string;
     dy?: string;
     fill?: string;

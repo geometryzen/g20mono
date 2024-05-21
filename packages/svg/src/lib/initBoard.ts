@@ -15,11 +15,5 @@ export interface BoardOptions {
 export function initBoard(elementOrId: string | HTMLElement, options: BoardOptions = {}): Board {
     const elementDOM = new HTMLElementDOM(window.document);
     const viewDOM = new SVGViewDOM();
-    return new GraphicsBoard<HTMLElement, SVGElement>(
-        elementOrId,
-        elementDOM,
-        viewDOM,
-        new SVGViewFactory(),
-        options
-    );
+    return new GraphicsBoard<HTMLElement, SVGElement>(elementOrId, elementDOM, viewDOM, new SVGViewFactory(), options);
 }

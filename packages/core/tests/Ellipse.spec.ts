@@ -68,9 +68,7 @@ describe("Ellipse", function () {
                     expect(viewee.getAttribute("fill")).toBe("none");
                     expect(viewee.getAttribute("stroke")).toBe("gray");
                     expect(viewee.getAttribute("stroke-width")).toBe("0.009375");
-                    expect(viewee.getAttribute("d")).toBe(
-                        "M 0 1 C 0.276142 1 0.5 0.552284 0.5 0 C 0.5 -0.552285 0.276142 -1 0 -1 C -0.276143 -1 -0.5 -0.552285 -0.5 -0.000001 C -0.500001 0.552284 -0.276143 1 0 1 Z"
-                    );
+                    expect(viewee.getAttribute("d")).toBe("M 0 1 C 0.276142 1 0.5 0.552284 0.5 0 C 0.5 -0.552285 0.276142 -1 0 -1 C -0.276143 -1 -0.5 -0.552285 -0.5 -0.000001 C -0.500001 0.552284 -0.276143 1 0 1 Z");
                     board.dispose();
                     resolve();
                 } catch (e) {
@@ -122,9 +120,7 @@ describe("Ellipse", function () {
                     expect(viewee.getAttribute("fill")).toBe("none");
                     expect(viewee.getAttribute("stroke")).toBe("gray");
                     expect(viewee.getAttribute("stroke-width")).toBe("0.009375");
-                    expect(viewee.getAttribute("d")).toBe(
-                        "M 0 1 C 0.276142 1 0.5 0.552284 0.5 0 C 0.5 -0.552285 0.276142 -1 0 -1 C -0.276143 -1 -0.5 -0.552285 -0.5 -0.000001 C -0.500001 0.552284 -0.276143 1 0 1 Z"
-                    );
+                    expect(viewee.getAttribute("d")).toBe("M 0 1 C 0.276142 1 0.5 0.552284 0.5 0 C 0.5 -0.552285 0.276142 -1 0 -1 C -0.276143 -1 -0.5 -0.552285 -0.5 -0.000001 C -0.500001 0.552284 -0.276143 1 0 1 Z");
                     board.dispose();
                     resolve();
                 } catch (e) {
@@ -176,9 +172,7 @@ describe("Ellipse", function () {
                     expect(viewee.getAttribute("fill")).toBe("none");
                     expect(viewee.getAttribute("stroke")).toBe("gray");
                     expect(viewee.getAttribute("stroke-width")).toBe("0.009375");
-                    expect(viewee.getAttribute("d")).toBe(
-                        "M 0 1 C 0.276142 1 0.5 0.552284 0.5 0 C 0.5 -0.552285 0.276142 -1 0 -1 C -0.276143 -1 -0.5 -0.552285 -0.5 -0.000001 C -0.500001 0.552284 -0.276143 1 0 1 Z"
-                    );
+                    expect(viewee.getAttribute("d")).toBe("M 0 1 C 0.276142 1 0.5 0.552284 0.5 0 C 0.5 -0.552285 0.276142 -1 0 -1 C -0.276143 -1 -0.5 -0.552285 -0.5 -0.000001 C -0.500001 0.552284 -0.276143 1 0 1 Z");
                     board.dispose();
                     resolve();
                 } catch (e) {
@@ -234,9 +228,7 @@ describe("Ellipse", function () {
                     expect(viewee.getAttribute("fill")).toBe("none");
                     expect(viewee.getAttribute("stroke")).toBe("gray");
                     expect(viewee.getAttribute("stroke-width")).toBe("0.009375");
-                    expect(viewee.getAttribute("d")).toBe(
-                        "M 0 1 C 0.276142 1 0.5 0.552284 0.5 0 C 0.5 -0.552285 0.276142 -1 0 -1 C -0.276143 -1 -0.5 -0.552285 -0.5 -0.000001 C -0.500001 0.552284 -0.276143 1 0 1 Z"
-                    );
+                    expect(viewee.getAttribute("d")).toBe("M 0 1 C 0.276142 1 0.5 0.552284 0.5 0 C 0.5 -0.552285 0.276142 -1 0 -1 C -0.276143 -1 -0.5 -0.552285 -0.5 -0.000001 C -0.500001 0.552284 -0.276143 1 0 1 Z");
                     board.dispose();
                     resolve();
                 } catch (e) {
@@ -295,9 +287,7 @@ describe("Ellipse", function () {
                     expect(viewee.getAttribute("fill")).toBe("none");
                     expect(viewee.getAttribute("stroke")).toBe("gray");
                     expect(viewee.getAttribute("stroke-width")).toBe("0.009375");
-                    expect(viewee.getAttribute("d")).toBe(
-                        "M 0 1 C 0.276142 1 0.5 0.552284 0.5 0 C 0.5 -0.552285 0.276142 -1 0 -1 C -0.276143 -1 -0.5 -0.552285 -0.5 -0.000001 C -0.500001 0.552284 -0.276143 1 0 1 Z"
-                    );
+                    expect(viewee.getAttribute("d")).toBe("M 0 1 C 0.276142 1 0.5 0.552284 0.5 0 C 0.5 -0.552285 0.276142 -1 0 -1 C -0.276143 -1 -0.5 -0.552285 -0.5 -0.000001 C -0.500001 0.552284 -0.276143 1 0 1 Z");
                     board.dispose();
                     resolve();
                 } catch (e) {
@@ -353,9 +343,7 @@ describe("Ellipse", function () {
                     expect(viewee.getAttribute("fill")).toBe("none");
                     expect(viewee.getAttribute("stroke")).toBe("gray");
                     expect(viewee.getAttribute("stroke-width")).toBe("0.009375");
-                    expect(viewee.getAttribute("d")).toBe(
-                        "M 0 1 C 0.276142 1 0.5 0.552284 0.5 0 C 0.5 -0.552285 0.276142 -1 0 -1 C -0.276143 -1 -0.5 -0.552285 -0.5 -0.000001 C -0.500001 0.552284 -0.276143 1 0 1 Z"
-                    );
+                    expect(viewee.getAttribute("d")).toBe("M 0 1 C 0.276142 1 0.5 0.552284 0.5 0 C 0.5 -0.552285 0.276142 -1 0 -1 C -0.276143 -1 -0.5 -0.552285 -0.5 -0.000001 C -0.500001 0.552284 -0.276143 1 0 1 Z");
 
                     board.dispose();
 
@@ -413,9 +401,7 @@ describe("Ellipse", function () {
                     expect(viewee.getAttribute("fill")).toBe("none");
                     expect(viewee.getAttribute("stroke")).toBe("gray");
                     expect(viewee.getAttribute("stroke-width")).toBe("0.009375");
-                    expect(viewee.getAttribute("d")).toBe(
-                        "M 0 1 C 0.276142 1 0.5 0.552284 0.5 0 C 0.5 -0.552285 0.276142 -1 0 -1 C -0.276143 -1 -0.5 -0.552285 -0.5 -0.000001 C -0.500001 0.552284 -0.276143 1 0 1 Z"
-                    );
+                    expect(viewee.getAttribute("d")).toBe("M 0 1 C 0.276142 1 0.5 0.552284 0.5 0 C 0.5 -0.552285 0.276142 -1 0 -1 C -0.276143 -1 -0.5 -0.552285 -0.5 -0.000001 C -0.500001 0.552284 -0.276143 1 0 1 Z");
 
                     board.dispose();
 
@@ -489,9 +475,7 @@ describe("Ellipse", function () {
                     expect(viewee.getAttribute("fill")).toBe("none");
                     expect(viewee.getAttribute("stroke")).toBe("gray");
                     expect(viewee.getAttribute("stroke-width")).toBe("0.009375");
-                    expect(viewee.getAttribute("d")).toBe(
-                        "M 0 1 C 0.552284 1 1 0.552284 1 0 C 1 -0.552285 0.552284 -1 0 -1 C -0.552285 -1 -1 -0.552285 -1 -0.000001 C -1.000001 0.552284 -0.552285 1 0 1 Z"
-                    );
+                    expect(viewee.getAttribute("d")).toBe("M 0 1 C 0.552284 1 1 0.552284 1 0 C 1 -0.552285 0.552284 -1 0 -1 C -0.552285 -1 -1 -0.552285 -1 -0.000001 C -1.000001 0.552284 -0.552285 1 0 1 Z");
                     board.dispose();
                     resolve();
                 } catch (e) {

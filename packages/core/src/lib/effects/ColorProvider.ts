@@ -32,11 +32,7 @@ export function is_color_provider(x: Color): x is ColorProvider {
         return false;
     } else if (typeof x === "object") {
         const duck = x as ColorProvider;
-        return (
-            typeof duck.serialize === "function" &&
-            typeof duck.incrementUse === "function" &&
-            typeof duck.decrementUse === "function"
-        );
+        return typeof duck.serialize === "function" && typeof duck.incrementUse === "function" && typeof duck.decrementUse === "function";
     } else {
         return false;
     }

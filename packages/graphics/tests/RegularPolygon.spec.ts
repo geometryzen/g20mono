@@ -20,9 +20,7 @@ describe("RegularPolygon", function () {
                     expect(viewee.getAttribute("fill")).toBe("none");
                     expect(viewee.getAttribute("stroke")).toBe("gray");
                     expect(viewee.getAttribute("stroke-width")).toBe("0.009375");
-                    expect(viewee.getAttribute("d")).toBe(
-                        "M 0 1 L 0.866025 0.5 L 0.866025 -0.5 L 0 -1 L -0.866026 -0.500001 L -0.866026 0.5 L -0.000001 1 Z"
-                    );
+                    expect(viewee.getAttribute("d")).toBe("M 0 1 L 0.866025 0.5 L 0.866025 -0.5 L 0 -1 L -0.866026 -0.500001 L -0.866026 0.5 L -0.000001 1 Z");
                     board.dispose();
                     resolve();
                 } catch (e) {
@@ -49,9 +47,7 @@ describe("RegularPolygon", function () {
                     expect(viewee.getAttribute("fill")).toBe("none");
                     expect(viewee.getAttribute("stroke")).toBe("gray");
                     expect(viewee.getAttribute("stroke-width")).toBe("0.009375");
-                    expect(viewee.getAttribute("d")).toBe(
-                        "M 0 1 L 0.866025 0.5 L 0.866025 -0.5 L 0 -1 L -0.866026 -0.500001 L -0.866026 0.5 L -0.000001 1 Z"
-                    );
+                    expect(viewee.getAttribute("d")).toBe("M 0 1 L 0.866025 0.5 L 0.866025 -0.5 L 0 -1 L -0.866026 -0.500001 L -0.866026 0.5 L -0.000001 1 Z");
                     board.dispose();
                     resolve();
                 } catch (e) {
