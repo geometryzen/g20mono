@@ -7,7 +7,7 @@ import { Path, PathOptions } from "../Path";
 import { Disposable, dispose } from '../reactive/Disposable';
 import { default_color } from "../utils/default_color";
 import { default_open_path_stroke_width } from "../utils/default_stroke_width";
-import { Commands } from "../utils/path-commands";
+import { Commands } from "../utils/Commands";
 
 export interface ArrowOptions extends PathOptions {
     id?: string;

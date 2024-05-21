@@ -12,6 +12,8 @@ import {
     VectorLike
 } from "@g20/core";
 import { effect, signal } from "@g20/reactive";
+import { default_color } from "./default_color";
+import { default_closed_path_stroke_width } from "./default_stroke_width";
 
 const cos = Math.cos;
 const sin = Math.sin;
@@ -40,9 +42,9 @@ export class RegularPolygon extends Path {
     readonly #twist = signal(0);
     readonly #sides = signal(6);
 
-    constructor(board: Board, options: RegularPolygonOptions = {}) {
+    constructor(owner: Board, options: RegularPolygonOptions = {}) {
 
-        super(board, [], true, false, true, path_attribs_from_regular_polygon_attribs(options));
+        super(owner, [], true, false, true, path_attribs_from_regular_polygon_attribs(options, owner));
 
         if (typeof options.radius === 'number') {
             this.radius = options.radius;
@@ -101,18 +103,18 @@ export class RegularPolygon extends Path {
     }
 }
 
-function path_attribs_from_regular_polygon_attribs(options: RegularPolygonOptions): PathOptions {
+function path_attribs_from_regular_polygon_attribs(options: RegularPolygonOptions, owner: Board): PathOptions {
     const retval: PathOptions = {
         id: options.id,
         attitude: options.attitude,
         opacity: options.opacity,
         position: options.position,
         visibility: options.visibility,
-        fillColor: options.fillColor,
+        fillColor: default_color(options.fillColor, 'none'),
         fillOpacity: options.fillOpacity,
-        strokeColor: options.strokeColor,
+        strokeColor: default_color(options.strokeColor, 'gray'),
         strokeOpacity: options.strokeOpacity,
-        strokeWidth: options.strokeWidth,
+        strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
         // plumb: attributes.plumb
     };
     return retval;

@@ -9,7 +9,7 @@ import { Disposable, dispose } from '../reactive/Disposable';
 import { default_color } from '../utils/default_color.js';
 import { default_closed_path_stroke_width } from '../utils/default_stroke_width.js';
 import { HALF_PI, mod, TWO_PI } from '../utils/math.js';
-import { Commands } from '../utils/path-commands.js';
+import { Commands } from '../utils/Commands.js';
 
 export interface ArcSegmentOptions extends PathOptions {
     innerRadius?: number;

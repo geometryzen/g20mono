@@ -13,7 +13,7 @@ import { svg } from './renderers/SVGViewDOM';
 import { SVGAttributes, ViewDOM } from './Shape';
 import { getComponentOnCubicBezier, getCurveBoundingBox, getCurveFromPoints } from './utils/curves';
 import { lerp, mod } from './utils/math';
-import { Commands } from './utils/path-commands';
+import { Commands } from './utils/Commands';
 import { contains, getCurveLength, getIdByLength, getSubdivisions } from './utils/shape';
 
 const min = Math.min;

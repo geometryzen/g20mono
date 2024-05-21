@@ -9,7 +9,7 @@ import { Disposable, dispose } from '../reactive/Disposable';
 import { default_color } from '../utils/default_color';
 import { default_closed_path_stroke_width } from '../utils/default_stroke_width';
 import { HALF_PI, TWO_PI } from '../utils/math';
-import { Commands } from '../utils/path-commands';
+import { Commands } from '../utils/Commands';
 
 const cos = Math.cos;
 const sin = Math.sin;

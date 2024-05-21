@@ -59,7 +59,7 @@ export class Rectangle extends Path implements RectangleProperties, Disposable {
             new Anchor(G20.vector(0, 0), 'L')
         ];
 
-        super(owner, anchors, true, false, true, path_attribs_from_rectangle_attribs(attributes, owner));
+        super(owner, anchors, true, false, true, path_options_from_rectangle_options(attributes, owner));
 
         {
             const width = attributes.width;
@@ -165,19 +165,19 @@ export class Rectangle extends Path implements RectangleProperties, Disposable {
     }
 }
 
-function path_attribs_from_rectangle_attribs(attributes: RectangleOptions, owner: Board): PathOptions {
+function path_options_from_rectangle_options(options: RectangleOptions, owner: Board): PathOptions {
     const retval: PathOptions = {
-        id: attributes.id,
-        attitude: attributes.attitude,
-        opacity: attributes.opacity,
-        position: attributes.position,
-        visibility: attributes.visibility,
-        fillColor: default_color(attributes.fillColor, 'none'),
-        fillOpacity: attributes.fillOpacity,
-        strokeColor: default_color(attributes.strokeColor, 'gray'),
-        strokeOpacity: attributes.strokeOpacity,
-        strokeWidth: default_closed_path_stroke_width(attributes.strokeWidth, owner),
-        vectorEffect: attributes.vectorEffect
+        id: options.id,
+        attitude: options.attitude,
+        opacity: options.opacity,
+        position: options.position,
+        visibility: options.visibility,
+        fillColor: default_color(options.fillColor, 'none'),
+        fillOpacity: options.fillOpacity,
+        strokeColor: default_color(options.strokeColor, 'gray'),
+        strokeOpacity: options.strokeOpacity,
+        strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
+        vectorEffect: options.vectorEffect
     };
     return retval;
 }

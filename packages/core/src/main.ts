@@ -23,8 +23,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     arc.startAngle = Math.PI / 4;
     arc.endAngle = Math.PI / 3;
-    arc.innerRadius = 0.1
-    arc.outerRadius = 0.3
+    arc.innerRadius = 0.1;
+    arc.outerRadius = 0.3;
 
     window.onunload = () => {
         board.dispose();

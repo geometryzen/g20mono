@@ -5,7 +5,7 @@ import { Matrix } from '../math/Matrix';
 import { SVGAttributes, ViewDOM } from '../Shape';
 import { ShapeBase } from '../ShapeBase';
 import { mod, toFixed } from '../utils/math';
-import { Commands } from '../utils/path-commands';
+import { Commands } from '../utils/Commands';
 
 type DOMElement = HTMLElement | SVGElement;
 

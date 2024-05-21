@@ -2,7 +2,7 @@ import { G20 } from './math/G20';
 import { Disposable } from './reactive/Disposable';
 import { Observable } from './reactive/Observable';
 import { variable } from './reactive/variable';
-import { Commands } from './utils/path-commands';
+import { Commands } from './utils/Commands';
 
 export class Anchor {
     /**

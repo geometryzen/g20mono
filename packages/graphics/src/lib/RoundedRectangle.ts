@@ -12,6 +12,8 @@ import {
     VectorLike
 } from "@g20/core";
 import { effect, signal } from "@g20/reactive";
+import { default_color } from "./default_color";
+import { default_closed_path_stroke_width } from "./default_stroke_width";
 
 export interface RoundedRectangleOptions extends PathOptions {
     id?: string;
@@ -38,7 +40,7 @@ export class RoundedRectangle extends Path {
 
     readonly #radius = signal(0.2);
 
-    constructor(board: Board, options: RoundedRectangleOptions = {}) {
+    constructor(owner: Board, options: RoundedRectangleOptions = {}) {
 
         if (typeof options.radius === 'undefined' && typeof options.width === 'number' && typeof options.height === 'number') {
             options.radius = Math.floor(Math.min(options.width, options.height) / 12);
@@ -51,7 +53,7 @@ export class RoundedRectangle extends Path {
             points.push(new Anchor(origin, command));
         }
 
-        super(board, points, true, false, true, path_attribs_from_rounded_rectangle_attribs(options));
+        super(owner, points, true, false, true, path_options_from_rounded_rectangle_options(options, owner));
 
         if (typeof options.width === 'number') {
             this.width = options.width;
@@ -103,18 +105,18 @@ export class RoundedRectangle extends Path {
     }
 }
 
-function path_attribs_from_rounded_rectangle_attribs(options: RoundedRectangleOptions): PathOptions {
+function path_options_from_rounded_rectangle_options(options: RoundedRectangleOptions, owner: Board): PathOptions {
     const retval: PathOptions = {
         id: options.id,
         attitude: options.attitude,
         opacity: options.opacity,
         position: options.position,
         visibility: options.visibility,
-        fillColor: options.fillColor,
+        fillColor: default_color(options.fillColor, 'none'),
         fillOpacity: options.fillOpacity,
-        strokeColor: options.strokeColor,
+        strokeColor: default_color(options.strokeColor, 'gray'),
         strokeOpacity: options.strokeOpacity,
-        strokeWidth: options.strokeWidth
+        strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
     };
     return retval;
 }

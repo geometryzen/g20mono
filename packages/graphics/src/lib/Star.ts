@@ -12,6 +12,8 @@ import {
     VectorLike
 } from "@g20/core";
 import { effect, signal } from "@g20/reactive";
+import { default_color } from "./default_color";
+import { default_closed_path_stroke_width } from "./default_stroke_width";
 
 export interface StarOptions extends PathOptions {
     id?: string;
@@ -42,9 +44,9 @@ export class Star extends Path {
     readonly #points = signal(8);
     readonly #twist = signal(0);
 
-    constructor(board: Board, options: StarOptions = {}) {
+    constructor(owner: Board, options: StarOptions = {}) {
 
-        super(board, [], true, false, true, path_attribs_from_star_attribs(options));
+        super(owner, [], true, false, true, path_options_from_star_options(options, owner));
 
         if (typeof options.innerRadius === 'number') {
             this.innerRadius = options.innerRadius;
@@ -127,18 +129,18 @@ function update_vertices(points: number, innerRadius: number, outerRadius: numbe
     }
 }
 
-function path_attribs_from_star_attribs(options: StarOptions): PathOptions {
+function path_options_from_star_options(options: StarOptions, owner: Board): PathOptions {
     const retval: PathOptions = {
         id: options.id,
         attitude: options.attitude,
         opacity: options.opacity,
         position: options.position,
         visibility: options.visibility,
-        fillColor: options.fillColor,
+        fillColor: default_color(options.fillColor, 'none'),
         fillOpacity: options.fillOpacity,
-        strokeColor: options.strokeColor,
+        strokeColor: default_color(options.strokeColor, 'gray'),
         strokeOpacity: options.strokeOpacity,
-        strokeWidth: options.strokeWidth
+        strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
     };
     return retval;
 }

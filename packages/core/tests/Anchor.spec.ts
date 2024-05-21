@@ -1,5 +1,5 @@
 import { Anchor, G20 } from "../src/index";
-import { Commands } from "../src/lib/utils/path-commands";
+import { Commands } from "../src/lib/utils/Commands";
 
 const booleans = [true, false];
 const commands = [Commands.arc, Commands.close, Commands.curve, Commands.line, Commands.move];

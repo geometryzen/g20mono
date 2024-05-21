@@ -1,7 +1,7 @@
 export { Anchor } from './lib/Anchor';
 export { Board, PointOptions } from './lib/Board';
 export { Collection } from './lib/collection';
-export { Color, ColorProvider } from './lib/effects/ColorProvider';
+export { Color, ColorProvider, is_color, is_color_provider } from './lib/effects/ColorProvider';
 export { ElementBase } from './lib/element';
 export { ElementDOM } from './lib/ElementDOM';
 export { GraphicsBoard, GraphicsBoardOptions } from './lib/GraphicsBoard';
@@ -31,5 +31,5 @@ export { Line, LineOptions, LineProperties } from './lib/shapes/Line';
 export { Polygon, PolygonOptions } from './lib/shapes/Polygon';
 export { Rectangle, RectangleOptions, RectangleProperties } from './lib/shapes/Rectangle';
 export { Text, TextDecoration, TextOptions, TextProperties } from './lib/text';
-export { Commands } from './lib/utils/path-commands';
+export { Commands } from './lib/utils/Commands';
 
