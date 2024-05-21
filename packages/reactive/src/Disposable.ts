@@ -1,4 +1,3 @@
-
 /**
  * An object should be Disposable if its lifetime is bounded by the holder.
  * Such objects are normally created by the holding object.

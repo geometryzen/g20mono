@@ -1,8 +1,7 @@
 export function xhr(url: string, callback: (responseText: string) => void): XMLHttpRequest {
-
     const rqst = new XMLHttpRequest();
 
-    rqst.open('GET', url);
+    rqst.open("GET", url);
 
     rqst.onreadystatechange = function () {
         if (rqst.readyState === 4 && rqst.status === 200) {

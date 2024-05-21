@@ -1,5 +1,5 @@
-import { Observable as RxjsObservable } from 'rxjs';
-import { Disposable } from './Disposable';
+import { Observable as RxjsObservable } from "rxjs";
+import { Disposable } from "./Disposable";
 
 export interface Observable<T> {
     subscribe(callback: (value: T) => void): Disposable;
@@ -15,7 +15,7 @@ export class DisposableObservable<T> implements Observable<T> {
         const disposable: Disposable = {
             dispose(): void {
                 subscription.unsubscribe();
-            }
+            },
         };
         return disposable;
     }

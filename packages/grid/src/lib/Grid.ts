@@ -1,7 +1,7 @@
 import { Board, Group, Line, ViewDOM } from "@g20/core";
 
 export interface GridOptions {
-    id?: string
+    id?: string;
 }
 
 export class Grid extends Group {
@@ -11,8 +11,8 @@ export class Grid extends Group {
         const Ny = 10;
         const Lx = Nx - 1;
         const Ly = Ny - 1;
-        const Mx = (Nx / 2) - 1;
-        const My = (Ny / 2) - 1;
+        const Mx = Nx / 2 - 1;
+        const My = Ny / 2 - 1;
 
         const bbox = board.getBoundingBox();
 
@@ -22,7 +22,7 @@ export class Grid extends Group {
         for (let i = 0; i < Ly; i++) {
             const line = new Line(board, [bbox.left, my * (i - My)], [bbox.right, my * (i - My)], {
                 strokeWidth: 2 / board.sx,
-                strokeOpacity: 0.5
+                strokeOpacity: 0.5,
             });
             this.add(line);
         }
@@ -30,7 +30,7 @@ export class Grid extends Group {
         for (let i = 0; i < Lx; i++) {
             const line = new Line(board, [mx * (i - Mx), bbox.bottom], [mx * (i - Mx), bbox.top], {
                 strokeWidth: 2 / board.sx,
-                strokeOpacity: 0.5
+                strokeOpacity: 0.5,
             });
             this.add(line);
         }
@@ -41,8 +41,7 @@ export class Grid extends Group {
     override render<T>(viewDOM: ViewDOM<T>, parentElement: unknown, svgElement: unknown): void {
         if (this.zzz.viewee) {
             // The element has already been defined.
-        }
-        else {
+        } else {
             super.render(viewDOM, parentElement, svgElement);
         }
     }

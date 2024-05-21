@@ -1,11 +1,10 @@
-import { Subject } from 'rxjs';
-import { DisposableObservable, Observable } from './reactive/Observable';
+import { Subject } from "rxjs";
+import { DisposableObservable, Observable } from "./reactive/Observable";
 
 /**
  * TODO: If this was iterable then there would be less need for the length and getAt.
  */
 export class Collection<T> {
-
     readonly #insert: Subject<T[]>;
     readonly insert$: Observable<T[]>;
 
@@ -18,7 +17,6 @@ export class Collection<T> {
     #items: T[];
 
     constructor(items: T[]) {
-
         this.#items = items;
 
         this.#insert = new Subject();
@@ -77,12 +75,11 @@ export class Collection<T> {
 
     splice(start: number, deleteCount?: number, ...more: T[]): T[] {
         // TODO: This needs some care because the behavior depends on ...
-        if (typeof deleteCount === 'number') {
+        if (typeof deleteCount === "number") {
             const xs = this.#items.splice(start, deleteCount, ...more);
             this.#remove.next(xs);
             return xs;
-        }
-        else {
+        } else {
             const xs = this.#items.splice(start);
             this.#remove.next(xs);
             return xs;

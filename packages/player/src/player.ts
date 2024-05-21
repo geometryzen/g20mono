@@ -22,7 +22,6 @@ export class Player {
     play(): void {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const animate = (timestamp: number) => {
-
             this.#handle = null;
 
             this.#board.update();
@@ -32,7 +31,7 @@ export class Player {
         this.#handle = window.requestAnimationFrame(animate);
     }
     pause(): void {
-        if (typeof this.#handle === 'number') {
+        if (typeof this.#handle === "number") {
             window.cancelAnimationFrame(this.#handle);
             this.#handle = null;
         }

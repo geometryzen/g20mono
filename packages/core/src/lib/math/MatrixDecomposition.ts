@@ -6,7 +6,7 @@ export interface MatrixDecomposition {
     scaleY: number;
     /**
      * FIXME: This angle is in degrees.
-     * Would it be better to return the 
+     * Would it be better to return the
      */
-    rotation: number
+    rotation: number;
 }

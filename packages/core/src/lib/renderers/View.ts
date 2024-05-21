@@ -1,4 +1,3 @@
-
 export interface View<T> {
     /**
      * HTMLCanvasElement or SVGElement (or something else).
@@ -7,5 +6,5 @@ export interface View<T> {
     height: number;
     width: number;
     render(): void;
-    setSize(size: { width: number, height: number }, ratio: number): void;
+    setSize(size: { width: number; height: number }, ratio: number): void;
 }

@@ -199,8 +199,7 @@
 <a name='L134'></a><a href='#L134'>134</a>
 <a name='L135'></a><a href='#L135'>135</a>
 <a name='L136'></a><a href='#L136'>136</a>
-<a name='L137'></a><a href='#L137'>137</a>
-<a name='L138'></a><a href='#L138'>138</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">12x</span>
+<a name='L137'></a><a href='#L137'>137</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -236,11 +235,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -258,7 +255,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
@@ -307,7 +306,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -337,17 +335,17 @@
 <span class="cline-any cline-yes">20x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Anchor } from '../Anchor';
-import { Board } from '../Board';
-import { Collection } from '../collection';
-import { Color } from '../effects/ColorProvider';
-import { G20, SpinorLike, VectorLike } from '../math/G20';
-import { Path, PathOptions } from '../Path';
-import { Disposable, dispose } from '../reactive/Disposable';
-import { default_color } from '../utils/default_color';
-import { default_closed_path_stroke_width } from '../utils/default_stroke_width';
-import { HALF_PI, TWO_PI } from '../utils/math';
-import { Commands } from '../utils/Commands';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Anchor } from "../Anchor";
+import { Board } from "../Board";
+import { Collection } from "../collection";
+import { Color } from "../effects/ColorProvider";
+import { G20, SpinorLike, VectorLike } from "../math/G20";
+import { Path, PathOptions } from "../Path";
+import { Disposable, dispose } from "../reactive/Disposable";
+import { default_color } from "../utils/default_color";
+import { default_closed_path_stroke_width } from "../utils/default_stroke_width";
+import { HALF_PI, TWO_PI } from "../utils/math";
+import { Commands } from "../utils/Commands";
 &nbsp;
 export interface CircleOptions extends PathOptions {
     position?: VectorLike;
@@ -373,13 +371,11 @@ export interface CircleProperties {
 }
 &nbsp;
 export class Circle extends Path implements CircleProperties {
-&nbsp;
     readonly #disposables: Disposable[] = [];
 &nbsp;
     readonly #radius = G20.scalar(1);
 &nbsp;
     constructor(owner: Board, options: CircleOptions = {}) {
-&nbsp;
         // At least 2 vertices are required for proper circle.
         const N = options.resolution ? Math.max(options.resolution, 2) : 4;
         // These anchors will be placed on the circle during the update phase.
@@ -390,13 +386,15 @@ export class Circle extends Path implements CircleProperties {
 &nbsp;
         super(owner, points, true, true, true, path_options_from_circle_options(options, owner));
 &nbsp;
-        if (typeof options.radius === 'number') {
+        if (typeof options.radius === "number") {
             this.#radius.set(0, 0, options.radius, 0);
         }
 &nbsp;
-        this.#disposables.push(this.#radius.change$.subscribe(() =&gt; {
-            this.update();
-        }));
+        this.#disposables.push(
+            this.#radius.change$.subscribe(() =&gt; {
+                this.update();
+            })
+        );
 &nbsp;
         this.flagReset(true);
     }
@@ -416,7 +414,7 @@ export class Circle extends Path implements CircleProperties {
         return this.#radius.a;
     }
     set radius(radius: number) {
-        if (typeof radius === 'number') {
+        if (typeof radius === "number") {
             this.#radius.set(0, 0, radius, 0);
         }
     }
@@ -427,9 +425,9 @@ function path_options_from_circle_options(options: CircleOptions, owner: Board):
         id: options.id,
         attitude: options.attitude,
         position: options.position,
-        fillColor: default_color(options.fillColor, 'none'),
+        fillColor: default_color(options.fillColor, "none"),
         fillOpacity: options.fillOpacity,
-        strokeColor: default_color(options.strokeColor, 'gray'),
+        strokeColor: default_color(options.strokeColor, "gray"),
         strokeOpacity: options.strokeOpacity,
         strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
         dashes: options.dashes,
@@ -438,13 +436,12 @@ function path_options_from_circle_options(options: CircleOptions, owner: Board):
         sx: options.sx,
         sy: options.sy,
         vectorEffect: options.vectorEffect,
-        visibility: options.visibility
+        visibility: options.visibility,
     };
     return retval;
 }
 &nbsp;
 function update_circle_vertices(radius: number, vertices: Collection&lt;Anchor&gt;): void {
-&nbsp;
     const N = vertices.length;
 &nbsp;
     // Coefficient for approximating circular arcs with Bezier curves
@@ -455,7 +452,7 @@ function update_circle_vertices(radius: number, vertices: Collection&lt;Anchor&g
     const sin = Math.sin;
 &nbsp;
     for (let i = 0; i &lt; N; i++) {
-        const theta = i * TWO_PI / N;
+        const theta = (i * TWO_PI) / N;
 &nbsp;
         const x = radius * cos(theta);
         const y = radius * sin(theta);
@@ -481,7 +478,7 @@ function update_circle_vertices(radius: number, vertices: Collection&lt;Anchor&g
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-05-21T01:27:29.788Z
+                at 2024-05-21T02:47:11.855Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

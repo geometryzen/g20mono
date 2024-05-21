@@ -1,20 +1,18 @@
 import { State, signal } from "@g20/reactive";
-import { Board } from './Board';
-import { Flag } from './Flag';
-import { transform_value_of_matrix } from './renderers/SVGViewDOM';
-import { Shape, ViewDOM } from './Shape';
-import { ShapeBase, ShapeOptions } from './ShapeBase';
+import { Board } from "./Board";
+import { Flag } from "./Flag";
+import { transform_value_of_matrix } from "./renderers/SVGViewDOM";
+import { Shape, ViewDOM } from "./Shape";
+import { ShapeBase, ShapeOptions } from "./ShapeBase";
 
 export interface GroupOptions extends ShapeOptions {
     id?: string;
 }
 
 export class Group extends ShapeBase {
-
     readonly #shapes: State<Shape[]>;
 
     constructor(board: Board, shapes: Shape[] = [], options: GroupOptions = {}) {
-
         super(board, shape_attributes(options));
 
         this.flagReset(true);
@@ -37,26 +35,22 @@ export class Group extends ShapeBase {
     }
 
     override render<T>(viewDOM: ViewDOM<T>, parentElement: T, svgElement: T): void {
-
         this.update();
 
         if (this.zzz.viewee) {
             // Why is this needed when Shape has already created an effect?
-            viewDOM.setAttribute(this.zzz.viewee as T, 'transform', transform_value_of_matrix(this.matrix));
-        }
-        else {
+            viewDOM.setAttribute(this.zzz.viewee as T, "transform", transform_value_of_matrix(this.matrix));
+        } else {
             if (viewDOM) {
-                const g = viewDOM.createSVGElement('g', { id: this.id });
+                const g = viewDOM.createSVGElement("g", { id: this.id });
                 this.zzz.viewee = g;
                 if (parentElement) {
                     viewDOM.appendChild(parentElement, g);
                     super.render(viewDOM, parentElement, svgElement);
-                }
-                else {
+                } else {
                     throw new Error("parentElement must be defined");
                 }
-            }
-            else {
+            } else {
                 throw new Error("viewDOM must be defined");
             }
         }
@@ -98,8 +92,7 @@ export class Group extends ShapeBase {
         function search(node: Shape): Shape {
             if (node.id === id) {
                 return node;
-            }
-            else if (node instanceof Group && node.children) {
+            } else if (node instanceof Group && node.children) {
                 for (let i = 0; i < node.children.length; i++) {
                     found = search(node.children[i]);
                     if (found) {
@@ -156,30 +149,35 @@ export class Group extends ShapeBase {
         return this;
     }
 
-    getBoundingBox(shallow = false): { top: number; left: number; right: number; bottom: number; } {
-
+    getBoundingBox(shallow = false): {
+        top: number;
+        left: number;
+        right: number;
+        bottom: number;
+    } {
         this.update();
 
         // Variables need to be defined here, because of nested nature of groups.
-        let left = Infinity, right = -Infinity,
-            top = Infinity, bottom = -Infinity;
+        let left = Infinity,
+            right = -Infinity,
+            top = Infinity,
+            bottom = -Infinity;
 
         const matrix = shallow ? this.matrix : this.worldMatrix;
 
         for (let i = 0; i < this.children.length; i++) {
-
             const child = this.children[i];
 
-            if (!(child.visibility === 'visible') || child.hasBoundingBox()) {
+            if (!(child.visibility === "visible") || child.hasBoundingBox()) {
                 continue;
             }
 
             const rect = child.getBoundingBox(shallow);
 
-            const tc = typeof rect.top !== 'number' || isNaN(rect.top) || !isFinite(rect.top);
-            const lc = typeof rect.left !== 'number' || isNaN(rect.left) || !isFinite(rect.left);
-            const rc = typeof rect.right !== 'number' || isNaN(rect.right) || !isFinite(rect.right);
-            const bc = typeof rect.bottom !== 'number' || isNaN(rect.bottom) || !isFinite(rect.bottom);
+            const tc = typeof rect.top !== "number" || isNaN(rect.top) || !isFinite(rect.top);
+            const lc = typeof rect.left !== "number" || isNaN(rect.left) || !isFinite(rect.left);
+            const rc = typeof rect.right !== "number" || isNaN(rect.right) || !isFinite(rect.right);
+            const bc = typeof rect.bottom !== "number" || isNaN(rect.bottom) || !isFinite(rect.bottom);
 
             if (tc || lc || rc || bc) {
                 continue;
@@ -195,8 +193,7 @@ export class Group extends ShapeBase {
                 left = Math.min(ax, bx, cx, dx);
                 right = Math.max(ax, bx, cx, dx);
                 bottom = Math.max(ay, by, cy, dy);
-            }
-            else {
+            } else {
                 top = Math.min(rect.top, top);
                 left = Math.min(rect.left, left);
                 right = Math.max(rect.right, right);
@@ -224,7 +221,6 @@ export class Group extends ShapeBase {
         return this.#shapes.get();
     }
     set children(children: Shape[]) {
-
         this.#shapes.set(children);
 
         for (let i = 0; i < children.length; i++) {
@@ -235,7 +231,6 @@ export class Group extends ShapeBase {
 }
 
 export function update_shape_group(child: Shape, parent?: Group) {
-
     const previous_parent = child.parent;
 
     if (previous_parent === parent) {
@@ -258,7 +253,7 @@ export function update_shape_group(child: Shape, parent?: Group) {
 function shape_attributes(options: Partial<GroupOptions>): ShapeOptions {
     const retval: ShapeOptions = {
         id: options.id,
-        position: options.position
+        position: options.position,
     };
     return retval;
 }

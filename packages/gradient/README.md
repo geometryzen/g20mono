@@ -1,6 +1,6 @@
 LinearGradient and RadialGradient
 
-[![version](https://img.shields.io/npm/v/@g20/gradient.svg)](https://www.npmjs.com/package/@g20/gradient) 
+[![version](https://img.shields.io/npm/v/@g20/gradient.svg)](https://www.npmjs.com/package/@g20/gradient)
 
 [![npm downloads](https://img.shields.io/npm/dm/@g20/gradient.svg)](https://npm-stat.com/charts.html?package=@g20/gradient&from=2022-09-01)
 

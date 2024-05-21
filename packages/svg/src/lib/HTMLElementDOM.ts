@@ -1,9 +1,7 @@
 import { ElementDOM } from "@g20/core";
 
 export class HTMLElementDOM implements ElementDOM<HTMLElement, SVGElement> {
-    constructor(readonly doc: Document) {
-
-    }
+    constructor(readonly doc: Document) {}
     addEventListener(target: HTMLElement, name: "resize", callback: () => void): void {
         target.addEventListener(name, callback);
     }
@@ -13,7 +11,10 @@ export class HTMLElementDOM implements ElementDOM<HTMLElement, SVGElement> {
     getAttribute(element: HTMLElement, name: string): string {
         return element.getAttribute(name);
     }
-    getBoundingClientRect(element: HTMLElement): { width: number; height: number; } {
+    getBoundingClientRect(element: HTMLElement): {
+        width: number;
+        height: number;
+    } {
         return element.getBoundingClientRect();
     }
     getElementById(elementId: string): HTMLElement {

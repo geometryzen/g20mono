@@ -1,31 +1,41 @@
 import { effect, signal } from "@g20/reactive";
-import { Board } from './Board';
-import { ColoredShapeBase, ColoredShapeOptions } from './ColoredShapeBase';
-import { Color } from './effects/ColorProvider';
-import { ElementBase } from './element';
-import { Flag } from './Flag';
-import { SpinorLike, VectorLike } from './math/G20';
-import { svg, transform_value_of_matrix } from './renderers/SVGViewDOM';
-import { SVGAttributes, ViewDOM } from './Shape';
-import { default_color } from './utils/default_color';
-import { default_open_path_stroke_width } from './utils/default_stroke_width';
+import { Board } from "./Board";
+import { ColoredShapeBase, ColoredShapeOptions } from "./ColoredShapeBase";
+import { Color } from "./effects/ColorProvider";
+import { ElementBase } from "./element";
+import { Flag } from "./Flag";
+import { SpinorLike, VectorLike } from "./math/G20";
+import { svg, transform_value_of_matrix } from "./renderers/SVGViewDOM";
+import { SVGAttributes, ViewDOM } from "./Shape";
+import { default_color } from "./utils/default_color";
+import { default_open_path_stroke_width } from "./utils/default_stroke_width";
 
-const min = Math.min, max = Math.max;
+const min = Math.min,
+    max = Math.max;
 
-export type TextDecoration = 'none' | 'underline' | 'overline' | 'line-through';
+export type TextDecoration = "none" | "underline" | "overline" | "line-through";
 
 export interface TextOptions extends ColoredShapeOptions {
-    anchor?: 'start' | 'middle' | 'end';
-    baseline?: 'auto' | 'text-bottom' | 'alphabetic' | 'ideographic' | 'middle' | 'central' | 'mathematical' | 'hanging' | 'text-top';
+    anchor?: "start" | "middle" | "end";
+    baseline?:
+        | "auto"
+        | "text-bottom"
+        | "alphabetic"
+        | "ideographic"
+        | "middle"
+        | "central"
+        | "mathematical"
+        | "hanging"
+        | "text-top";
     decoration?: TextDecoration[];
-    direction?: 'ltr' | 'rtl';
+    direction?: "ltr" | "rtl";
     dx?: number | string;
     dy?: number | string;
     fillColor?: Color;
     fillOpacity?: number;
     fontFamily?: string;
-    fontStyle?: 'normal' | 'italic' | 'oblique';
-    fontWeight?: 'normal' | 'bold' | 'bolder' | 'lighter' | number;
+    fontStyle?: "normal" | "italic" | "oblique";
+    fontWeight?: "normal" | "bold" | "bolder" | "lighter" | number;
     id?: string;
     opacity?: number;
     position?: VectorLike;
@@ -37,14 +47,23 @@ export interface TextOptions extends ColoredShapeOptions {
     sx?: number;
     sy?: number;
     value?: string;
-    visibility?: 'visible' | 'hidden' | 'collapse';
+    visibility?: "visible" | "hidden" | "collapse";
 }
 
 export interface TextProperties {
-    anchor: 'start' | 'middle' | 'end';
-    baseline: 'auto' | 'text-bottom' | 'alphabetic' | 'ideographic' | 'middle' | 'central' | 'mathematical' | 'hanging' | 'text-top';
+    anchor: "start" | "middle" | "end";
+    baseline:
+        | "auto"
+        | "text-bottom"
+        | "alphabetic"
+        | "ideographic"
+        | "middle"
+        | "central"
+        | "mathematical"
+        | "hanging"
+        | "text-top";
     decoration: TextDecoration[];
-    direction: 'ltr' | 'rtl';
+    direction: "ltr" | "rtl";
     dx: number | string;
     dy: number | string;
     fontFamily: string;
@@ -56,10 +75,10 @@ export interface TextProperties {
     strokeColor: Color;
     strokeOpacity: number;
     strokeWidth: number;
-    fontStyle: 'normal' | 'italic' | 'oblique';
+    fontStyle: "normal" | "italic" | "oblique";
     content: string;
-    visibility: 'visible' | 'hidden' | 'collapse';
-    fontWeight: 'normal' | 'bold' | 'bolder' | 'lighter' | number;
+    visibility: "visible" | "hidden" | "collapse";
+    fontWeight: "normal" | "bold" | "bolder" | "lighter" | number;
 }
 
 export class Text extends ColoredShapeBase implements TextProperties {
@@ -67,33 +86,43 @@ export class Text extends ColoredShapeBase implements TextProperties {
     ending: number;
     length: number;
 
-    readonly #content = signal('');
+    readonly #content = signal("");
 
-    readonly #fontFamily = signal('sans-serif');
+    readonly #fontFamily = signal("sans-serif");
 
     readonly #fontSize = signal(18);
 
-    readonly #anchor = signal('start' as 'start' | 'middle' | 'end');
+    readonly #anchor = signal("start" as "start" | "middle" | "end");
 
-    readonly #baseline = signal('auto' as 'auto' | 'text-bottom' | 'alphabetic' | 'ideographic' | 'middle' | 'central' | 'mathematical' | 'hanging' | 'text-top');
+    readonly #baseline = signal(
+        "auto" as
+            | "auto"
+            | "text-bottom"
+            | "alphabetic"
+            | "ideographic"
+            | "middle"
+            | "central"
+            | "mathematical"
+            | "hanging"
+            | "text-top"
+    );
 
-    readonly #fontStyle = signal('normal' as 'normal' | 'italic' | 'oblique');
+    readonly #fontStyle = signal("normal" as "normal" | "italic" | "oblique");
 
-    readonly #fontWeight = signal('normal' as 'normal' | 'bold' | 'bolder' | 'lighter' | number);
+    readonly #fontWeight = signal("normal" as "normal" | "bold" | "bolder" | "lighter" | number);
 
-    readonly #decoration = signal(['none' as TextDecoration]);
+    readonly #decoration = signal(["none" as TextDecoration]);
 
     /**
      * determine what direction the text should run.
      * Possibly values are `'ltr'` for left-to-right and `'rtl'` for right-to-left. Defaults to `'ltr'`.
      */
-    readonly #direction = signal('ltr' as 'ltr' | 'rtl');
+    readonly #direction = signal("ltr" as "ltr" | "rtl");
 
     readonly #dx = signal(0 as number | string);
     readonly #dy = signal(0 as number | string);
 
     constructor(owner: Board, content: string, options: Partial<TextOptions> = {}) {
-
         super(owner, shape_options_from_text_options(options, owner));
 
         this.content = content;
@@ -110,10 +139,10 @@ export class Text extends ColoredShapeBase implements TextProperties {
         if (options.direction) {
             this.direction = options.direction;
         }
-        if (typeof options.dx === 'number' || typeof options.dx === 'string') {
+        if (typeof options.dx === "number" || typeof options.dx === "string") {
             this.dx = options.dx;
         }
-        if (typeof options.dy === 'number' || typeof options.dy === 'string') {
+        if (typeof options.dy === "number" || typeof options.dy === "string") {
             this.dy = options.dy;
         }
         if (options.fontFamily) {
@@ -131,7 +160,7 @@ export class Text extends ColoredShapeBase implements TextProperties {
         if (options.value) {
             this.content = options.value;
         }
-        if (typeof options.visibility === 'string') {
+        if (typeof options.visibility === "string") {
             this.visibility = options.visibility;
         }
         if (options.fontWeight) {
@@ -142,209 +171,216 @@ export class Text extends ColoredShapeBase implements TextProperties {
     }
 
     override render<T>(viewDOM: ViewDOM<T>, parentElement: T, svgElement: T): void {
-
         this.update();
 
         if (this.zzz.viewee) {
             const changed: SVGAttributes = {};
             // These should not be needed...
             viewDOM.setAttributes(this.zzz.viewee as T, changed);
-            viewDOM.setAttribute(this.zzz.viewee as T, 'transform', transform_value_of_matrix(this.matrix));
-        }
-        else {
-            const text = viewDOM.createSVGElement('text', {});
+            viewDOM.setAttribute(this.zzz.viewee as T, "transform", transform_value_of_matrix(this.matrix));
+        } else {
+            const text = viewDOM.createSVGElement("text", {});
             this.zzz.viewee = text;
             viewDOM.appendChild(parentElement, text);
 
             super.render(viewDOM, parentElement, svgElement);
 
             // anchor
-            this.zzz.disposables.push(effect(() => {
-                const anchor = this.anchor;
-                const crazy = this.board.crazy;
-                switch (anchor) {
-                    case 'start': {
-                        if (crazy) {
-                            viewDOM.setAttribute(text, 'text-anchor', 'end');
+            this.zzz.disposables.push(
+                effect(() => {
+                    const anchor = this.anchor;
+                    const crazy = this.board.crazy;
+                    switch (anchor) {
+                        case "start": {
+                            if (crazy) {
+                                viewDOM.setAttribute(text, "text-anchor", "end");
+                            } else {
+                                viewDOM.removeAttribute(text, "text-anchor");
+                            }
+                            break;
                         }
-                        else {
-                            viewDOM.removeAttribute(text, 'text-anchor');
+                        case "middle": {
+                            viewDOM.setAttribute(text, "text-anchor", anchor);
+                            break;
                         }
-                        break;
+                        case "end": {
+                            if (crazy) {
+                                viewDOM.removeAttribute(text, "text-anchor");
+                            } else {
+                                viewDOM.setAttribute(text, "text-anchor", anchor);
+                            }
+                            break;
+                        }
                     }
-                    case 'middle': {
-                        viewDOM.setAttribute(text, 'text-anchor', anchor);
-                        break;
-                    }
-                    case 'end': {
-                        if (crazy) {
-                            viewDOM.removeAttribute(text, 'text-anchor');
-                        }
-                        else {
-                            viewDOM.setAttribute(text, 'text-anchor', anchor);
-                        }
-                        break;
-                    }
-                }
-                return function () {
-                    // No cleanup to be done.
-                };
-            }));
+                    return function () {
+                        // No cleanup to be done.
+                    };
+                })
+            );
 
             // decoration
-            this.zzz.disposables.push(effect(() => {
-                const decoration = this.decoration;
-                const change: SVGAttributes = {};
-                change['text-decoration'] = decoration.join(' ');
-                viewDOM.setAttributes(text, change);
-                return function () {
-                    // No cleanup to be done.
-                };
-            }));
+            this.zzz.disposables.push(
+                effect(() => {
+                    const decoration = this.decoration;
+                    const change: SVGAttributes = {};
+                    change["text-decoration"] = decoration.join(" ");
+                    viewDOM.setAttributes(text, change);
+                    return function () {
+                        // No cleanup to be done.
+                    };
+                })
+            );
 
             // direction
-            this.zzz.disposables.push(effect(() => {
-                const direction = this.direction;
-                if (direction === 'rtl') {
-                    viewDOM.setAttributes(text, { direction });
-                }
-                else {
-                    viewDOM.removeAttributes(text, { direction });
-                }
-                return function () {
-                    // No cleanup to be done.
-                };
-            }));
+            this.zzz.disposables.push(
+                effect(() => {
+                    const direction = this.direction;
+                    if (direction === "rtl") {
+                        viewDOM.setAttributes(text, { direction });
+                    } else {
+                        viewDOM.removeAttributes(text, { direction });
+                    }
+                    return function () {
+                        // No cleanup to be done.
+                    };
+                })
+            );
 
             // dominant-baseline
-            this.zzz.disposables.push(effect(() => {
-                const baseline = this.baseline;
-                const goofy = this.board.goofy;
-                switch (baseline) {
-                    case 'auto': {
-                        if (goofy) {
-                            viewDOM.setAttribute(text, 'dominant-baseline', 'hanging');
+            this.zzz.disposables.push(
+                effect(() => {
+                    const baseline = this.baseline;
+                    const goofy = this.board.goofy;
+                    switch (baseline) {
+                        case "auto": {
+                            if (goofy) {
+                                viewDOM.setAttribute(text, "dominant-baseline", "hanging");
+                            } else {
+                                viewDOM.removeAttribute(text, "dominant-baseline");
+                            }
+                            break;
                         }
-                        else {
-                            viewDOM.removeAttribute(text, 'dominant-baseline');
+                        case "middle": {
+                            viewDOM.setAttribute(text, "dominant-baseline", baseline);
+                            break;
                         }
-                        break;
-                    }
-                    case 'middle': {
-                        viewDOM.setAttribute(text, 'dominant-baseline', baseline);
-                        break;
-                    }
-                    case 'hanging': {
-                        if (goofy) {
-                            viewDOM.setAttribute(text, 'dominant-baseline', 'auto');
+                        case "hanging": {
+                            if (goofy) {
+                                viewDOM.setAttribute(text, "dominant-baseline", "auto");
+                            } else {
+                                viewDOM.setAttribute(text, "dominant-baseline", baseline);
+                            }
+                            break;
                         }
-                        else {
-                            viewDOM.setAttribute(text, 'dominant-baseline', baseline);
+                        default: {
+                            viewDOM.setAttribute(text, "dominant-baseline", baseline);
+                            break;
                         }
-                        break;
                     }
-                    default: {
-                        viewDOM.setAttribute(text, 'dominant-baseline', baseline);
-                        break;
-                    }
-                }
-                return function () {
-                    // No cleanup to be done.
-                };
-            }));
+                    return function () {
+                        // No cleanup to be done.
+                    };
+                })
+            );
 
             // dx
-            this.zzz.disposables.push(effect(() => {
-                const dx = this.dx;
-                const crazy = this.board.crazy;
-                if (typeof dx === 'number' && dx === 0) {
-                    viewDOM.removeAttributes(text, { dx: "" });
-                }
-                else {
-                    if (typeof dx === 'number') {
-                        if (crazy) {
-                            viewDOM.setAttributes(text, { dx: `${-dx}` });
-                        }
-                        else {
+            this.zzz.disposables.push(
+                effect(() => {
+                    const dx = this.dx;
+                    const crazy = this.board.crazy;
+                    if (typeof dx === "number" && dx === 0) {
+                        viewDOM.removeAttributes(text, { dx: "" });
+                    } else {
+                        if (typeof dx === "number") {
+                            if (crazy) {
+                                viewDOM.setAttributes(text, { dx: `${-dx}` });
+                            } else {
+                                viewDOM.setAttributes(text, { dx: `${dx}` });
+                            }
+                        } else {
                             viewDOM.setAttributes(text, { dx: `${dx}` });
                         }
                     }
-                    else {
-                        viewDOM.setAttributes(text, { dx: `${dx}` });
-                    }
-                }
-                return function () {
-                    // No cleanup to be done.
-                };
-            }));
+                    return function () {
+                        // No cleanup to be done.
+                    };
+                })
+            );
 
             // dy
-            this.zzz.disposables.push(effect(() => {
-                const dy = this.dy;
-                const goofy = this.board.goofy;
-                if (typeof dy === 'number' && dy === 0) {
-                    viewDOM.removeAttributes(text, { dy: "" });
-                }
-                else {
-                    if (typeof dy === 'number') {
-                        if (goofy) {
+            this.zzz.disposables.push(
+                effect(() => {
+                    const dy = this.dy;
+                    const goofy = this.board.goofy;
+                    if (typeof dy === "number" && dy === 0) {
+                        viewDOM.removeAttributes(text, { dy: "" });
+                    } else {
+                        if (typeof dy === "number") {
+                            if (goofy) {
+                                viewDOM.setAttributes(text, { dy: `${dy}` });
+                            } else {
+                                viewDOM.setAttributes(text, { dy: `${-dy}` });
+                            }
+                        } else {
                             viewDOM.setAttributes(text, { dy: `${dy}` });
                         }
-                        else {
-                            viewDOM.setAttributes(text, { dy: `${-dy}` });
-                        }
                     }
-                    else {
-                        viewDOM.setAttributes(text, { dy: `${dy}` });
-                    }
-                }
-                return function () {
-                    // No cleanup to be done.
-                };
-            }));
+                    return function () {
+                        // No cleanup to be done.
+                    };
+                })
+            );
 
             // font-family
-            this.zzz.disposables.push(effect(() => {
-                viewDOM.setAttributes(text, { 'font-family': this.fontFamily });
-            }));
+            this.zzz.disposables.push(
+                effect(() => {
+                    viewDOM.setAttributes(text, { "font-family": this.fontFamily });
+                })
+            );
 
             // font-size
-            this.zzz.disposables.push(effect(() => {
-                viewDOM.setAttributes(text, { 'font-size': `${this.fontSize}` });
-            }));
+            this.zzz.disposables.push(
+                effect(() => {
+                    viewDOM.setAttributes(text, { "font-size": `${this.fontSize}` });
+                })
+            );
 
             // font-style
-            this.zzz.disposables.push(effect(() => {
-                const change: SVGAttributes = { 'font-style': this.fontStyle };
-                if (change['font-style'] === 'normal') {
-                    viewDOM.removeAttributes(text, change);
-                }
-                else {
-                    viewDOM.setAttributes(text, change);
-                }
-                return function () {
-                    // No cleanup to be done.
-                };
-            }));
+            this.zzz.disposables.push(
+                effect(() => {
+                    const change: SVGAttributes = { "font-style": this.fontStyle };
+                    if (change["font-style"] === "normal") {
+                        viewDOM.removeAttributes(text, change);
+                    } else {
+                        viewDOM.setAttributes(text, change);
+                    }
+                    return function () {
+                        // No cleanup to be done.
+                    };
+                })
+            );
 
             // font-weight
-            this.zzz.disposables.push(effect(() => {
-                const change: SVGAttributes = { 'font-weight': `${this.fontWeight}` };
-                if (change['font-weight'] === 'normal') {
-                    viewDOM.removeAttributes(text, change);
-                }
-                else {
-                    viewDOM.setAttributes(text, change);
-                }
-                return function () {
-                    // No cleanup to be done.
-                };
-            }));
+            this.zzz.disposables.push(
+                effect(() => {
+                    const change: SVGAttributes = { "font-weight": `${this.fontWeight}` };
+                    if (change["font-weight"] === "normal") {
+                        viewDOM.removeAttributes(text, change);
+                    } else {
+                        viewDOM.setAttributes(text, change);
+                    }
+                    return function () {
+                        // No cleanup to be done.
+                    };
+                })
+            );
 
             // textContent
-            this.zzz.disposables.push(effect(() => {
-                viewDOM.setTextContent(text, this.content);
-            }));
+            this.zzz.disposables.push(
+                effect(() => {
+                    viewDOM.setTextContent(text, this.content);
+                })
+            );
         }
 
         if (this.zzz.flags[Flag.ClipFlag]) {
@@ -352,13 +388,12 @@ export class Text extends ColoredShapeBase implements TextProperties {
             const elem = this.zzz.viewee as T;
 
             if (this.zzz.ismask) {
-                viewDOM.removeAttribute(elem, 'id');
-                viewDOM.setAttribute(clip, 'id', this.id);
+                viewDOM.removeAttribute(elem, "id");
+                viewDOM.setAttribute(clip, "id", this.id);
                 viewDOM.appendChild(clip, elem);
-            }
-            else {
-                viewDOM.removeAttribute(clip, 'id');
-                viewDOM.setAttribute(elem, 'id', this.id);
+            } else {
+                viewDOM.removeAttribute(clip, "id");
+                viewDOM.setAttribute(elem, "id", this.id);
                 if (this.parent instanceof ElementBase) {
                     viewDOM.appendChild(this.parent.zzz.viewee as T, elem); // TODO: should be insertBefore
                 }
@@ -372,10 +407,9 @@ export class Text extends ColoredShapeBase implements TextProperties {
         if (this.zzz.flags[Flag.ClipPath]) {
             if (this.mask) {
                 this.mask.render(viewDOM, parentElement, svgElement);
-                viewDOM.setAttribute(this.zzz.viewee as T, 'clip-path', 'url(#' + this.mask.id + ')');
-            }
-            else {
-                viewDOM.removeAttribute(this.zzz.viewee as T, 'clip-path');
+                viewDOM.setAttribute(this.zzz.viewee as T, "clip-path", "url(#" + this.mask.id + ")");
+            } else {
+                viewDOM.removeAttribute(this.zzz.viewee as T, "clip-path");
             }
         }
 
@@ -389,8 +423,12 @@ export class Text extends ColoredShapeBase implements TextProperties {
         return { width, height };
     }
 
-    getBoundingBox(shallow = false): { top: number; left: number; right: number; bottom: number; } {
-
+    getBoundingBox(shallow = false): {
+        top: number;
+        left: number;
+        right: number;
+        bottom: number;
+    } {
         let left: number;
         let right: number;
         let top: number;
@@ -404,30 +442,30 @@ export class Text extends ColoredShapeBase implements TextProperties {
         const border = (this.strokeWidth || 0) / 2;
 
         switch (this.anchor) {
-            case 'start': {
-                left = - border;
+            case "start": {
+                left = -border;
                 right = width + border;
                 break;
             }
-            case 'middle': {
-                left = - (width / 2 + border);
+            case "middle": {
+                left = -(width / 2 + border);
                 right = width / 2 + border;
                 break;
             }
-            case 'end': {
-                left = - (width + border);
+            case "end": {
+                left = -(width + border);
                 right = border;
                 break;
             }
         }
 
         switch (this.baseline) {
-            case 'middle':
-                top = - (height / 2 + border);
+            case "middle":
+                top = -(height / 2 + border);
                 bottom = height / 2 + border;
                 break;
             default:
-                top = - (height + border);
+                top = -(height + border);
                 bottom = border;
         }
 
@@ -450,7 +488,7 @@ export class Text extends ColoredShapeBase implements TextProperties {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     subdivide(limit: number): this {
-        throw new Error('Method not implemented.');
+        throw new Error("Method not implemented.");
     }
 
     flagReset(dirtyFlag = false) {
@@ -458,36 +496,56 @@ export class Text extends ColoredShapeBase implements TextProperties {
         return this;
     }
 
-    get anchor(): 'start' | 'middle' | 'end' {
+    get anchor(): "start" | "middle" | "end" {
         return this.#anchor.get();
     }
-    set anchor(anchor: 'start' | 'middle' | 'end') {
-        if (typeof anchor === 'string') {
+    set anchor(anchor: "start" | "middle" | "end") {
+        if (typeof anchor === "string") {
             switch (anchor) {
-                case 'start':
-                case 'middle':
-                case 'end': {
+                case "start":
+                case "middle":
+                case "end": {
                     this.#anchor.set(anchor);
                     break;
                 }
             }
         }
     }
-    get baseline(): 'auto' | 'text-bottom' | 'alphabetic' | 'ideographic' | 'middle' | 'central' | 'mathematical' | 'hanging' | 'text-top' {
+    get baseline():
+        | "auto"
+        | "text-bottom"
+        | "alphabetic"
+        | "ideographic"
+        | "middle"
+        | "central"
+        | "mathematical"
+        | "hanging"
+        | "text-top" {
         return this.#baseline.get();
     }
-    set baseline(baseline: 'auto' | 'text-bottom' | 'alphabetic' | 'ideographic' | 'middle' | 'central' | 'mathematical' | 'hanging' | 'text-top') {
-        if (typeof baseline === 'string') {
+    set baseline(
+        baseline:
+            | "auto"
+            | "text-bottom"
+            | "alphabetic"
+            | "ideographic"
+            | "middle"
+            | "central"
+            | "mathematical"
+            | "hanging"
+            | "text-top"
+    ) {
+        if (typeof baseline === "string") {
             switch (baseline) {
-                case 'alphabetic':
-                case 'auto':
-                case 'central':
-                case 'hanging':
-                case 'ideographic':
-                case 'mathematical':
-                case 'middle':
-                case 'text-bottom':
-                case 'text-top': {
+                case "alphabetic":
+                case "auto":
+                case "central":
+                case "hanging":
+                case "ideographic":
+                case "mathematical":
+                case "middle":
+                case "text-bottom":
+                case "text-top": {
                     this.#baseline.set(baseline);
                 }
             }
@@ -497,7 +555,7 @@ export class Text extends ColoredShapeBase implements TextProperties {
         return this.#content.get();
     }
     set content(value: string) {
-        if (typeof value === 'string') {
+        if (typeof value === "string") {
             if (this.content !== value) {
                 this.#content.set(value);
             }
@@ -509,12 +567,12 @@ export class Text extends ColoredShapeBase implements TextProperties {
     set decoration(v: TextDecoration[]) {
         this.#decoration.set(v);
     }
-    get direction(): 'ltr' | 'rtl' {
+    get direction(): "ltr" | "rtl" {
         return this.#direction.get();
     }
-    set direction(direction: 'ltr' | 'rtl') {
-        if (typeof direction === 'string') {
-            if (direction === 'ltr' || direction === 'rtl') {
+    set direction(direction: "ltr" | "rtl") {
+        if (typeof direction === "string") {
+            if (direction === "ltr" || direction === "rtl") {
                 if (this.direction !== direction) {
                     this.#direction.set(direction);
                 }
@@ -525,7 +583,7 @@ export class Text extends ColoredShapeBase implements TextProperties {
         return this.#dx.get();
     }
     set dx(dx: number | string) {
-        if (typeof dx === 'number' || typeof dx === 'string') {
+        if (typeof dx === "number" || typeof dx === "string") {
             if (this.dx !== dx) {
                 this.#dx.set(dx);
             }
@@ -535,7 +593,7 @@ export class Text extends ColoredShapeBase implements TextProperties {
         return this.#dy.get();
     }
     set dy(dy: number | string) {
-        if (typeof dy === 'number' || typeof dy === 'string') {
+        if (typeof dy === "number" || typeof dy === "string") {
             if (this.dy !== dy) {
                 this.#dy.set(dy);
             }
@@ -545,7 +603,7 @@ export class Text extends ColoredShapeBase implements TextProperties {
         return this.#fontFamily.get();
     }
     set fontFamily(family: string) {
-        if (typeof family === 'string') {
+        if (typeof family === "string") {
             if (this.fontFamily !== family) {
                 this.#fontFamily.set(family);
             }
@@ -555,15 +613,15 @@ export class Text extends ColoredShapeBase implements TextProperties {
         return this.#fontSize.get();
     }
     set fontSize(size: number) {
-        if (typeof size === 'number') {
+        if (typeof size === "number") {
             this.#fontSize.set(size);
         }
     }
-    get fontStyle(): 'normal' | 'italic' | 'oblique' {
+    get fontStyle(): "normal" | "italic" | "oblique" {
         return this.#fontStyle.get();
     }
-    set fontStyle(fontStyle: 'normal' | 'italic' | 'oblique') {
-        if (typeof fontStyle === 'string') {
+    set fontStyle(fontStyle: "normal" | "italic" | "oblique") {
+        if (typeof fontStyle === "string") {
             this.#fontStyle.set(fontStyle);
         }
     }
@@ -575,26 +633,26 @@ export class Text extends ColoredShapeBase implements TextProperties {
     }
 }
 
-function shape_options_from_text_options(options: Partial<TextOptions>, owner: Board): Partial<ColoredShapeOptions> {
-
+function shape_options_from_text_options(
+    options: Partial<TextOptions>,
+    owner: Board
+): Partial<ColoredShapeOptions> {
     const retval: Partial<ColoredShapeOptions> = {
         id: options.id,
         dashes: options.dashes,
-        plumb: true,//options.plumb,
+        plumb: true, //options.plumb,
         position: options.position,
         attitude: options.attitude,
-        fillColor: default_color(options.fillColor, 'gray'),
+        fillColor: default_color(options.fillColor, "gray"),
         fillOpacity: options.fillOpacity,
         opacity: options.opacity,
-        strokeColor: default_color(options.strokeColor, 'gray'),
+        strokeColor: default_color(options.strokeColor, "gray"),
         strokeOpacity: options.strokeOpacity,
         strokeWidth: default_open_path_stroke_width(options.strokeWidth, owner),
-        sx: typeof options.sx === 'number' ? options.sx : 1 / owner.sx,
-        sy: typeof options.sy === 'number' ? options.sy : 1 / owner.sy,
+        sx: typeof options.sx === "number" ? options.sx : 1 / owner.sx,
+        sy: typeof options.sy === "number" ? options.sy : 1 / owner.sy,
         vectorEffect: options.vectorEffect,
-        visibility: options.visibility
+        visibility: options.visibility,
     };
     return retval;
 }
-
-

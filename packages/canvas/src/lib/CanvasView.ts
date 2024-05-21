@@ -1,4 +1,4 @@
-import { Canvg } from 'canvg';
+import { Canvg } from "canvg";
 import { Group, View } from "@g20/core";
 import { SVGViewFactory } from "@g20/svg";
 
@@ -8,8 +8,8 @@ export class CanvasView implements View<HTMLCanvasElement> {
     #svgView: View<SVGElement>;
     constructor(viewBox: Group, containerId: string) {
         this.#svgView = new SVGViewFactory().createView(viewBox, containerId);
-        this.domElement = document.createElement('canvas');
-        this.#ctx = this.domElement.getContext('2d');
+        this.domElement = document.createElement("canvas");
+        this.#ctx = this.domElement.getContext("2d");
         document.body.appendChild(this.domElement);
     }
     get width(): number {
@@ -29,7 +29,7 @@ export class CanvasView implements View<HTMLCanvasElement> {
         const v = Canvg.fromString(this.#ctx, this.#svgView.domElement.outerHTML);
         v.start();
     }
-    setSize(size: { width: number; height: number; }, ratio: number): void {
+    setSize(size: { width: number; height: number }, ratio: number): void {
         this.#svgView.setSize(size, ratio);
     }
 }

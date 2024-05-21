@@ -1,7 +1,7 @@
 import { Arrow, Board, G20, Group, Shape, Text, ViewDOM } from "@g20/core";
 
 export interface AxesOptions {
-    id?: string
+    id?: string;
 }
 
 export class Axes extends Group {
@@ -25,29 +25,29 @@ export class Axes extends Group {
 
         this.xAxis = new Arrow(board, G20.ex.scale(sx - 2 * dx), {
             position: xTail,
-            headLength: 0.025 * sx
+            headLength: 0.025 * sx,
         });
         this.add(this.xAxis);
 
         this.yAxis = new Arrow(board, G20.ey.scale(sy - 2 * dy), {
             position: yTail,
-            headLength: 0.025 * sy
+            headLength: 0.025 * sy,
         });
         this.add(this.yAxis);
 
         this.xLabel = new Text(board, "x", {
             position: xHead,
-            anchor: 'start',
-            baseline: 'middle',
-            dx: 16 * 0.6,   // fontSize * ratio of width / height for typical character
+            anchor: "start",
+            baseline: "middle",
+            dx: 16 * 0.6, // fontSize * ratio of width / height for typical character
         });
         this.add(this.xLabel);
         resize(this.xLabel, board);
 
         this.yLabel = new Text(board, "y", {
             position: yHead,
-            anchor: 'middle',
-            baseline: 'middle',
+            anchor: "middle",
+            baseline: "middle",
             dy: 16, // fontSize
         });
         this.add(this.yLabel);
@@ -63,8 +63,7 @@ export class Axes extends Group {
     override render<T>(viewDOM: ViewDOM<T>, parentElement: unknown, svgElement: unknown): void {
         if (this.zzz.viewee) {
             // The element has already been defined.
-        }
-        else {
+        } else {
             super.render(viewDOM, parentElement, svgElement);
         }
     }

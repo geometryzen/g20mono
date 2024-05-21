@@ -1,8 +1,8 @@
-import type { Config } from 'jest';
+import type { Config } from "jest";
 
 const config: Config = {
-    preset: 'ts-jest',
-    resolver: 'ts-jest-resolver',
+    preset: "ts-jest",
+    resolver: "ts-jest-resolver",
 };
 
 export default config;

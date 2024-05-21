@@ -1,8 +1,5 @@
-
 export const shaders = {
-
-    create: function (gl: WebGLRenderingContext, source: string, type: 'VERTEX_SHADER' | 'FRAGMENT_SHADER') {
-
+    create: function (gl: WebGLRenderingContext, source: string, type: "VERTEX_SHADER" | "FRAGMENT_SHADER") {
         const shader = gl.createShader(gl[type]);
         gl.shaderSource(shader, source);
         gl.compileShader(shader);
@@ -11,20 +8,18 @@ export const shaders = {
         if (!compiled) {
             const error = gl.getShaderInfoLog(shader);
             gl.deleteShader(shader);
-            throw new Error('unable to compile shader ' + shader + ': ' + error);
+            throw new Error("unable to compile shader " + shader + ": " + error);
         }
 
         return shader;
-
     },
 
     types: {
-        vertex: 'VERTEX_SHADER',
-        fragment: 'FRAGMENT_SHADER'
+        vertex: "VERTEX_SHADER",
+        fragment: "FRAGMENT_SHADER",
     },
 
     path: {
-
         vertex: `
       precision mediump float;
       attribute vec2 a_position;
@@ -60,11 +55,9 @@ export const shaders = {
         gl_FragColor = texel;
       }
     `,
-
     },
 
     points: {
-
         vertex: `
       precision mediump float;
       attribute vec2 a_position;
@@ -98,8 +91,6 @@ export const shaders = {
         }
         gl_FragColor = texel;
       }
-    `
-
-    }
-
+    `,
+    },
 };

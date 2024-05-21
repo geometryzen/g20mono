@@ -1,8 +1,7 @@
 export function default_number(value: number, defaultValue: number): number {
-    if (typeof value === 'number') {
+    if (typeof value === "number") {
         return value;
-    }
-    else {
+    } else {
         return defaultValue;
     }
 }

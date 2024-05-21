@@ -1,20 +1,20 @@
 import { effect, signal } from "@g20/reactive";
-import { Anchor } from './Anchor';
-import { Board } from './Board';
-import { Collection } from './collection';
-import { ColoredShapeBase, ColoredShapeOptions } from './ColoredShapeBase';
-import { Color } from './effects/ColorProvider';
-import { ElementBase } from './element';
-import { Flag } from './Flag';
-import { SpinorLike, VectorLike } from './math/G20';
-import { G20 } from './math/G20.js';
-import { Disposable } from './reactive/Disposable';
-import { svg } from './renderers/SVGViewDOM';
-import { SVGAttributes, ViewDOM } from './Shape';
-import { getComponentOnCubicBezier, getCurveBoundingBox, getCurveFromPoints } from './utils/curves';
-import { lerp, mod } from './utils/math';
-import { Commands } from './utils/Commands';
-import { contains, getCurveLength, getIdByLength, getSubdivisions } from './utils/shape';
+import { Anchor } from "./Anchor";
+import { Board } from "./Board";
+import { Collection } from "./collection";
+import { ColoredShapeBase, ColoredShapeOptions } from "./ColoredShapeBase";
+import { Color } from "./effects/ColorProvider";
+import { ElementBase } from "./element";
+import { Flag } from "./Flag";
+import { SpinorLike, VectorLike } from "./math/G20";
+import { G20 } from "./math/G20.js";
+import { Disposable } from "./reactive/Disposable";
+import { svg } from "./renderers/SVGViewDOM";
+import { SVGAttributes, ViewDOM } from "./Shape";
+import { getComponentOnCubicBezier, getCurveBoundingBox, getCurveFromPoints } from "./utils/curves";
+import { lerp, mod } from "./utils/math";
+import { Commands } from "./utils/Commands";
+import { contains, getCurveLength, getIdByLength, getSubdivisions } from "./utils/shape";
 
 const min = Math.min;
 const max = Math.max;
@@ -22,13 +22,13 @@ const max = Math.max;
 const vector = new G20();
 
 export interface PathOptions extends ColoredShapeOptions {
-    id?: string,
-    dashes?: number[],
+    id?: string;
+    dashes?: number[];
     opacity?: number;
     position?: VectorLike;
     attitude?: SpinorLike;
-    vectorEffect?: null | 'non-scaling-stroke' | 'none';
-    visibility?: 'visible' | 'hidden' | 'collapse';
+    vectorEffect?: null | "non-scaling-stroke" | "none";
+    visibility?: "visible" | "hidden" | "collapse";
     /**
      * The value of what the path should be filled in with.
      * @see {@link https://developer.mozilla.org/en-US/docs/Web/CSS/color_value} for more information on CSS's colors as `String`.
@@ -45,7 +45,6 @@ export interface PathOptions extends ColoredShapeOptions {
 }
 
 export class Path extends ColoredShapeBase {
-
     #length = 0;
 
     readonly #lengths: number[] = [];
@@ -53,12 +52,12 @@ export class Path extends ColoredShapeBase {
     /**
      * stroke-linecap
      */
-    readonly #cap = signal('round' as 'butt' | 'round' | 'square');
+    readonly #cap = signal("round" as "butt" | "round" | "square");
 
     /**
      * stroke-linejoin
      */
-    readonly #join = signal('round' as 'arcs' | 'bevel' | 'miter' | 'miter-clip' | 'round');
+    readonly #join = signal("round" as "arcs" | "bevel" | "miter" | "miter-clip" | "round");
 
     /**
      * stroke-miterlimit
@@ -89,8 +88,14 @@ export class Path extends ColoredShapeBase {
      * @param curved Describes whether the path automatically calculates bezier handles for each vertex.
      * @param manual Describes whether the developer controls how vertices are plotted.
      */
-    constructor(owner: Board, vertices: Anchor[] = [], closed?: boolean, curved?: boolean, manual?: boolean, options: PathOptions = {}) {
-
+    constructor(
+        owner: Board,
+        vertices: Anchor[] = [],
+        closed?: boolean,
+        curved?: boolean,
+        manual?: boolean,
+        options: PathOptions = {}
+    ) {
         super(owner, colored_shape_attribs_from_path_attribs(options));
 
         this.flagReset(true);
@@ -121,12 +126,12 @@ export class Path extends ColoredShapeBase {
         /**
          * @see {@link https://www.w3.org/TR/SVG11/painting.html#StrokeLinecapProperty}
          */
-        this.cap = 'butt';
+        this.cap = "butt";
 
         /**
          * @see {@link https://www.w3.org/TR/SVG11/painting.html#StrokeLinejoinProperty}
          */
-        this.join = 'miter';
+        this.join = "miter";
 
         /**
          * @see {@link https://www.w3.org/TR/SVG11/painting.html#StrokeMiterlimitProperty}
@@ -139,50 +144,60 @@ export class Path extends ColoredShapeBase {
     }
 
     override render<T>(viewDOM: ViewDOM<T>, parentElement: T, svgElement: T): void {
-
         if (!this.zzz.viewee) {
             const changed: SVGAttributes = {};
             changed.id = this.id;
-            const path = viewDOM.createSVGElement('path', changed);
+            const path = viewDOM.createSVGElement("path", changed);
             this.zzz.viewee = path;
             viewDOM.appendChild(parentElement, path);
             super.render(viewDOM, parentElement, svgElement);
 
             // stroke-linecap
-            this.zzz.disposables.push(effect(() => {
-                if (this.cap && this.cap !== "butt") {
-                    viewDOM.setAttribute(path, 'stroke-linecap', this.cap);
-                }
-                else {
-                    viewDOM.removeAttribute(path, 'stroke-linecap');
-                }
-            }));
+            this.zzz.disposables.push(
+                effect(() => {
+                    if (this.cap && this.cap !== "butt") {
+                        viewDOM.setAttribute(path, "stroke-linecap", this.cap);
+                    } else {
+                        viewDOM.removeAttribute(path, "stroke-linecap");
+                    }
+                })
+            );
 
             // stroke-linejoin
-            this.zzz.disposables.push(effect(() => {
-                if (this.join && this.join !== "miter") {
-                    viewDOM.setAttribute(path, 'stroke-linejoin', this.join);
-                }
-                else {
-                    viewDOM.removeAttribute(path, 'stroke-linejoin');
-                }
-            }));
+            this.zzz.disposables.push(
+                effect(() => {
+                    if (this.join && this.join !== "miter") {
+                        viewDOM.setAttribute(path, "stroke-linejoin", this.join);
+                    } else {
+                        viewDOM.removeAttribute(path, "stroke-linejoin");
+                    }
+                })
+            );
 
             // stroke-miterlimit
-            this.zzz.disposables.push(effect(() => {
-                if (this.miterLimit !== 4) {
-                    viewDOM.setAttribute(path, 'stroke-miterlimit', `${this.miterLimit}`);
-                }
-                else {
-                    viewDOM.removeAttribute(path, 'stroke-miterlimit');
-                }
-            }));
+            this.zzz.disposables.push(
+                effect(() => {
+                    if (this.miterLimit !== 4) {
+                        viewDOM.setAttribute(path, "stroke-miterlimit", `${this.miterLimit}`);
+                    } else {
+                        viewDOM.removeAttribute(path, "stroke-miterlimit");
+                    }
+                })
+            );
 
-            this.zzz.disposables.push(this.zzz.vertices$.subscribe(() => {
-                const change: SVGAttributes = {};
-                change.d = svg.path_from_anchors(this.board, this.X, this.R, this.zzz.vertices, this.closed);
-                viewDOM.setAttributes(path, change);
-            }));
+            this.zzz.disposables.push(
+                this.zzz.vertices$.subscribe(() => {
+                    const change: SVGAttributes = {};
+                    change.d = svg.path_from_anchors(
+                        this.board,
+                        this.X,
+                        this.R,
+                        this.zzz.vertices,
+                        this.closed
+                    );
+                    viewDOM.setAttributes(path, change);
+                })
+            );
         }
 
         if (this.zzz.flags[Flag.ClipFlag]) {
@@ -190,17 +205,15 @@ export class Path extends ColoredShapeBase {
             const elem = this.zzz.viewee as T;
 
             if (this.zzz.ismask) {
-                viewDOM.removeAttribute(elem, 'id');
-                viewDOM.setAttribute(clip, 'id', this.id);
+                viewDOM.removeAttribute(elem, "id");
+                viewDOM.setAttribute(clip, "id", this.id);
                 viewDOM.appendChild(clip, elem);
-            }
-            else {
-                viewDOM.removeAttribute(clip, 'id');
-                if (typeof this.id === 'string') {
-                    viewDOM.setAttribute(elem, 'id', this.id);
-                }
-                else {
-                    viewDOM.removeAttribute(elem, 'id');
+            } else {
+                viewDOM.removeAttribute(clip, "id");
+                if (typeof this.id === "string") {
+                    viewDOM.setAttribute(elem, "id", this.id);
+                } else {
+                    viewDOM.removeAttribute(elem, "id");
                 }
                 if (this.parent && this.parent instanceof ElementBase) {
                     viewDOM.appendChild(this.parent.zzz.viewee as T, elem); // TODO: should be insertBefore
@@ -216,10 +229,9 @@ export class Path extends ColoredShapeBase {
         if (this.zzz.flags[Flag.ClipPath]) {
             if (this.mask) {
                 this.mask.render(viewDOM, parentElement, svgElement);
-                viewDOM.setAttribute(this.zzz.viewee as T, 'clip-path', 'url(#' + this.mask.id + ')');
-            }
-            else {
-                viewDOM.removeAttribute(this.zzz.viewee as T, 'clip-path');
+                viewDOM.setAttribute(this.zzz.viewee as T, "clip-path", "url(#" + this.mask.id + ")");
+            } else {
+                viewDOM.removeAttribute(this.zzz.viewee as T, "clip-path");
             }
         }
 
@@ -246,7 +258,6 @@ export class Path extends ColoredShapeBase {
     }
 
     corner() {
-
         const rect = this.getBoundingBox(true);
         const hw = (rect.right - rect.left) / 2;
         const hh = (rect.bottom - rect.top) / 2;
@@ -273,8 +284,12 @@ export class Path extends ColoredShapeBase {
         return this;
     }
 
-    getBoundingBox(shallow?: boolean): { top?: number; left?: number; right?: number; bottom?: number } {
-
+    getBoundingBox(shallow?: boolean): {
+        top?: number;
+        left?: number;
+        right?: number;
+        bottom?: number;
+    } {
         let left = Infinity;
         let right = -Infinity;
         let top = Infinity;
@@ -287,7 +302,12 @@ export class Path extends ColoredShapeBase {
         let border = (this.strokeWidth || 0) / 2;
         const l = this.zzz.vertices.length;
 
-        if (this.strokeWidth > 0 || (this.strokeColor && typeof this.strokeColor === 'string' && !(/(transparent|none)/i.test(this.strokeColor)))) {
+        if (
+            this.strokeWidth > 0 ||
+            (this.strokeColor &&
+                typeof this.strokeColor === "string" &&
+                !/(transparent|none)/i.test(this.strokeColor))
+        ) {
             border *= max(this.sx, this.sy);
         }
 
@@ -296,7 +316,6 @@ export class Path extends ColoredShapeBase {
         }
 
         for (let i = 0; i < l; i++) {
-
             const v1 = this.zzz.vertices[i];
             // If i = 0, then this "wraps around" to the last vertex. Otherwise, it's the previous vertex.
             // This is important for handling cyclic paths.
@@ -306,7 +325,6 @@ export class Path extends ColoredShapeBase {
             const [v1x, v1y] = M.multiply_vector(v1.x, v1.y);
 
             if (v0.controls && v1.controls) {
-
                 let rx = v0.controls.b.x;
                 let ry = v0.controls.b.y;
 
@@ -327,19 +345,13 @@ export class Path extends ColoredShapeBase {
 
                 const [c1x, c1y] = M.multiply_vector(lx, ly);
 
-                const bb = getCurveBoundingBox(
-                    v0x, v0y,
-                    c0x, c0y,
-                    c1x, c1y,
-                    v1x, v1y
-                );
+                const bb = getCurveBoundingBox(v0x, v0y, c0x, c0y, c1x, c1y, v1x, v1y);
 
                 top = min(bb.min.y - border, top);
                 left = min(bb.min.x - border, left);
                 right = max(bb.max.x + border, right);
                 bottom = max(bb.max.y + border, bottom);
-            }
-            else {
+            } else {
                 if (i <= 1) {
                     top = min(v0y - border, top);
                     left = min(v0x - border, left);
@@ -353,7 +365,7 @@ export class Path extends ColoredShapeBase {
             }
         }
 
-        return { top, left, right, bottom, };
+        return { top, left, right, bottom };
     }
 
     hasBoundingBox(): boolean {
@@ -371,7 +383,7 @@ export class Path extends ColoredShapeBase {
      */
     getPointAt(t: number, anchor: Anchor): Anchor {
         /**
-         * This line proves that the anchor argument is not re-assigned. 
+         * This line proves that the anchor argument is not re-assigned.
          */
         const ank = anchor;
 
@@ -409,8 +421,7 @@ export class Path extends ColoredShapeBase {
                         ia = ib;
                         ib = i;
                     }
-                }
-                else {
+                } else {
                     ia = i;
                     ib = min(max(i - 1, 0), last);
                 }
@@ -423,8 +434,7 @@ export class Path extends ColoredShapeBase {
                 target -= sum;
                 if (this.#lengths[i] !== 0) {
                     t = target / this.#lengths[i];
-                }
-                else {
+                } else {
                     t = 0;
                 }
                 break;
@@ -438,8 +448,7 @@ export class Path extends ColoredShapeBase {
 
         if (!a) {
             return b;
-        }
-        else if (!b) {
+        } else if (!b) {
             return a;
         }
 
@@ -490,7 +499,7 @@ export class Path extends ColoredShapeBase {
         ank.controls.b.x = alx;
         ank.controls.b.y = aly;
 
-        if (!(typeof ank.relative === 'boolean') || ank.relative) {
+        if (!(typeof ank.relative === "boolean") || ank.relative) {
             ank.controls.a.x -= x;
             ank.controls.a.y -= y;
             ank.controls.b.x -= x;
@@ -513,7 +522,7 @@ export class Path extends ColoredShapeBase {
         const vertices = this.#vertices;
         const N = vertices.length;
         for (let i = 0; i < N; i++) {
-            vertices.getAt(i).command = (i === 0) ? Commands.move : Commands.line;
+            vertices.getAt(i).command = i === 0 ? Commands.move : Commands.line;
         }
         return this;
     }
@@ -529,10 +538,10 @@ export class Path extends ColoredShapeBase {
         const last = this.vertices.length - 1;
         const closed = this.closed || this.vertices.getAt(last).command === Commands.close;
         let b = this.vertices.getAt(last);
-        let points: Anchor[] = [], verts;
+        let points: Anchor[] = [],
+            verts;
 
         this.vertices.forEach((a, i) => {
-
             if (i <= 0 && !closed) {
                 b = a;
                 return;
@@ -554,17 +563,14 @@ export class Path extends ColoredShapeBase {
             verts.forEach(function (v, i) {
                 if (i <= 0 && b.command === Commands.move) {
                     v.command = Commands.move;
-                }
-                else {
+                } else {
                     v.command = Commands.line;
                 }
             });
 
             if (i >= last) {
-
                 // TODO: Add check if the two vectors in question are the same values.
                 if (this.closed && this.automatic) {
-
                     b = a;
 
                     verts = getSubdivisions(a, b, limit);
@@ -574,20 +580,15 @@ export class Path extends ColoredShapeBase {
                     verts.forEach(function (v, i) {
                         if (i <= 0 && b.command === Commands.move) {
                             v.command = Commands.move;
-                        }
-                        else {
+                        } else {
                             v.command = Commands.line;
                         }
                     });
-
-                }
-                else if (closed) {
+                } else if (closed) {
                     points.push(new Anchor(G20.vector(a.x, a.y)));
                 }
 
-                points[points.length - 1].command = closed
-                    ? Commands.close : Commands.line;
-
+                points[points.length - 1].command = closed ? Commands.close : Commands.line;
             }
 
             b = a;
@@ -635,14 +636,12 @@ export class Path extends ColoredShapeBase {
                 let prev: Anchor;
                 const L = vertices.length;
                 for (let i = 0; i < L; i++) {
-
                     if (this.#anchors.length <= i) {
                         // Expected to be `relative` anchor points.
                         this.#anchors.push(new Anchor(G20.vector(0, 0)));
                     }
 
                     if (i > uBound && !right) {
-
                         const v = this.#anchors[i].copy(vertices.getAt(i));
                         this.getPointAt(ending, v);
                         v.command = this.#anchors[i].command;
@@ -654,11 +653,9 @@ export class Path extends ColoredShapeBase {
                         // Project control over the percentage `t`
                         // of the in-between point
                         if (prev && prev.controls) {
-
                             if (v.relative) {
                                 v.controls.b.clear();
-                            }
-                            else {
+                            } else {
                                 v.controls.b.copyVector(v.origin);
                             }
 
@@ -666,16 +663,13 @@ export class Path extends ColoredShapeBase {
                                 this.#anchors[i - 1].controls.b
                                     .copyVector(prev.controls.b)
                                     .lerp(G20.zero, 1 - v.t);
-                            }
-                            else {
+                            } else {
                                 this.#anchors[i - 1].controls.b
                                     .copyVector(prev.controls.b)
                                     .lerp(prev.origin, 1 - v.t);
                             }
                         }
-                    }
-                    else if (i >= lBound && i <= uBound) {
-
+                    } else if (i >= lBound && i <= uBound) {
                         const v = this.#anchors[i].copy(vertices.getAt(i));
                         this.zzz.vertices.push(v);
 
@@ -684,20 +678,17 @@ export class Path extends ColoredShapeBase {
                             if (!closed && right.controls) {
                                 if (right.relative) {
                                     right.controls.b.clear();
-                                }
-                                else {
+                                } else {
                                     right.controls.b.copyVector(right.origin);
                                 }
                             }
-                        }
-                        else if (i === lBound && contains(this, beginning)) {
+                        } else if (i === lBound && contains(this, beginning)) {
                             left = v;
                             left.command = Commands.move;
                             if (!closed && left.controls) {
                                 if (left.relative) {
                                     left.controls.a.clear();
-                                }
-                                else {
+                                } else {
                                     left.controls.a.copyVector(left.origin);
                                 }
                             }
@@ -708,7 +699,6 @@ export class Path extends ColoredShapeBase {
 
             // Prepend the trimmed point if necessary.
             if (lBound > 0 && !left) {
-
                 const i = lBound - 1;
 
                 const v = this.#anchors[i].copy(vertices.getAt(i));
@@ -721,19 +711,13 @@ export class Path extends ColoredShapeBase {
                 // Project control over the percentage `t`
                 // of the in-between point
                 if (next && next.controls) {
-
                     v.controls.a.clear();
 
                     if (next.relative) {
-                        this.#anchors[i + 1].controls.a
-                            .copyVector(next.controls.a)
-                            .lerp(G20.zero, v.t);
-                    }
-                    else {
+                        this.#anchors[i + 1].controls.a.copyVector(next.controls.a).lerp(G20.zero, v.t);
+                    } else {
                         vector.copyVector(next.origin);
-                        this.#anchors[i + 1].controls.a
-                            .copyVector(next.controls.a)
-                            .lerp(next.origin, v.t);
+                        this.#anchors[i + 1].controls.a.copyVector(next.controls.a).lerp(next.origin, v.t);
                     }
                 }
             }
@@ -743,16 +727,14 @@ export class Path extends ColoredShapeBase {
     }
 
     #updateLength(limit?: number): this {
-
         const length = this.vertices.length;
         const last = length - 1;
-        const closed = false;//this.closed || this.vertices[last]._command === Commands.close;
+        const closed = false; //this.closed || this.vertices[last]._command === Commands.close;
 
         let b = this.vertices.getAt(last);
         let sum = 0;
 
         this.vertices.forEach((a: Anchor, i: number) => {
-
             if ((i <= 0 && !closed) || a.command === Commands.move) {
                 b = a;
                 this.#lengths[i] = 0;
@@ -763,12 +745,10 @@ export class Path extends ColoredShapeBase {
             sum += this.#lengths[i];
 
             if (i >= last && closed) {
-
                 b = this.vertices.getAt((i + 1) % length);
 
                 this.#lengths[i + 1] = getCurveLength(a, b, limit);
                 sum += this.#lengths[i + 1];
-
             }
 
             b = a;
@@ -802,8 +782,7 @@ export class Path extends ColoredShapeBase {
         this.vertices.forEach(function (v: Anchor) {
             if (automatic) {
                 v.ignore();
-            }
-            else {
+            } else {
                 v.listen();
             }
         });
@@ -818,17 +797,17 @@ export class Path extends ColoredShapeBase {
      * Defines the shape to be used at the end of open subpaths when they are stroked.
      * @see https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap
      */
-    get cap(): 'butt' | 'round' | 'square' {
+    get cap(): "butt" | "round" | "square" {
         return this.#cap.get();
     }
-    set cap(cap: 'butt' | 'round' | 'square') {
+    set cap(cap: "butt" | "round" | "square") {
         this.#cap.set(cap);
     }
     get closed(): boolean {
         return this.#closed.get();
     }
     set closed(closed: boolean) {
-        if (typeof closed === 'boolean') {
+        if (typeof closed === "boolean") {
             this.#closed.set(closed);
         }
     }
@@ -836,7 +815,7 @@ export class Path extends ColoredShapeBase {
         return this.#curved.get();
     }
     set curved(curved: boolean) {
-        if (typeof curved === 'boolean') {
+        if (typeof curved === "boolean") {
             this.#curved.set(curved);
         }
     }
@@ -846,10 +825,10 @@ export class Path extends ColoredShapeBase {
     set ending(ending: number) {
         this.#ending.set(ending);
     }
-    get join(): 'arcs' | 'bevel' | 'miter' | 'miter-clip' | 'round' {
+    get join(): "arcs" | "bevel" | "miter" | "miter-clip" | "round" {
         return this.#join.get();
     }
-    set join(join: 'arcs' | 'bevel' | 'miter' | 'miter-clip' | 'round') {
+    set join(join: "arcs" | "bevel" | "miter" | "miter-clip" | "round") {
         this.#join.set(join);
     }
     get length(): number {
@@ -881,11 +860,9 @@ export class Path extends ColoredShapeBase {
         // Create new Collection with copy of vertices
         if (vertices instanceof Collection) {
             this.#vertices = vertices;
-        }
-        else {
+        } else {
             this.#vertices = new Collection(vertices || []);
         }
-
 
         // Listen for Collection changes and bind / unbind
         this.#vertices_insert = this.vertices.insert$.subscribe((inserts: Anchor[]) => {
@@ -921,7 +898,6 @@ export class Path extends ColoredShapeBase {
     }
 }
 
-
 function colored_shape_attribs_from_path_attribs(options: PathOptions): ColoredShapeOptions {
     const retval: ColoredShapeOptions = {
         id: options.id,
@@ -936,7 +912,7 @@ function colored_shape_attribs_from_path_attribs(options: PathOptions): ColoredS
         opacity: options.opacity,
         plumb: options.plumb,
         vectorEffect: options.vectorEffect,
-        visibility: options.visibility
+        visibility: options.visibility,
     };
     return retval;
 }

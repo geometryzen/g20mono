@@ -1,6 +1,6 @@
 import { Collection } from '../collection.js';
 import { lerp } from '../utils/math.js';
-// import { _ } from '../utils/underscore.js';
+// import { \_ } from '../utils/underscore.js';
 
 import { Rectangle } from '../shapes/rectangle.js';
 import { G20 } from '../vector.js';
@@ -349,60 +349,64 @@ export class ImageSequence extends Rectangle {
         bindTextures(this._textures);
 
     }
+
 }
 
-/**
- * @name FlagTextures
- * @private
- * @function
- * @description Cached method to let renderers know textures have been updated on a {@link ImageSequence}.
- */
-function FlagTextures() {
-    this._flagTextures = true;
-}
+/\*\*
 
-/**
- * @name BindTextures
- * @private
- * @function
- * @description Cached method to let {@link ImageSequence} know textures have been added to the instance.
- */
-function BindTextures(items) {
-
-    let i = items.length;
-    while (i--) {
-        items[i].bind(Events.Types.change, this._renderer.flagTextures);
+-   @name FlagTextures
+-   @private
+-   @function
+-   @description Cached method to let renderers know textures have been updated on a {@link ImageSequence}.
+    \*/
+    function FlagTextures() {
+    this.\_flagTextures = true;
     }
 
-    this._renderer.flagTextures();
+/\*\*
+
+-   @name BindTextures
+-   @private
+-   @function
+-   @description Cached method to let {@link ImageSequence} know textures have been added to the instance.
+    \*/
+    function BindTextures(items) {
+
+        let i = items.length;
+        while (i--) {
+            items[i].bind(Events.Types.change, this._renderer.flagTextures);
+        }
+
+        this._renderer.flagTextures();
 
 }
 
-/**
- * @name UnbindTextures
- * @private
- * @function
- * @description Cached method to let {@link ImageSequence} know textures have been removed from the instance.
- */
-function UnbindTextures(items) {
+/\*\*
 
-    let i = items.length;
-    while (i--) {
-        items[i].unbind(Events.Types.change, this._renderer.flagTextures);
-    }
+-   @name UnbindTextures
+-   @private
+-   @function
+-   @description Cached method to let {@link ImageSequence} know textures have been removed from the instance.
+    \*/
+    function UnbindTextures(items) {
 
-    this._renderer.flagTextures();
+        let i = items.length;
+        while (i--) {
+            items[i].unbind(Events.Types.change, this._renderer.flagTextures);
+        }
+
+        this._renderer.flagTextures();
 
 }
 
 function ensure_texture(x: string | Texture): Texture {
-    if (x instanceof Texture) {
-        return x;
-    }
-    else if (typeof x === 'string') {
-        return new Texture(x);
-    }
-    else {
-        throw new Error();
-    }
+if (x instanceof Texture) {
+return x;
+}
+else if (typeof x === 'string') {
+return new Texture(x);
+}
+else {
+throw new Error();
+}
 }

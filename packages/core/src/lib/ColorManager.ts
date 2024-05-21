@@ -23,11 +23,14 @@ export class ColorManager {
      */
     #hostElement: unknown;
     /**
-     * 
-     * @param initialValue 
-     * @param name 
+     *
+     * @param initialValue
+     * @param name
      */
-    constructor(initialValue: Color, readonly name: 'fill' | 'stroke') {
+    constructor(
+        initialValue: Color,
+        readonly name: "fill" | "stroke"
+    ) {
         this.#color = signal(initialValue);
     }
     get(): Color {
@@ -39,16 +42,14 @@ export class ColorManager {
             if (is_color_provider(oldColor)) {
                 if (this.#svg) {
                     oldColor.decrementUse(this.#viewDOM, this.#viewDOM.getElementDefs(this.#svg));
-                }
-                else {
+                } else {
                     this.#olds.push(oldColor);
                 }
             }
             if (is_color_provider(newColor)) {
                 if (this.#svg) {
                     newColor.incrementUse(this.#viewDOM, this.#viewDOM.getElementDefs(this.#svg));
-                }
-                else {
+                } else {
                     this.#news.push(newColor);
                 }
             }
@@ -71,13 +72,11 @@ export class ColorManager {
     }
     update(): void {
         const color = this.#color.get();
-        if (typeof color === 'string') {
+        if (typeof color === "string") {
             this.#viewDOM.setAttribute(this.#hostElement, this.name, color);
-        }
-        else if (is_color_provider(color)) {
+        } else if (is_color_provider(color)) {
             this.#viewDOM.setAttribute(this.#hostElement, this.name, color.serialize());
-        }
-        else {
+        } else {
             this.#viewDOM.removeAttribute(this.#hostElement, this.name);
         }
     }

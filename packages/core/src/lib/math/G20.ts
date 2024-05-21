@@ -1,14 +1,13 @@
 import { signal, State } from "@g20/reactive";
-import { variable } from '../reactive/variable';
-import { Bivector } from './Bivector';
-import { gauss } from './gauss';
-import { rotorFromDirections } from './rotorFromDirections';
-import { Scalar } from './Scalar';
-import { Spinor } from './Spinor';
-import { Vector } from './Vector';
+import { variable } from "../reactive/variable";
+import { Bivector } from "./Bivector";
+import { gauss } from "./gauss";
+import { rotorFromDirections } from "./rotorFromDirections";
+import { Scalar } from "./Scalar";
+import { Spinor } from "./Spinor";
+import { Vector } from "./Vector";
 
-interface Geometric extends Vector, Bivector, Scalar, Spinor {
-}
+interface Geometric extends Vector, Bivector, Scalar, Spinor {}
 
 function is_zero_vector(v: Vector): boolean {
     return v.x === 0 && v.y === 0;
@@ -25,7 +24,7 @@ function is_zero_multivector(m: Geometric): boolean {
 /**
  * Sentinel value to indicate that the Geometric is not locked.
  * UNLOCKED is in the range -1 to 0.
- * 
+ *
  */
 const UNLOCKED = -1 * Math.random();
 
@@ -33,7 +32,7 @@ const UNLOCKED = -1 * Math.random();
  * Sets the lock on the multivector argument and returns the same argument.
  * This is a convenience function for the dunder (double underscore) methods.
  * All dunder methods should return locked values.
- * 
+ *
  */
 function lock(m: G20): G20 {
     m.lock();
@@ -41,7 +40,7 @@ function lock(m: G20): G20 {
 }
 
 /**
- * 
+ *
  */
 function isScalar(m: G20): boolean {
     return m.x === 0 && m.y === 0 && m.b === 0;
@@ -50,10 +49,7 @@ function isScalar(m: G20): boolean {
 type COORDS = [a: number, x: number, y: number, b: number];
 
 function equalsValue(P: COORDS, Q: COORDS): boolean {
-    return P[0] === Q[0] &&
-        P[1] === Q[1] &&
-        P[2] === Q[2] &&
-        P[3] === Q[3];
+    return P[0] === Q[0] && P[1] === Q[1] && P[2] === Q[2] && P[3] === Q[3];
 }
 
 const COORD_A = 0;
@@ -67,8 +63,7 @@ export type SpinorLike = G20 | [a: number, b: number];
 function ensure_mutable(mv: G20): G20 {
     if (mv.isMutable()) {
         return mv;
-    }
-    else {
+    } else {
         return mv.clone();
     }
 }
@@ -76,11 +71,9 @@ function ensure_mutable(mv: G20): G20 {
 export function vector_from_like(like: VectorLike): G20 | null {
     if (like instanceof G20) {
         return ensure_mutable(like);
-    }
-    else if (Array.isArray(like)) {
+    } else if (Array.isArray(like)) {
         return G20.vector(like[0], like[1]);
-    }
-    else {
+    } else {
         return null;
     }
 }
@@ -88,11 +81,9 @@ export function vector_from_like(like: VectorLike): G20 | null {
 export function spinor_from_like(like: SpinorLike): G20 | null {
     if (like instanceof G20) {
         return ensure_mutable(like);
-    }
-    else if (Array.isArray(like)) {
+    } else if (Array.isArray(like)) {
         return G20.spinor(like[0], like[1]);
-    }
-    else {
+    } else {
         return null;
     }
 }
@@ -107,13 +98,18 @@ export class G20 {
      * mutation, and 2) we want this multivector to also be observable with events that only happen on
      * changes, and 3) we want to avoid taxing the Garbage Collector.
      */
-    readonly #signalValue: [COORDS, COORDS] = [[0, 0, 0, 0], [0, 0, 0, 0]];
+    readonly #signalValue: [COORDS, COORDS] = [
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+    ];
     /**
      * The underlying data that makes this multivector into a signal.
      * The get method fo this signal MUST be called when accessing the coordinates (a, x, y, and b),
      * and MUST NOT be called when mutating this multivector.
      */
-    readonly #signal: State<COORDS> = signal(this.#signalValue[0], { equals: equalsValue });
+    readonly #signal: State<COORDS> = signal(this.#signalValue[0], {
+        equals: equalsValue,
+    });
 
     #lock = UNLOCKED;
 
@@ -160,8 +156,7 @@ export class G20 {
     lock(): number {
         if (this.#lock !== UNLOCKED) {
             throw new Error("already locked");
-        }
-        else {
+        } else {
             this.#lock = Math.random();
             return this.#lock;
         }
@@ -174,12 +169,10 @@ export class G20 {
     unlock(token: number): this {
         if (this.#lock === UNLOCKED) {
             throw new Error("not locked");
-        }
-        else if (this.#lock === token) {
+        } else if (this.#lock === token) {
             this.#lock = UNLOCKED;
             return this;
-        }
-        else {
+        } else {
             throw new Error("unlock denied");
         }
     }
@@ -189,7 +182,7 @@ export class G20 {
     }
 
     set a(a: number) {
-        if (typeof a === 'number') {
+        if (typeof a === "number") {
             const coords: COORDS = this.#signalValue[0];
             const old_a: number = coords[COORD_A];
             if (a !== old_a) {
@@ -206,7 +199,7 @@ export class G20 {
     }
 
     set x(x: number) {
-        if (typeof x === 'number') {
+        if (typeof x === "number") {
             const coords: COORDS = this.#signalValue[0];
             const old_x: number = coords[COORD_X];
             if (x !== old_x) {
@@ -223,7 +216,7 @@ export class G20 {
     }
 
     set y(y: number) {
-        if (typeof y === 'number') {
+        if (typeof y === "number") {
             const coords: COORDS = this.#signalValue[0];
             const old_y: number = coords[COORD_Y];
             if (y !== old_y) {
@@ -240,7 +233,7 @@ export class G20 {
     }
 
     set b(b: number) {
-        if (typeof b === 'number') {
+        if (typeof b === "number") {
             const coords: COORDS = this.#signalValue[0];
             const old_b: number = coords[COORD_B];
             if (b !== old_b) {
@@ -317,9 +310,7 @@ export class G20 {
     }
 
     static distanceBetween(v1: Readonly<Vector>, v2: Readonly<Vector>): number {
-
         return Math.sqrt(G20.distanceBetweenSquared(v1, v2));
-
     }
 
     static distanceBetweenSquared(v1: Readonly<Vector>, v2: Readonly<Vector>): number {
@@ -328,16 +319,14 @@ export class G20 {
         return dx * dx + dy * dy;
     }
     /**
-     * 
+     *
      */
     add2(a: Readonly<G20>, b: Readonly<G20>): G20 {
         if (is_zero_multivector(a)) {
             return this.set(b.x, b.y, b.a, b.b);
-        }
-        else if (is_zero_multivector(b)) {
+        } else if (is_zero_multivector(b)) {
             return this.set(a.x, a.y, a.a, a.b);
-        }
-        else {
+        } else {
             return this.set(a.x + b.x, a.y + b.y, a.a + b.a, a.b + b.b);
         }
     }
@@ -345,12 +334,10 @@ export class G20 {
     addPseudo(β: number): G20 {
         if (this.isLocked()) {
             return lock(this.clone().addPseudo(β));
-        }
-        else {
+        } else {
             if (β === 0) {
                 return this;
-            }
-            else {
+            } else {
                 return this.set(this.x, this.y, this.a, this.b + β);
             }
         }
@@ -365,16 +352,13 @@ export class G20 {
     addScalar(a: number, α = 1): G20 {
         if (this.isLocked()) {
             return lock(this.clone().addScalar(a, α));
-        }
-        else {
+        } else {
             if (this.isZero()) {
                 this.a = a * α;
                 return this;
-            }
-            else if (a === 0 || α === 0) {
+            } else if (a === 0 || α === 0) {
                 return this;
-            }
-            else {
+            } else {
                 this.a += a * α;
                 return this;
             }
@@ -384,8 +368,7 @@ export class G20 {
     conj(): G20 {
         if (this.isLocked()) {
             return lock(this.clone().conj());
-        }
-        else {
+        } else {
             return this.set(-this.x, -this.y, this.a, -this.b);
         }
     }
@@ -432,12 +415,10 @@ export class G20 {
     div(rhs: G20): G20 {
         if (this.isLocked()) {
             return lock(this.clone().div(rhs));
-        }
-        else {
+        } else {
             if (isScalar(rhs)) {
                 return this.scale(1 / rhs.a);
-            }
-            else {
+            } else {
                 return this.mul(G20.copy(rhs).inv());
             }
         }
@@ -450,8 +431,7 @@ export class G20 {
     ext(m: G20): G20 {
         if (this.isLocked()) {
             return lock(this.clone().ext(m));
-        }
-        else {
+        } else {
             const La = this.a;
             const Lx = this.x;
             const Ly = this.y;
@@ -476,8 +456,7 @@ export class G20 {
     inv(): G20 {
         if (this.isLocked()) {
             return lock(this.clone().inv());
-        }
-        else {
+        } else {
             const x0 = this.a;
             const x1 = this.x;
             const x2 = this.y;
@@ -487,7 +466,7 @@ export class G20 {
                 [+x0, +x1, +x2, -x3],
                 [+x1, +x0, -x3, +x2],
                 [+x2, +x3, +x0, -x1],
-                [+x3, +x2, -x1, +x0]
+                [+x3, +x2, -x1, +x0],
             ];
 
             const s = [1, 0, 0, 0];
@@ -506,8 +485,7 @@ export class G20 {
     lco(rhs: G20): G20 {
         if (this.isLocked()) {
             return lock(this.clone().lco(rhs));
-        }
-        else {
+        } else {
             return this.#lco2(this, rhs);
         }
     }
@@ -531,8 +509,7 @@ export class G20 {
     add(rhs: G20): G20 {
         if (this.isLocked()) {
             return lock(this.clone().add(rhs));
-        }
-        else {
+        } else {
             const x = this.x + rhs.x;
             const y = this.y + rhs.y;
             const a = this.a + rhs.a;
@@ -544,8 +521,7 @@ export class G20 {
     sub(rhs: G20): G20 {
         if (this.isLocked()) {
             return lock(this.clone().sub(rhs));
-        }
-        else {
+        } else {
             const x = this.x - rhs.x;
             const y = this.y - rhs.y;
             const a = this.a - rhs.a;
@@ -561,14 +537,13 @@ export class G20 {
     mul(rhs: G20): G20 {
         if (this.isLocked()) {
             return lock(this.clone().mul(rhs));
-        }
-        else {
+        } else {
             return this.#mul2(this, rhs);
         }
     }
 
     /**
-     * 
+     *
      */
     #mul2(lhs: G20, rhs: G20): this {
         const La = lhs.a;
@@ -597,8 +572,7 @@ export class G20 {
     exp(): G20 {
         if (this.isLocked()) {
             return lock(this.clone().exp());
-        }
-        else {
+        } else {
             const w = this.a;
             const z = this.b;
             const expW = Math.exp(w);
@@ -627,8 +601,7 @@ export class G20 {
     normalize(): G20 {
         if (this.isLocked()) {
             return lock(this.clone().normalize());
-        }
-        else {
+        } else {
             return this.scale(1 / this.magnitude());
         }
     }
@@ -646,8 +619,7 @@ export class G20 {
     rco(m: G20): G20 {
         if (this.isLocked()) {
             return lock(this.clone().rco(m));
-        }
-        else {
+        } else {
             return this.#rco2(this, m);
         }
     }
@@ -671,8 +643,8 @@ export class G20 {
     /**
      * If `this` is mutable, then sets `this` multivector to its reflection in the plane orthogonal to vector n. The result is mutable.
      * If `this` is immutable (locked), a copy of `this` is made, which is then reflected. The result is immutable (locked).
-     * 
-     * i.e. The result is mutable (unlocked) iff `this` is mutable (unlocked). 
+     *
+     * i.e. The result is mutable (unlocked) iff `this` is mutable (unlocked).
      *
      * Mathematically,
      *
@@ -692,8 +664,7 @@ export class G20 {
     reflect(n: Readonly<Vector>): G20 {
         if (this.isLocked()) {
             return lock(this.clone().reflect(n));
-        }
-        else {
+        } else {
             const nx = n.x;
             const ny = n.y;
             const a = this.a;
@@ -722,7 +693,7 @@ export class G20 {
      * Computes a rotor, R, from two unit vectors, where
      * R = (|b||a| + b * a) / sqrt(2 * |b||a|(|b||a| + b << a))
      * </p>
-     * 
+     *
      * The result is independent of the magnitudes of a and b.
      *
      * @param a The starting vector
@@ -732,8 +703,7 @@ export class G20 {
     rotorFromDirections(a: Readonly<Vector>, b: Readonly<Vector>): G20 {
         if (this.isLocked()) {
             return lock(this.clone().rotorFromDirections(a, b));
-        }
-        else {
+        } else {
             rotorFromDirections(a, b, this);
             return this;
         }
@@ -751,8 +721,7 @@ export class G20 {
     rotorFromAngle(θ: number): G20 {
         if (this.isLocked()) {
             return lock(this.clone().rotorFromAngle(θ));
-        }
-        else {
+        } else {
             const φ = θ / 2;
             return this.set(0, 0, Math.cos(φ), -Math.sin(φ));
         }
@@ -760,13 +729,12 @@ export class G20 {
     /**
      * R = sqrt(|b|/|a|) * (|b||a| + b * a) / sqrt(2 * |b||a|(|b||a| + b << a))
      *
-     * The result is depends  on the magnitudes of a and b. 
+     * The result is depends  on the magnitudes of a and b.
      */
     rotorFromVectorToVector(a: Readonly<Vector>, b: Readonly<Vector>): G20 {
         if (this.isLocked()) {
             return lock(this.clone().rotorFromVectorToVector(a, b));
-        }
-        else {
+        } else {
             const ax = a.x;
             const ay = a.y;
             const bx = b.x;
@@ -792,8 +760,7 @@ export class G20 {
     scale(α: number): G20 {
         if (this.isLocked()) {
             return lock(this.clone().scale(α));
-        }
-        else {
+        } else {
             const x = this.x * α;
             const y = this.y * α;
             const a = this.a * α;
@@ -809,14 +776,13 @@ export class G20 {
     scp(m: G20): G20 {
         if (this.isLocked()) {
             return lock(this.clone().scp(m));
-        }
-        else {
+        } else {
             return this.#scp2(this, m);
         }
     }
 
     /**
-     * 
+     *
      */
     #scp2(lhs: G20, rhs: G20): this {
         const La = lhs.a;
@@ -855,30 +821,27 @@ export class G20 {
             newCoords[COORD_Y] = y;
             if (equalsValue(newCoords, oldCoords)) {
                 // Do nothing
-            }
-            else {
+            } else {
                 this.#signalValue[0] = newCoords;
                 this.#signalValue[1] = oldCoords;
                 this.#signal.set(newCoords);
                 this.#change.set(this);
             }
             return this;
-        }
-        else {
+        } else {
             throw new Error();
         }
     }
 
     equals(v: G20, eps?: number): boolean {
-        eps = (typeof eps === 'undefined') ? 0.0001 : eps;
-        return (this.distanceTo(v) < eps);
+        eps = typeof eps === "undefined" ? 0.0001 : eps;
+        return this.distanceTo(v) < eps;
     }
 
     lerp(v: G20, t: number): G20 {
         if (this.isLocked()) {
             return lock(this.clone().lerp(v, t));
-        }
-        else {
+        } else {
             const x = (v.x - this.x) * t + this.x;
             const y = (v.y - this.y) * t + this.y;
             const a = (v.a - this.a) * t + this.a;
@@ -890,10 +853,14 @@ export class G20 {
      * Determines whether this multivector is exactly 0 (zero).
      */
     isZero(eps?: number): boolean {
-        if (typeof eps === 'number') {
-            return Math.abs(this.a) < eps && Math.abs(this.x) < eps && Math.abs(this.y) < eps && Math.abs(this.b) < eps;
-        }
-        else {
+        if (typeof eps === "number") {
+            return (
+                Math.abs(this.a) < eps &&
+                Math.abs(this.x) < eps &&
+                Math.abs(this.y) < eps &&
+                Math.abs(this.b) < eps
+            );
+        } else {
             return this.a === 0 && this.x === 0 && this.y === 0 && this.b === 0;
         }
     }
@@ -916,8 +883,7 @@ export class G20 {
             const b = -this.b;
             // The unit of measure is unchanged.
             return this.set(x, y, a, b);
-        }
-        else {
+        } else {
             return lock(this.clone().rev());
         }
     }
@@ -931,8 +897,7 @@ export class G20 {
             const x = x0 * cos - y0 * sin;
             const y = x0 * sin + y0 * cos;
             return this.set(x, y, this.a, this.b);
-        }
-        else {
+        } else {
             return lock(this.clone().rotate(radians));
         }
     }
@@ -945,16 +910,13 @@ export class G20 {
     subScalar(a: number, α = 1): G20 {
         if (this.isLocked()) {
             return lock(this.clone().subScalar(a, α));
-        }
-        else {
+        } else {
             if (this.isZero()) {
-                this.a = - a * α;
+                this.a = -a * α;
                 return this;
-            }
-            else if (a === 0 || α === 0) {
+            } else if (a === 0 || α === 0) {
                 return this;
-            }
-            else {
+            } else {
                 this.a -= a * α;
                 return this;
             }
@@ -974,310 +936,272 @@ export class G20 {
             const Y = 0;
             const B = a.x * b.y - a.y * b.x;
             return this.set(X, Y, A, B);
-        }
-        else {
+        } else {
             throw new Error();
         }
     }
 
     /**
-     * 
+     *
      */
     __div__(rhs: G20 | number): G20 {
         if (rhs instanceof G20) {
             return lock(this.clone().div(rhs));
-        }
-        else if (typeof rhs === 'number') {
+        } else if (typeof rhs === "number") {
             return lock(this.clone().scale(1 / rhs));
-        }
-        else {
+        } else {
             return void 0;
         }
     }
 
     /**
-     * 
+     *
      */
     __rdiv__(lhs: number | G20): G20 {
         if (lhs instanceof G20) {
             return lock(G20.copy(lhs).div(this));
-        }
-        else if (typeof lhs === 'number') {
+        } else if (typeof lhs === "number") {
             return lock(G20.scalar(lhs).div(this));
-        }
-        else {
+        } else {
             return void 0;
         }
     }
 
     /**
-     * 
+     *
      */
     __vbar__(rhs: number | G20): G20 {
         if (rhs instanceof G20) {
             return lock(G20.copy(this).scp(rhs));
-        }
-        else if (typeof rhs === 'number') {
+        } else if (typeof rhs === "number") {
             return lock(G20.copy(this).scp(G20.scalar(rhs)));
-        }
-        else {
+        } else {
             return void 0;
         }
     }
 
     /**
-     * 
+     *
      */
     __rvbar__(lhs: number | G20): G20 {
         if (lhs instanceof G20) {
             return lock(G20.copy(lhs).scp(this));
-        }
-        else if (typeof lhs === 'number') {
+        } else if (typeof lhs === "number") {
             return lock(G20.scalar(lhs).scp(this));
-        }
-        else {
+        } else {
             return void 0;
         }
     }
 
     /**
-     * 
+     *
      */
     __wedge__(rhs: number | G20): G20 {
         if (rhs instanceof G20) {
             return lock(G20.copy(this).ext(rhs));
-        }
-        else if (typeof rhs === 'number') {
+        } else if (typeof rhs === "number") {
             // The outer product with a scalar is scalar multiplication.
             return lock(G20.copy(this).scale(rhs));
-        }
-        else {
+        } else {
             return void 0;
         }
     }
 
     /**
-     * 
+     *
      */
     __rwedge__(lhs: number | G20): G20 {
         if (lhs instanceof G20) {
             return lock(G20.copy(lhs).ext(this));
-        }
-        else if (typeof lhs === 'number') {
+        } else if (typeof lhs === "number") {
             // The outer product with a scalar is scalar multiplication, and commutes.
             return lock(G20.copy(this).scale(lhs));
-        }
-        else {
+        } else {
             return void 0;
         }
     }
 
     /**
-     * 
+     *
      */
     __lshift__(rhs: number | G20): G20 {
         if (rhs instanceof G20) {
             return lock(G20.copy(this).lco(rhs));
-        }
-        else if (typeof rhs === 'number') {
+        } else if (typeof rhs === "number") {
             return lock(G20.copy(this).lco(G20.scalar(rhs)));
-        }
-        else {
+        } else {
             return void 0;
         }
     }
 
     /**
-     * 
+     *
      */
     __rlshift__(lhs: number | G20): G20 {
         if (lhs instanceof G20) {
             return lock(G20.copy(lhs).lco(this));
-        }
-        else if (typeof lhs === 'number') {
+        } else if (typeof lhs === "number") {
             return lock(G20.scalar(lhs).lco(this));
-        }
-        else {
+        } else {
             return void 0;
         }
     }
 
     /**
-     * 
+     *
      */
     __rshift__(rhs: number | G20): G20 {
         if (rhs instanceof G20) {
             return lock(G20.copy(this).rco(rhs));
-        }
-        else if (typeof rhs === 'number') {
+        } else if (typeof rhs === "number") {
             return lock(G20.copy(this).rco(G20.scalar(rhs)));
-        }
-        else {
+        } else {
             return void 0;
         }
     }
 
     /**
-     * 
+     *
      */
     __rrshift__(lhs: number | G20): G20 {
         if (lhs instanceof G20) {
             return lock(G20.copy(lhs).rco(this));
-        }
-        else if (typeof lhs === 'number') {
+        } else if (typeof lhs === "number") {
             return lock(G20.scalar(lhs).rco(this));
-        }
-        else {
+        } else {
             return void 0;
         }
     }
 
     /**
-     * 
+     *
      */
     __bang__(): G20 {
         return lock(G20.copy(this).inv());
     }
 
     /**
-     * 
+     *
      */
     __eq__(rhs: G20 | number): boolean {
         if (rhs instanceof G20) {
             return this.equals(rhs);
-        }
-        else if (typeof rhs === 'number') {
+        } else if (typeof rhs === "number") {
             return this.equals(G20.scalar(rhs));
-        }
-        else {
+        } else {
             return false;
         }
     }
 
     /**
-     * 
+     *
      */
     __ne__(rhs: G20 | number): boolean {
         if (rhs instanceof G20) {
             return !this.equals(rhs);
-        }
-        else if (typeof rhs === 'number') {
+        } else if (typeof rhs === "number") {
             return !this.equals(G20.scalar(rhs));
-        }
-        else {
+        } else {
             return true;
         }
     }
 
     /**
-     * 
+     *
      */
     __tilde__(): G20 {
         return lock(G20.copy(this).rev());
     }
 
     /**
-     * 
+     *
      */
     __add__(rhs: G20 | number): G20 {
         if (rhs instanceof G20) {
             return lock(this.clone().add(rhs));
-        }
-        else if (typeof rhs === 'number') {
+        } else if (typeof rhs === "number") {
             return lock(this.clone().addScalar(rhs, 1));
-        }
-        else {
+        } else {
             return void 0;
         }
     }
 
     /**
-     * 
+     *
      */
     __radd__(lhs: G20 | number): G20 {
         if (lhs instanceof G20) {
             return lock(G20.copy(lhs).add(this));
-        }
-        else if (typeof lhs === 'number') {
+        } else if (typeof lhs === "number") {
             return lock(G20.scalar(lhs).add(this));
-        }
-        else {
+        } else {
             return void 0;
         }
     }
 
     /**
-     * 
+     *
      */
     __sub__(rhs: G20 | number): G20 {
         if (rhs instanceof G20) {
             return lock(this.clone().sub(rhs));
-        }
-        else if (typeof rhs === 'number') {
-
+        } else if (typeof rhs === "number") {
             return lock(this.clone().subScalar(rhs, 1));
-        }
-        else {
+        } else {
             return void 0;
         }
     }
 
     /**
-     * 
+     *
      */
     __rsub__(lhs: G20 | number): G20 {
         if (lhs instanceof G20) {
             return lock(G20.copy(lhs).sub(this));
-        }
-        else if (typeof lhs === 'number') {
+        } else if (typeof lhs === "number") {
             return lock(G20.scalar(lhs).sub(this));
-        }
-        else {
+        } else {
             return void 0;
         }
     }
 
     /**
-     * 
+     *
      */
     __pos__(): G20 {
         return lock(G20.copy(this));
     }
 
     /**
-     * 
+     *
      */
     __neg__(): G20 {
         return lock(G20.copy(this).neg());
     }
 
     /**
-     * 
+     *
      */
     __mul__(rhs: G20 | number): G20 {
         if (rhs instanceof G20) {
             return lock(this.clone().mul(rhs));
-        }
-        else if (typeof rhs === 'number') {
+        } else if (typeof rhs === "number") {
             return lock(this.clone().scale(rhs));
-        }
-        else {
+        } else {
             return void 0;
         }
     }
 
     /**
-     * 
+     *
      */
     __rmul__(lhs: G20 | number): G20 {
         if (lhs instanceof G20) {
             return lock(G20.copy(lhs).mul(this));
-        }
-        else if (typeof lhs === 'number') {
+        } else if (typeof lhs === "number") {
             // The ordering of operands is not important for scalar multiplication.
             return lock(G20.copy(this).scale(lhs));
-        }
-        else {
+        } else {
             return void 0;
         }
     }

@@ -12,27 +12,19 @@ export default [
         files: ["**/*.ts"],
         languageOptions: {
             parser: typescriptParser,
-            parserOptions: {
-            },
-            globals: globals.browser
+            parserOptions: {},
+            globals: globals.browser,
         },
         plugins: {
-            "@typescript-eslint": typescriptEslint
+            "@typescript-eslint": typescriptEslint,
         },
-        "rules": {
+        rules: {
             // Make this "error" when releasing.
-            "brace-style": [
-                2,
-                "stroustrup"
-            ],
+            "brace-style": [2, "stroustrup"],
             "no-console": "warn",
             "no-param-reassign": "off",
-            "semi": [
-                2,
-                "always"
-            ]
-        }
-
+            semi: [2, "always"],
+        },
     },
     eslintJs.configs.recommended,
     ...eslintTs.configs.recommended,

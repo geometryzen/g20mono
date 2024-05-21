@@ -9,7 +9,7 @@ import {
     Path,
     PathOptions,
     SpinorLike,
-    VectorLike
+    VectorLike,
 } from "@g20/core";
 import { effect, signal } from "@g20/reactive";
 import { default_color } from "./default_color";
@@ -23,19 +23,18 @@ export interface RegularPolygonOptions extends PathOptions {
     fillColor?: Color;
     fillOpacity?: number;
     opacity?: number;
-    position?: VectorLike,
-    attitude?: SpinorLike,
+    position?: VectorLike;
+    attitude?: SpinorLike;
     radius?: number;
     sides?: number;
     strokeColor?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
     twist?: number;
-    visibility?: 'visible' | 'hidden' | 'collapse';
+    visibility?: "visible" | "hidden" | "collapse";
 }
 
 export class RegularPolygon extends Path {
-
     readonly #trash: Disposable[] = [];
 
     readonly #radius = signal(1);
@@ -43,26 +42,27 @@ export class RegularPolygon extends Path {
     readonly #sides = signal(6);
 
     constructor(owner: Board, options: RegularPolygonOptions = {}) {
-
         super(owner, [], true, false, true, path_attribs_from_regular_polygon_attribs(options, owner));
 
-        if (typeof options.radius === 'number') {
+        if (typeof options.radius === "number") {
             this.radius = options.radius;
         }
 
-        if (typeof options.sides === 'number') {
+        if (typeof options.sides === "number") {
             const MIN = 3;
             const MAX = 24;
             this.sides = Math.min(Math.max(options.sides, MIN), MAX);
         }
 
-        if (typeof options.twist === 'number') {
+        if (typeof options.twist === "number") {
             this.twist = options.twist;
         }
 
-        this.#trash.push(effect(() => {
-            this.update();
-        }));
+        this.#trash.push(
+            effect(() => {
+                this.update();
+            })
+        );
 
         this.flagReset(true);
     }
@@ -103,16 +103,19 @@ export class RegularPolygon extends Path {
     }
 }
 
-function path_attribs_from_regular_polygon_attribs(options: RegularPolygonOptions, owner: Board): PathOptions {
+function path_attribs_from_regular_polygon_attribs(
+    options: RegularPolygonOptions,
+    owner: Board
+): PathOptions {
     const retval: PathOptions = {
         id: options.id,
         attitude: options.attitude,
         opacity: options.opacity,
         position: options.position,
         visibility: options.visibility,
-        fillColor: default_color(options.fillColor, 'none'),
+        fillColor: default_color(options.fillColor, "none"),
         fillOpacity: options.fillOpacity,
-        strokeColor: default_color(options.strokeColor, 'gray'),
+        strokeColor: default_color(options.strokeColor, "gray"),
         strokeOpacity: options.strokeOpacity,
         strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
         // plumb: attributes.plumb
@@ -121,7 +124,6 @@ function path_attribs_from_regular_polygon_attribs(options: RegularPolygonOption
 }
 
 function update_vertices(radius: number, sides: number, twist: number, vertices: Collection<Anchor>): void {
-
     const N = sides + 1;
     if (vertices.length > N) {
         vertices.splice(N, vertices.length - N);
@@ -131,12 +133,11 @@ function update_vertices(radius: number, sides: number, twist: number, vertices:
     }
 
     for (let i = 0; i < N; i++) {
-
-        const theta = (2 * Math.PI * i / sides) + twist;
+        const theta = (2 * Math.PI * i) / sides + twist;
         const x = radius * cos(theta);
         const y = radius * sin(theta);
         const vertex = vertices.getAt(i);
         vertex.origin.set(x, y);
-        vertex.command = (i === 0) ? 'M' : 'L';
+        vertex.command = i === 0 ? "M" : "L";
     }
 }

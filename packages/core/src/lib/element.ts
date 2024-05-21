@@ -1,12 +1,11 @@
 import { signal, State } from "@g20/reactive";
-import { Disposable } from './reactive/Disposable';
-import { ZZZ } from './renderers/ZZZ';
+import { Disposable } from "./reactive/Disposable";
+import { ZZZ } from "./renderers/ZZZ";
 
 /**
  * The foundational object for the scenegraph.
  */
 export abstract class ElementBase implements Disposable {
-
     parent: unknown;
 
     readonly zzz: ZZZ = new ZZZ();
@@ -14,7 +13,7 @@ export abstract class ElementBase implements Disposable {
     readonly #id: State<string | null> = signal(null);
 
     constructor(id: string | null) {
-        if (typeof id === 'string') {
+        if (typeof id === "string") {
             this.#id = signal(id);
         }
     }

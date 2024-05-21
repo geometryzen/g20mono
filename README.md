@@ -10,19 +10,19 @@ A modern JavaScript (TypeScript) suite of ESM modules for rendering 2D graphics 
 
 ## Features and Benefits
 
-* Cartesian (y increasing upwards), SVG (y increasing downwards), and other Coordinate Systems.
-* Fine-Grained Reactivity for efficient updating.
-* Dynamic diagram updating using reactive position, attitude, and scale properties to link shapes and text together.
-* Geometric Algebra enabled multivectors for shape position and attitude properties providing coordinate-free and coordinate-based manipulation.
-* Accurate (automatically generated) type definitions and API documentation.
-* ESM, System, CommonJS, and UMD distribution formats.
-* Modular package organization so that you only have to download what you need.
+-   Cartesian (y increasing upwards), SVG (y increasing downwards), and other Coordinate Systems.
+-   Fine-Grained Reactivity for efficient updating.
+-   Dynamic diagram updating using reactive position, attitude, and scale properties to link shapes and text together.
+-   Geometric Algebra enabled multivectors for shape position and attitude properties providing coordinate-free and coordinate-based manipulation.
+-   Accurate (automatically generated) type definitions and API documentation.
+-   ESM, System, CommonJS, and UMD distribution formats.
+-   Modular package organization so that you only have to download what you need.
 
 ## Status
 
 All packages are published together with the same version number.
 
-[![version](https://img.shields.io/npm/v/@g20/core.svg)](https://www.npmjs.com/package/@g20/core) 
+[![version](https://img.shields.io/npm/v/@g20/core.svg)](https://www.npmjs.com/package/@g20/core)
 
 [![npm downloads](https://img.shields.io/npm/dm/@g20/core.svg)](https://npm-stat.com/charts.html?package=@g20/core&from=2024-03-27)
 

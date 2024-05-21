@@ -1,15 +1,15 @@
 import { effect, signal } from "@g20/reactive";
-import { Board } from './Board';
-import { Constants } from './constants';
-import { ElementBase } from './element';
-import { Flag } from './Flag';
-import { compose_2d_3x3_transform } from './math/compose_2d_3x3_transform';
-import { G20, SpinorLike, spinor_from_like, VectorLike, vector_from_like } from './math/G20';
-import { Matrix } from './math/Matrix';
-import { Disposable, dispose } from './reactive/Disposable';
-import { transform_value_of_matrix } from './renderers/SVGViewDOM';
-import { Shape, SVGAttributes, ViewDOM } from './Shape';
-import { computed_world_matrix } from './utils/compute_world_matrix';
+import { Board } from "./Board";
+import { Constants } from "./constants";
+import { ElementBase } from "./element";
+import { Flag } from "./Flag";
+import { compose_2d_3x3_transform } from "./math/compose_2d_3x3_transform";
+import { G20, SpinorLike, spinor_from_like, VectorLike, vector_from_like } from "./math/G20";
+import { Matrix } from "./math/Matrix";
+import { Disposable, dispose } from "./reactive/Disposable";
+import { transform_value_of_matrix } from "./renderers/SVGViewDOM";
+import { Shape, SVGAttributes, ViewDOM } from "./Shape";
+import { computed_world_matrix } from "./utils/compute_world_matrix";
 
 export interface Parent {
     update?(): void;
@@ -20,7 +20,7 @@ export interface ShapeOptions {
     opacity?: number;
     position?: VectorLike;
     attitude?: SpinorLike;
-    visibility?: 'visible' | 'hidden' | 'collapse';
+    visibility?: "visible" | "hidden" | "collapse";
     plumb?: boolean;
     sx?: number;
     sy?: number;
@@ -37,20 +37,18 @@ export interface ShapeProperties {
      * attitude.
      */
     R: G20;
-    visibility: 'visible' | 'hidden' | 'collapse';
+    visibility: "visible" | "hidden" | "collapse";
 }
 
 export function ensure_identifier(options: ShapeOptions): string {
-    if (typeof options.id === 'string') {
+    if (typeof options.id === "string") {
         return options.id;
-    }
-    else {
+    } else {
         return `${Constants.Identifier}${Constants.uniqueId()}`;
     }
 }
 
 export abstract class ShapeBase extends ElementBase implements Shape, ShapeProperties {
-
     readonly #disposables: Disposable[] = [];
 
     /**
@@ -79,18 +77,25 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
     readonly #skew: G20 = new G20(0, 0);
 
     readonly #opacity = signal(1);
-    readonly #visibility = signal('visible' as 'visible' | 'hidden' | 'collapse');
+    readonly #visibility = signal("visible" as "visible" | "hidden" | "collapse");
 
     readonly #plumb = signal(false);
 
     readonly #mask = signal(null as Shape | null);
 
     // TODO: Remove the properties that don't generally apply
-    abstract getBoundingBox(shallow?: boolean): { top?: number; left?: number; right?: number; bottom?: number };
+    abstract getBoundingBox(shallow?: boolean): {
+        top?: number;
+        left?: number;
+        right?: number;
+        bottom?: number;
+    };
     abstract hasBoundingBox(): boolean;
 
-    constructor(readonly board: Board, options: ShapeOptions = {}) {
-
+    constructor(
+        readonly board: Board,
+        options: ShapeOptions = {}
+    ) {
         super(options.id);
 
         /**
@@ -100,23 +105,21 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
 
         if (options.position) {
             this.#position = vector_from_like(options.position);
-        }
-        else {
+        } else {
             this.#position = new G20(0, 0);
         }
 
         if (options.attitude) {
             this.#attitude = spinor_from_like(options.attitude);
-        }
-        else {
+        } else {
             this.#attitude = new G20(0, 0, 1, 0);
         }
 
-        if (typeof options.plumb === 'boolean') {
+        if (typeof options.plumb === "boolean") {
             this.#plumb.set(options.plumb);
         }
 
-        if (typeof options.opacity === 'number') {
+        if (typeof options.opacity === "number") {
             this.#opacity.set(options.opacity);
         }
 
@@ -125,10 +128,10 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
         }
 
         const scale = { sx: 1, sy: 1 };
-        if (typeof options.sx === 'number') {
+        if (typeof options.sx === "number") {
             scale.sx = options.sx;
         }
-        if (typeof options.sy === 'number') {
+        if (typeof options.sy === "number") {
             scale.sy = options.sy;
         }
         this.#scale.set(scale.sx, scale.sy);
@@ -143,18 +146,66 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
          */
         this.skewY = 0;
 
-        this.#disposables.push(this.#position.change$.subscribe(() => {
-            update_matrix(this.#position, this.#attitude, this.#scale, this.skewX, this.skewY, this.plumb, this.board.goofy, this.board.crazy, this.#matrix);
-        }));
-        this.#disposables.push(this.#attitude.change$.subscribe(() => {
-            update_matrix(this.#position, this.#attitude, this.#scale, this.skewX, this.skewY, this.plumb, this.board.goofy, this.board.crazy, this.#matrix);
-        }));
-        this.#disposables.push(this.#scale.change$.subscribe(() => {
-            update_matrix(this.#position, this.#attitude, this.#scale, this.skewX, this.skewY, this.plumb, this.board.goofy, this.board.crazy, this.#matrix);
-        }));
-        this.#disposables.push(this.#skew.change$.subscribe(() => {
-            update_matrix(this.#position, this.#attitude, this.#scale, this.skewX, this.skewY, this.plumb, this.board.goofy, this.board.crazy, this.#matrix);
-        }));
+        this.#disposables.push(
+            this.#position.change$.subscribe(() => {
+                update_matrix(
+                    this.#position,
+                    this.#attitude,
+                    this.#scale,
+                    this.skewX,
+                    this.skewY,
+                    this.plumb,
+                    this.board.goofy,
+                    this.board.crazy,
+                    this.#matrix
+                );
+            })
+        );
+        this.#disposables.push(
+            this.#attitude.change$.subscribe(() => {
+                update_matrix(
+                    this.#position,
+                    this.#attitude,
+                    this.#scale,
+                    this.skewX,
+                    this.skewY,
+                    this.plumb,
+                    this.board.goofy,
+                    this.board.crazy,
+                    this.#matrix
+                );
+            })
+        );
+        this.#disposables.push(
+            this.#scale.change$.subscribe(() => {
+                update_matrix(
+                    this.#position,
+                    this.#attitude,
+                    this.#scale,
+                    this.skewX,
+                    this.skewY,
+                    this.plumb,
+                    this.board.goofy,
+                    this.board.crazy,
+                    this.#matrix
+                );
+            })
+        );
+        this.#disposables.push(
+            this.#skew.change$.subscribe(() => {
+                update_matrix(
+                    this.#position,
+                    this.#attitude,
+                    this.#scale,
+                    this.skewX,
+                    this.skewY,
+                    this.plumb,
+                    this.board.goofy,
+                    this.board.crazy,
+                    this.#matrix
+                );
+            })
+        );
     }
 
     override dispose(): void {
@@ -164,72 +215,82 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
 
     render<T>(viewDOM: ViewDOM<T>, parentElement: T, svgElement: T): void {
         // clip-path
-        this.zzz.disposables.push(effect(() => {
-            const mask = this.mask;
-            if (mask) {
-                this.mask.render(viewDOM, parentElement, svgElement);
-                // TODO: Consider the shape returning a serialized value for the clip-path?
-                viewDOM.setAttribute(this.zzz.viewee as T, 'clip-path', 'url(#' + this.mask.id + ')');
-            }
-            else {
-                viewDOM.removeAttribute(this.zzz.viewee as T, 'clip-path');
-            }
-        }));
+        this.zzz.disposables.push(
+            effect(() => {
+                const mask = this.mask;
+                if (mask) {
+                    this.mask.render(viewDOM, parentElement, svgElement);
+                    // TODO: Consider the shape returning a serialized value for the clip-path?
+                    viewDOM.setAttribute(this.zzz.viewee as T, "clip-path", "url(#" + this.mask.id + ")");
+                } else {
+                    viewDOM.removeAttribute(this.zzz.viewee as T, "clip-path");
+                }
+            })
+        );
 
         // id
-        this.zzz.disposables.push(effect(() => {
-            if (typeof this.id === 'string') {
-                viewDOM.setAttribute(this.zzz.viewee as T, 'id', this.id);
-            }
-            else {
-                viewDOM.removeAttribute(this.zzz.viewee as T, 'id');
-            }
-        }));
+        this.zzz.disposables.push(
+            effect(() => {
+                if (typeof this.id === "string") {
+                    viewDOM.setAttribute(this.zzz.viewee as T, "id", this.id);
+                } else {
+                    viewDOM.removeAttribute(this.zzz.viewee as T, "id");
+                }
+            })
+        );
 
         // opacity
-        this.zzz.disposables.push(effect(() => {
-            const opacity = this.opacity;
-            const change: SVGAttributes = { opacity: `${opacity}` };
-            if (opacity === 1) {
-                viewDOM.removeAttribute(this.zzz.viewee as T, 'opacity');
-            }
-            else {
-                viewDOM.setAttributes(this.zzz.viewee as T, change);
-            }
-            return function () {
-                // No cleanup to be done.
-            };
-        }));
+        this.zzz.disposables.push(
+            effect(() => {
+                const opacity = this.opacity;
+                const change: SVGAttributes = { opacity: `${opacity}` };
+                if (opacity === 1) {
+                    viewDOM.removeAttribute(this.zzz.viewee as T, "opacity");
+                } else {
+                    viewDOM.setAttributes(this.zzz.viewee as T, change);
+                }
+                return function () {
+                    // No cleanup to be done.
+                };
+            })
+        );
 
         // transform
-        this.zzz.disposables.push(effect(() => {
-            if (this.matrix.isOne()) {
-                viewDOM.removeAttribute(this.zzz.viewee as T, 'transform');
-            }
-            else {
-                viewDOM.setAttribute(this.zzz.viewee as T, 'transform', transform_value_of_matrix(this.matrix));
-            }
-        }));
+        this.zzz.disposables.push(
+            effect(() => {
+                if (this.matrix.isOne()) {
+                    viewDOM.removeAttribute(this.zzz.viewee as T, "transform");
+                } else {
+                    viewDOM.setAttribute(
+                        this.zzz.viewee as T,
+                        "transform",
+                        transform_value_of_matrix(this.matrix)
+                    );
+                }
+            })
+        );
 
         // visibility
-        this.zzz.disposables.push(effect(() => {
-            const visibility = this.visibility;
-            switch (visibility) {
-                case 'visible': {
-                    const change: SVGAttributes = { visibility };
-                    viewDOM.removeAttributes(this.zzz.viewee as T, change);
-                    break;
+        this.zzz.disposables.push(
+            effect(() => {
+                const visibility = this.visibility;
+                switch (visibility) {
+                    case "visible": {
+                        const change: SVGAttributes = { visibility };
+                        viewDOM.removeAttributes(this.zzz.viewee as T, change);
+                        break;
+                    }
+                    default: {
+                        const change: SVGAttributes = { visibility };
+                        viewDOM.setAttributes(this.zzz.viewee as T, change);
+                        break;
+                    }
                 }
-                default: {
-                    const change: SVGAttributes = { visibility };
-                    viewDOM.setAttributes(this.zzz.viewee as T, change);
-                    break;
-                }
-            }
-            return function () {
-                // No cleanup to be done.
-            };
-        }));
+                return function () {
+                    // No cleanup to be done.
+                };
+            })
+        );
     }
 
     update(): this {
@@ -244,21 +305,18 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
     get X(): G20 {
         return this.#position;
     }
-    set X(X: G20 | [x: number, y: number] | { x: number, y: number }) {
+    set X(X: G20 | [x: number, y: number] | { x: number; y: number }) {
         if (X instanceof G20) {
             this.#position.copyVector(X);
-        }
-        else if (Array.isArray(X)) {
+        } else if (Array.isArray(X)) {
             this.#position.set(X[0], X[1]);
-        }
-        else if (X === null) {
+        } else if (X === null) {
             throw new Error();
-        }
-        else if (typeof X === 'object') {
-            const duck = X as { x: number, y: number };
+        } else if (typeof X === "object") {
+            const duck = X as { x: number; y: number };
             const x = duck.x;
             const y = duck.y;
-            if (typeof x === 'number' && typeof y === 'number') {
+            if (typeof x === "number" && typeof y === "number") {
                 this.#position.set(x, y);
             }
         }
@@ -280,17 +338,15 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
     get scale(): number {
         if (this.#scale.x === this.#scale.y) {
             return this.#scale.x;
-        }
-        else {
+        } else {
             // Some message to indicate non-uniform scaling is in effect.
             throw new Error();
         }
     }
     set scale(scale: number | [sx: number, sy: number]) {
-        if (typeof scale === 'number') {
+        if (typeof scale === "number") {
             this.#scale.set(scale, scale);
-        }
-        else if (Array.isArray(scale)) {
+        } else if (Array.isArray(scale)) {
             this.#scale.set(scale[0], scale[1]);
         }
     }
@@ -336,7 +392,7 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
         return this.#opacity.get();
     }
     set opacity(opacity: number) {
-        if (typeof opacity === 'number') {
+        if (typeof opacity === "number") {
             if (opacity >= 0 && opacity <= 1) {
                 if (this.opacity !== opacity) {
                     this.#opacity.set(opacity);
@@ -344,26 +400,26 @@ export abstract class ShapeBase extends ElementBase implements Shape, ShapePrope
             }
         }
     }
-    get visibility(): 'visible' | 'hidden' | 'collapse' {
+    get visibility(): "visible" | "hidden" | "collapse" {
         return this.#visibility.get();
     }
-    set visibility(visible: 'visible' | 'hidden' | 'collapse') {
-        if (typeof visible === 'string') {
+    set visibility(visible: "visible" | "hidden" | "collapse") {
+        if (typeof visible === "string") {
             if (this.visibility !== visible) {
                 this.#visibility.set(visible);
             }
         }
     }
     show(): this {
-        this.visibility = 'visible';
+        this.visibility = "visible";
         return this;
     }
     hide(): this {
-        this.visibility = 'hidden';
+        this.visibility = "hidden";
         return this;
     }
     collapse(): this {
-        this.visibility = 'collapse';
+        this.visibility = "collapse";
         return this;
     }
     get worldMatrix() {
@@ -383,7 +439,17 @@ function compute_matrix(position: G20, attitude: G20, scale: G20, skewX: number,
 }
 */
 
-function update_matrix(position: G20, attitude: G20, scale: G20, skewX: number, skewY: number, plumb: boolean, goofy: boolean, crazy: boolean, M: Matrix): void {
+function update_matrix(
+    position: G20,
+    attitude: G20,
+    scale: G20,
+    skewX: number,
+    skewY: number,
+    plumb: boolean,
+    goofy: boolean,
+    crazy: boolean,
+    M: Matrix
+): void {
     // For performance, the matrix product has been pre-computed.
     // M = T * S * R * skewX * skewY
     const x = position.x;
@@ -398,48 +464,41 @@ function update_matrix(position: G20, attitude: G20, scale: G20, skewX: number, 
                 const cos_φ = (b - a) / Math.SQRT2;
                 const sin_φ = (a + b) / Math.SQRT2;
                 compose_2d_3x3_transform(y, x, sy, sx, cos_φ, sin_φ, skewY, skewX, M);
-            }
-            else {
+            } else {
                 const cos_φ = attitude.a;
                 const sin_φ = -attitude.b;
                 compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, skewX, skewY, M);
             }
-        }
-        else {
+        } else {
             if (crazy) {
                 const cos_φ = attitude.a;
                 const sin_φ = attitude.b;
                 compose_2d_3x3_transform(y, x, sy, sx, cos_φ, sin_φ, skewY, skewX, M);
-            }
-            else {
+            } else {
                 const cos_φ = attitude.a;
                 const sin_φ = -attitude.b;
                 compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, skewX, skewY, M);
             }
         }
-    }
-    else {
+    } else {
         if (plumb) {
             if (crazy) {
                 const cos_φ = attitude.b;
                 const sin_φ = attitude.a;
                 compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, skewX, skewY, M);
-            }
-            else {
+            } else {
                 const a = attitude.a;
                 const b = attitude.b;
                 const cos_φ = (a - b) / Math.SQRT2;
                 const sin_φ = (a + b) / Math.SQRT2;
                 compose_2d_3x3_transform(y, x, sy, sx, cos_φ, sin_φ, skewY, skewX, M);
             }
-        }
-        else {
+        } else {
             if (crazy) {
                 const cos_φ = attitude.a;
                 const sin_φ = -attitude.b;
                 compose_2d_3x3_transform(x, y, sx, sy, cos_φ, sin_φ, skewX, skewY, M);
-            }
-            else {
+            } else {
                 const cos_φ = attitude.a;
                 const sin_φ = attitude.b;
                 compose_2d_3x3_transform(y, x, sy, sx, cos_φ, sin_φ, skewY, skewX, M);

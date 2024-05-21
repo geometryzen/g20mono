@@ -1,4 +1,3 @@
-
 export type Equals<T> = (a: T, b: T) => boolean;
 
 export interface Readable<T> {
@@ -9,5 +8,4 @@ export interface Writable<T> {
     set(newValue: T): void;
 }
 
-export interface State<T> extends Readable<T>, Writable<T> {
-}
+export interface State<T> extends Readable<T>, Writable<T> {}

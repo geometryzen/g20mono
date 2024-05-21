@@ -1,8 +1,7 @@
-import { Texture } from '../../texture/src/index';
-import { Disposable, dispose, initBoard } from './index';
+import { Texture } from "../../texture/src/index";
+import { Disposable, dispose, initBoard } from "./index";
 
-document.addEventListener('DOMContentLoaded', function () {
-
+document.addEventListener("DOMContentLoaded", function () {
     const disposables: Disposable[] = [];
 
     const image = document.getElementById("my-image") as HTMLImageElement;
@@ -11,9 +10,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const board = initBoard("my-board", {
         // boundingBox: { left: -300, top: 300, right: 300, bottom: -300 },    // Cartesian
-        boundingBox: { left: -300, top: -300, right: 300, bottom: 300 },     // SVG
-        // boundingBox: { left: 5, top: 5, right: -5, bottom: -5 },     // crazy     
-        // boundingBox: { left: 5, top: -5, right: -5, bottom: 5 },     // crazy and goofy       
+        boundingBox: { left: -300, top: -300, right: 300, bottom: 300 }, // SVG
+        // boundingBox: { left: 5, top: 5, right: -5, bottom: -5 },     // crazy
+        // boundingBox: { left: 5, top: -5, right: -5, bottom: 5 },     // crazy and goofy
     });
 
     const rectangle = board.rectangle();

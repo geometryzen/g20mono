@@ -16,7 +16,7 @@ export interface ColorProvider {
     decrementUse<T>(viewDOM: ViewDOM<T>, defs: T): void;
     /**
      * Provide the value that will be used in the `fill` or `stroke` attribute of the consuming element.
-     * Usually url(#${this.id}) for gradients and textures but may be e.g. an rgb() or #RRGGBB value. 
+     * Usually url(#${this.id}) for gradients and textures but may be e.g. an rgb() or #RRGGBB value.
      */
     serialize(): string;
 }
@@ -24,20 +24,20 @@ export interface ColorProvider {
 export type Color = string | ColorProvider;
 
 export function is_color_provider(x: Color): x is ColorProvider {
-    if (typeof x === 'string') {
+    if (typeof x === "string") {
         return false;
-    }
-    else if (x === null) {
+    } else if (x === null) {
         return false;
-    }
-    else if (Array.isArray(x)) {
+    } else if (Array.isArray(x)) {
         return false;
-    }
-    else if (typeof x === 'object') {
+    } else if (typeof x === "object") {
         const duck = x as ColorProvider;
-        return typeof duck.serialize === 'function' && typeof duck.incrementUse === 'function' && typeof duck.decrementUse === 'function';
-    }
-    else {
+        return (
+            typeof duck.serialize === "function" &&
+            typeof duck.incrementUse === "function" &&
+            typeof duck.decrementUse === "function"
+        );
+    } else {
         return false;
     }
 }
@@ -45,11 +45,9 @@ export function is_color_provider(x: Color): x is ColorProvider {
 export function is_color(x: unknown): x is Color {
     if (is_color_provider(x as Color)) {
         return true;
-    }
-    else if (typeof x === 'string') {
+    } else if (typeof x === "string") {
         return true;
-    }
-    else {
+    } else {
         return false;
     }
 }

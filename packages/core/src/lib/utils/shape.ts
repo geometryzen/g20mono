@@ -1,10 +1,9 @@
-import { Anchor } from '../Anchor.js';
-import { G20 } from '../math/G20.js';
-import { Path } from '../Path.js';
-import { getCurveLength as gcl, subdivide } from './curves.js';
+import { Anchor } from "../Anchor.js";
+import { G20 } from "../math/G20.js";
+import { Path } from "../Path.js";
+import { getCurveLength as gcl, subdivide } from "./curves.js";
 
 export function contains(path: Path, t: number): boolean {
-
     if (t === 0 || t === 1) {
         return true;
     }
@@ -23,7 +22,6 @@ export function contains(path: Path, t: number): boolean {
     }
 
     return false;
-
 }
 
 export interface IPathOrPoints {
@@ -42,13 +40,11 @@ export interface IPathOrPoints {
  * corresponding to the provided "target" length. But the result also appears to be fractional.
  */
 export function getIdByLength(path: IPathOrPoints, target: number): number {
-
     const total = path.length;
 
     if (target <= 0) {
         return 0;
-    }
-    else if (target >= total) {
+    } else if (target >= total) {
         return path.lengths.length - 1;
     }
     for (let i = 0, sum = 0; i < path.lengths.length; i++) {
@@ -88,11 +84,9 @@ export function getCurveLength(a: Anchor, b: Anchor, limit: number): number {
     }
 
     return gcl(x1, y1, x2, y2, x3, y3, x4, y4, limit);
-
 }
 
 export function getSubdivisions(a: Anchor, b: Anchor, limit: number): Anchor[] {
-
     const br = b.controls.b;
     const al = a.controls.a;
 

@@ -1,16 +1,16 @@
 import { Anchor } from "../Anchor";
-import { Flag } from '../Flag';
+import { Flag } from "../Flag";
 import { G20 } from "../math/G20";
 import { Disposable, dispose } from "../reactive/Disposable";
 import { Observable } from "../reactive/Observable";
-import { variable, Variable } from '../reactive/variable';
+import { variable, Variable } from "../reactive/variable";
 
 /**
  * Information that is shared between the model and the view.
  */
 export class ZZZ implements Disposable {
     /**
-     * 
+     *
      */
     readonly disposables: Disposable[] = [];
     /*

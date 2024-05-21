@@ -1,1 +1,1 @@
-declare module 'rollup-plugin-dts';
+declare module "rollup-plugin-dts";

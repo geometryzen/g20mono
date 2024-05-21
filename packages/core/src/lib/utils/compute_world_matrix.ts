@@ -3,7 +3,6 @@ import { Matrix } from "../math/Matrix";
 import { Shape } from "../Shape";
 
 export function computed_world_matrix(shape: Shape, matrix: Matrix): void {
-
     matrix = (matrix && matrix.identity()) || new Matrix();
     let parent: Shape | Group = shape;
     const matrices: Matrix[] = [];

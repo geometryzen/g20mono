@@ -42,7 +42,6 @@ export class Variable<T> implements State<T> {
     }
 }
 
-
 export function variable<T>(initialValue: T, options: VariableOptions<T> = {}): Variable<T> {
     const bs = new BehaviorSubject(initialValue);
     return new Variable(bs, options);

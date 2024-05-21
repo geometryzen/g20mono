@@ -1,6 +1,16 @@
 import { Matrix } from "./Matrix";
 
-export function compose_2d_3x3_transform(x: number, y: number, sx: number, sy: number, cos_φ: number, sin_φ: number, skewX: number, skewY: number, matrix: Matrix): void {
+export function compose_2d_3x3_transform(
+    x: number,
+    y: number,
+    sx: number,
+    sy: number,
+    cos_φ: number,
+    sin_φ: number,
+    skewX: number,
+    skewY: number,
+    matrix: Matrix
+): void {
     // φ is 1/2 the rotation angle.
     // SVG and CSS consider positive angles to be active clockwise movement.
     // But in mathematics, a positive angle is associated with counter-clockwise movement.

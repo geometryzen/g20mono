@@ -26,7 +26,7 @@ export class CircleCircleIntersection implements Disposable {
         /**
          * The following calculation is coordinate-free.
          * For a coordinate-based solution see
-         * https://mathworld.wolfram.com/Circle-CircleIntersection.html#:~:text=Two%20circles%20may%20intersect%20in,known%20as%20the%20radical%20line. 
+         * https://mathworld.wolfram.com/Circle-CircleIntersection.html#:~:text=Two%20circles%20may%20intersect%20in,known%20as%20the%20radical%20line.
          */
         const compute = () => {
             if (R !== -1 && r !== -1) {
@@ -47,20 +47,21 @@ export class CircleCircleIntersection implements Disposable {
                     P2.copyVector(ca).add(λdhat).sub(avec);
                     this.points[0] = P1;
                     this.points[1] = P2;
-                }
-                else {
+                } else {
                     this.points.length = 0;
                 }
             }
         };
-        this.#disposables.push(effect(() => {
-            ca.copyVector(circleA.X);
-            cb.copyVector(circleB.X);
-            R = circleA.radius;
-            r = circleB.radius;
-            compute();
-            this.#change.set(this.#change.get() + 1);
-        }));
+        this.#disposables.push(
+            effect(() => {
+                ca.copyVector(circleA.X);
+                cb.copyVector(circleB.X);
+                R = circleA.radius;
+                r = circleB.radius;
+                compute();
+                this.#change.set(this.#change.get() + 1);
+            })
+        );
     }
     dispose(): void {
         dispose(this.#disposables);

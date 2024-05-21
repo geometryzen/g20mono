@@ -5,7 +5,7 @@ import { MockElement } from "./nodes";
 
 describe("Line", function () {
     it("constructor", function () {
-        const element = new MockElement('div');
+        const element = new MockElement("div");
         const board = initBoard(element);
         const x1 = Math.random();
         const y1 = Math.random();
@@ -71,20 +71,20 @@ describe("Line", function () {
         board.dispose();
     });
     it("options", function () {
-        const element = new MockElement('div');
+        const element = new MockElement("div");
         const board = initBoard(element);
         const x1 = Math.random();
         const y1 = Math.random();
         const x2 = Math.random();
         const y2 = Math.random();
-        const line = new Line(board, [x1, y1], [x2, y2], { id: 'line' });
+        const line = new Line(board, [x1, y1], [x2, y2], { id: "line" });
         board.add(line);
-        expect(line.id).toBe('line');
+        expect(line.id).toBe("line");
 
         board.dispose();
     });
     it("point1", function () {
-        const element = new MockElement('div');
+        const element = new MockElement("div");
         const board = initBoard(element);
         const x1 = Math.random();
         const y1 = Math.random();
@@ -111,7 +111,7 @@ describe("Line", function () {
         board.dispose();
     });
     it("point2", function () {
-        const element = new MockElement('div');
+        const element = new MockElement("div");
         const board = initBoard(element);
         const x1 = Math.random();
         const y1 = Math.random();

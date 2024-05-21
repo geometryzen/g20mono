@@ -1,10 +1,10 @@
 import { Arrow, G20 } from "../src";
-import { initBoard } from './initBoard';
+import { initBoard } from "./initBoard";
 import { MockElement } from "./nodes";
 
 describe("Arrow", () => {
     it("constructor", () => {
-        const element = new MockElement('div');
+        const element = new MockElement("div");
         const board = initBoard(element);
         const arrow = new Arrow(board, [1, 0]);
         arrow.show();
@@ -17,7 +17,7 @@ describe("Arrow", () => {
         board.dispose();
     });
     it("axis", () => {
-        const element = new MockElement('div');
+        const element = new MockElement("div");
         const board = initBoard(element);
         const axis = G20.vector(Math.random(), Math.random()).normalize();
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -45,7 +45,7 @@ describe("Arrow", () => {
         board.dispose();
     });
     it("headLength", () => {
-        const element = new MockElement('div');
+        const element = new MockElement("div");
         const board = initBoard(element);
         const headLength = Math.random();
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -61,7 +61,7 @@ describe("Arrow", () => {
         board.dispose();
     });
     it("origin", () => {
-        const element = new MockElement('div');
+        const element = new MockElement("div");
         const board = initBoard(element);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const arrow = new Arrow(board as any, [0, 1]);

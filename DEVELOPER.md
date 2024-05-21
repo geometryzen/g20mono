@@ -1,4 +1,3 @@
-
 ## WARNING
 
 g20 currently uses a proprietary version of the Lerna monorepo pending the acceptance of a Pull Request (PR).
@@ -29,7 +28,7 @@ npm --registry=http://localhost:4873 run lerna-release 999.9.9 --local
 
 This builds the modified Lerna and publishes it to the local registry.
 
-In the g20 folder, 
+In the g20 folder,
 
 ```
 npm --registry=http://localhost:4873/ install
@@ -42,6 +41,7 @@ You are now ready to build g20...
 ```
 npm run build
 ```
+
 In order to allow Jest testing in consuming libraries, it is necessary to make some "undesirable" changes to this package.json
 
 1. Must remove "type": "module".
@@ -60,4 +60,3 @@ https://github.com/Pomax/BezierInfo-2
 Interesting...
 
 https://github.com/Pomax/bezierjs
-

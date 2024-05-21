@@ -1,7 +1,6 @@
-import { initBoard } from './index';
+import { initBoard } from "./index";
 
-document.addEventListener('DOMContentLoaded', function () {
-
+document.addEventListener("DOMContentLoaded", function () {
     const board = initBoard("my-board", {
         // boundingBox: { left: -1, top: 1, right: 1, bottom: -1 } // Cartesian
         // boundingBox: { left: -1, top: -1, right: 1, bottom: 1 } // SVG

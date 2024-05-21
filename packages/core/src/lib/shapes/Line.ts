@@ -1,38 +1,34 @@
-import { Anchor } from '../Anchor';
-import { Board } from '../Board';
-import { Color } from '../effects/ColorProvider';
-import { G20, VectorLike, vector_from_like } from '../math/G20';
-import { Path, PathOptions } from '../Path';
-import { default_color } from '../utils/default_color';
-import { default_open_path_stroke_width } from '../utils/default_stroke_width';
+import { Anchor } from "../Anchor";
+import { Board } from "../Board";
+import { Color } from "../effects/ColorProvider";
+import { G20, VectorLike, vector_from_like } from "../math/G20";
+import { Path, PathOptions } from "../Path";
+import { default_color } from "../utils/default_color";
+import { default_open_path_stroke_width } from "../utils/default_stroke_width";
 
 export interface LineOptions extends PathOptions {
-    id?: string,
-    dashes?: number[],
+    id?: string;
+    dashes?: number[];
     strokeColor?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
-    vectorEffect?: null | 'non-scaling-stroke' | 'none';
-    visibility?: 'visible' | 'hidden' | 'collapse';
+    vectorEffect?: null | "non-scaling-stroke" | "none";
+    visibility?: "visible" | "hidden" | "collapse";
 }
 
 export interface LineProperties {
-    id?: string,
+    id?: string;
     stroke?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
-    visibility?: 'visible' | 'hidden' | 'collapse';
+    visibility?: "visible" | "hidden" | "collapse";
 }
 
 export class Line extends Path implements LineProperties {
     constructor(owner: Board, point1: VectorLike, point2: VectorLike, options: LineOptions = {}) {
-        const vertex1 = new Anchor(vector_from_like(point1), 'M');
-        const vertex2 = new Anchor(vector_from_like(point2), 'L');
-        super(owner, [vertex1, vertex2],
-            false,
-            false,
-            false,
-            path_attribs_from_line_attribs(options, owner));
+        const vertex1 = new Anchor(vector_from_like(point1), "M");
+        const vertex2 = new Anchor(vector_from_like(point2), "L");
+        super(owner, [vertex1, vertex2], false, false, false, path_attribs_from_line_attribs(options, owner));
     }
     override dispose(): void {
         super.dispose();
@@ -43,8 +39,7 @@ export class Line extends Path implements LineProperties {
     set point1(point1: VectorLike) {
         if (point1 instanceof G20) {
             this.vertices.getAt(0).origin.copyVector(point1);
-        }
-        else if (Array.isArray(point1)) {
+        } else if (Array.isArray(point1)) {
             this.vertices.getAt(0).origin.set(point1[0], point1[1]);
         }
     }
@@ -54,8 +49,7 @@ export class Line extends Path implements LineProperties {
     set point2(point2: VectorLike) {
         if (point2 instanceof G20) {
             this.vertices.getAt(1).origin.copyVector(point2);
-        }
-        else if (Array.isArray(point2)) {
+        } else if (Array.isArray(point2)) {
             this.vertices.getAt(1).origin.set(point2[0], point2[1]);
         }
     }
@@ -67,17 +61,17 @@ function path_attribs_from_line_attribs(options: LineOptions, owner: Board): Pat
         position: options.position,
         attitude: options.attitude,
         dashes: options.dashes,
-        fillColor: default_color(options.fillColor, 'none'),
+        fillColor: default_color(options.fillColor, "none"),
         fillOpacity: options.fillOpacity,
         opacity: options.opacity,
         plumb: options.plumb,
-        strokeColor: default_color(options.strokeColor, 'gray'),
+        strokeColor: default_color(options.strokeColor, "gray"),
         strokeOpacity: options.strokeOpacity,
         strokeWidth: default_open_path_stroke_width(options.strokeWidth, owner),
         sx: options.sx,
         sy: options.sy,
         vectorEffect: options.vectorEffect,
-        visibility: options.visibility
+        visibility: options.visibility,
     };
     return retval;
 }

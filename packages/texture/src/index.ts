@@ -1,1 +1,1 @@
-export { Texture } from './lib/texture';
+export { Texture } from "./lib/texture";

@@ -1,50 +1,49 @@
-import { Board, initBoard, Shape } from './index';
+import { Board, initBoard, Shape } from "./index";
 
-document.addEventListener('DOMContentLoaded', function () {
-
+document.addEventListener("DOMContentLoaded", function () {
     const board = initBoard("my-board", {
         // viewFactory: new CanvasViewFactory(),
-        boundingBox: { left: -2, top: 2, right: 2, bottom: -2 } // regular (y increases upwards)
+        boundingBox: { left: -2, top: 2, right: 2, bottom: -2 }, // regular (y increases upwards)
         // boundingBox: { left: -2, top: -2, right: 2, bottom: 2 } // SVG (y increases downwards)
         // boundingBox: { left: 2, top: 2, right: -2, bottom: -2 } // regular, crazy
         // boundingBox: { left: 2, top: -2, right: -2, bottom: 2 } // SVG, crazy
     });
 
-    const origin = board.point([0.0, 0.0], { id: 'origin' });
-    const unitX = board.point([1.0, 0.0], { id: 'unitX' });
-    const unitY = board.point([0.0, 1.0], { id: 'unitY' });
+    const origin = board.point([0.0, 0.0], { id: "origin" });
+    const unitX = board.point([1.0, 0.0], { id: "unitX" });
+    const unitY = board.point([0.0, 1.0], { id: "unitY" });
 
     const ex = board.arrow(unitX.X, {
-        id: 'ex',
+        id: "ex",
         position: origin.X,
-        strokeColor: 'red',
-        strokeWidth: 4
+        strokeColor: "red",
+        strokeWidth: 4,
     });
 
     const ey = board.arrow(unitY.X, {
-        id: 'ey',
+        id: "ey",
         position: origin.X,
-        strokeColor: 'blue',
-        strokeWidth: 4
+        strokeColor: "blue",
+        strokeWidth: 4,
     });
 
     const textX = board.text("ex (red)", {
-        id: 'text-ex',
+        id: "text-ex",
         position: ex.axis,
         opacity: 0.5,
         fillOpacity: 0.5,
         strokeOpacity: 0.5,
-        strokeWidth: 1
+        strokeWidth: 1,
     });
     rescale(textX, board);
 
     const textY = board.text("ey (blue)", {
-        id: 'text-ey',
+        id: "text-ey",
         position: ey.axis,
         opacity: 0.5,
         fillOpacity: 0.5,
         strokeOpacity: 0.5,
-        strokeWidth: 1
+        strokeWidth: 1,
     });
     rescale(textY, board);
 
@@ -59,4 +58,3 @@ document.addEventListener('DOMContentLoaded', function () {
         board.dispose();
     };
 });
-

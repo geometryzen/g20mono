@@ -1,36 +1,43 @@
 import { computed, effect, Readable, signal, State } from "@g20/reactive";
-import { Anchor } from './Anchor';
-import { Board, PointOptions } from './Board';
-import { ElementDOM } from './ElementDOM';
-import { Group } from './group';
-import { G20, VectorLike } from './math/G20';
-import { Path, PathOptions } from './Path';
-import { Disposable, disposableFromFunction, dispose } from './reactive/Disposable';
-import { sizeEquals } from './renderers/Size';
-import { View } from './renderers/View';
-import { ViewFactory } from './renderers/ViewFactory';
-import { Shape, ViewDOM } from './Shape';
-import { ArcSegment, ArcSegmentOptions } from './shapes/ArcSegment';
-import { Arrow, ArrowOptions } from './shapes/Arrow';
-import { Circle, CircleOptions } from './shapes/Circle';
-import { Ellipse, EllipseOptions } from './shapes/Ellipse';
-import { Line, LineOptions } from './shapes/Line';
-import { Polygon, PolygonOptions } from './shapes/Polygon';
-import { Rectangle, RectangleOptions } from './shapes/Rectangle';
-import { Text, TextOptions } from './text';
-import { default_color } from './utils/default_color';
-import { default_number } from './utils/default_number';
-import { default_closed_path_stroke_width, default_open_path_stroke_width } from './utils/default_stroke_width';
-import { dateTime } from './utils/performance';
+import { Anchor } from "./Anchor";
+import { Board, PointOptions } from "./Board";
+import { ElementDOM } from "./ElementDOM";
+import { Group } from "./group";
+import { G20, VectorLike } from "./math/G20";
+import { Path, PathOptions } from "./Path";
+import { Disposable, disposableFromFunction, dispose } from "./reactive/Disposable";
+import { sizeEquals } from "./renderers/Size";
+import { View } from "./renderers/View";
+import { ViewFactory } from "./renderers/ViewFactory";
+import { Shape, ViewDOM } from "./Shape";
+import { ArcSegment, ArcSegmentOptions } from "./shapes/ArcSegment";
+import { Arrow, ArrowOptions } from "./shapes/Arrow";
+import { Circle, CircleOptions } from "./shapes/Circle";
+import { Ellipse, EllipseOptions } from "./shapes/Ellipse";
+import { Line, LineOptions } from "./shapes/Line";
+import { Polygon, PolygonOptions } from "./shapes/Polygon";
+import { Rectangle, RectangleOptions } from "./shapes/Rectangle";
+import { Text, TextOptions } from "./text";
+import { default_color } from "./utils/default_color";
+import { default_number } from "./utils/default_number";
+import {
+    default_closed_path_stroke_width,
+    default_open_path_stroke_width,
+} from "./utils/default_stroke_width";
+import { dateTime } from "./utils/performance";
 
-export type BoundingBox = { left: number, top: number, right: number, bottom: number };
+export type BoundingBox = {
+    left: number;
+    top: number;
+    right: number;
+    bottom: number;
+};
 
 export interface GraphicsBoardOptions {
-    boundingBox?: { left: number, top: number, right: number, bottom: number };
+    boundingBox?: { left: number; top: number; right: number; bottom: number };
 }
 
 export class GraphicsBoard<E, T> implements Board {
-
     readonly #disposables: Disposable[] = [];
 
     readonly #view: View<T>;
@@ -42,7 +49,7 @@ export class GraphicsBoard<E, T> implements Board {
      */
     readonly #viewBox: Group;
     /**
-     * 
+     *
      */
     readonly #scene: Group;
 
@@ -60,7 +67,12 @@ export class GraphicsBoard<E, T> implements Board {
     #curr_now: number | null = null;
     #prev_now: number | null = null;
 
-    readonly #boundingBox: State<BoundingBox> = signal({ left: -1, top: 1, right: 1, bottom: -1 });
+    readonly #boundingBox: State<BoundingBox> = signal({
+        left: -1,
+        top: 1,
+        right: 1,
+        bottom: -1,
+    });
     /**
      * 'goofy' is actually regular SVG coordinates where the y coordinate increases downwards.
      */
@@ -73,8 +85,13 @@ export class GraphicsBoard<E, T> implements Board {
         return bbox.left > bbox.right;
     });
 
-    constructor(elementOrId: string | E, elementDOM: ElementDOM<E, T>, viewDOM: ViewDOM<T>, viewFactory: ViewFactory<T>, options: GraphicsBoardOptions = {}) {
-
+    constructor(
+        elementOrId: string | E,
+        elementDOM: ElementDOM<E, T>,
+        viewDOM: ViewDOM<T>,
+        viewFactory: ViewFactory<T>,
+        options: GraphicsBoardOptions = {}
+    ) {
         this.#elementDOM = elementDOM;
         this.#viewDOM = viewDOM;
 
@@ -84,7 +101,7 @@ export class GraphicsBoard<E, T> implements Board {
         this.#viewBox = new Group(this, [], { id: `${container_id}-viewbox` });
         this.#disposables.push(this.#viewBox);
 
-        if (typeof options.boundingBox === 'object') {
+        if (typeof options.boundingBox === "object") {
             const left = default_number(options.boundingBox.left, -1);
             const top = default_number(options.boundingBox.top, 1);
             const right = default_number(options.boundingBox.right, 1);
@@ -97,15 +114,14 @@ export class GraphicsBoard<E, T> implements Board {
 
         if (viewFactory) {
             this.#view = viewFactory.createView(this.#viewBox, container_id);
-            if (typeof this.#view.domElement === 'undefined' || this.#view.domElement === null) {
+            if (typeof this.#view.domElement === "undefined" || this.#view.domElement === null) {
                 throw new Error("view.domElement must be defined");
             }
-        }
-        else {
+        } else {
             throw new Error("viewFactory must be defined");
         }
 
-        const config: BoardConfig<E> = config_from_options(container, options);
+        const config: BoardConfig<E> = config_from_options(container);
 
         this.#fitter = new Fitter(this, elementDOM, this.#view, this.#viewDOM);
 
@@ -124,14 +140,16 @@ export class GraphicsBoard<E, T> implements Board {
         }
 
         // Why do we need to create this subscription to the view?
-        this.#disposables.push(effect(() => {
-            const width = this.#view.width;
-            const height = this.#view.height;
-            this.width = width;
-            this.height = height;
-            this.#update_view_box();
-            this.#size.set({ width, height });
-        }));
+        this.#disposables.push(
+            effect(() => {
+                const width = this.#view.width;
+                const height = this.#view.height;
+                this.width = width;
+                this.height = height;
+                this.#update_view_box();
+                this.#size.set({ width, height });
+            })
+        );
     }
 
     dispose(): void {
@@ -152,8 +170,8 @@ export class GraphicsBoard<E, T> implements Board {
         // By computing the absolute values it is manifest that we are not introducing inversions.
         const sx = Δx / Math.abs(LR);
         const sy = Δy / Math.abs(TB);
-        const x = -left * Δx / LR;
-        const y = -top * Δy / TB;
+        const x = (-left * Δx) / LR;
+        const y = (-top * Δy) / TB;
         this.#viewBox.X.set(x, y);
         this.#viewBox.sx = sx;
         this.#viewBox.sy = sy;
@@ -161,17 +179,14 @@ export class GraphicsBoard<E, T> implements Board {
             if (this.crazy) {
                 // crazy and goofy Coordinate System.
                 this.#viewBox.R.rotorFromAngle(-Math.PI / 2);
-            }
-            else {
+            } else {
                 // SVG Coordinate System.
             }
-        }
-        else {
+        } else {
             if (this.crazy) {
                 // crazy but not goofy Coordinate System.
                 this.#viewBox.R.rotorFromAngle(Math.PI);
-            }
-            else {
+            } else {
                 // Cartesian Coordinate System.
                 this.#viewBox.R.rotorFromAngle(+Math.PI / 2);
             }
@@ -272,8 +287,7 @@ export class GraphicsBoard<E, T> implements Board {
         if (container) {
             if (this.#view.domElement) {
                 this.#elementDOM.appendChild(container, this.#view.domElement);
-            }
-            else {
+            } else {
                 throw new Error("view.domElement must be defined");
             }
             if (!this.#fitter.is_target_body()) {
@@ -284,7 +298,12 @@ export class GraphicsBoard<E, T> implements Board {
         return this;
     }
 
-    getBoundingBox(): Readonly<{ left: number, top: number, right: number, bottom: number }> {
+    getBoundingBox(): Readonly<{
+        left: number;
+        top: number;
+        right: number;
+        bottom: number;
+    }> {
         return this.#boundingBox.get();
     }
 
@@ -292,10 +311,9 @@ export class GraphicsBoard<E, T> implements Board {
      * A number representing how much time has elapsed since the last frame in milliseconds.
      */
     getElapsedTime(fractionalDigits = 3): number | null {
-        if (typeof this.#prev_now === 'number') {
+        if (typeof this.#prev_now === "number") {
             return parseFloat((this.#curr_now - this.#prev_now).toFixed(fractionalDigits));
-        }
-        else {
+        } else {
             return null;
         }
     }
@@ -362,7 +380,7 @@ export class GraphicsBoard<E, T> implements Board {
         const rx = 4 / sx;
         const ry = 4 / sy;
         const ellipse_attribs = ellipse_attribs_from_point_attribs(options);
-        ellipse_attribs.fillColor = default_color(ellipse_attribs.fillColor, 'gray');
+        ellipse_attribs.fillColor = default_color(ellipse_attribs.fillColor, "gray");
         ellipse_attribs.position = position;
         ellipse_attribs.rx = rx;
         ellipse_attribs.ry = ry;
@@ -395,20 +413,32 @@ export class GraphicsBoard<E, T> implements Board {
         return arrow;
     }
 
-    curve(closed: boolean, points: (Anchor | G20 | [x: number, y: number])[], options: PathOptions = {}): Path {
+    curve(
+        closed: boolean,
+        points: (Anchor | G20 | [x: number, y: number])[],
+        options: PathOptions = {}
+    ): Path {
         const curved = true;
-        options.fillColor = default_color(options.fillColor, closed ? 'none' : 'gray');
-        options.strokeColor = default_color(options.strokeColor, 'gray');
-        options.strokeWidth = closed ? default_closed_path_stroke_width(options.strokeWidth, this) : default_open_path_stroke_width(options.strokeWidth, this);
+        options.fillColor = default_color(options.fillColor, closed ? "none" : "gray");
+        options.strokeColor = default_color(options.strokeColor, "gray");
+        options.strokeWidth = closed
+            ? default_closed_path_stroke_width(options.strokeWidth, this)
+            : default_open_path_stroke_width(options.strokeWidth, this);
         const curve = new Path(this, points_to_anchors(points), closed, curved, false, options);
         this.add(curve);
         return curve;
     }
 
-    path(closed: boolean, points: (Anchor | G20 | [x: number, y: number])[], options: PathOptions = {}): Path {
-        options.fillColor = default_color(options.fillColor, closed ? 'none' : 'none');
-        options.strokeColor = default_color(options.strokeColor, 'gray');
-        options.strokeWidth = closed ? default_closed_path_stroke_width(options.strokeWidth, this) : default_open_path_stroke_width(options.strokeWidth, this);
+    path(
+        closed: boolean,
+        points: (Anchor | G20 | [x: number, y: number])[],
+        options: PathOptions = {}
+    ): Path {
+        options.fillColor = default_color(options.fillColor, closed ? "none" : "none");
+        options.strokeColor = default_color(options.strokeColor, "gray");
+        options.strokeWidth = closed
+            ? default_closed_path_stroke_width(options.strokeWidth, this)
+            : default_open_path_stroke_width(options.strokeWidth, this);
         const path = new Path(this, points_to_anchors(points), closed, false, false, options);
         this.add(path);
         return path;
@@ -435,12 +465,16 @@ class Fitter<E, T> {
     readonly #domElement: T;
     #target: E | null = null;
     #target_resize: Disposable | null = null;
-    constructor(board: GraphicsBoard<E, T>, elementDOM: ElementDOM<E, T>, view: View<T>, viewDOM: ViewDOM<T>) {
+    constructor(
+        board: GraphicsBoard<E, T>,
+        elementDOM: ElementDOM<E, T>,
+        view: View<T>,
+        viewDOM: ViewDOM<T>
+    ) {
         this.#board = board;
         if (elementDOM) {
             this.#elementDOM = elementDOM;
-        }
-        else {
+        } else {
             throw new Error("elementDOM must be defined");
         }
         this.#view = view;
@@ -460,11 +494,10 @@ class Fitter<E, T> {
         this.unsubscribe();
         const callback = () => {
             this.resize();
-
         };
-        this.#elementDOM.addEventListener(this.#target, 'resize', callback);
+        this.#elementDOM.addEventListener(this.#target, "resize", callback);
         const cleanup = () => {
-            this.#elementDOM.removeEventListener(this.#target, 'resize', callback);
+            this.#elementDOM.removeEventListener(this.#target, "resize", callback);
         };
         this.#target_resize = disposableFromFunction(cleanup);
     }
@@ -484,18 +517,18 @@ class Fitter<E, T> {
         this.#target = target;
         if (this.is_target_body()) {
             // TODO: The controller should take care of this...
-            document.body.style['overflow'] = 'hidden';
-            document.body.style.margin = '0';
-            document.body.style.padding = '0';
-            document.body.style.top = '0';
-            document.body.style.left = '0';
-            document.body.style.right = '0';
-            document.body.style.bottom = '0';
-            document.body.style.position = 'fixed';
+            document.body.style["overflow"] = "hidden";
+            document.body.style.margin = "0";
+            document.body.style.padding = "0";
+            document.body.style.top = "0";
+            document.body.style.left = "0";
+            document.body.style.right = "0";
+            document.body.style.bottom = "0";
+            document.body.style.position = "fixed";
 
             // TODO: The controller should take care of this...
-            this.#viewDOM.setStyle(this.#domElement, 'display', 'block');
-            this.#viewDOM.setStyle(this.#domElement, 'top', '0');
+            this.#viewDOM.setStyle(this.#domElement, "display", "block");
+            this.#viewDOM.setStyle(this.#domElement, "top", "0");
             /*
             this.#domElement.style.left = '0';
             this.#domElement.style.right = '0';
@@ -524,16 +557,16 @@ interface BoardConfig<E> {
     size?: { width: number; height: number };
 }
 
-function config_from_options<E>(container: E, options: GraphicsBoardOptions): BoardConfig<E> {
+function config_from_options<E>(container: E): BoardConfig<E> {
     const config: BoardConfig<E> = {
-        resizeTo: compute_config_resize_to(container, options),
-        size: compute_config_size(container, options)
+        resizeTo: compute_config_resize_to(container),
+        size: compute_config_size(container),
     };
     return config;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function compute_config_resize_to<E>(container: E, options: GraphicsBoardOptions): E | null {
+function compute_config_resize_to<E>(container: E): E | null {
     /*
     if (options.resizeTo) {
         return options.resizeTo;
@@ -543,33 +576,29 @@ function compute_config_resize_to<E>(container: E, options: GraphicsBoardOptions
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function compute_config_size<E>(container: E, options: GraphicsBoardOptions): { width: number; height: number } | null {
+function compute_config_size<E>(container: E): { width: number; height: number } | null {
     if (container) {
         return null;
-    }
-    else {
+    } else {
         return { width: 640, height: 480 };
     }
 }
 
 function get_container<E, T>(elementOrId: string | E, elementDOM: ElementDOM<E, T>): E {
-    if (typeof elementOrId === 'string') {
+    if (typeof elementOrId === "string") {
         return elementDOM.getElementById(elementOrId);
-    }
-    else {
+    } else {
         return elementOrId;
     }
 }
 
 function get_container_id<E, T>(elementOrId: string | E, elementDOM: ElementDOM<E, T>): string | null {
-    if (typeof elementOrId === 'string') {
+    if (typeof elementOrId === "string") {
         return elementOrId;
-    }
-    else {
+    } else {
         if (elementDOM) {
-            return elementDOM.getAttribute(elementOrId, 'id');
-        }
-        else {
+            return elementDOM.getAttribute(elementOrId, "id");
+        } else {
             return null;
         }
     }
@@ -585,7 +614,7 @@ function ellipse_attribs_from_point_attribs(options: PointOptions): EllipseOptio
         strokeColor: options.strokeColor,
         strokeOpacity: options.strokeOpacity,
         strokeWidth: options.strokeWidth,
-        visibility: options.visibility
+        visibility: options.visibility,
     };
     return retval;
 }
@@ -597,17 +626,13 @@ function points_to_anchors(points: (Anchor | G20 | [x: number, y: number])[]): A
         const point = points[i];
         if (point instanceof Anchor) {
             anchors.push(point);
-        }
-        else if (point instanceof G20) {
-            anchors.push(new Anchor(point, i === 0 ? 'M' : 'L'));
-        }
-        else if (Array.isArray(point)) {
-            anchors.push(new Anchor(point, i === 0 ? 'M' : 'L'));
-        }
-        else {
+        } else if (point instanceof G20) {
+            anchors.push(new Anchor(point, i === 0 ? "M" : "L"));
+        } else if (Array.isArray(point)) {
+            anchors.push(new Anchor(point, i === 0 ? "M" : "L"));
+        } else {
             throw new Error();
         }
     }
     return anchors;
 }
-

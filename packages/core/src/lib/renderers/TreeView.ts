@@ -5,7 +5,7 @@ import { sizeEquals } from "./Size";
 import { View } from "./View";
 
 /**
- * 
+ *
  */
 export class TreeView<T> implements View<T> {
     /**
@@ -23,12 +23,14 @@ export class TreeView<T> implements View<T> {
         this.#viewDOM = viewDOM;
         this.viewBox = viewBox;
         this.viewBox.parent = null;
-        this.domElement = this.#viewDOM.createSVGElement('svg', { id: `${containerId}-svg` });
+        this.domElement = this.#viewDOM.createSVGElement("svg", {
+            id: `${containerId}-svg`,
+        });
 
-        this.#defs = this.#viewDOM.createSVGElement('defs', {});
+        this.#defs = this.#viewDOM.createSVGElement("defs", {});
         // set_defs_dirty_flag(this.#defs, false);
         this.#viewDOM.appendChild(this.domElement, this.#defs);
-        this.#viewDOM.setStyle(this.domElement, 'overflow', 'hidden');
+        this.#viewDOM.setStyle(this.domElement, "overflow", "hidden");
     }
 
     get width(): number {
@@ -50,10 +52,13 @@ export class TreeView<T> implements View<T> {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    setSize(size: { width: number, height: number }, ratio: number): this {
+    setSize(size: { width: number; height: number }, ratio: number): this {
         this.width = size.width;
         this.height = size.height;
-        this.#viewDOM.setAttributes(this.domElement, { width: `${size.width}px`, height: `${size.height}px` });
+        this.#viewDOM.setAttributes(this.domElement, {
+            width: `${size.width}px`,
+            height: `${size.height}px`,
+        });
         this.#size.set(size);
         return this;
     }

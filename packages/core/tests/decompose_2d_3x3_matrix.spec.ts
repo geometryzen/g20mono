@@ -1,5 +1,5 @@
 import { G20, Matrix } from "../src/index";
-import { compose_2d_3x3_transform } from '../src/lib/math/compose_2d_3x3_transform';
+import { compose_2d_3x3_transform } from "../src/lib/math/compose_2d_3x3_transform";
 import { decompose_2d_3x3_matrix } from "../src/lib/math/decompose_2d_3x3_matrix";
 import { decompose_2d_3x3_matrix_wang } from "../src/lib/math/decompose_2d_3x3_matrix_wang";
 import { MatrixDecomposition } from "../src/lib/math/MatrixDecomposition";
@@ -14,13 +14,7 @@ describe("decompose_2d_3x3_matrix", function () {
         const skewX = 0;
         const skewY = 0;
         const m = new Matrix();
-        m
-            .identity()
-            .translate({ x, y })
-            .scale(sx, sy)
-            .rotate(angle)
-            .skewX(skewX)
-            .skewY(skewY);
+        m.identity().translate({ x, y }).scale(sx, sy).rotate(angle).skewX(skewX).skewY(skewY);
 
         expect(m.a11).toBe(0.45344984105855446);
         expect(m.a12).toBe(-0.26179938779914935);

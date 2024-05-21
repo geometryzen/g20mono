@@ -1,9 +1,7 @@
-
 let next_unique_id = 0;
 
 export const Constants = {
-
-    Identifier: 'g20-texture-',
+    Identifier: "g20-texture-",
 
     /**
      * Default amount of vertices to be used for interpreting Arcs and ArcSegments.
@@ -12,5 +10,5 @@ export const Constants = {
 
     uniqueId: function (): number {
         return next_unique_id++;
-    }
+    },
 };

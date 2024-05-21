@@ -1,18 +1,18 @@
-import { Anchor } from './Anchor';
-import { Color } from './effects/ColorProvider';
-import { Group } from './group';
-import { G20, VectorLike } from './math/G20';
-import { Path, PathOptions } from './Path';
-import { Disposable } from './reactive/Disposable';
-import { Shape } from './Shape';
-import { ArcSegment, ArcSegmentOptions } from './shapes/ArcSegment';
-import { Arrow, ArrowOptions } from './shapes/Arrow';
-import { Circle, CircleOptions } from './shapes/Circle';
-import { Ellipse, EllipseOptions } from './shapes/Ellipse';
-import { Line, LineOptions } from './shapes/Line';
-import { Polygon, PolygonOptions } from './shapes/Polygon';
-import { Rectangle, RectangleOptions } from './shapes/Rectangle';
-import { Text, TextOptions } from './text';
+import { Anchor } from "./Anchor";
+import { Color } from "./effects/ColorProvider";
+import { Group } from "./group";
+import { G20, VectorLike } from "./math/G20";
+import { Path, PathOptions } from "./Path";
+import { Disposable } from "./reactive/Disposable";
+import { Shape } from "./Shape";
+import { ArcSegment, ArcSegmentOptions } from "./shapes/ArcSegment";
+import { Arrow, ArrowOptions } from "./shapes/Arrow";
+import { Circle, CircleOptions } from "./shapes/Circle";
+import { Ellipse, EllipseOptions } from "./shapes/Ellipse";
+import { Line, LineOptions } from "./shapes/Line";
+import { Polygon, PolygonOptions } from "./shapes/Polygon";
+import { Rectangle, RectangleOptions } from "./shapes/Rectangle";
+import { Text, TextOptions } from "./text";
 
 export interface PointOptions extends PathOptions {
     id?: string;
@@ -21,7 +21,7 @@ export interface PointOptions extends PathOptions {
     strokeColor?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
-    visibility?: 'visible' | 'hidden' | 'collapse';
+    visibility?: "visible" | "hidden" | "collapse";
 }
 
 export interface Board extends Disposable {
@@ -40,7 +40,12 @@ export interface Board extends Disposable {
     add(...shapes: Shape[]): this;
     remove(...shapes: Shape[]): this;
 
-    getBoundingBox(): { left: number, top: number, right: number, bottom: number };
+    getBoundingBox(): {
+        left: number;
+        top: number;
+        right: number;
+        bottom: number;
+    };
     update(): void;
     get crazy(): boolean;
     get goofy(): boolean;

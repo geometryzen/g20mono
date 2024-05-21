@@ -1,8 +1,8 @@
-import { G20 } from './math/G20';
-import { Disposable } from './reactive/Disposable';
-import { Observable } from './reactive/Observable';
-import { variable } from './reactive/variable';
-import { Commands } from './utils/Commands';
+import { G20 } from "./math/G20";
+import { Disposable } from "./reactive/Disposable";
+import { Observable } from "./reactive/Observable";
+import { variable } from "./reactive/variable";
+import { Commands } from "./utils/Commands";
 
 export class Anchor {
     /**
@@ -12,12 +12,12 @@ export class Anchor {
     readonly #origin_change: Disposable;
     readonly controls = {
         a: new G20(),
-        b: new G20()
+        b: new G20(),
     };
     readonly #a_change: Disposable;
     readonly #b_change: Disposable;
 
-    #command: 'M' | 'L' | 'C' | 'A' | 'Z';
+    #command: "M" | "L" | "C" | "A" | "Z";
     #relative: boolean;
 
     #rx: number;
@@ -39,8 +39,14 @@ export class Anchor {
      * @param by The y position of the right handle point.
      * @param command The command to describe how to render. Applicable commands are {@link Commands}
      */
-    constructor(origin: G20 | [x: number, y: number], command: 'M' | 'L' | 'C' | 'A' | 'Z' = Commands.move, ax = 0, ay = 0, bx = 0, by = 0) {
-
+    constructor(
+        origin: G20 | [x: number, y: number],
+        command: "M" | "L" | "C" | "A" | "Z" = Commands.move,
+        ax = 0,
+        ay = 0,
+        bx = 0,
+        by = 0
+    ) {
         this.origin = vector_like(origin);
         this.controls.a.set(ax, ay);
         this.controls.b.set(bx, by);
@@ -135,10 +141,10 @@ export class Anchor {
     /**
      * default is 'M'.
      */
-    get command(): 'M' | 'L' | 'C' | 'A' | 'Z' {
+    get command(): "M" | "L" | "C" | "A" | "Z" {
         return this.#command;
     }
-    set command(command: 'M' | 'L' | 'C' | 'A' | 'Z') {
+    set command(command: "M" | "L" | "C" | "A" | "Z") {
         if (this.command !== command) {
             this.#command = command;
         }
@@ -214,11 +220,9 @@ export class Anchor {
 function vector_like(source: G20 | [x: number, y: number]): G20 {
     if (source instanceof G20) {
         return source.isLocked() ? source.clone() : source;
-    }
-    else if (Array.isArray(source)) {
+    } else if (Array.isArray(source)) {
         return new G20(source[0], source[1]);
-    }
-    else {
+    } else {
         return G20.zero.clone();
     }
 }

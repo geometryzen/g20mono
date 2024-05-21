@@ -1,13 +1,12 @@
 import { ElementBase, variable } from "@g20/core";
 import { signal } from "@g20/reactive";
-import { Constants } from './constants';
-import { Gradient } from './gradient';
+import { Constants } from "./constants";
+import { Gradient } from "./gradient";
 
 export class Stop extends ElementBase {
-
     readonly #offset = signal(0);
     readonly #opacity = signal(1);
-    readonly #color = signal('#fff');
+    readonly #color = signal("#fff");
 
     readonly #change = variable(this);
     readonly change$ = this.#change.asObservable();
@@ -18,14 +17,13 @@ export class Stop extends ElementBase {
      * @param opacity The opacity value. Default value is 1, cannot be lower than 0.
      */
     constructor(offset?: number, color?: string, opacity?: number) {
-
         super(Constants.Identifier + Constants.uniqueId());
 
-        this.offset = typeof offset === 'number' ? offset : Stop.Index <= 0 ? 0 : 1;
+        this.offset = typeof offset === "number" ? offset : Stop.Index <= 0 ? 0 : 1;
 
-        this.opacity = typeof opacity === 'number' ? opacity : 1;
+        this.opacity = typeof opacity === "number" ? opacity : 1;
 
-        this.color = (typeof color === 'string') ? color : Stop.Index <= 0 ? '#fff' : '#000';
+        this.color = typeof color === "string" ? color : Stop.Index <= 0 ? "#fff" : "#000";
 
         Stop.Index = (Stop.Index + 1) % 2;
     }

@@ -1,6 +1,6 @@
 Euclidean Geometry Utilities
 
-[![version](https://img.shields.io/npm/v/@g20/euclid.svg)](https://www.npmjs.com/package/@g20/euclid) 
+[![version](https://img.shields.io/npm/v/@g20/euclid.svg)](https://www.npmjs.com/package/@g20/euclid)
 
 [![npm downloads](https://img.shields.io/npm/dm/@g20/euclid.svg)](https://npm-stat.com/charts.html?package=@g20/euclid&from=2022-09-01)
 

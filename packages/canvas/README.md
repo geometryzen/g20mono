@@ -1,6 +1,6 @@
 Canvas Renderer (for generating PNG files)
 
-[![version](https://img.shields.io/npm/v/@g20/canvas.svg)](https://www.npmjs.com/package/@g20/canvas) 
+[![version](https://img.shields.io/npm/v/@g20/canvas.svg)](https://www.npmjs.com/package/@g20/canvas)
 
 [![npm downloads](https://img.shields.io/npm/dm/@g20/canvas.svg)](https://npm-stat.com/charts.html?package=@g20/canvas&from=2022-09-01)
 

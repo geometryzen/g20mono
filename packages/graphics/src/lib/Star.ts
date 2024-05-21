@@ -9,7 +9,7 @@ import {
     Path,
     PathOptions,
     SpinorLike,
-    VectorLike
+    VectorLike,
 } from "@g20/core";
 import { effect, signal } from "@g20/reactive";
 import { default_color } from "./default_color";
@@ -20,23 +20,23 @@ export interface StarOptions extends PathOptions {
     fillColor?: Color;
     fillOpacity?: number;
     opacity?: number;
-    position?: VectorLike,
-    attitude?: SpinorLike,
+    position?: VectorLike;
+    attitude?: SpinorLike;
     radius?: number;
     strokeColor?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
-    visibility?: 'visible' | 'hidden' | 'collapse';
+    visibility?: "visible" | "hidden" | "collapse";
     innerRadius?: number;
     outerRadius?: number;
     points?: number;
     twist?: number;
 }
 
-const cos = Math.cos, sin = Math.sin;
+const cos = Math.cos,
+    sin = Math.sin;
 
 export class Star extends Path {
-
     readonly #trash: Disposable[] = [];
 
     readonly #innerRadius = signal(0.5);
@@ -45,28 +45,29 @@ export class Star extends Path {
     readonly #twist = signal(0);
 
     constructor(owner: Board, options: StarOptions = {}) {
-
         super(owner, [], true, false, true, path_options_from_star_options(options, owner));
 
-        if (typeof options.innerRadius === 'number') {
+        if (typeof options.innerRadius === "number") {
             this.innerRadius = options.innerRadius;
         }
 
-        if (typeof options.outerRadius === 'number') {
+        if (typeof options.outerRadius === "number") {
             this.outerRadius = options.outerRadius;
         }
 
-        if (typeof options.points === 'number') {
+        if (typeof options.points === "number") {
             this.points = options.points;
         }
 
-        if (typeof options.twist === 'number') {
+        if (typeof options.twist === "number") {
             this.twist = options.twist;
         }
 
-        this.#trash.push(effect(() => {
-            this.update();
-        }));
+        this.#trash.push(
+            effect(() => {
+                this.update();
+            })
+        );
     }
 
     override dispose(): void {
@@ -106,8 +107,13 @@ export class Star extends Path {
     }
 }
 
-function update_vertices(points: number, innerRadius: number, outerRadius: number, twist: number, vertices: Collection<Anchor>) {
-
+function update_vertices(
+    points: number,
+    innerRadius: number,
+    outerRadius: number,
+    twist: number,
+    vertices: Collection<Anchor>
+) {
     const sides = 2 * points;
     const N = sides + 1;
     if (vertices.length > N) {
@@ -118,14 +124,13 @@ function update_vertices(points: number, innerRadius: number, outerRadius: numbe
     }
 
     for (let i = 0; i < N; i++) {
-
-        const theta = (2 * Math.PI * i / sides) + twist;
-        const r = (i % 2 === 0) ? outerRadius : innerRadius;
+        const theta = (2 * Math.PI * i) / sides + twist;
+        const r = i % 2 === 0 ? outerRadius : innerRadius;
         const x = r * cos(theta);
         const y = r * sin(theta);
         const vertex = vertices.getAt(i);
         vertex.origin.set(x, y);
-        vertex.command = (i === 0) ? 'M' : 'L';
+        vertex.command = i === 0 ? "M" : "L";
     }
 }
 
@@ -136,9 +141,9 @@ function path_options_from_star_options(options: StarOptions, owner: Board): Pat
         opacity: options.opacity,
         position: options.position,
         visibility: options.visibility,
-        fillColor: default_color(options.fillColor, 'none'),
+        fillColor: default_color(options.fillColor, "none"),
         fillOpacity: options.fillOpacity,
-        strokeColor: default_color(options.strokeColor, 'gray'),
+        strokeColor: default_color(options.strokeColor, "gray"),
         strokeOpacity: options.strokeOpacity,
         strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
     };

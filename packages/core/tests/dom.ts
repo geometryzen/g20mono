@@ -10,8 +10,7 @@ export class MockViewDOM implements ViewDOM<MockElement> {
     downcast(element: unknown): MockElement {
         if (element instanceof MockElement) {
             return element;
-        }
-        else {
+        } else {
             throw new Error("element is not a MockElement");
         }
     }
@@ -23,8 +22,7 @@ export class MockViewDOM implements ViewDOM<MockElement> {
         if (unk instanceof MockElement) {
             const element = unk as MockElement;
             element.setAttribute(name, value);
-        }
-        else {
+        } else {
             throw new Error();
         }
     }
@@ -35,8 +33,7 @@ export class MockViewDOM implements ViewDOM<MockElement> {
                 const value = attributes[name];
                 element.setAttribute(name, value);
             }
-        }
-        else {
+        } else {
             throw new Error();
         }
     }
@@ -49,16 +46,14 @@ export class MockViewDOM implements ViewDOM<MockElement> {
             for (const name of Object.keys(attributes)) {
                 element.removeAttribute(name);
             }
-        }
-        else {
+        } else {
             throw new Error();
         }
     }
     appendChild(unkP: unknown, unkC: unknown): void {
         if (unkP instanceof MockElement && unkC instanceof MockNode) {
             unkP.appendChild(unkC);
-        }
-        else {
+        } else {
             throw new Error();
         }
     }
@@ -82,7 +77,7 @@ export class MockViewDOM implements ViewDOM<MockElement> {
         for (let i = 0; i < N; i++) {
             const child = children[i];
             if (child instanceof MockElement) {
-                if (child.name === 'defs') {
+                if (child.name === "defs") {
                     return child;
                 }
             }
@@ -95,9 +90,7 @@ export class MockViewDOM implements ViewDOM<MockElement> {
 }
 
 export class MockElementDOM implements ElementDOM<MockElement, MockElement> {
-    constructor() {
-
-    }
+    constructor() {}
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getElementById(elementId: string): MockElement {
         throw new Error("Method not implemented.");
@@ -106,7 +99,10 @@ export class MockElementDOM implements ElementDOM<MockElement, MockElement> {
         return element.getAttribute(name);
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    getBoundingClientRect(element: MockElement): { width: number; height: number; } {
+    getBoundingClientRect(element: MockElement): {
+        width: number;
+        height: number;
+    } {
         return { width: 640, height: 480 };
     }
     appendChild(parent: MockElement, child: MockElement): void {
@@ -121,6 +117,6 @@ export class MockElementDOM implements ElementDOM<MockElement, MockElement> {
         // Do nothing yet.
     }
     isDocumentBody(element: MockElement): boolean {
-        return element.name === 'body';
+        return element.name === "body";
     }
 }

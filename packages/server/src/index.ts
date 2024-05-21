@@ -1,2 +1,1 @@
-export { initBoard } from './lib/initBoard';
-
+export { initBoard } from "./lib/initBoard";

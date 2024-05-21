@@ -6,7 +6,7 @@ import { MockElement } from "./nodes";
 
 describe("Ellipse", function () {
     it("constructor", function () {
-        const element = new MockElement('div');
+        const element = new MockElement("div");
         const board = initBoard(element);
         const ellipse = new Ellipse(board);
         board.add(ellipse);
@@ -65,23 +65,24 @@ describe("Ellipse", function () {
                 try {
                     const viewDOM = new MockViewDOM();
                     const viewee = viewDOM.downcast(ellipse.zzz.viewee);
-                    expect(viewee.getAttribute('fill')).toBe('none');
-                    expect(viewee.getAttribute('stroke')).toBe('gray');
-                    expect(viewee.getAttribute('stroke-width')).toBe('0.009375');
-                    expect(viewee.getAttribute('d')).toBe("M 0 1 C 0.276142 1 0.5 0.552284 0.5 0 C 0.5 -0.552285 0.276142 -1 0 -1 C -0.276143 -1 -0.5 -0.552285 -0.5 -0.000001 C -0.500001 0.552284 -0.276143 1 0 1 Z");
+                    expect(viewee.getAttribute("fill")).toBe("none");
+                    expect(viewee.getAttribute("stroke")).toBe("gray");
+                    expect(viewee.getAttribute("stroke-width")).toBe("0.009375");
+                    expect(viewee.getAttribute("d")).toBe(
+                        "M 0 1 C 0.276142 1 0.5 0.552284 0.5 0 C 0.5 -0.552285 0.276142 -1 0 -1 C -0.276143 -1 -0.5 -0.552285 -0.5 -0.000001 C -0.500001 0.552284 -0.276143 1 0 1 Z"
+                    );
                     board.dispose();
                     resolve();
-                }
-                catch (e) {
+                } catch (e) {
                     reject(e);
                 }
             });
         });
     });
     it("resolution", function () {
-        const element = new MockElement('div');
+        const element = new MockElement("div");
         const board = initBoard(element);
-        const ellipse = new Ellipse(board, { id: 'ellipse', resolution: 4 });
+        const ellipse = new Ellipse(board, { id: "ellipse", resolution: 4 });
         board.add(ellipse);
         expect(ellipse.id).toBe("ellipse");
 
@@ -118,23 +119,24 @@ describe("Ellipse", function () {
                 try {
                     const viewDOM = new MockViewDOM();
                     const viewee = viewDOM.downcast(ellipse.zzz.viewee);
-                    expect(viewee.getAttribute('fill')).toBe('none');
-                    expect(viewee.getAttribute('stroke')).toBe('gray');
-                    expect(viewee.getAttribute('stroke-width')).toBe('0.009375');
-                    expect(viewee.getAttribute('d')).toBe("M 0 1 C 0.276142 1 0.5 0.552284 0.5 0 C 0.5 -0.552285 0.276142 -1 0 -1 C -0.276143 -1 -0.5 -0.552285 -0.5 -0.000001 C -0.500001 0.552284 -0.276143 1 0 1 Z");
+                    expect(viewee.getAttribute("fill")).toBe("none");
+                    expect(viewee.getAttribute("stroke")).toBe("gray");
+                    expect(viewee.getAttribute("stroke-width")).toBe("0.009375");
+                    expect(viewee.getAttribute("d")).toBe(
+                        "M 0 1 C 0.276142 1 0.5 0.552284 0.5 0 C 0.5 -0.552285 0.276142 -1 0 -1 C -0.276143 -1 -0.5 -0.552285 -0.5 -0.000001 C -0.500001 0.552284 -0.276143 1 0 1 Z"
+                    );
                     board.dispose();
                     resolve();
-                }
-                catch (e) {
+                } catch (e) {
                     reject(e);
                 }
             });
         });
     });
     it("options I", function () {
-        const element = new MockElement('div');
+        const element = new MockElement("div");
         const board = initBoard(element);
-        const ellipse = new Ellipse(board, { rx: 1, ry: 0.5, id: 'ellipse' });
+        const ellipse = new Ellipse(board, { rx: 1, ry: 0.5, id: "ellipse" });
         board.add(ellipse);
         expect(ellipse.id).toBe("ellipse");
 
@@ -171,23 +173,28 @@ describe("Ellipse", function () {
                 try {
                     const viewDOM = new MockViewDOM();
                     const viewee = viewDOM.downcast(ellipse.zzz.viewee);
-                    expect(viewee.getAttribute('fill')).toBe('none');
-                    expect(viewee.getAttribute('stroke')).toBe('gray');
-                    expect(viewee.getAttribute('stroke-width')).toBe('0.009375');
-                    expect(viewee.getAttribute('d')).toBe("M 0 1 C 0.276142 1 0.5 0.552284 0.5 0 C 0.5 -0.552285 0.276142 -1 0 -1 C -0.276143 -1 -0.5 -0.552285 -0.5 -0.000001 C -0.500001 0.552284 -0.276143 1 0 1 Z");
+                    expect(viewee.getAttribute("fill")).toBe("none");
+                    expect(viewee.getAttribute("stroke")).toBe("gray");
+                    expect(viewee.getAttribute("stroke-width")).toBe("0.009375");
+                    expect(viewee.getAttribute("d")).toBe(
+                        "M 0 1 C 0.276142 1 0.5 0.552284 0.5 0 C 0.5 -0.552285 0.276142 -1 0 -1 C -0.276143 -1 -0.5 -0.552285 -0.5 -0.000001 C -0.500001 0.552284 -0.276143 1 0 1 Z"
+                    );
                     board.dispose();
                     resolve();
-                }
-                catch (e) {
+                } catch (e) {
                     reject(e);
                 }
             });
         });
     });
     it("options II", function () {
-        const element = new MockElement('div');
+        const element = new MockElement("div");
         const board = initBoard(element);
-        const ellipse = new Ellipse(board, { rx: [1, 0], ry: [0, 0.5], id: 'ellipse' });
+        const ellipse = new Ellipse(board, {
+            rx: [1, 0],
+            ry: [0, 0.5],
+            id: "ellipse",
+        });
         board.add(ellipse);
         expect(ellipse.id).toBe("ellipse");
 
@@ -224,25 +231,26 @@ describe("Ellipse", function () {
                 try {
                     const viewDOM = new MockViewDOM();
                     const viewee = viewDOM.downcast(ellipse.zzz.viewee);
-                    expect(viewee.getAttribute('fill')).toBe('none');
-                    expect(viewee.getAttribute('stroke')).toBe('gray');
-                    expect(viewee.getAttribute('stroke-width')).toBe('0.009375');
-                    expect(viewee.getAttribute('d')).toBe("M 0 1 C 0.276142 1 0.5 0.552284 0.5 0 C 0.5 -0.552285 0.276142 -1 0 -1 C -0.276143 -1 -0.5 -0.552285 -0.5 -0.000001 C -0.500001 0.552284 -0.276143 1 0 1 Z");
+                    expect(viewee.getAttribute("fill")).toBe("none");
+                    expect(viewee.getAttribute("stroke")).toBe("gray");
+                    expect(viewee.getAttribute("stroke-width")).toBe("0.009375");
+                    expect(viewee.getAttribute("d")).toBe(
+                        "M 0 1 C 0.276142 1 0.5 0.552284 0.5 0 C 0.5 -0.552285 0.276142 -1 0 -1 C -0.276143 -1 -0.5 -0.552285 -0.5 -0.000001 C -0.500001 0.552284 -0.276143 1 0 1 Z"
+                    );
                     board.dispose();
                     resolve();
-                }
-                catch (e) {
+                } catch (e) {
                     reject(e);
                 }
             });
         });
     });
     it("options III", function () {
-        const element = new MockElement('div');
+        const element = new MockElement("div");
         const board = initBoard(element);
         const rx = G20.ex.clone();
         const ry = G20.ey.clone();
-        const ellipse = new Ellipse(board, { rx, ry, id: 'ellipse' });
+        const ellipse = new Ellipse(board, { rx, ry, id: "ellipse" });
         board.add(ellipse);
         expect(ellipse.id).toBe("ellipse");
         expect(ellipse.rx === rx).toBe(true);
@@ -284,21 +292,22 @@ describe("Ellipse", function () {
                     }
                     const viewDOM = new MockViewDOM();
                     const viewee = viewDOM.downcast(ellipse.zzz.viewee);
-                    expect(viewee.getAttribute('fill')).toBe('none');
-                    expect(viewee.getAttribute('stroke')).toBe('gray');
-                    expect(viewee.getAttribute('stroke-width')).toBe('0.009375');
-                    expect(viewee.getAttribute('d')).toBe("M 0 1 C 0.276142 1 0.5 0.552284 0.5 0 C 0.5 -0.552285 0.276142 -1 0 -1 C -0.276143 -1 -0.5 -0.552285 -0.5 -0.000001 C -0.500001 0.552284 -0.276143 1 0 1 Z");
+                    expect(viewee.getAttribute("fill")).toBe("none");
+                    expect(viewee.getAttribute("stroke")).toBe("gray");
+                    expect(viewee.getAttribute("stroke-width")).toBe("0.009375");
+                    expect(viewee.getAttribute("d")).toBe(
+                        "M 0 1 C 0.276142 1 0.5 0.552284 0.5 0 C 0.5 -0.552285 0.276142 -1 0 -1 C -0.276143 -1 -0.5 -0.552285 -0.5 -0.000001 C -0.500001 0.552284 -0.276143 1 0 1 Z"
+                    );
                     board.dispose();
                     resolve();
-                }
-                catch (e) {
+                } catch (e) {
                     reject(e);
                 }
             });
         });
     });
     it("rx", function () {
-        const element = new MockElement('div');
+        const element = new MockElement("div");
         const board = initBoard(element);
         const ellipse = new Ellipse(board);
         board.add(ellipse);
@@ -341,23 +350,24 @@ describe("Ellipse", function () {
                     const viewDOM = new MockViewDOM();
                     const viewee = viewDOM.downcast(ellipse.zzz.viewee);
                     expect(viewee.getAttributeNames()).toStrictEqual(["d", "fill", "stroke", "stroke-width"]);
-                    expect(viewee.getAttribute('fill')).toBe('none');
-                    expect(viewee.getAttribute('stroke')).toBe('gray');
-                    expect(viewee.getAttribute('stroke-width')).toBe('0.009375');
-                    expect(viewee.getAttribute('d')).toBe("M 0 1 C 0.276142 1 0.5 0.552284 0.5 0 C 0.5 -0.552285 0.276142 -1 0 -1 C -0.276143 -1 -0.5 -0.552285 -0.5 -0.000001 C -0.500001 0.552284 -0.276143 1 0 1 Z");
+                    expect(viewee.getAttribute("fill")).toBe("none");
+                    expect(viewee.getAttribute("stroke")).toBe("gray");
+                    expect(viewee.getAttribute("stroke-width")).toBe("0.009375");
+                    expect(viewee.getAttribute("d")).toBe(
+                        "M 0 1 C 0.276142 1 0.5 0.552284 0.5 0 C 0.5 -0.552285 0.276142 -1 0 -1 C -0.276143 -1 -0.5 -0.552285 -0.5 -0.000001 C -0.500001 0.552284 -0.276143 1 0 1 Z"
+                    );
 
                     board.dispose();
 
                     resolve();
-                }
-                catch (e) {
+                } catch (e) {
                     reject(e);
                 }
             });
         });
     });
     it("ry", function () {
-        const element = new MockElement('div');
+        const element = new MockElement("div");
         const board = initBoard(element);
         const ellipse = new Ellipse(board);
         board.add(ellipse);
@@ -400,23 +410,24 @@ describe("Ellipse", function () {
                     const viewDOM = new MockViewDOM();
                     const viewee = viewDOM.downcast(ellipse.zzz.viewee);
                     expect(viewee.getAttributeNames()).toStrictEqual(["d", "fill", "stroke", "stroke-width"]);
-                    expect(viewee.getAttribute('fill')).toBe('none');
-                    expect(viewee.getAttribute('stroke')).toBe('gray');
-                    expect(viewee.getAttribute('stroke-width')).toBe('0.009375');
-                    expect(viewee.getAttribute('d')).toBe("M 0 1 C 0.276142 1 0.5 0.552284 0.5 0 C 0.5 -0.552285 0.276142 -1 0 -1 C -0.276143 -1 -0.5 -0.552285 -0.5 -0.000001 C -0.500001 0.552284 -0.276143 1 0 1 Z");
+                    expect(viewee.getAttribute("fill")).toBe("none");
+                    expect(viewee.getAttribute("stroke")).toBe("gray");
+                    expect(viewee.getAttribute("stroke-width")).toBe("0.009375");
+                    expect(viewee.getAttribute("d")).toBe(
+                        "M 0 1 C 0.276142 1 0.5 0.552284 0.5 0 C 0.5 -0.552285 0.276142 -1 0 -1 C -0.276143 -1 -0.5 -0.552285 -0.5 -0.000001 C -0.500001 0.552284 -0.276143 1 0 1 Z"
+                    );
 
                     board.dispose();
 
                     resolve();
-                }
-                catch (e) {
+                } catch (e) {
                     reject(e);
                 }
             });
         });
     });
     it("circular", function () {
-        const element = new MockElement('div');
+        const element = new MockElement("div");
         const board = initBoard(element);
         const ellipse = new Ellipse(board, { rx: 1, ry: 1 });
         board.add(ellipse);
@@ -475,14 +486,15 @@ describe("Ellipse", function () {
                 try {
                     const viewDOM = new MockViewDOM();
                     const viewee = viewDOM.downcast(ellipse.zzz.viewee);
-                    expect(viewee.getAttribute('fill')).toBe('none');
-                    expect(viewee.getAttribute('stroke')).toBe('gray');
-                    expect(viewee.getAttribute('stroke-width')).toBe('0.009375');
-                    expect(viewee.getAttribute('d')).toBe("M 0 1 C 0.552284 1 1 0.552284 1 0 C 1 -0.552285 0.552284 -1 0 -1 C -0.552285 -1 -1 -0.552285 -1 -0.000001 C -1.000001 0.552284 -0.552285 1 0 1 Z");
+                    expect(viewee.getAttribute("fill")).toBe("none");
+                    expect(viewee.getAttribute("stroke")).toBe("gray");
+                    expect(viewee.getAttribute("stroke-width")).toBe("0.009375");
+                    expect(viewee.getAttribute("d")).toBe(
+                        "M 0 1 C 0.552284 1 1 0.552284 1 0 C 1 -0.552285 0.552284 -1 0 -1 C -0.552285 -1 -1 -0.552285 -1 -0.000001 C -1.000001 0.552284 -0.552285 1 0 1 Z"
+                    );
                     board.dispose();
                     resolve();
-                }
-                catch (e) {
+                } catch (e) {
                     reject(e);
                 }
             });

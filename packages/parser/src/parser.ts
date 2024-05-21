@@ -1,44 +1,43 @@
 import { Anchor, Board, Circle, Ellipse, G20, Group, Path, Rectangle, Shape, Text } from "@g20/core";
-import { Gradient, LinearGradient, RadialGradient, Stop } from '@g20/gradient';
+import { Gradient, LinearGradient, RadialGradient, Stop } from "@g20/gradient";
 
 // https://github.com/jonobr1/two.js/issues/507#issuecomment-777159213
 const regex = {
     path: /[+-]?(?:\d*\.\d+|\d+)(?:[eE][+-]\d+)?/g,
     cssBackgroundImage: /url\(['"]?#([\w\d-_]*)['"]?\)/i,
-    unitSuffix: /[a-zA-Z%]*/i
+    unitSuffix: /[a-zA-Z%]*/i,
 } as const;
 
 const alignments = {
-    start: 'left',
-    middle: 'center',
-    end: 'right'
+    start: "left",
+    middle: "center",
+    end: "right",
 } as const;
 
 // Reserved attributes to remove
-const reservedAttributesToRemove = ['id', 'class', 'transform', 'xmlns', 'viewBox'] as const;
+const reservedAttributesToRemove = ["id", "class", "transform", "xmlns", "viewBox"] as const;
 
-const overwriteAttrs = ['x', 'y', 'width', 'height', 'href', 'xlink:href'] as const;
+const overwriteAttrs = ["x", "y", "width", "height", "href", "xlink:href"] as const;
 
 /**
  * @param {AlignmentString}
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/text-anchor}
  */
-function getAlignment(text_anchor_value: 'start' | 'middle' | 'end'): 'left' | 'center' | 'right' {
+function getAlignment(text_anchor_value: "start" | "middle" | "end"): "left" | "center" | "right" {
     return alignments[text_anchor_value];
 }
 
-function getBaseline(node: SVGElement): 'bottom' | 'middle' | 'top' {
-    const a = node.getAttribute('dominant-baseline');
-    const b = node.getAttribute('alignment-baseline');
-    return (a || b) as 'bottom' | 'middle' | 'top';
+function getBaseline(node: SVGElement): "bottom" | "middle" | "top" {
+    const a = node.getAttribute("dominant-baseline");
+    const b = node.getAttribute("alignment-baseline");
+    return (a || b) as "bottom" | "middle" | "top";
 }
 
 function getTagName(tag: string): string {
-    return tag.replace(/svg:/ig, '').toLowerCase();
+    return tag.replace(/svg:/gi, "").toLowerCase();
 }
 
 function applyTransformsToVector(transforms: MatrixDecomposition, vector: G20): void {
-
     vector.x += transforms.translateX;
     vector.y += transforms.translateY;
 
@@ -59,28 +58,27 @@ function applyTransformsToVector(transforms: MatrixDecomposition, vector: G20): 
  * @description Parse CSS text body and apply them as key value pairs to a JavaScript object.
  */
 function extractCSSText(text: string, styles: ParentStyles): void {
-
-    const commands = text.split(';');
+    const commands = text.split(";");
 
     for (let i = 0; i < commands.length; i++) {
-        const command = commands[i].split(':');
+        const command = commands[i].split(":");
         const name = command[0];
         const value = command[1];
-        if (typeof name === 'undefined' || typeof value === 'undefined') {
+        if (typeof name === "undefined" || typeof value === "undefined") {
             continue;
         }
-        styles[name] = value.replace(/\s/, '');
+        styles[name] = value.replace(/\s/, "");
     }
 }
 
-function get_svg_element_styles(element: SVGElement): { [name: string]: string } {
-
+function get_svg_element_styles(element: SVGElement): {
+    [name: string]: string;
+} {
     const styles: { [name: string]: string } = {};
     const non_reserved_names: string[] = get_svg_element_non_reserved_attribute_names(element);
     const length = Math.max(non_reserved_names.length, element.style.length);
 
     for (let i = 0; i < length; i++) {
-
         const command = element.style[i];
         const non_reserved_name = non_reserved_names[i];
 
@@ -98,7 +96,6 @@ function get_svg_element_styles(element: SVGElement): { [name: string]: string }
  * @returns The SVG attribute names of the element with the reserved 'id','class','transform','xmlns', and 'viewBox' removed
  */
 function get_svg_element_non_reserved_attribute_names(element: SVGElement): string[] {
-
     const names = element.getAttributeNames();
 
     for (let i = 0; i < reservedAttributesToRemove.length; i++) {
@@ -110,7 +107,6 @@ function get_svg_element_non_reserved_attribute_names(element: SVGElement): stri
     }
 
     return names;
-
 }
 
 /**
@@ -119,33 +115,30 @@ function get_svg_element_non_reserved_attribute_names(element: SVGElement): stri
  * @description Applies the transform of the SVG Viewbox on a given node.
  */
 function applySvgViewBox(node: Group, viewBox: string): void {
-
     const elements: string[] = viewBox.split(/[\s,]/);
 
-    const x = - parseFloat(elements[0]);
-    const y = - parseFloat(elements[1]);
+    const x = -parseFloat(elements[0]);
+    const y = -parseFloat(elements[1]);
     const width = parseFloat(elements[2]);
     const height = parseFloat(elements[3]);
 
     if (x && y) {
         for (let i = 0; i < node.children.length; i++) {
             const child = node.children[i];
-            if ('translation' in child) {
+            if ("translation" in child) {
                 child.translation.add(x, y);
-            }
-            else if ('x' in child) {
+            } else if ("x" in child) {
                 child.x = x;
-            }
-            else if ('y' in child) {
+            } else if ("y" in child) {
                 child.y = y;
             }
         }
     }
 
-    const xExists = typeof node.x === 'number';
-    const yExists = typeof node.y === 'number';
-    const widthExists = typeof node.width === 'number';
-    const heightExists = typeof node.height === 'number';
+    const xExists = typeof node.x === "number";
+    const yExists = typeof node.y === "number";
+    const widthExists = typeof node.width === "number";
+    const heightExists = typeof node.height === "number";
 
     if (xExists) {
         node.translation.x += node.x;
@@ -165,7 +158,7 @@ function applySvgViewBox(node: Group, viewBox: string): void {
 
     const rectangle = new Rectangle(0, 0, width, height);
     node.mask = rectangle;
-    rectangle.origin.set(- width / 2, - height / 2);
+    rectangle.origin.set(-width / 2, -height / 2);
 }
 
 /**
@@ -174,8 +167,9 @@ function applySvgViewBox(node: Group, viewBox: string): void {
  * @TODO Reverse calculate {@link Gradient}s for fill / stroke of any given path.
  */
 function applySvgAttributes(this: Board, node: SVGElement, elem: Shape, parentStyles: ParentStyles) {
-
-    const styles = {}, attributes = {}, extracted = {};
+    const styles = {},
+        attributes = {},
+        extracted = {};
     let i, m, key, value, prop, attr;
     let transforms, x, y;
     let id, scene, ref, tagName;
@@ -196,7 +190,7 @@ function applySvgAttributes(this: Board, node: SVGElement, elem: Shape, parentSt
             value = computedStyles[key];
             // Gecko returns undefined for unset properties
             // Webkit returns the default value
-            if (typeof value !== 'undefined') {
+            if (typeof value !== "undefined") {
                 styles[key] = value;
             }
         }
@@ -207,8 +201,7 @@ function applySvgAttributes(this: Board, node: SVGElement, elem: Shape, parentSt
         attr = node.attributes[i];
         if (/style/i.test(attr.nodeName)) {
             extractCSSText(attr.value, extracted);
-        }
-        else {
+        } else {
             attributes[attr.nodeName] = attr.value;
         }
     }
@@ -216,9 +209,9 @@ function applySvgAttributes(this: Board, node: SVGElement, elem: Shape, parentSt
     // Getting the correct opacity is a bit tricky, since SVG path elements don't
     // support opacity as an attribute, but you can apply it via CSS.
     // So we take the opacity and set (stroke/fill)-opacity to the same value.
-    if (typeof styles.opacity !== 'undefined') {
-        styles['stroke-opacity'] = styles.opacity;
-        styles['fill-opacity'] = styles.opacity;
+    if (typeof styles.opacity !== "undefined") {
+        styles["stroke-opacity"] = styles.opacity;
+        styles["fill-opacity"] = styles.opacity;
         delete styles.opacity;
     }
 
@@ -230,31 +223,37 @@ function applySvgAttributes(this: Board, node: SVGElement, elem: Shape, parentSt
 
     // Similarly visibility is influenced by the value of both display and visibility.
     // Calculate a unified value here which defaults to `true`.
-    styles.visible = !(typeof styles.display === 'undefined' && /none/i.test(styles.display))
-        || (typeof styles.visibility === 'undefined' && /hidden/i.test(styles.visibility));
+    styles.visible =
+        !(typeof styles.display === "undefined" && /none/i.test(styles.display)) ||
+        (typeof styles.visibility === "undefined" && /hidden/i.test(styles.visibility));
 
     // Now iterate the whole thing
     for (key in styles) {
         value = styles[key];
 
         switch (key) {
-            case 'gradientTransform':
+            case "gradientTransform":
                 // TODO: Check this out https://github.com/paperjs/paper.js/blob/develop/src/svg/SvgImport.js#L315
                 if (/none/i.test(value)) break;
-                m = (node.gradientTransform && node.gradientTransform.baseVal && node.gradientTransform.baseVal.length > 0)
-                    ? node.gradientTransform.baseVal[0].matrix
-                    : (node.getCTM ? node.getCTM() : null);
+                m =
+                    node.gradientTransform &&
+                    node.gradientTransform.baseVal &&
+                    node.gradientTransform.baseVal.length > 0
+                        ? node.gradientTransform.baseVal[0].matrix
+                        : node.getCTM
+                          ? node.getCTM()
+                          : null;
 
                 if (m === null) break;
 
                 transforms = decomposeMatrix(m.a, m.b, m.c, m.d, m.e, m.f);
 
                 switch (elem.viewInfo.type) {
-                    case 'linear-gradient':
+                    case "linear-gradient":
                         applyTransformsToVector(transforms, elem.left);
                         applyTransformsToVector(transforms, elem.right);
                         break;
-                    case 'radial-gradient':
+                    case "radial-gradient":
                         elem.center.x += transforms.translateX;
                         elem.center.y += transforms.translateY;
 
@@ -266,18 +265,20 @@ function applySvgAttributes(this: Board, node: SVGElement, elem: Shape, parentSt
                 }
 
                 break;
-            case 'transform':
+            case "transform":
                 // TODO: Check this out https://github.com/paperjs/paper.js/blob/develop/src/svg/SvgImport.js#L315
                 if (/none/i.test(value)) break;
-                m = (node.transform && node.transform.baseVal && node.transform.baseVal.length > 0)
-                    ? node.transform.baseVal[0].matrix
-                    : (node.getCTM ? node.getCTM() : null);
+                m =
+                    node.transform && node.transform.baseVal && node.transform.baseVal.length > 0
+                        ? node.transform.baseVal[0].matrix
+                        : node.getCTM
+                          ? node.getCTM()
+                          : null;
 
                 // Might happen when transform string is empty or not valid.
                 if (m === null) break;
 
                 if (Constants.AutoCalculateImportedMatrices) {
-
                     // Decompose and infer model related properties.
                     transforms = decomposeMatrix(m.a, m.b, m.c, m.d, m.e, m.f);
 
@@ -285,8 +286,8 @@ function applySvgAttributes(this: Board, node: SVGElement, elem: Shape, parentSt
                     elem.rotation = Math.PI * (transforms.rotation / 180);
                     elem.scale = new G20(transforms.scaleX, transforms.scaleY);
 
-                    x = parseFloat((styles.x + '').replace('px'));
-                    y = parseFloat((styles.y + '').replace('px'));
+                    x = parseFloat((styles.x + "").replace("px"));
+                    y = parseFloat((styles.y + "").replace("px"));
 
                     // Override based on attributes.
                     if (x) {
@@ -296,56 +297,52 @@ function applySvgAttributes(this: Board, node: SVGElement, elem: Shape, parentSt
                     if (y) {
                         elem.translation.y = y;
                     }
-
-                }
-                else {
-
+                } else {
                     // Edit the underlying matrix and don't force an auto calc.
                     m = node.getCTM();
                     elem._matrix.manual = true;
                     elem._matrix.set(m.a, m.b, m.c, m.d, m.e, m.f);
-
                 }
 
                 break;
-            case 'visible':
+            case "visible":
                 if (elem instanceof Group) {
                     elem._visible = value;
                     break;
                 }
                 elem.visible = value;
                 break;
-            case 'stroke-linecap':
+            case "stroke-linecap":
                 if (elem instanceof Group) {
                     elem._cap = value;
                     break;
                 }
                 elem.cap = value;
                 break;
-            case 'stroke-linejoin':
+            case "stroke-linejoin":
                 if (elem instanceof Group) {
                     elem._join = value;
                     break;
                 }
                 elem.join = value;
                 break;
-            case 'stroke-miterlimit':
+            case "stroke-miterlimit":
                 if (elem instanceof Group) {
                     elem._miter = value;
                     break;
                 }
                 elem.miter = value;
                 break;
-            case 'stroke-width':
+            case "stroke-width":
                 if (elem instanceof Group) {
                     elem._linewidth = parseFloat(value);
                     break;
                 }
                 elem.strokeWidth = parseFloat(value);
                 break;
-            case 'opacity':
-            case 'stroke-opacity':
-            case 'fill-opacity':
+            case "opacity":
+            case "stroke-opacity":
+            case "fill-opacity":
                 // Only apply styles to rendered shapes
                 // in the scene.
                 if (elem instanceof Group) {
@@ -354,9 +351,9 @@ function applySvgAttributes(this: Board, node: SVGElement, elem: Shape, parentSt
                 }
                 elem.opacity = parseFloat(value);
                 break;
-            case 'clip-path':
+            case "clip-path":
                 if (regex.cssBackgroundImage.test(value)) {
-                    id = value.replace(regex.cssBackgroundImage, '$1');
+                    id = value.replace(regex.cssBackgroundImage, "$1");
                     if (get_defs_current() && get_defs_current().contains(id)) {
                         ref = get_defs_current().get(id);
                         if (ref && ref.childNodes.length > 0) {
@@ -364,8 +361,8 @@ function applySvgAttributes(this: Board, node: SVGElement, elem: Shape, parentSt
                             tagName = getTagName(ref.nodeName);
                             elem.mask = read[tagName].call(this, ref, {});
                             switch (elem.viewInfo.type) {
-                                case 'text':
-                                case 'path':
+                                case "text":
+                                case "path":
                                     // The matrix here needs to change to insure that the object
                                     // clipping is in the same coordinate space as the `elem`.
                                     elem.position.add(elem.mask.position);
@@ -376,11 +373,11 @@ function applySvgAttributes(this: Board, node: SVGElement, elem: Shape, parentSt
                     }
                 }
                 break;
-            case 'fill':
-            case 'stroke':
-                prop = (elem instanceof Group ? '_' : '') + key;
+            case "fill":
+            case "stroke":
+                prop = (elem instanceof Group ? "_" : "") + key;
                 if (regex.cssBackgroundImage.test(value)) {
-                    id = value.replace(regex.cssBackgroundImage, '$1');
+                    id = value.replace(regex.cssBackgroundImage, "$1");
                     // Overwritten id for non-conflicts on same page SVG documents
                     // TODO: Make this non-descructive
                     // node.setAttribute('two-' + key, value.replace(/\)/i, '-' + Constants.Identifier + 'applied)'));
@@ -391,69 +388,67 @@ function applySvgAttributes(this: Board, node: SVGElement, elem: Shape, parentSt
                             ref.object = read[tagName].call(this, ref, {});
                         }
                         ref = ref.object;
-                    }
-                    else {
+                    } else {
                         scene = getScene(this);
                         ref = scene.getById(id);
                     }
                     elem[prop] = ref;
-                }
-                else {
+                } else {
                     elem[prop] = value;
                 }
                 break;
-            case 'id':
+            case "id":
                 elem.id = value;
                 // Overwritten id for non-conflicts on same page SVG documents
                 // TODO: Make this non-destructive
                 // node.id = value + '-' + Constants.Identifier + 'applied';
                 break;
-            case 'class':
-            case 'className':
-                elem.classList = value.split(' ');
+            case "class":
+            case "className":
+                elem.classList = value.split(" ");
                 elem._flagClassName = true;
                 break;
-            case 'x':
-            case 'y':
+            case "x":
+            case "y":
                 ca = elem instanceof Gradient;
                 cb = elem instanceof LinearGradient;
                 cc = elem instanceof RadialGradient;
                 if (ca || cb || cc) {
                     break;
                 }
-                if (value.match('[a-z%]$') && !value.endsWith('px')) {
-                    error = new Error('only pixel values are supported with the ' + key + ' attribute.');
+                if (value.match("[a-z%]$") && !value.endsWith("px")) {
+                    error = new Error("only pixel values are supported with the " + key + " attribute.");
                     // eslint-disable-next-line no-console
                     console.warn(error.name, error.message);
                 }
                 elem.translation[key] = parseFloat(value);
                 break;
-            case 'font-family':
+            case "font-family":
                 if (elem instanceof Text) {
                     elem.family = value;
                 }
                 break;
-            case 'font-size':
+            case "font-size":
                 if (elem instanceof Text) {
                     elem.size = value;
                 }
                 break;
-            case 'font-weight':
+            case "font-weight":
                 if (elem instanceof Text) {
                     elem.weight = value;
                 }
                 break;
-            case 'font-style':
+            case "font-style":
                 if (elem instanceof Text) {
                     elem.style = value;
                 }
                 break;
-            case 'text-decoration':
+            case "text-decoration":
                 if (elem instanceof Text) {
                     elem.decoration = value;
                 }
                 break;
-            case 'line-height':
+            case "line-height":
                 if (elem instanceof Text) {
                     elem.leading = value;
                 }
@@ -466,7 +461,6 @@ function applySvgAttributes(this: Board, node: SVGElement, elem: Shape, parentSt
     }
 
     return styles;
-
 }
 
 function updateDefsCache(node: SVGDefsElement, defsCache: Registry<ChildNode>): void {
@@ -474,13 +468,12 @@ function updateDefsCache(node: SVGDefsElement, defsCache: Registry<ChildNode>): 
         const childNode = node.childNodes[i];
         // FIXME: unknown could happen, but type system doesn't like it.
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const id = (childNode as any).id as (string | null);
+        const id = (childNode as any).id as string | null;
         if (!id) {
             continue;
-        }
-        else {
+        } else {
             const tagName = getTagName(node.nodeName);
-            if (tagName === '#text') continue;
+            if (tagName === "#text") continue;
 
             defsCache.add(id, childNode);
         }
@@ -488,15 +481,13 @@ function updateDefsCache(node: SVGDefsElement, defsCache: Registry<ChildNode>): 
 }
 
 function getScene(node: Shape): Group {
-
     while (node.parent) {
         node = node.parent;
     }
 
     if (node instanceof Board) {
         return node.#scene;
-    }
-    else {
+    } else {
         throw new Error();
     }
 }
@@ -524,24 +515,22 @@ export type ParentStyles = { [name: string]: string };
  *  Primarily used by the {@link Two#interpret} method.
  */
 export const read = {
-
     svg: function (this: Board, node: SVGElement): Group {
-
         const defs = set_defs_current(new Registry());
-        const elements = node.getElementsByTagName('defs');
+        const elements = node.getElementsByTagName("defs");
 
         for (let i = 0; i < elements.length; i++) {
             updateDefsCache(elements[i], defs);
         }
 
         const svg = read.g.call(this, node);
-        const viewBox = node.getAttribute('viewBox');
-        const x = node.getAttribute('x');
-        const y = node.getAttribute('y');
-        const width = node.getAttribute('width');
-        const height = node.getAttribute('height');
+        const viewBox = node.getAttribute("viewBox");
+        const x = node.getAttribute("x");
+        const y = node.getAttribute("y");
+        const width = node.getAttribute("width");
+        const height = node.getAttribute("height");
 
-        svg.defs = defs;  // Export out the <defs /> for later use
+        svg.defs = defs; // Export out the <defs /> for later use
 
         const viewBoxExists = viewBox !== null;
         const xExists = x !== null;
@@ -550,16 +539,16 @@ export const read = {
         const heightExists = height !== null;
 
         if (xExists) {
-            svg.x = parseFloat(x.replace(regex.unitSuffix, ''));
+            svg.x = parseFloat(x.replace(regex.unitSuffix, ""));
         }
         if (yExists) {
-            svg.y = parseFloat(y.replace(regex.unitSuffix, ''));
+            svg.y = parseFloat(y.replace(regex.unitSuffix, ""));
         }
         if (widthExists) {
-            svg.width = parseFloat(width.replace(regex.unitSuffix, ''));
+            svg.width = parseFloat(width.replace(regex.unitSuffix, ""));
         }
         if (heightExists) {
-            svg.height = parseFloat(height.replace(regex.unitSuffix, ''));
+            svg.height = parseFloat(height.replace(regex.unitSuffix, ""));
         }
         if (viewBoxExists) {
             applySvgViewBox(svg, viewBox);
@@ -576,12 +565,11 @@ export const read = {
     },
 
     use: function (this: Board, node: SVGElement, styles: ParentStyles) {
-
         let error;
 
-        const href = node.getAttribute('href') || node.getAttribute('xlink:href');
+        const href = node.getAttribute("href") || node.getAttribute("xlink:href");
         if (!href) {
-            error = new Error('encountered <use /> with no href.');
+            error = new Error("encountered <use /> with no href.");
             // eslint-disable-next-line no-console
             console.warn(error.name, error.message);
             return null;
@@ -589,7 +577,7 @@ export const read = {
 
         const id = href.slice(1);
         if (!get_defs_current().contains(id)) {
-            error = new Error('unable to find element for reference ' + href + '.');
+            error = new Error("unable to find element for reference " + href + ".");
             // eslint-disable-next-line no-console
             console.warn(error.name, error.message);
             return null;
@@ -609,11 +597,9 @@ export const read = {
 
         const tagName = getTagName(fullNode.nodeName);
         return read[tagName].call(this, fullNode, styles);
-
     },
 
     g: function (this: Board, node: SVGElement, parentStyles: ParentStyles = {}) {
-
         const group = new Group(this);
 
         applySvgAttributes.call(this, node, group, parentStyles);
@@ -639,18 +625,15 @@ export const read = {
         }
 
         return group;
-
     },
 
     polygon: function (this: Board, node, parentStyles) {
-
         let points;
 
-        if (typeof node === 'string') {
+        if (typeof node === "string") {
             points = node;
-        }
-        else {
-            points = node.getAttribute('points');
+        } else {
+            points = node.getAttribute("points");
         }
 
         const verts: Anchor[] = [];
@@ -659,12 +642,11 @@ export const read = {
         });
 
         const poly = new Path(this, verts, true).noStroke();
-        poly.fill = 'black';
+        poly.fill = "black";
 
         applySvgAttributes.call(this, node, poly, parentStyles);
 
         return poly;
-
     },
 
     polyline: function (node, parentStyles) {
@@ -674,31 +656,28 @@ export const read = {
     },
 
     path: function (node, parentStyles) {
-
         let path;
 
-        if (typeof node === 'string') {
+        if (typeof node === "string") {
             path = node;
             node = null;
-        }
-        else {
-            path = node.getAttribute('d');
+        } else {
+            path = node.getAttribute("d");
         }
 
         let points = [];
-        let closed = false, relative = false;
+        let closed = false,
+            relative = false;
 
         if (path) {
-
             let coord = new Anchor();
             let control, coords;
-            let commands = path.match(/[a-df-z][^a-df-z]*/ig);
+            let commands = path.match(/[a-df-z][^a-df-z]*/gi);
             const last = commands.length - 1;
 
             // Split up polybeziers
 
             _.each(commands.slice(0), function (command, i) {
-
                 const items = command.slice(1).trim().match(regex.path);
                 const type = command[0];
                 const lower = type.toLowerCase();
@@ -710,31 +689,31 @@ export const read = {
                 }
 
                 switch (lower) {
-                    case 'h':
-                    case 'v':
+                    case "h":
+                    case "v":
                         if (items.length > 1) {
                             bin = 1;
                         }
                         break;
-                    case 'm':
-                    case 'l':
-                    case 't':
+                    case "m":
+                    case "l":
+                    case "t":
                         if (items.length > 2) {
                             bin = 2;
                         }
                         break;
-                    case 's':
-                    case 'q':
+                    case "s":
+                    case "q":
                         if (items.length > 4) {
                             bin = 4;
                         }
                         break;
-                    case 'c':
+                    case "c":
                         if (items.length > 6) {
                             bin = 6;
                         }
                         break;
-                    case 'a':
+                    case "a":
                         if (items.length > 7) {
                             bin = 7;
                         }
@@ -743,41 +722,30 @@ export const read = {
 
                 // This means we have a polybezier.
                 if (bin) {
-
                     for (j = 0, l = items.length, times = 0; j < l; j += bin) {
-
                         ct = type;
                         if (times > 0) {
-
                             switch (type) {
-                                case 'm':
-                                    ct = 'l';
+                                case "m":
+                                    ct = "l";
                                     break;
-                                case 'M':
-                                    ct = 'L';
+                                case "M":
+                                    ct = "L";
                                     break;
                             }
-
                         }
 
-                        result.push(ct + items.slice(j, j + bin).join(' '));
+                        result.push(ct + items.slice(j, j + bin).join(" "));
                         times++;
-
                     }
 
                     commands = Array.prototype.concat.apply(commands, result);
-
-                }
-                else {
-
+                } else {
                     commands.push(command);
-
                 }
-
             });
 
             _.each(commands, function (command, i) {
-
                 let result, x, y;
                 const type = command[0];
                 const lower = type.toLowerCase();
@@ -790,18 +758,19 @@ export const read = {
                 let anchor, rx, ry, xAxisRotation, largeArcFlag, sweepFlag;
 
                 switch (lower) {
-
-                    case 'z':
+                    case "z":
                         if (i >= last) {
                             closed = true;
-                        }
-                        else {
+                        } else {
                             x = coord.x;
                             y = coord.y;
                             result = new Anchor(
-                                x, y,
-                                undefined, undefined,
-                                undefined, undefined,
+                                x,
+                                y,
+                                undefined,
+                                undefined,
+                                undefined,
+                                undefined,
                                 Commands.close
                             );
                             // Make coord be the last `m` command
@@ -815,18 +784,20 @@ export const read = {
                         }
                         break;
 
-                    case 'm':
-                    case 'l':
-
+                    case "m":
+                    case "l":
                         control = undefined;
 
                         x = parseFloat(coords[0]);
                         y = parseFloat(coords[1]);
 
                         result = new Anchor(
-                            x, y,
-                            undefined, undefined,
-                            undefined, undefined,
+                            x,
+                            y,
+                            undefined,
+                            undefined,
+                            undefined,
+                            undefined,
                             /m/i.test(lower) ? Commands.move : Commands.line
                         );
 
@@ -840,16 +811,18 @@ export const read = {
                         coord = result;
                         break;
 
-                    case 'h':
-                    case 'v':
-
-                        a = /h/i.test(lower) ? 'x' : 'y';
-                        b = /x/i.test(a) ? 'y' : 'x';
+                    case "h":
+                    case "v":
+                        a = /h/i.test(lower) ? "x" : "y";
+                        b = /x/i.test(a) ? "y" : "x";
 
                         result = new Anchor(
-                            undefined, undefined,
-                            undefined, undefined,
-                            undefined, undefined,
+                            undefined,
+                            undefined,
+                            undefined,
+                            undefined,
+                            undefined,
+                            undefined,
                             Commands.line
                         );
                         result[a] = parseFloat(coords[0]);
@@ -865,28 +838,23 @@ export const read = {
                         coord = result;
                         break;
 
-                    case 'c':
-                    case 's':
-
+                    case "c":
+                    case "s":
                         x1 = coord.x;
                         y1 = coord.y;
 
                         if (!control) {
-                            control = new Vector();//.copy(coord);
+                            control = new Vector(); //.copy(coord);
                         }
 
                         if (/c/i.test(lower)) {
-
                             x2 = parseFloat(coords[0]);
                             y2 = parseFloat(coords[1]);
                             x3 = parseFloat(coords[2]);
                             y3 = parseFloat(coords[3]);
                             x4 = parseFloat(coords[4]);
                             y4 = parseFloat(coords[5]);
-
-                        }
-                        else {
-
+                        } else {
                             // Calculate reflection control point for proper x2, y2
                             // inclusion.
 
@@ -898,7 +866,6 @@ export const read = {
                             y3 = parseFloat(coords[1]);
                             x4 = parseFloat(coords[2]);
                             y4 = parseFloat(coords[3]);
-
                         }
 
                         if (relative) {
@@ -911,21 +878,15 @@ export const read = {
                         }
 
                         coord.controls.right.set(x2 - coord.x, y2 - coord.y);
-                        result = new Anchor(
-                            x4, y4,
-                            x3 - x4, y3 - y4,
-                            undefined, undefined,
-                            Commands.curve
-                        );
+                        result = new Anchor(x4, y4, x3 - x4, y3 - y4, undefined, undefined, Commands.curve);
 
                         coord = result;
                         control = result.controls.left;
 
                         break;
 
-                    case 't':
-                    case 'q':
-
+                    case "t":
+                    case "q":
                         x1 = coord.x;
                         y1 = coord.y;
 
@@ -934,17 +895,13 @@ export const read = {
                         }
 
                         if (/q/i.test(lower)) {
-
                             x2 = parseFloat(coords[0]);
                             y2 = parseFloat(coords[1]);
                             x3 = parseFloat(coords[0]);
                             y3 = parseFloat(coords[1]);
                             x4 = parseFloat(coords[2]);
                             y4 = parseFloat(coords[3]);
-
-                        }
-                        else {
-
+                        } else {
                             reflection = getReflection(coord, control, relative);
 
                             x2 = reflection.x;
@@ -953,7 +910,6 @@ export const read = {
                             y3 = reflection.y;
                             x4 = parseFloat(coords[0]);
                             y4 = parseFloat(coords[1]);
-
                         }
 
                         if (relative) {
@@ -965,28 +921,21 @@ export const read = {
                             y4 += y1;
                         }
 
-                        coord.controls.right.set(
-                            (x2 - coord.x) * 0.33, (y2 - coord.y) * 0.33);
-                        result = new Anchor(
-                            x4, y4,
-                            x3 - x4, y3 - y4,
-                            undefined, undefined,
-                            Commands.curve
-                        );
+                        coord.controls.right.set((x2 - coord.x) * 0.33, (y2 - coord.y) * 0.33);
+                        result = new Anchor(x4, y4, x3 - x4, y3 - y4, undefined, undefined, Commands.curve);
 
                         coord = result;
                         control = result.controls.left;
 
                         break;
 
-                    case 'a':
-
+                    case "a":
                         x1 = coord.x;
                         y1 = coord.y;
 
                         rx = parseFloat(coords[0]);
                         ry = parseFloat(coords[1]);
-                        xAxisRotation = parseFloat(coords[2]);// * PI / 180;
+                        xAxisRotation = parseFloat(coords[2]); // * PI / 180;
                         largeArcFlag = parseFloat(coords[3]);
                         sweepFlag = parseFloat(coords[4]);
 
@@ -1012,24 +961,20 @@ export const read = {
                         control = undefined;
 
                         break;
-
                 }
 
                 if (result) {
                     if (Array.isArray(result)) {
                         points = points.concat(result);
-                    }
-                    else {
+                    } else {
                         points.push(result);
                     }
                 }
-
             });
-
         }
 
         path = new Path(points, closed, undefined, true).noStroke();
-        path.fill = 'black';
+        path.fill = "black";
 
         const rect = path.getBoundingClientRect(true);
 
@@ -1037,7 +982,7 @@ export const read = {
         // with the rest of the API.
         rect.centroid = {
             x: rect.left + rect.width / 2,
-            y: rect.top + rect.height / 2
+            y: rect.top + rect.height / 2,
         };
 
         _.each(path.vertices, function (v) {
@@ -1049,17 +994,15 @@ export const read = {
         path.translation.addSelf(rect.centroid);
 
         return path;
-
     },
 
     circle: function (this: Board, node: SVGElement, parentStyles) {
-
-        const x = parseFloat(node.getAttribute('cx'));
-        const y = parseFloat(node.getAttribute('cy'));
-        const r = parseFloat(node.getAttribute('r'));
+        const x = parseFloat(node.getAttribute("cx"));
+        const y = parseFloat(node.getAttribute("cy"));
+        const r = parseFloat(node.getAttribute("r"));
 
         const circle = new Circle(0, 0, r).noStroke();
-        circle.fill = 'black';
+        circle.fill = "black";
 
         applySvgAttributes.call(this, node, circle, parentStyles);
 
@@ -1067,18 +1010,16 @@ export const read = {
         circle.translation.y = y;
 
         return circle;
-
     },
 
     ellipse: function (node, parentStyles) {
-
-        const x = parseFloat(node.getAttribute('cx'));
-        const y = parseFloat(node.getAttribute('cy'));
-        const width = parseFloat(node.getAttribute('rx'));
-        const height = parseFloat(node.getAttribute('ry'));
+        const x = parseFloat(node.getAttribute("cx"));
+        const y = parseFloat(node.getAttribute("cy"));
+        const width = parseFloat(node.getAttribute("rx"));
+        const height = parseFloat(node.getAttribute("ry"));
 
         const ellipse = new Ellipse(0, 0, width, height).noStroke();
-        ellipse.fill = 'black';
+        ellipse.fill = "black";
 
         applySvgAttributes.call(this, node, ellipse, parentStyles);
 
@@ -1086,26 +1027,24 @@ export const read = {
         ellipse.translation.y = y;
 
         return ellipse;
-
     },
 
     rect: function (node, parentStyles) {
-
-        const rx = parseFloat(node.getAttribute('rx'));
-        const ry = parseFloat(node.getAttribute('ry'));
+        const rx = parseFloat(node.getAttribute("rx"));
+        const ry = parseFloat(node.getAttribute("ry"));
 
         if (!_.isNaN(rx) || !_.isNaN(ry)) {
-            return read['rounded-rect'](node);
+            return read["rounded-rect"](node);
         }
 
-        const width = parseFloat(node.getAttribute('width'));
-        const height = parseFloat(node.getAttribute('height'));
+        const width = parseFloat(node.getAttribute("width"));
+        const height = parseFloat(node.getAttribute("height"));
 
         const w2 = width / 2;
         const h2 = height / 2;
 
         const rect = new Rectangle(0, 0, width, height).noStroke();
-        rect.fill = 'black';
+        rect.fill = "black";
 
         applySvgAttributes.call(this, node, rect, parentStyles);
 
@@ -1114,23 +1053,21 @@ export const read = {
         rect.translation.y += h2;
 
         return rect;
-
     },
 
-    'rounded-rect': function (node, parentStyles) {
+    "rounded-rect": function (node, parentStyles) {
+        const rx = parseFloat(node.getAttribute("rx")) || 0;
+        const ry = parseFloat(node.getAttribute("ry")) || 0;
 
-        const rx = parseFloat(node.getAttribute('rx')) || 0;
-        const ry = parseFloat(node.getAttribute('ry')) || 0;
-
-        const width = parseFloat(node.getAttribute('width'));
-        const height = parseFloat(node.getAttribute('height'));
+        const width = parseFloat(node.getAttribute("width"));
+        const height = parseFloat(node.getAttribute("height"));
 
         const w2 = width / 2;
         const h2 = height / 2;
         const radius = new Vector(rx, ry);
 
         const rect = new RoundedRectangle(0, 0, width, height, radius).noStroke();
-        rect.fill = 'black';
+        rect.fill = "black";
 
         applySvgAttributes.call(this, node, rect, parentStyles);
 
@@ -1139,39 +1076,35 @@ export const read = {
         rect.translation.y += h2;
 
         return rect;
-
     },
 
     line: function (node, parentStyles) {
-
-        const x1 = parseFloat(node.getAttribute('x1'));
-        const y1 = parseFloat(node.getAttribute('y1'));
-        const x2 = parseFloat(node.getAttribute('x2'));
-        const y2 = parseFloat(node.getAttribute('y2'));
+        const x1 = parseFloat(node.getAttribute("x1"));
+        const y1 = parseFloat(node.getAttribute("y1"));
+        const x2 = parseFloat(node.getAttribute("x2"));
+        const y2 = parseFloat(node.getAttribute("y2"));
 
         const line = new Line(x1, y1, x2, y2).noFill();
 
         applySvgAttributes.call(this, node, line, parentStyles);
 
         return line;
-
     },
 
     lineargradient: function (node: HTMLElement, parentStyles: ParentStyles) {
-
-        let units = node.getAttribute('gradientUnits') as 'objectBoundingBox' | 'userSpaceOnUse' | null;
+        let units = node.getAttribute("gradientUnits") as "objectBoundingBox" | "userSpaceOnUse" | null;
         if (!units) {
-            units = 'objectBoundingBox';
+            units = "objectBoundingBox";
         }
-        let spread = node.getAttribute('spreadMethod') as 'pad' | 'reflect' | 'repeat';
+        let spread = node.getAttribute("spreadMethod") as "pad" | "reflect" | "repeat";
         if (!spread) {
-            spread = 'pad';
+            spread = "pad";
         }
 
-        let x1 = parseFloat(node.getAttribute('x1') || '0');
-        let y1 = parseFloat(node.getAttribute('y1') || '0');
-        let x2 = parseFloat(node.getAttribute('x2') || '0');
-        let y2 = parseFloat(node.getAttribute('y2') || '0');
+        let x1 = parseFloat(node.getAttribute("x1") || "0");
+        let y1 = parseFloat(node.getAttribute("y1") || "0");
+        let x2 = parseFloat(node.getAttribute("x2") || "0");
+        let y2 = parseFloat(node.getAttribute("y2") || "0");
 
         const ox = (x2 + x1) / 2;
         const oy = (y2 + y1) / 2;
@@ -1185,21 +1118,19 @@ export const read = {
 
         const stops = [];
         for (let i = 0; i < node.children.length; i++) {
-
             const child = node.children[i];
 
-            const offsetAttr = child.getAttribute('offset');
+            const offsetAttr = child.getAttribute("offset");
             let offset: number;
-            if (/%/ig.test(offsetAttr)) {
-                offset = parseFloat(offsetAttr.replace(/%/ig, '')) / 100;
-            }
-            else {
+            if (/%/gi.test(offsetAttr)) {
+                offset = parseFloat(offsetAttr.replace(/%/gi, "")) / 100;
+            } else {
                 offset = parseFloat(offsetAttr);
             }
 
-            let color = child.getAttribute('stop-color');
-            const opacityAttr = child.getAttribute('stop-opacity');
-            const style = child.getAttribute('style');
+            let color = child.getAttribute("stop-color");
+            const opacityAttr = child.getAttribute("stop-opacity");
+            const style = child.getAttribute("style");
 
             let matches: RegExpMatchArray | false;
             if (color === null) {
@@ -1211,13 +1142,11 @@ export const read = {
             if (opacityAttr === null) {
                 matches = style ? style.match(/stop-opacity:\s?([0-9.-]*)/) : false;
                 opacity = matches && matches.length > 1 ? parseFloat(matches[1]) : 1;
-            }
-            else {
+            } else {
                 opacity = parseFloat(opacityAttr);
             }
 
             stops.push(new Stop(offset, color, opacity));
-
         }
 
         const gradient = new LinearGradient([x1, y1], [x2, y2], stops);
@@ -1231,23 +1160,22 @@ export const read = {
     },
 
     radialgradient: function (node: HTMLElement, parentStyles) {
-
-        let units = node.getAttribute('gradientUnits');
-        let spread = node.getAttribute('spreadMethod');
+        let units = node.getAttribute("gradientUnits");
+        let spread = node.getAttribute("spreadMethod");
 
         if (!units) {
-            units = 'objectBoundingBox';
+            units = "objectBoundingBox";
         }
         if (!spread) {
-            spread = 'pad';
+            spread = "pad";
         }
 
-        let cx = parseFloat(node.getAttribute('cx')) || 0;
-        let cy = parseFloat(node.getAttribute('cy')) || 0;
-        let r = parseFloat(node.getAttribute('r'));
+        let cx = parseFloat(node.getAttribute("cx")) || 0;
+        let cy = parseFloat(node.getAttribute("cy")) || 0;
+        let r = parseFloat(node.getAttribute("r"));
 
-        let fx = parseFloat(node.getAttribute('fx'));
-        let fy = parseFloat(node.getAttribute('fy'));
+        let fx = parseFloat(node.getAttribute("fx"));
+        let fy = parseFloat(node.getAttribute("fy"));
 
         if (_.isNaN(fx)) {
             fx = cx;
@@ -1269,18 +1197,17 @@ export const read = {
 
         const stops = [];
         for (let i = 0; i < node.children.length; i++) {
-
             const child = node.children[i];
 
-            let offset = child.getAttribute('offset');
-            if (/%/ig.test(offset)) {
-                offset = parseFloat(offset.replace(/%/ig, '')) / 100;
+            let offset = child.getAttribute("offset");
+            if (/%/gi.test(offset)) {
+                offset = parseFloat(offset.replace(/%/gi, "")) / 100;
             }
             offset = parseFloat(offset);
 
-            let color = child.getAttribute('stop-color');
-            let opacity = child.getAttribute('stop-opacity');
-            const style = child.getAttribute('style');
+            let color = child.getAttribute("stop-color");
+            let opacity = child.getAttribute("stop-opacity");
+            const style = child.getAttribute("style");
 
             let matches;
             if (color === null) {
@@ -1291,13 +1218,11 @@ export const read = {
             if (opacity === null) {
                 matches = style ? style.match(/stop-opacity:\s?([0-9.-]*)/) : false;
                 opacity = matches && matches.length > 1 ? parseFloat(matches[1]) : 1;
-            }
-            else {
+            } else {
                 opacity = parseFloat(opacity);
             }
 
             stops.push(new Stop(offset, color, opacity));
-
         }
 
         const gradient = new RadialGradient(cx, cy, r, stops, fx, fy);
@@ -1308,14 +1233,12 @@ export const read = {
         applySvgAttributes.call(this, node, gradient, parentStyles);
 
         return gradient;
-
     },
 
     text: function (this: Board, node: SVGElement, parentStyles) {
-
-        const text_anchor_value = node.getAttribute('text-anchor') as 'start' | 'middle' | 'end';
-        const alignment: 'left' | 'right' | 'center' = getAlignment(text_anchor_value) || 'left';
-        const baseline = getBaseline(node) || 'baseline';
+        const text_anchor_value = node.getAttribute("text-anchor") as "start" | "middle" | "end";
+        const alignment: "left" | "right" | "center" = getAlignment(text_anchor_value) || "left";
+        const baseline = getBaseline(node) || "baseline";
         const message = node.textContent;
 
         const text = new Text(message);
@@ -1326,7 +1249,6 @@ export const read = {
         text.baseline = baseline;
 
         return text;
-
     },
 
     clippath: function (this: Board, node: SVGElement) {
@@ -1337,20 +1259,19 @@ export const read = {
     },
 
     image: function (node, parentStyles) {
-
         let error;
 
-        const href = node.getAttribute('href') || node.getAttribute('xlink:href');
+        const href = node.getAttribute("href") || node.getAttribute("xlink:href");
         if (!href) {
-            error = new Error('encountered <image /> with no href.');
+            error = new Error("encountered <image /> with no href.");
             console.warn(error.name, error.message);
             return null;
         }
 
-        const x = parseFloat(node.getAttribute('x')) || 0;
-        const y = parseFloat(node.getAttribute('y')) || 0;
-        const width = parseFloat(node.getAttribute('width'));
-        const height = parseFloat(node.getAttribute('height'));
+        const x = parseFloat(node.getAttribute("x")) || 0;
+        const y = parseFloat(node.getAttribute("y")) || 0;
+        const width = parseFloat(node.getAttribute("width"));
+        const height = parseFloat(node.getAttribute("height"));
 
         const sprite = new Sprite(href, x, y);
 
@@ -1364,5 +1285,5 @@ export const read = {
         applySvgAttributes.call(this, node, sprite, parentStyles);
 
         return sprite;
-    }
+    },
 } as const;

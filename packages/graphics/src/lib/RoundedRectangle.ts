@@ -9,7 +9,7 @@ import {
     Path,
     PathOptions,
     SpinorLike,
-    VectorLike
+    VectorLike,
 } from "@g20/core";
 import { effect, signal } from "@g20/reactive";
 import { default_color } from "./default_color";
@@ -20,19 +20,18 @@ export interface RoundedRectangleOptions extends PathOptions {
     fillColor?: Color;
     fillOpacity?: number;
     opacity?: number;
-    position?: VectorLike,
-    attitude?: SpinorLike,
+    position?: VectorLike;
+    attitude?: SpinorLike;
     radius?: number;
     strokeColor?: Color;
     strokeOpacity?: number;
     strokeWidth?: number;
-    visibility?: 'visible' | 'hidden' | 'collapse';
+    visibility?: "visible" | "hidden" | "collapse";
     height?: number;
     width?: number;
 }
 
 export class RoundedRectangle extends Path {
-
     readonly #trash: Disposable[] = [];
 
     readonly #width = signal(Math.SQRT2);
@@ -41,35 +40,40 @@ export class RoundedRectangle extends Path {
     readonly #radius = signal(0.2);
 
     constructor(owner: Board, options: RoundedRectangleOptions = {}) {
-
-        if (typeof options.radius === 'undefined' && typeof options.width === 'number' && typeof options.height === 'number') {
+        if (
+            typeof options.radius === "undefined" &&
+            typeof options.width === "number" &&
+            typeof options.height === "number"
+        ) {
             options.radius = Math.floor(Math.min(options.width, options.height) / 12);
         }
 
         const points: Anchor[] = [];
         for (let i = 0; i < 10; i++) {
             const origin = G20.vector(0, 0);
-            const command = (i === 0) ? 'M' : 'C';
+            const command = i === 0 ? "M" : "C";
             points.push(new Anchor(origin, command));
         }
 
         super(owner, points, true, false, true, path_options_from_rounded_rectangle_options(options, owner));
 
-        if (typeof options.width === 'number') {
+        if (typeof options.width === "number") {
             this.width = options.width;
         }
 
-        if (typeof options.height === 'number') {
+        if (typeof options.height === "number") {
             this.height = options.height;
         }
 
-        if (typeof options.radius === 'number') {
+        if (typeof options.radius === "number") {
             this.radius = options.radius;
         }
 
-        this.#trash.push(effect(() => {
-            this.update();
-        }));
+        this.#trash.push(
+            effect(() => {
+                this.update();
+            })
+        );
     }
 
     override dispose(): void {
@@ -105,16 +109,19 @@ export class RoundedRectangle extends Path {
     }
 }
 
-function path_options_from_rounded_rectangle_options(options: RoundedRectangleOptions, owner: Board): PathOptions {
+function path_options_from_rounded_rectangle_options(
+    options: RoundedRectangleOptions,
+    owner: Board
+): PathOptions {
     const retval: PathOptions = {
         id: options.id,
         attitude: options.attitude,
         opacity: options.opacity,
         position: options.position,
         visibility: options.visibility,
-        fillColor: default_color(options.fillColor, 'none'),
+        fillColor: default_color(options.fillColor, "none"),
         fillOpacity: options.fillOpacity,
-        strokeColor: default_color(options.strokeColor, 'gray'),
+        strokeColor: default_color(options.strokeColor, "gray"),
         strokeOpacity: options.strokeOpacity,
         strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
     };
@@ -122,7 +129,6 @@ function path_options_from_rounded_rectangle_options(options: RoundedRectangleOp
 }
 
 function update_vertices(width: number, height: number, radius: number, vertices: Collection<Anchor>) {
-
     const rx = radius;
     const ry = radius;
 
@@ -131,21 +137,21 @@ function update_vertices(width: number, height: number, radius: number, vertices
     const h = height / 2;
 
     v = vertices.getAt(0);
-    v.x = - (w - rx);
-    v.y = - h;
+    v.x = -(w - rx);
+    v.y = -h;
 
     // Upper Right Corner
 
     v = vertices.getAt(1);
-    v.x = (w - rx);
-    v.y = - h;
+    v.x = w - rx;
+    v.y = -h;
     v.controls.a.clear();
     v.controls.b.x = rx;
     v.controls.b.y = 0;
 
     v = vertices.getAt(2);
     v.x = w;
-    v.y = - (h - ry);
+    v.y = -(h - ry);
     v.controls.b.clear();
     v.controls.a.clear();
 
@@ -153,13 +159,13 @@ function update_vertices(width: number, height: number, radius: number, vertices
 
     v = vertices.getAt(3);
     v.x = w;
-    v.y = (h - ry);
+    v.y = h - ry;
     v.controls.a.clear();
     v.controls.b.x = 0;
     v.controls.b.y = ry;
 
     v = vertices.getAt(4);
-    v.x = (w - rx);
+    v.x = w - rx;
     v.y = h;
     v.controls.b.clear();
     v.controls.a.clear();
@@ -167,30 +173,30 @@ function update_vertices(width: number, height: number, radius: number, vertices
     // Bottom Left Corner
 
     v = vertices.getAt(5);
-    v.x = - (w - rx);
+    v.x = -(w - rx);
     v.y = h;
     v.controls.a.clear();
-    v.controls.b.x = - rx;
+    v.controls.b.x = -rx;
     v.controls.b.y = 0;
 
     v = vertices.getAt(6);
-    v.x = - w;
-    v.y = (h - ry);
+    v.x = -w;
+    v.y = h - ry;
     v.controls.a.clear();
     v.controls.b.clear();
 
     // Upper Left Corner
 
     v = vertices.getAt(7);
-    v.x = - w;
-    v.y = - (h - ry);
+    v.x = -w;
+    v.y = -(h - ry);
     v.controls.a.clear();
     v.controls.b.x = 0;
-    v.controls.b.y = - ry;
+    v.controls.b.y = -ry;
 
     v = vertices.getAt(8);
-    v.x = - (w - rx);
-    v.y = - h;
+    v.x = -(w - rx);
+    v.y = -h;
     v.controls.a.clear();
     v.controls.b.clear();
 

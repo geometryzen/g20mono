@@ -37,7 +37,7 @@ describe("Anchor", function () {
         expect(anchor.controls.a.y).toBe(0);
         expect(anchor.controls.b.x).toBe(0);
         expect(anchor.controls.b.y).toBe(0);
-        expect(anchor.command).toBe('M');
+        expect(anchor.command).toBe("M");
         expect(anchor.largeArcFlag).toBe(0);
         expect(anchor.relative).toBe(true);
         expect(anchor.rx).toBe(0);

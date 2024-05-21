@@ -1,15 +1,12 @@
 import { ColorProvider, G20, VectorLike, vector_from_like, ViewDOM } from "@g20/core";
 import { effect } from "@g20/reactive";
-import { Gradient, GradientOptions } from './gradient';
-import { Stop } from './stop';
-import { SVGAttributes } from './svg';
+import { Gradient, GradientOptions } from "./gradient";
+import { Stop } from "./stop";
+import { SVGAttributes } from "./svg";
 
-export interface LinearGradientOptions extends GradientOptions {
-
-}
+export interface LinearGradientOptions extends GradientOptions {}
 
 export class LinearGradient extends Gradient implements ColorProvider {
-
     readonly #point1: G20;
     readonly #point2: G20;
 
@@ -19,52 +16,63 @@ export class LinearGradient extends Gradient implements ColorProvider {
      * @param stops A list of {@link Stop}s that contain the gradient fill pattern for the gradient.
      * The linear gradient lives within the space of the parent object's matrix space.
      */
-    constructor(point1: VectorLike, point2: VectorLike, stops: (Stop | [offset: number, color: string, opacity: number])[], options: LinearGradientOptions = {}) {
+    constructor(
+        point1: VectorLike,
+        point2: VectorLike,
+        stops: (Stop | [offset: number, color: string, opacity: number])[],
+        options: LinearGradientOptions = {}
+    ) {
         super(stops, options);
         this.#point1 = vector_from_like(point1);
         this.#point2 = vector_from_like(point2);
     }
     override render<T>(viewDOM: ViewDOM<T>, defs: T): this {
-
         // If there is no attached DOM element yet,
         // create it with all necessary attributes.
         if (this.zzz.viewee) {
             // Nothing to do.
-        }
-        else {
+        } else {
             {
                 const changed: SVGAttributes = {};
                 changed.id = this.id;
-                const viewee = viewDOM.createSVGElement('linearGradient', changed);
+                const viewee = viewDOM.createSVGElement("linearGradient", changed);
                 this.zzz.viewee = viewee;
                 if (viewDOM.getParentNode(viewee) === null) {
                     viewDOM.appendChild(defs, viewee);
                 }
 
-                this.zzz.disposables.push(effect(() => {
-                    const change: SVGAttributes = {};
-                    change.x1 = `${this.point1.x}`;
-                    change.y1 = `${this.point1.y}`;
-                    viewDOM.setAttributes(viewee, change);
-                }));
+                this.zzz.disposables.push(
+                    effect(() => {
+                        const change: SVGAttributes = {};
+                        change.x1 = `${this.point1.x}`;
+                        change.y1 = `${this.point1.y}`;
+                        viewDOM.setAttributes(viewee, change);
+                    })
+                );
 
-                this.zzz.disposables.push(effect(() => {
-                    const change: SVGAttributes = {};
-                    change.x2 = `${this.point2.x}`;
-                    change.y2 = `${this.point2.y}`;
-                    viewDOM.setAttributes(viewee, change);
-                }));
+                this.zzz.disposables.push(
+                    effect(() => {
+                        const change: SVGAttributes = {};
+                        change.x2 = `${this.point2.x}`;
+                        change.y2 = `${this.point2.y}`;
+                        viewDOM.setAttributes(viewee, change);
+                    })
+                );
 
-                this.zzz.disposables.push(effect(() => {
-                    const change: SVGAttributes = {};
-                    change.gradientUnits = this.units;
-                    viewDOM.setAttributes(viewee, change);
-                }));
-                this.zzz.disposables.push(effect(() => {
-                    const change: SVGAttributes = {};
-                    change.spreadMethod = this.spreadMethod;
-                    viewDOM.setAttributes(viewee, change);
-                }));
+                this.zzz.disposables.push(
+                    effect(() => {
+                        const change: SVGAttributes = {};
+                        change.gradientUnits = this.units;
+                        viewDOM.setAttributes(viewee, change);
+                    })
+                );
+                this.zzz.disposables.push(
+                    effect(() => {
+                        const change: SVGAttributes = {};
+                        change.spreadMethod = this.spreadMethod;
+                        viewDOM.setAttributes(viewee, change);
+                    })
+                );
                 super.render(viewDOM, defs);
             }
         }

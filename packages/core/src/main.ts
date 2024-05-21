@@ -1,7 +1,6 @@
-import { initBoard } from '../../svg/src/lib/initBoard';
+import { initBoard } from "../../svg/src/lib/initBoard";
 
-document.addEventListener('DOMContentLoaded', function () {
-
+document.addEventListener("DOMContentLoaded", function () {
     const board = initBoard("my-board", {
         // boundingBox: { left: -1, top: 1, right: 1, bottom: -1 } // Cartesian
         // boundingBox: { left: -1, top: -1, right: 1, bottom: 1 } // SVG
@@ -18,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
         fillOpacity: 0.3,
         strokeColor: "#FFCC00",
         strokeOpacity: 0.6,
-        resolution: 36
+        resolution: 36,
     });
 
     arc.startAngle = Math.PI / 4;

@@ -1,15 +1,15 @@
 // import { effect } from "@g20/reactive";
-import { Anchor } from '../Anchor';
-import { Board } from '../Board';
-import { Collection } from '../collection';
-import { Color } from '../effects/ColorProvider';
-import { G20, SpinorLike, VectorLike } from '../math/G20';
-import { Path, PathOptions } from '../Path';
-import { Disposable, dispose } from '../reactive/Disposable';
-import { default_color } from '../utils/default_color';
-import { default_closed_path_stroke_width } from '../utils/default_stroke_width';
-import { HALF_PI, TWO_PI } from '../utils/math';
-import { Commands } from '../utils/Commands';
+import { Anchor } from "../Anchor";
+import { Board } from "../Board";
+import { Collection } from "../collection";
+import { Color } from "../effects/ColorProvider";
+import { G20, SpinorLike, VectorLike } from "../math/G20";
+import { Path, PathOptions } from "../Path";
+import { Disposable, dispose } from "../reactive/Disposable";
+import { default_color } from "../utils/default_color";
+import { default_closed_path_stroke_width } from "../utils/default_stroke_width";
+import { HALF_PI, TWO_PI } from "../utils/math";
+import { Commands } from "../utils/Commands";
 
 const cos = Math.cos;
 const sin = Math.sin;
@@ -30,11 +30,10 @@ export interface EllipseOptions extends PathOptions {
     strokeOpacity?: number;
     strokeWidth?: number;
     resolution?: number;
-    visibility?: 'visible' | 'hidden' | 'collapse';
+    visibility?: "visible" | "hidden" | "collapse";
 }
 
 export class Ellipse extends Path {
-
     readonly #disposables: Disposable[] = [];
 
     readonly #rx: G20;
@@ -53,14 +52,11 @@ export class Ellipse extends Path {
             const rx = options.rx;
             if (rx instanceof G20) {
                 this.#rx = rx;
-            }
-            else if (Array.isArray(rx)) {
+            } else if (Array.isArray(rx)) {
                 this.#rx = G20.vector(rx[0], rx[1]);
-            }
-            else if (typeof rx === 'number') {
+            } else if (typeof rx === "number") {
                 this.#rx = G20.ex.clone().scale(rx);
-            }
-            else {
+            } else {
                 this.#rx = G20.ex.clone();
             }
         }
@@ -69,25 +65,26 @@ export class Ellipse extends Path {
             const ry = options.ry;
             if (ry instanceof G20) {
                 this.#ry = ry;
-            }
-            else if (Array.isArray(ry)) {
+            } else if (Array.isArray(ry)) {
                 this.#ry = G20.vector(ry[0], ry[1]);
-            }
-            else if (typeof ry === 'number') {
+            } else if (typeof ry === "number") {
                 this.#ry = G20.ey.clone().scale(ry);
-            }
-            else {
+            } else {
                 this.#ry = G20.ey.clone().scale(0.5);
             }
         }
 
-        this.#disposables.push(this.rx.change$.subscribe(() => {
-            this.update();
-        }));
+        this.#disposables.push(
+            this.rx.change$.subscribe(() => {
+                this.update();
+            })
+        );
 
-        this.#disposables.push(this.ry.change$.subscribe(() => {
-            this.update();
-        }));
+        this.#disposables.push(
+            this.ry.change$.subscribe(() => {
+                this.update();
+            })
+        );
 
         this.flagReset(true);
     }
@@ -117,7 +114,6 @@ export class Ellipse extends Path {
 }
 
 function update_ellipse_vertices(radiusX: G20, radiusY: G20, vertices: Collection<Anchor>): void {
-
     const N = vertices.length;
 
     // Coefficient for approximating circular arcs with Bezier curves
@@ -126,9 +122,9 @@ function update_ellipse_vertices(radiusX: G20, radiusY: G20, vertices: Collectio
 
     for (let i = 0; i < N; i++) {
         const v = vertices.getAt(i);
-        v.command = (i === 0) ? Commands.move : Commands.curve;
+        v.command = i === 0 ? Commands.move : Commands.curve;
 
-        const theta = i * TWO_PI / N;
+        const theta = (i * TWO_PI) / N;
         {
             scratchX.copyVector(radiusX).scale(cos(theta));
             scratchY.copyVector(radiusY).scale(sin(theta));
@@ -155,14 +151,14 @@ function update_ellipse_vertices(radiusX: G20, radiusY: G20, vertices: Collectio
 function path_options_from_ellipse_options(options: EllipseOptions, owner: Board): PathOptions {
     const retval: PathOptions = {
         id: options.id,
-        fillColor: default_color(options.fillColor, 'none'),
+        fillColor: default_color(options.fillColor, "none"),
         fillOpacity: options.fillOpacity,
         attitude: options.attitude,
         position: options.position,
-        strokeColor: default_color(options.strokeColor, 'gray'),
+        strokeColor: default_color(options.strokeColor, "gray"),
         strokeOpacity: options.strokeOpacity,
         strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
-        visibility: options.visibility
+        visibility: options.visibility,
     };
     return retval;
 }

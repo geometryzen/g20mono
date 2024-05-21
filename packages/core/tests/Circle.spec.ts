@@ -5,7 +5,7 @@ import { MockElement } from "./nodes";
 
 describe("Circle", function () {
     it("constructor", function () {
-        const element = new MockElement('div');
+        const element = new MockElement("div");
         const board = initBoard(element);
         const circle = new Circle(board);
         board.add(circle);
@@ -19,7 +19,7 @@ describe("Circle", function () {
             const vertex2 = vertices[2];
             const vertex3 = vertices[3];
 
-            expect(vertex0.command).toBe('M');
+            expect(vertex0.command).toBe("M");
 
             expect(vertex0.origin.x).toBe(1);
             expect(vertex0.origin.y).toBe(0);
@@ -36,7 +36,7 @@ describe("Circle", function () {
             expect(vertex0.controls.b.a).toBe(0);
             expect(vertex0.controls.b.b).toBe(0);
 
-            expect(vertex1.command).toBe('C');
+            expect(vertex1.command).toBe("C");
 
             expect(vertex1.origin.x).toBeCloseTo(0);
             expect(vertex1.origin.y).toBe(1);
@@ -53,7 +53,7 @@ describe("Circle", function () {
             expect(vertex1.controls.b.a).toBe(0);
             expect(vertex1.controls.b.b).toBe(0);
 
-            expect(vertex2.command).toBe('C');
+            expect(vertex2.command).toBe("C");
 
             expect(vertex2.origin.x).toBe(-1);
             expect(vertex2.origin.y).toBeCloseTo(0);
@@ -70,7 +70,7 @@ describe("Circle", function () {
             expect(vertex2.controls.b.a).toBe(0);
             expect(vertex2.controls.b.b).toBe(0);
 
-            expect(vertex3.command).toBe('C');
+            expect(vertex3.command).toBe("C");
 
             expect(vertex3.origin.x).toBeCloseTo(0);
             expect(vertex3.origin.y).toBe(-1);
@@ -93,23 +93,28 @@ describe("Circle", function () {
                     const viewDOM = new MockViewDOM();
                     const viewee = viewDOM.downcast(circle.zzz.viewee);
                     expect(viewee.getAttributeNames()).toStrictEqual(["d", "fill", "stroke", "stroke-width"]);
-                    expect(viewee.getAttribute('fill')).toBe('none');
-                    expect(viewee.getAttribute('stroke')).toBe('gray');
-                    expect(viewee.getAttribute('stroke-width')).toBe('0.009375');
-                    expect(viewee.getAttribute('d')).toBe("M 0 1 C 0.552284 1 1 0.552284 1 0 C 1 -0.552285 0.552284 -1 0 -1 C -0.552285 -1 -1 -0.552285 -1 -0.000001 C -1.000001 0.552284 -0.552285 1 0 1 Z");
+                    expect(viewee.getAttribute("fill")).toBe("none");
+                    expect(viewee.getAttribute("stroke")).toBe("gray");
+                    expect(viewee.getAttribute("stroke-width")).toBe("0.009375");
+                    expect(viewee.getAttribute("d")).toBe(
+                        "M 0 1 C 0.552284 1 1 0.552284 1 0 C 1 -0.552285 0.552284 -1 0 -1 C -0.552285 -1 -1 -0.552285 -1 -0.000001 C -1.000001 0.552284 -0.552285 1 0 1 Z"
+                    );
                     board.dispose();
                     resolve();
-                }
-                catch (e) {
+                } catch (e) {
                     reject(e);
                 }
             });
         });
     });
     it("options", function () {
-        const element = new MockElement('div');
+        const element = new MockElement("div");
         const board = initBoard(element);
-        const circle = new Circle(board, { radius: 1, id: "circle", resolution: 4 });
+        const circle = new Circle(board, {
+            radius: 1,
+            id: "circle",
+            resolution: 4,
+        });
         board.add(circle);
         expect(circle.id).toBe("circle");
 
@@ -145,7 +150,7 @@ describe("Circle", function () {
         board.dispose();
     });
     it("radius", function () {
-        const element = new MockElement('div');
+        const element = new MockElement("div");
         const board = initBoard(element);
         const circle = new Circle(board);
         board.add(circle);
@@ -188,8 +193,7 @@ describe("Circle", function () {
 
                     board.dispose();
                     resolve();
-                }
-                catch (e) {
+                } catch (e) {
                     reject(e);
                 }
             });

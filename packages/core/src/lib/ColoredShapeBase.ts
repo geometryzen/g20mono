@@ -8,10 +8,10 @@ import { ViewDOM } from "./Shape";
 import { ShapeBase, ShapeOptions } from "./ShapeBase";
 
 export interface ColoredShapeOptions extends ShapeOptions {
-    position?: VectorLike,
+    position?: VectorLike;
     attitude?: SpinorLike;
     id?: string;
-    dashes?: number[],
+    dashes?: number[];
     fillColor?: Color;
     fillOpacity?: number;
     strokeColor?: Color;
@@ -19,27 +19,29 @@ export interface ColoredShapeOptions extends ShapeOptions {
     strokeWidth?: number;
     sx?: number;
     sy?: number;
-    vectorEffect?: null | 'non-scaling-stroke' | 'none';
-    visibility?: 'visible' | 'hidden' | 'collapse';
+    vectorEffect?: null | "non-scaling-stroke" | "none";
+    visibility?: "visible" | "hidden" | "collapse";
 }
 
 export abstract class ColoredShapeBase extends ShapeBase {
     /**
      * @see {@link https://developer.mozilla.org/en-US/docs/Web/CSS/color_value} for more information on CSS's colors as `String`.
      */
-    readonly #fillColor = new ColorManager(null, 'fill');
+    readonly #fillColor = new ColorManager(null, "fill");
     readonly #fillOpacity = signal(1.0);
 
     /**
      * @see {@link https://developer.mozilla.org/en-US/docs/Web/CSS/color_value} for more information on CSS's colors as `String`.
      */
-    readonly #strokeColor = new ColorManager(null, 'stroke');
+    readonly #strokeColor = new ColorManager(null, "stroke");
     readonly #strokeWidth = signal(1);
     readonly #strokeOpacity = signal(1.0);
 
     readonly #dashes: State<number[]> = signal([]);
 
-    readonly #vectorEffect: State<null | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position' | 'none'> = signal(null);
+    readonly #vectorEffect: State<
+        null | "non-scaling-stroke" | "non-scaling-size" | "non-rotation" | "fixed-position" | "none"
+    > = signal(null);
 
     constructor(board: Board, options: ColoredShapeOptions = {}) {
         super(board, shape_attribs_from_colored_attribs(options));
@@ -52,10 +54,9 @@ export abstract class ColoredShapeBase extends ShapeBase {
             this.fillColor = options.fillColor;
         }
 
-        if (typeof options.fillOpacity === 'number') {
+        if (typeof options.fillOpacity === "number") {
             this.fillOpacity = options.fillOpacity;
-        }
-        else {
+        } else {
             this.fillOpacity = 1.0;
         }
 
@@ -63,21 +64,19 @@ export abstract class ColoredShapeBase extends ShapeBase {
             this.strokeColor = options.strokeColor;
         }
 
-        if (typeof options.strokeWidth === 'number') {
+        if (typeof options.strokeWidth === "number") {
             this.strokeWidth = options.strokeWidth;
-        }
-        else {
+        } else {
             this.strokeWidth = 1;
         }
 
-        if (typeof options.strokeOpacity === 'number') {
+        if (typeof options.strokeOpacity === "number") {
             this.strokeOpacity = options.strokeOpacity;
-        }
-        else {
+        } else {
             this.strokeOpacity = 1.0;
         }
 
-        if (typeof options.vectorEffect === 'string') {
+        if (typeof options.vectorEffect === "string") {
             this.vectorEffect = options.vectorEffect;
         }
     }
@@ -124,26 +123,39 @@ export abstract class ColoredShapeBase extends ShapeBase {
         return this.#strokeWidth.get();
     }
     set strokeWidth(strokeWidth: number) {
-        if (typeof strokeWidth === 'number') {
+        if (typeof strokeWidth === "number") {
             if (isNaN(strokeWidth)) {
                 // Do nothing.
-            }
-            else {
+            } else {
                 this.#strokeWidth.set(strokeWidth);
             }
         }
     }
-    get vectorEffect(): null | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position' | 'none' {
+    get vectorEffect():
+        | null
+        | "non-scaling-stroke"
+        | "non-scaling-size"
+        | "non-rotation"
+        | "fixed-position"
+        | "none" {
         return this.#vectorEffect.get();
     }
-    set vectorEffect(vectorEffect: null | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position' | 'none') {
+    set vectorEffect(
+        vectorEffect:
+            | null
+            | "non-scaling-stroke"
+            | "non-scaling-size"
+            | "non-rotation"
+            | "fixed-position"
+            | "none"
+    ) {
         this.#vectorEffect.set(vectorEffect);
     }
     /**
      * A convenience method for setting the `fill` attribute to "none".
      */
     noFill(): this {
-        this.fillColor = 'none';
+        this.fillColor = "none";
         return this;
     }
 
@@ -151,7 +163,7 @@ export abstract class ColoredShapeBase extends ShapeBase {
      * A convenience method for setting the `stroke` attribute to "none".
      */
     noStroke(): this {
-        this.strokeColor = 'none';
+        this.strokeColor = "none";
         return this;
     }
     override render<T>(viewDOM: ViewDOM<T>, parentElement: unknown, svgElement: unknown): void {
@@ -161,99 +173,106 @@ export abstract class ColoredShapeBase extends ShapeBase {
             this.#strokeColor.use(viewDOM, svgElement, this.zzz.viewee);
 
             // dashes
-            this.zzz.disposables.push(effect(() => {
-                const dashes = this.dashes;
-                if (Array.isArray(dashes) && dashes.length > 0) {
-                    viewDOM.setAttribute(this.zzz.viewee as T, 'stroke-dasharray', this.dashes.join(' '));
-                }
-                else {
-                    viewDOM.removeAttribute(this.zzz.viewee as T, 'stroke-dasharray');
-                }
-                return function () {
-                    // No cleanup to be done.
-                };
-            }));
+            this.zzz.disposables.push(
+                effect(() => {
+                    const dashes = this.dashes;
+                    if (Array.isArray(dashes) && dashes.length > 0) {
+                        viewDOM.setAttribute(this.zzz.viewee as T, "stroke-dasharray", this.dashes.join(" "));
+                    } else {
+                        viewDOM.removeAttribute(this.zzz.viewee as T, "stroke-dasharray");
+                    }
+                    return function () {
+                        // No cleanup to be done.
+                    };
+                })
+            );
 
             // fill
-            this.zzz.disposables.push(effect(() => {
-                this.#fillColor.update();
-                return function () {
-                    // No cleanup to be done.
-                };
-            }));
+            this.zzz.disposables.push(
+                effect(() => {
+                    this.#fillColor.update();
+                    return function () {
+                        // No cleanup to be done.
+                    };
+                })
+            );
 
             // fill-opacity
-            this.zzz.disposables.push(effect(() => {
-                const fillOpacity = this.fillOpacity;
-                if (fillOpacity !== 1) {
-                    viewDOM.setAttribute(this.zzz.viewee as T, 'fill-opacity', `${fillOpacity}`);
-                }
-                else {
-                    viewDOM.removeAttribute(this.zzz.viewee as T, 'fill-opacity');
-                }
-                return function () {
-                    // No cleanup to be done.
-                };
-            }));
+            this.zzz.disposables.push(
+                effect(() => {
+                    const fillOpacity = this.fillOpacity;
+                    if (fillOpacity !== 1) {
+                        viewDOM.setAttribute(this.zzz.viewee as T, "fill-opacity", `${fillOpacity}`);
+                    } else {
+                        viewDOM.removeAttribute(this.zzz.viewee as T, "fill-opacity");
+                    }
+                    return function () {
+                        // No cleanup to be done.
+                    };
+                })
+            );
 
             // stroke
-            this.zzz.disposables.push(effect(() => {
-                this.#strokeColor.update();
-                return function () {
-                    // No cleanup to be done.
-                };
-            }));
+            this.zzz.disposables.push(
+                effect(() => {
+                    this.#strokeColor.update();
+                    return function () {
+                        // No cleanup to be done.
+                    };
+                })
+            );
 
             // stroke-opacity
-            this.zzz.disposables.push(effect(() => {
-                const strokeOpacity = this.strokeOpacity;
-                if (strokeOpacity !== 1) {
-                    viewDOM.setAttribute(this.zzz.viewee as T, 'stroke-opacity', `${strokeOpacity}`);
-                }
-                else {
-                    viewDOM.removeAttribute(this.zzz.viewee as T, 'stroke-opacity');
-                }
-                return function () {
-                    // No cleanup to be done.
-                };
-            }));
+            this.zzz.disposables.push(
+                effect(() => {
+                    const strokeOpacity = this.strokeOpacity;
+                    if (strokeOpacity !== 1) {
+                        viewDOM.setAttribute(this.zzz.viewee as T, "stroke-opacity", `${strokeOpacity}`);
+                    } else {
+                        viewDOM.removeAttribute(this.zzz.viewee as T, "stroke-opacity");
+                    }
+                    return function () {
+                        // No cleanup to be done.
+                    };
+                })
+            );
 
             // stroke-width
-            this.zzz.disposables.push(effect(() => {
-                const strokeWidth = this.strokeWidth;
-                if (strokeWidth !== 1) {
-                    viewDOM.setAttribute(this.zzz.viewee as T, 'stroke-width', `${strokeWidth}`);
-                }
-                else {
-                    viewDOM.removeAttribute(this.zzz.viewee as T, 'stroke-width');
-                }
-                return function () {
-                    // No cleanup to be done.
-                };
-            }));
+            this.zzz.disposables.push(
+                effect(() => {
+                    const strokeWidth = this.strokeWidth;
+                    if (strokeWidth !== 1) {
+                        viewDOM.setAttribute(this.zzz.viewee as T, "stroke-width", `${strokeWidth}`);
+                    } else {
+                        viewDOM.removeAttribute(this.zzz.viewee as T, "stroke-width");
+                    }
+                    return function () {
+                        // No cleanup to be done.
+                    };
+                })
+            );
 
             // vector-effect
-            this.zzz.disposables.push(effect(() => {
-                const vectorEffect = this.vectorEffect;
-                if (typeof vectorEffect === 'string') {
-                    viewDOM.setAttribute(this.zzz.viewee as T, 'vector-effect', `${vectorEffect}`);
-                }
-                else {
-                    viewDOM.removeAttribute(this.zzz.viewee as T, 'vector-effect');
-                }
-                return function () {
-                    // No cleanup to be done.
-                };
-            }));
+            this.zzz.disposables.push(
+                effect(() => {
+                    const vectorEffect = this.vectorEffect;
+                    if (typeof vectorEffect === "string") {
+                        viewDOM.setAttribute(this.zzz.viewee as T, "vector-effect", `${vectorEffect}`);
+                    } else {
+                        viewDOM.removeAttribute(this.zzz.viewee as T, "vector-effect");
+                    }
+                    return function () {
+                        // No cleanup to be done.
+                    };
+                })
+            );
 
             super.render(viewDOM, parentElement, svgElement);
-        }
-        else {
+        } else {
             throw new Error();
         }
     }
 }
-
 
 function shape_attribs_from_colored_attribs(options: ColoredShapeOptions): Partial<ShapeOptions> {
     const retval: Partial<ShapeOptions> = {

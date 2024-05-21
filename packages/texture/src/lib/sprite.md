@@ -7,8 +7,8 @@ import { dateTime } from '../utils/performance.js';
 import { Texture } from './texture.js';
 
 export interface SpriteOptions {
-    position?: G20;
-    attitude?: G20;
+position?: G20;
+attitude?: G20;
 }
 
 export class Sprite extends Rectangle {
@@ -262,4 +262,5 @@ export class Sprite extends Rectangle {
         this._index = v;
         this._flagIndex = true;
     }
+
 }

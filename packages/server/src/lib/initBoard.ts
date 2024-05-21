@@ -1,7 +1,7 @@
 import { Board } from "@g20/core";
 
 export interface BoardOptions {
-    boundingBox?: { left: number, top: number, right: number, bottom: number };
+    boundingBox?: { left: number; top: number; right: number; bottom: number };
 }
 
 /**

@@ -10,7 +10,10 @@ export class HTMLElementDOM implements ElementDOM<HTMLElement, HTMLCanvasElement
     getAttribute(element: HTMLElement, name: string): string {
         return element.getAttribute(name);
     }
-    getBoundingClientRect(element: HTMLElement): { width: number; height: number; } {
+    getBoundingClientRect(element: HTMLElement): {
+        width: number;
+        height: number;
+    } {
         return element.getBoundingClientRect();
     }
     getElementById(elementId: string): HTMLElement {

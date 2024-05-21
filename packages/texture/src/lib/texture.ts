@@ -5,7 +5,6 @@ import { is_img } from "./is_img";
 import { is_video } from "./is_video";
 
 export class Texture extends ElementBase implements ColorProvider {
-
     #refCount: number = 0;
 
     _flagSrc = false;
@@ -16,10 +15,10 @@ export class Texture extends ElementBase implements ColorProvider {
     _flagOffset = false;
     _flagScale = false;
 
-    _src = '';
+    _src = "";
     _image: HTMLCanvasElement | HTMLImageElement | HTMLVideoElement | null = null;
     _loaded = false;
-    _repeat = 'no-repeat';
+    _repeat = "no-repeat";
 
     _scale: G20 | number = 1;
     #scale_change: Disposable | null = null;
@@ -39,23 +38,22 @@ export class Texture extends ElementBase implements ColorProvider {
          * CSS style declaration to tile. Valid values include: `'no-repeat'`, `'repeat'`, `'repeat-x'`, `'repeat-y'`.
          * @see {@link https://www.w3.org/TR/2dcontext/#dom-context-2d-createpattern}
          */
-        this.repeat = 'no-repeat';
+        this.repeat = "no-repeat";
 
         /**
          * A two-component vector describing any pixel offset of the texture when applied to a {@link Path}.
          */
         this.offset = new G20();
 
-        if (typeof src === 'string') {
+        if (typeof src === "string") {
             this.src = src;
-        }
-        else if (typeof src === 'object') {
+        } else if (typeof src === "object") {
             const elemString = Object.prototype.toString.call(src);
             if (
-                elemString === '[object HTMLImageElement]' ||
-                elemString === '[object HTMLCanvasElement]' ||
-                elemString === '[object HTMLVideoElement]' ||
-                elemString === '[object Image]'
+                elemString === "[object HTMLImageElement]" ||
+                elemString === "[object HTMLCanvasElement]" ||
+                elemString === "[object HTMLVideoElement]" ||
+                elemString === "[object Image]"
             ) {
                 this.image = src;
             }
@@ -69,29 +67,26 @@ export class Texture extends ElementBase implements ColorProvider {
     incrementUse<T>(viewDOM: ViewDOM<T>, defs: T): void {
         this.#refCount++;
         if (this.#refCount == 1) {
-            const pattern = viewDOM.createSVGElement('pattern', {});
+            const pattern = viewDOM.createSVGElement("pattern", {});
             this.zzz.viewee = pattern;
-            viewDOM.setAttribute(pattern, 'id', this.id);
-            viewDOM.setAttribute(pattern, 'patternUnits', 'userSpaceOnUse');
-            viewDOM.setAttribute(pattern, 'width', `${this.image.width}`);
-            viewDOM.setAttribute(pattern, 'height', `${this.image.height}`);
+            viewDOM.setAttribute(pattern, "id", this.id);
+            viewDOM.setAttribute(pattern, "patternUnits", "userSpaceOnUse");
+            viewDOM.setAttribute(pattern, "width", `${this.image.width}`);
+            viewDOM.setAttribute(pattern, "height", `${this.image.height}`);
             viewDOM.appendChild(defs, pattern);
-            this.zzz.image = viewDOM.createSVGElement('image', {
-                x: '0',
-                y: '0',
+            this.zzz.image = viewDOM.createSVGElement("image", {
+                x: "0",
+                y: "0",
                 width: `${this.image.width}`,
-                height: `${this.image.height}`
+                height: `${this.image.height}`,
             });
             if (is_canvas(this.image)) {
-                viewDOM.setAttribute(this.zzz.image as T, 'href', this.image.toDataURL('image/png'));
-            }
-            else if (is_img(this.image)) {
-                viewDOM.setAttribute(this.zzz.image as T, 'href', this.image.src);
-            }
-            else if (is_video(this.image)) {
+                viewDOM.setAttribute(this.zzz.image as T, "href", this.image.toDataURL("image/png"));
+            } else if (is_img(this.image)) {
+                viewDOM.setAttribute(this.zzz.image as T, "href", this.image.src);
+            } else if (is_video(this.image)) {
                 // styles.href = this.src;
-            }
-            else {
+            } else {
                 throw new Error();
             }
             viewDOM.appendChild(pattern, this.zzz.image as T);
@@ -104,68 +99,57 @@ export class Texture extends ElementBase implements ColorProvider {
         }
     }
     use<T>(viewDOM: ViewDOM<T>, svgElement: T): this {
-
         let changed_x: number;
         let changed_y: number;
         let changed_width: number;
         let changed_height: number;
 
-        const styles: SVGAttributes = { x: '0', y: '0' };
+        const styles: SVGAttributes = { x: "0", y: "0" };
 
         const image = this.image;
 
         if (this._flagLoaded && this.loaded) {
-
             if (is_canvas(image)) {
-                styles.href = image.toDataURL('image/png');
-            }
-            else if (is_img(image)) {
+                styles.href = image.toDataURL("image/png");
+            } else if (is_img(image)) {
                 styles.href = this.src;
-            }
-            else if (is_video(image)) {
+            } else if (is_video(image)) {
                 styles.href = this.src;
-            }
-            else {
+            } else {
                 throw new Error();
             }
         }
 
         if (this._flagOffset || this._flagLoaded || this._flagScale) {
-
             changed_x = this.offset.x;
             changed_y = this.offset.y;
 
             if (image) {
-
                 changed_x -= image.width / 2;
                 changed_y -= image.height / 2;
 
                 if (this.scale instanceof G20) {
                     changed_x *= this.scale.x;
                     changed_y *= this.scale.y;
-                }
-                else {
+                } else {
                     changed_x *= this.scale;
                     changed_y *= this.scale;
                 }
             }
 
             if (changed_x > 0) {
-                changed_x *= - 1;
+                changed_x *= -1;
             }
             if (changed_y > 0) {
-                changed_y *= - 1;
+                changed_y *= -1;
             }
-
         }
 
         if (this._flagScale || this._flagLoaded || this._flagRepeat) {
-
             changed_width = 0;
             changed_height = 0;
 
             if (image) {
-
                 changed_width = image.width;
                 styles.width = `${image.width}`;
                 changed_height = image.height;
@@ -173,7 +157,7 @@ export class Texture extends ElementBase implements ColorProvider {
 
                 // TODO: Hack / Band-aid
                 switch (this._repeat) {
-                    case 'no-repeat':
+                    case "no-repeat":
                         changed_width += 1;
                         changed_height += 1;
                         break;
@@ -182,20 +166,17 @@ export class Texture extends ElementBase implements ColorProvider {
                 if (this.scale instanceof G20) {
                     changed_width *= this.scale.x;
                     changed_height *= this.scale.y;
-                }
-                else {
+                } else {
                     changed_width *= this.scale;
                     changed_height *= this.scale;
                 }
             }
-
         }
 
         if (this._flagScale || this._flagLoaded) {
             if (!this.zzz.image) {
-                this.zzz.image = viewDOM.createSVGElement('image', styles);
-            }
-            else {
+                this.zzz.image = viewDOM.createSVGElement("image", styles);
+            } else {
                 viewDOM.setAttributes(this.zzz.image as T, styles);
             }
         }
@@ -209,9 +190,8 @@ export class Texture extends ElementBase implements ColorProvider {
             changed.id = this.id;
             changed.x = `${changed_x}`;
             // changed.patternUnits = 'userSpaceOnUse';
-            this.zzz.viewee = viewDOM.createSVGElement('pattern', changed);
-        }
-        else if (Object.keys(changed).length !== 0) {
+            this.zzz.viewee = viewDOM.createSVGElement("pattern", changed);
+        } else if (Object.keys(changed).length !== 0) {
             viewDOM.setAttributes(this.zzz.viewee as T, changed);
         }
 
@@ -232,14 +212,17 @@ export class Texture extends ElementBase implements ColorProvider {
      * @param image The image to infer the tag name from.
      * @returns the tag name of an image, video, or canvas node.
      */
-    static getTag(image: HTMLCanvasElement | HTMLImageElement | HTMLVideoElement): 'canvas' | 'img' | 'video' {
+    static getTag(
+        image: HTMLCanvasElement | HTMLImageElement | HTMLVideoElement
+    ): "canvas" | "img" | "video" {
         // Headless environments
-        return (image && image.nodeName && image.nodeName.toLowerCase()) as 'canvas' | 'img' | 'video' || 'img';
+        return (
+            ((image && image.nodeName && image.nodeName.toLowerCase()) as "canvas" | "img" | "video") || "img"
+        );
     }
 
     update(): this {
         if (this._flagSrc || this._flagImage) {
-
             this.#change.set(this);
 
             if (this._flagSrc || this._flagImage) {
@@ -262,23 +245,27 @@ export class Texture extends ElementBase implements ColorProvider {
     }
 
     flagReset(dirtyFlag = false) {
-        this._flagSrc = this._flagImage = this._flagLoaded = this._flagRepeat
-            = this._flagVideo = this._flagScale = this._flagOffset = dirtyFlag;
+        this._flagSrc =
+            this._flagImage =
+            this._flagLoaded =
+            this._flagRepeat =
+            this._flagVideo =
+            this._flagScale =
+            this._flagOffset =
+                dirtyFlag;
         return this;
     }
     get image(): HTMLCanvasElement | HTMLImageElement | HTMLVideoElement {
         return this._image;
     }
     set image(image: HTMLCanvasElement | HTMLImageElement | HTMLVideoElement) {
-        // DRY: This is how we index the image registry. 
+        // DRY: This is how we index the image registry.
         // let index: string;
         if (is_canvas(image)) {
             // index = '#' + image.id;
-        }
-        else if (is_img(image)) {
+        } else if (is_img(image)) {
             // index = image.src;
-        }
-        else if (is_video(image)) {
+        } else if (is_video(image)) {
             // index = image.src;
         }
         this._image = image;

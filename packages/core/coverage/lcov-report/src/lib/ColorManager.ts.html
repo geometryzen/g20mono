@@ -146,8 +146,7 @@
 <a name='L81'></a><a href='#L81'>81</a>
 <a name='L82'></a><a href='#L82'>82</a>
 <a name='L83'></a><a href='#L83'>83</a>
-<a name='L84'></a><a href='#L84'>84</a>
-<a name='L85'></a><a href='#L85'>85</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">12x</span>
+<a name='L84'></a><a href='#L84'>84</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -176,7 +175,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">84x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">84x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -189,7 +191,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -197,7 +198,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -222,10 +222,8 @@
 <span class="cline-any cline-yes">84x</span>
 <span class="cline-any cline-yes">84x</span>
 <span class="cline-any cline-yes">84x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -256,11 +254,14 @@ export class ColorManager {
      */
     #hostElement: unknown;
     /**
-     * 
-     * @param initialValue 
-     * @param name 
+     *
+     * @param initialValue
+     * @param name
      */
-    constructor(initialValue: Color, readonly name: 'fill' | 'stroke') {
+    constructor(
+        initialValue: Color,
+        readonly name: "fill" | "stroke"
+    ) {
         this.#color = signal(initialValue);
     }
 <span class="fstat-no" title="function not covered" >    get(</span>): Color {
@@ -272,16 +273,14 @@ export class ColorManager {
             <span class="missing-if-branch" title="if path not taken" >I</span>if (is_color_provider(oldColor)) {
 <span class="cstat-no" title="statement not covered" >                if (this.#svg) {</span>
 <span class="cstat-no" title="statement not covered" >                    oldColor.decrementUse(this.#viewDOM, this.#viewDOM.getElementDefs(this.#svg));</span>
-                }
-                else {
+                } else {
 <span class="cstat-no" title="statement not covered" >                    this.#olds.push(oldColor);</span>
                 }
             }
             <span class="missing-if-branch" title="if path not taken" >I</span>if (is_color_provider(newColor)) {
 <span class="cstat-no" title="statement not covered" >                if (this.#svg) {</span>
 <span class="cstat-no" title="statement not covered" >                    newColor.incrementUse(this.#viewDOM, this.#viewDOM.getElementDefs(this.#svg));</span>
-                }
-                else {
+                } else {
 <span class="cstat-no" title="statement not covered" >                    this.#news.push(newColor);</span>
                 }
             }
@@ -304,13 +303,11 @@ export class ColorManager {
     }
     update(): void {
         const color = this.#color.get();
-        if (typeof color === 'string') {
+        if (typeof color === "string") {
             this.#viewDOM.setAttribute(this.#hostElement, this.name, color);
-        }
-        else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="else path not taken" >E</span>if (is_color_provider(color)) {</span>
+        } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="else path not taken" >E</span>if (is_color_provider(color)) {</span>
 <span class="cstat-no" title="statement not covered" >            this.#viewDOM.setAttribute(this.#hostElement, this.name, color.serialize());</span>
-        }
-        else {
+        } else {
 <span class="cstat-no" title="statement not covered" >            this.#viewDOM.removeAttribute(this.#hostElement, this.name);</span>
         }
     }
@@ -322,7 +319,7 @@ export class ColorManager {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-05-21T01:27:29.788Z
+                at 2024-05-21T02:47:11.855Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

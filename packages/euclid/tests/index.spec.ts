@@ -12,16 +12,14 @@ class MockCircle implements CircleProperties {
     strokeColor: Color;
     strokeOpacity: number;
     strokeWidth: number;
-    constructor() {
-
-    }
+    constructor() {}
     get radius() {
         return this.#radius.get();
     }
 }
 
 test("index", function () {
-    expect(typeof CircleCircleIntersection === 'function').toBe(true);
+    expect(typeof CircleCircleIntersection === "function").toBe(true);
     const circleA = new MockCircle();
     circleA.X.set(-0.5, 0);
     const circleB = new MockCircle();

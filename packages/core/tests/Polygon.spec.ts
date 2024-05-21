@@ -5,7 +5,7 @@ import { MockElement } from "./nodes";
 
 describe("Polygon", function () {
     it("constructor", function () {
-        const element = new MockElement('div');
+        const element = new MockElement("div");
         const board = initBoard(element);
         const polygon = new Polygon(board);
         board.add(polygon);
@@ -45,9 +45,13 @@ describe("Polygon", function () {
         board.dispose();
     });
     it("points", function () {
-        const element = new MockElement('div');
+        const element = new MockElement("div");
         const board = initBoard(element);
-        const polygon = new Polygon(board, [[0, 0], [4, 0], [4, 3]]);
+        const polygon = new Polygon(board, [
+            [0, 0],
+            [4, 0],
+            [4, 3],
+        ]);
         board.add(polygon);
         expect(polygon.id).toBe(null);
 

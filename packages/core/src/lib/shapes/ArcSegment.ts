@@ -1,15 +1,15 @@
-import { Anchor } from '../Anchor.js';
-import { Board } from '../Board.js';
-import { Collection } from '../collection.js';
-import { Constants } from '../constants.js';
-import { Color } from '../effects/ColorProvider.js';
-import { G20 } from '../math/G20.js';
-import { Path, PathOptions } from '../Path.js';
-import { Disposable, dispose } from '../reactive/Disposable';
-import { default_color } from '../utils/default_color.js';
-import { default_closed_path_stroke_width } from '../utils/default_stroke_width.js';
-import { HALF_PI, mod, TWO_PI } from '../utils/math.js';
-import { Commands } from '../utils/Commands.js';
+import { Anchor } from "../Anchor.js";
+import { Board } from "../Board.js";
+import { Collection } from "../collection.js";
+import { Constants } from "../constants.js";
+import { Color } from "../effects/ColorProvider.js";
+import { G20 } from "../math/G20.js";
+import { Path, PathOptions } from "../Path.js";
+import { Disposable, dispose } from "../reactive/Disposable";
+import { default_color } from "../utils/default_color.js";
+import { default_closed_path_stroke_width } from "../utils/default_stroke_width.js";
+import { HALF_PI, mod, TWO_PI } from "../utils/math.js";
+import { Commands } from "../utils/Commands.js";
 
 export interface ArcSegmentOptions extends PathOptions {
     innerRadius?: number;
@@ -17,7 +17,7 @@ export interface ArcSegmentOptions extends PathOptions {
     startAngle?: number;
     endAngle?: number;
     resolution?: number;
-    id?: string,
+    id?: string;
     fillColor?: Color;
     fillOpacity?: number;
     strokeColor?: Color;
@@ -26,7 +26,6 @@ export interface ArcSegmentOptions extends PathOptions {
 }
 
 export class ArcSegment extends Path {
-
     readonly #disposables: Disposable[] = [];
     readonly #startAngle = G20.scalar(0);
     readonly #endAngle = G20.scalar(TWO_PI);
@@ -34,7 +33,6 @@ export class ArcSegment extends Path {
     readonly #outerRadius = G20.scalar(0);
 
     constructor(owner: Board, options: ArcSegmentOptions = {}) {
-
         const N = options.resolution ? options.resolution : Constants.Resolution * 3;
         const points: Anchor[] = [];
         for (let i = 0; i < N; i++) {
@@ -44,50 +42,58 @@ export class ArcSegment extends Path {
         super(owner, points, true, false, true, path_options_from_arc_options(options, owner));
 
         const ir = options.innerRadius;
-        if (typeof ir === 'number') {
+        if (typeof ir === "number") {
             this.innerRadius = ir;
         }
 
         const or = options.outerRadius;
-        if (typeof or === 'number') {
+        if (typeof or === "number") {
             this.outerRadius = or;
         }
 
         const sa = options.startAngle;
-        if (typeof sa === 'number') {
+        if (typeof sa === "number") {
             this.startAngle = sa;
         }
 
         const ea = options.endAngle;
-        if (typeof ea === 'number') {
+        if (typeof ea === "number") {
             this.endAngle = ea;
         }
 
         let enabled = false;
 
-        this.#disposables.push(this.#innerRadius.change$.subscribe(() => {
-            if (enabled) {
-                this.update();
-            }
-        }));
+        this.#disposables.push(
+            this.#innerRadius.change$.subscribe(() => {
+                if (enabled) {
+                    this.update();
+                }
+            })
+        );
 
-        this.#disposables.push(this.#outerRadius.change$.subscribe(() => {
-            if (enabled) {
-                this.update();
-            }
-        }));
+        this.#disposables.push(
+            this.#outerRadius.change$.subscribe(() => {
+                if (enabled) {
+                    this.update();
+                }
+            })
+        );
 
-        this.#disposables.push(this.#startAngle.change$.subscribe(() => {
-            if (enabled) {
-                this.update();
-            }
-        }));
+        this.#disposables.push(
+            this.#startAngle.change$.subscribe(() => {
+                if (enabled) {
+                    this.update();
+                }
+            })
+        );
 
-        this.#disposables.push(this.#endAngle.change$.subscribe(() => {
-            if (enabled) {
-                this.update();
-            }
-        }));
+        this.#disposables.push(
+            this.#endAngle.change$.subscribe(() => {
+                if (enabled) {
+                    this.update();
+                }
+            })
+        );
 
         enabled = true;
 
@@ -100,7 +106,13 @@ export class ArcSegment extends Path {
     }
 
     override update() {
-        update_arc_vertices(this.innerRadius, this.outerRadius, this.startAngle, this.endAngle, this.vertices);
+        update_arc_vertices(
+            this.innerRadius,
+            this.outerRadius,
+            this.startAngle,
+            this.endAngle,
+            this.vertices
+        );
         super.update();
         return this;
     }
@@ -137,29 +149,33 @@ function path_options_from_arc_options(options: ArcSegmentOptions, owner: Board)
         attitude: options.attitude,
         opacity: options.opacity,
         position: options.position,
-        fillColor: default_color(options.fillColor, 'none'),
+        fillColor: default_color(options.fillColor, "none"),
         fillOpacity: options.fillOpacity,
-        strokeColor: default_color(options.strokeColor, 'gray'),
+        strokeColor: default_color(options.strokeColor, "gray"),
         strokeOpacity: options.strokeOpacity,
         strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
         vectorEffect: options.vectorEffect,
-        visibility: options.visibility
+        visibility: options.visibility,
     };
     return retval;
 }
 
-function update_arc_vertices(innerRadiues: number, outerRadius: number, startAngle: number, endAngle: number, vertices: Collection<Anchor>) {
-
+function update_arc_vertices(
+    innerRadiues: number,
+    outerRadius: number,
+    startAngle: number,
+    endAngle: number,
+    vertices: Collection<Anchor>
+) {
     const connected = mod(startAngle, TWO_PI) === mod(endAngle, TWO_PI);
     const punctured = innerRadiues > 0;
 
-    let length = (punctured ? vertices.length / 2 : vertices.length);
+    let length = punctured ? vertices.length / 2 : vertices.length;
     let id = 0;
 
     if (connected) {
         length--;
-    }
-    else if (!punctured) {
+    } else if (!punctured) {
         length -= 2;
     }
 
@@ -167,7 +183,6 @@ function update_arc_vertices(innerRadiues: number, outerRadius: number, startAng
      * Outer Circle
      */
     for (let i = 0, last = length - 1; i < length; i++) {
-
         const pct = i / last;
         const v = vertices.getAt(id);
         const theta = pct * (endAngle - startAngle) + startAngle;
@@ -183,7 +198,7 @@ function update_arc_vertices(innerRadiues: number, outerRadius: number, startAng
         v.controls.b.clear();
 
         if (v.command === Commands.curve) {
-            const amp = outerRadius * step / Math.PI;
+            const amp = (outerRadius * step) / Math.PI;
             v.controls.a.x = amp * Math.cos(theta - HALF_PI);
             v.controls.a.y = amp * Math.sin(theta - HALF_PI);
             v.controls.b.x = amp * Math.cos(theta + HALF_PI);
@@ -204,8 +219,7 @@ function update_arc_vertices(innerRadiues: number, outerRadius: number, startAng
         if (connected) {
             vertices.getAt(id).command = Commands.close;
             id++;
-        }
-        else {
+        } else {
             length--;
             last = length - 1;
         }
@@ -214,7 +228,6 @@ function update_arc_vertices(innerRadiues: number, outerRadius: number, startAng
          * Inner Circle
          */
         for (let i = 0; i < length; i++) {
-
             const pct = i / last;
             const v = vertices.getAt(id);
             const theta = (1 - pct) * (endAngle - startAngle) + startAngle;
@@ -222,7 +235,7 @@ function update_arc_vertices(innerRadiues: number, outerRadius: number, startAng
 
             const x = innerRadiues * Math.cos(theta);
             const y = innerRadiues * Math.sin(theta);
-            let command: 'C' | 'M' | 'L' = Commands.curve;
+            let command: "C" | "M" | "L" = Commands.curve;
             if (i <= 0) {
                 command = connected ? Commands.move : Commands.line;
             }
@@ -234,7 +247,7 @@ function update_arc_vertices(innerRadiues: number, outerRadius: number, startAng
             v.controls.b.clear();
 
             if (v.command === Commands.curve) {
-                const amp = innerRadiues * step / Math.PI;
+                const amp = (innerRadiues * step) / Math.PI;
                 v.controls.a.x = amp * Math.cos(theta + HALF_PI);
                 v.controls.a.y = amp * Math.sin(theta + HALF_PI);
                 v.controls.b.x = amp * Math.cos(theta - HALF_PI);
@@ -248,15 +261,12 @@ function update_arc_vertices(innerRadiues: number, outerRadius: number, startAng
             }
 
             id++;
-
         }
 
         // Final Point
         vertices.getAt(id).copy(vertices.getAt(0));
         vertices.getAt(id).command = Commands.line;
-    }
-    else if (!connected) {
-
+    } else if (!connected) {
         vertices.getAt(id).command = Commands.line;
         vertices.getAt(id).x = 0;
         vertices.getAt(id).y = 0;

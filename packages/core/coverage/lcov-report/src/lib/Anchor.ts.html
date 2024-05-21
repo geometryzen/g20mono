@@ -287,7 +287,11 @@
 <a name='L222'></a><a href='#L222'>222</a>
 <a name='L223'></a><a href='#L223'>223</a>
 <a name='L224'></a><a href='#L224'>224</a>
-<a name='L225'></a><a href='#L225'>225</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">12x</span>
+<a name='L225'></a><a href='#L225'>225</a>
+<a name='L226'></a><a href='#L226'>226</a>
+<a name='L227'></a><a href='#L227'>227</a>
+<a name='L228'></a><a href='#L228'>228</a>
+<a name='L229'></a><a href='#L229'>229</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">12x</span>
@@ -317,6 +321,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">509x</span>
 <span class="cline-any cline-yes">509x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -429,7 +439,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">22543x</span>
-<span class="cline-any cline-yes">506x</span>
+<span class="cline-any cline-yes">505x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -503,19 +513,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">509x</span>
 <span class="cline-any cline-yes">505x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { G20 } from './math/G20';
-import { Disposable } from './reactive/Disposable';
-import { Observable } from './reactive/Observable';
-import { variable } from './reactive/variable';
-import { Commands } from './utils/Commands';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { G20 } from "./math/G20";
+import { Disposable } from "./reactive/Disposable";
+import { Observable } from "./reactive/Observable";
+import { variable } from "./reactive/variable";
+import { Commands } from "./utils/Commands";
 &nbsp;
 export class Anchor {
     /**
@@ -525,12 +533,12 @@ export class Anchor {
     readonly #origin_change: Disposable;
     readonly controls = {
         a: new G20(),
-        b: new G20()
+        b: new G20(),
     };
     readonly #a_change: Disposable;
     readonly #b_change: Disposable;
 &nbsp;
-    #command: 'M' | 'L' | 'C' | 'A' | 'Z';
+    #command: "M" | "L" | "C" | "A" | "Z";
     #relative: boolean;
 &nbsp;
     #rx: number;
@@ -552,8 +560,14 @@ export class Anchor {
      * @param by The y position of the right handle point.
      * @param command The command to describe how to render. Applicable commands are {@link Commands}
      */
-    constructor(origin: G20 | [x: number, y: number], command: 'M' | 'L' | 'C' | 'A' | 'Z' = Commands.move, ax = 0, ay = 0, bx = 0, by = 0) {
-&nbsp;
+    constructor(
+        origin: G20 | [x: number, y: number],
+        command: "M" | "L" | "C" | "A" | "Z" = Commands.move,
+        ax = 0,
+        ay = 0,
+        bx = 0,
+        by = 0
+    ) {
         this.origin = vector_like(origin);
         this.controls.a.set(ax, ay);
         this.controls.b.set(bx, by);
@@ -648,10 +662,10 @@ export class Anchor {
     /**
      * default is 'M'.
      */
-    get command(): 'M' | 'L' | 'C' | 'A' | 'Z' {
+    get command(): "M" | "L" | "C" | "A" | "Z" {
         return this.#command;
     }
-    set command(command: 'M' | 'L' | 'C' | 'A' | 'Z') {
+    set command(command: "M" | "L" | "C" | "A" | "Z") {
         if (this.command !== command) {
             this.#command = command;
         }
@@ -727,11 +741,9 @@ export class Anchor {
 function vector_like(source: G20 | [x: number, y: number]): G20 {
     if (source instanceof G20) {
         return source.isLocked() ? <span class="branch-0 cbranch-no" title="branch not covered" >source.clone() </span>: source;
-    }
-    else if (Array.isArray(source)) {
+    } else if (Array.isArray(source)) {
         return new G20(source[0], source[1]);
-    }
-    else <span class="missing-if-branch" title="else path not taken" >E</span>{
+    } else <span class="missing-if-branch" title="else path not taken" >E</span>{
 <span class="cstat-no" title="statement not covered" >        return G20.zero.clone();</span>
     }
 }
@@ -742,7 +754,7 @@ function vector_like(source: G20 | [x: number, y: number]): G20 {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-05-21T01:27:29.788Z
+                at 2024-05-21T02:47:11.855Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -23,8 +23,7 @@ export class MockElement extends MockNode {
     getAttribute(name: string): string | null {
         if (this.#attributes.has(name)) {
             return this.#attributes.get(name);
-        }
-        else {
+        } else {
             return null;
         }
     }

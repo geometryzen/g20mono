@@ -1,8 +1,7 @@
 export class Registry<T> {
-
     map: { [id: string]: T } = {};
 
-    constructor() { }
+    constructor() {}
 
     add(id: string, obj: T): this {
         this.map[id] = obj;
