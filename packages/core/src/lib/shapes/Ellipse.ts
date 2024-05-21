@@ -105,11 +105,9 @@ export class Ellipse extends Path {
     set rx(rx: number | VectorLike) {
         if (rx instanceof G20) {
             this.#rx.copyVector(rx);
-        }
-        else if (Array.isArray(rx)) {
-            this.#rx.set(rx[0], rx[1])
-        }
-        else if (typeof rx === 'number') {
+        } else if (Array.isArray(rx)) {
+            this.#rx.set(rx[0], rx[1]);
+        } else if (typeof rx === "number") {
             this.#rx.set(rx, 0);
         }
     }
@@ -119,11 +117,9 @@ export class Ellipse extends Path {
     set ry(ry: number | VectorLike) {
         if (ry instanceof G20) {
             this.#ry.copyVector(ry);
-        }
-        else if (Array.isArray(ry)) {
-            this.#ry.set(ry[0], ry[1])
-        }
-        else if (typeof ry === 'number') {
+        } else if (Array.isArray(ry)) {
+            this.#ry.set(ry[0], ry[1]);
+        } else if (typeof ry === "number") {
             this.#ry.set(0, ry);
         }
     }

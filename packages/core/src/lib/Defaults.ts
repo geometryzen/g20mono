@@ -12,7 +12,7 @@ export class Defaults {
     readonly circle: Pick<CircleOptions, "fillColor" | "fillOpacity" | "strokeColor" | "strokeOpacity" | "strokeWidth"> = {};
     readonly ellipse: Pick<EllipseOptions, "fillColor" | "fillOpacity" | "strokeColor" | "strokeOpacity" | "strokeWidth"> = {};
     readonly line: Pick<LineOptions, "fillColor" | "fillOpacity" | "strokeColor" | "strokeOpacity" | "strokeWidth"> = {};
-    readonly point: Pick<PointOptions, "fillColor" | "fillOpacity" | "iconKind" | "strokeColor" | "strokeOpacity"> = {};
+    readonly point: Pick<PointOptions, "fillColor" | "fillOpacity" | "hideIcon" | "iconKind" | "strokeColor" | "strokeOpacity"> = {};
     readonly polygon: Pick<PolygonOptions, "fillColor" | "fillOpacity" | "strokeColor" | "strokeOpacity" | "strokeWidth"> = {};
     readonly rectangle: Pick<RectangleOptions, "fillColor" | "fillOpacity" | "strokeColor" | "strokeOpacity" | "strokeWidth"> = {};
     readonly text: Pick<TextOptions, "fillColor" | "fillOpacity" | "fontFamily" | "fontSize" | "strokeColor" | "strokeOpacity"> = {};

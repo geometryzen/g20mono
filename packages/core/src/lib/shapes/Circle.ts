@@ -93,7 +93,7 @@ function path_options_from_circle_options(options: CircleOptions, owner: Board):
         fillOpacity: default_number(options.fillOpacity, owner.defaults.circle.fillOpacity),
         strokeColor: default_color(options.strokeColor, owner.defaults.circle.strokeColor),
         strokeOpacity: default_number(options.strokeOpacity, owner.defaults.circle.strokeOpacity),
-        strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
+        strokeWidth: default_closed_path_stroke_width(default_number(options.strokeWidth, owner.defaults.circle.strokeWidth), owner),
         dashes: options.dashes,
         opacity: options.opacity,
         plumb: options.plumb,

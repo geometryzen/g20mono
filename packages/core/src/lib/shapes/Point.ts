@@ -37,7 +37,7 @@ export class Point extends Group {
                 }
                 icon_options.width = 8 / sx;
                 icon_options.height = 8 / sy;
-                if (options.hideIcon) {
+                if (hideIcon(options, owner)) {
                     icon_options.visibility = "hidden";
                 }
                 const shape = new Rectangle(owner, icon_options);
@@ -51,7 +51,7 @@ export class Point extends Group {
                 }
                 icon_options.rx = 4 / sx;
                 icon_options.ry = 4 / sy;
-                if (options.hideIcon) {
+                if (hideIcon(options, owner)) {
                     icon_options.visibility = "hidden";
                 }
                 const shape = new Ellipse(owner, icon_options);
@@ -151,10 +151,18 @@ function should_add_label(options: PointOptions): boolean {
     }
 }
 
-function iconKind(options: PointOptions, owner: Board) {
+function iconKind(options: PointOptions, owner: Board): "ellipse" | "rectangle" {
     if (options.iconKind) {
         return options.iconKind;
     } else {
         return owner.defaults.point.iconKind;
+    }
+}
+
+function hideIcon(options: PointOptions, owner: Board): boolean {
+    if (typeof options.hideIcon === "boolean") {
+        return options.hideIcon;
+    } else {
+        return owner.defaults.point.hideIcon;
     }
 }

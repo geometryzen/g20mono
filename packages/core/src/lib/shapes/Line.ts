@@ -68,7 +68,7 @@ function path_options_from_line_options(options: LineOptions, owner: Board): Pat
         plumb: options.plumb,
         strokeColor: default_color(options.strokeColor, owner.defaults.line.strokeColor),
         strokeOpacity: default_number(options.strokeOpacity, owner.defaults.line.strokeOpacity),
-        strokeWidth: default_open_path_stroke_width(options.strokeWidth, owner),
+        strokeWidth: default_open_path_stroke_width(default_number(options.strokeWidth, owner.defaults.line.strokeWidth), owner),
         sx: options.sx,
         sy: options.sy,
         vectorEffect: options.vectorEffect,
