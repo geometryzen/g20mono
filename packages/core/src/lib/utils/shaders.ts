@@ -16,7 +16,7 @@ export const shaders = {
 
     types: {
         vertex: "VERTEX_SHADER",
-        fragment: "FRAGMENT_SHADER",
+        fragment: "FRAGMENT_SHADER"
     },
 
     path: {
@@ -54,7 +54,7 @@ export const shaders = {
         }
         gl_FragColor = texel;
       }
-    `,
+    `
     },
 
     points: {
@@ -91,6 +91,6 @@ export const shaders = {
         }
         gl_FragColor = texel;
       }
-    `,
-    },
+    `
+    }
 };

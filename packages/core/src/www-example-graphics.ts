@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const size = 1;
 
     const board = initBoard("my-board", {
-        boundingBox: { left: -1, top: 1, right: 1, bottom: -1 }, // Cartesian
+        boundingBox: { left: -1, top: 1, right: 1, bottom: -1 } // Cartesian
         // boundingBox: { left: -1, top: -1, right: 1, bottom: 1 },     // SVG
         // boundingBox: { left: 1, top: 1, right: -1, bottom: -1 },     // crazy
         // boundingBox: { left: 1, top: -1, right: -1, bottom: 1 },     // crazy and goofy
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
         fillOpacity: 0.3,
         strokeColor: "#FFCC00",
         strokeOpacity: 0.6,
-        strokeWidth: 4 / board.sx,
+        strokeWidth: 4 / board.sx
     });
     board.add(rectangle as unknown as Path);
 
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
         strokeColor: "#FFCC00",
         strokeOpacity: 0.6,
         strokeWidth: 4 / board.sx,
-        twist: Math.PI / 2,
+        twist: Math.PI / 2
     });
 
     board.add(polygon as unknown as Path);
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
         strokeColor: "#FFCC00",
         strokeOpacity: 0.6,
         strokeWidth: 4 / board.sx,
-        twist: Math.PI / 2,
+        twist: Math.PI / 2
     });
     board.add(star as unknown as Path);
 

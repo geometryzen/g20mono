@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const board = initBoard("my-board", {
         // boundingBox: { left: -300, top: 300, right: 300, bottom: -300 },    // Cartesian
-        boundingBox: { left: -300, top: -300, right: 300, bottom: 300 }, // SVG
+        boundingBox: { left: -300, top: -300, right: 300, bottom: 300 } // SVG
         // boundingBox: { left: 5, top: 5, right: -5, bottom: -5 },     // crazy
         // boundingBox: { left: 5, top: -5, right: -5, bottom: 5 },     // crazy and goofy
     });

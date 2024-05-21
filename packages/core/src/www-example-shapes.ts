@@ -2,7 +2,7 @@ import { G20, initBoard } from "./index";
 
 document.addEventListener("DOMContentLoaded", function () {
     const board = initBoard("my-board", {
-        boundingBox: { left: -300, top: 300, right: 300, bottom: -300 },
+        boundingBox: { left: -300, top: 300, right: 300, bottom: -300 }
     });
 
     const circle = board.circle({ radius: 50 });

@@ -69,7 +69,7 @@ export class ArcSegment extends Path {
                 if (enabled) {
                     this.update();
                 }
-            }),
+            })
         );
 
         this.#disposables.push(
@@ -77,7 +77,7 @@ export class ArcSegment extends Path {
                 if (enabled) {
                     this.update();
                 }
-            }),
+            })
         );
 
         this.#disposables.push(
@@ -85,7 +85,7 @@ export class ArcSegment extends Path {
                 if (enabled) {
                     this.update();
                 }
-            }),
+            })
         );
 
         this.#disposables.push(
@@ -93,7 +93,7 @@ export class ArcSegment extends Path {
                 if (enabled) {
                     this.update();
                 }
-            }),
+            })
         );
 
         enabled = true;
@@ -154,7 +154,7 @@ function path_options_from_arc_options(options: ArcSegmentOptions, owner: Board)
         sx: options.sx,
         sy: options.sy,
         vectorEffect: options.vectorEffect,
-        visibility: options.visibility,
+        visibility: options.visibility
     };
     return retval;
 }

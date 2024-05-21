@@ -23,7 +23,7 @@ describe("GraphicsBoard", function () {
 
         const viewDOM = new MockViewDOM();
         const board = initBoard(element, {
-            boundingBox: { left: -1, top: 1, right: 1, bottom: -1 },
+            boundingBox: { left: -1, top: 1, right: 1, bottom: -1 }
         });
 
         expect(board.goofy).toBe(false);
@@ -35,7 +35,7 @@ describe("GraphicsBoard", function () {
             innerRadius: 0.5,
             outerRadius: 1.0,
             startAngle: 0,
-            endAngle: Math.PI,
+            endAngle: Math.PI
         });
         expect(arc.X.x).toBe(x);
         expect(arc.X.y).toBe(y);
@@ -70,7 +70,7 @@ describe("GraphicsBoard", function () {
 
         const viewDOM = new MockViewDOM();
         const board = initBoard(element, {
-            boundingBox: { left: -1, top: 1, right: 1, bottom: -1 },
+            boundingBox: { left: -1, top: 1, right: 1, bottom: -1 }
         });
 
         expect(board.goofy).toBe(false);
@@ -80,7 +80,7 @@ describe("GraphicsBoard", function () {
         const x = 2;
         const y = 3;
         const arrow = board.arrow(axis, {
-            position: [x, y],
+            position: [x, y]
         });
         expect(arrow.X.x).toBe(x);
         expect(arrow.X.y).toBe(y);
@@ -115,7 +115,7 @@ describe("GraphicsBoard", function () {
 
         const viewDOM = new MockViewDOM();
         const board = initBoard(element, {
-            boundingBox: { left: -1, top: 1, right: 1, bottom: -1 },
+            boundingBox: { left: -1, top: 1, right: 1, bottom: -1 }
         });
 
         expect(board.goofy).toBe(false);
@@ -124,7 +124,7 @@ describe("GraphicsBoard", function () {
         const x = 2;
         const y = 3;
         const circle = board.circle({
-            position: [x, y],
+            position: [x, y]
         });
         expect(circle.X.x).toBe(x);
         expect(circle.X.y).toBe(y);
@@ -159,7 +159,7 @@ describe("GraphicsBoard", function () {
 
         const viewDOM = new MockViewDOM();
         const board = initBoard(element, {
-            boundingBox: { left: -1, top: 1, right: 1, bottom: -1 },
+            boundingBox: { left: -1, top: 1, right: 1, bottom: -1 }
         });
 
         expect(board.goofy).toBe(false);
@@ -168,7 +168,7 @@ describe("GraphicsBoard", function () {
         const x = 2;
         const y = 3;
         const ellipse = board.ellipse({
-            position: [x, y],
+            position: [x, y]
         });
         expect(ellipse.X.x).toBe(x);
         expect(ellipse.X.y).toBe(y);
@@ -201,7 +201,7 @@ describe("GraphicsBoard", function () {
 
         const viewDOM = new MockViewDOM();
         const board = initBoard(element, {
-            boundingBox: { left: -1, top: 1, right: 1, bottom: -1 },
+            boundingBox: { left: -1, top: 1, right: 1, bottom: -1 }
         });
 
         expect(board.goofy).toBe(false);
@@ -210,7 +210,7 @@ describe("GraphicsBoard", function () {
         const x = 2;
         const y = 3;
         const group: Shape = new Group(board, [], {
-            position: [x, y],
+            position: [x, y]
         });
         expect(group.X.x).toBe(x);
         expect(group.X.y).toBe(y);
@@ -246,7 +246,7 @@ describe("GraphicsBoard", function () {
 
         const viewDOM = new MockViewDOM();
         const board = initBoard(element, {
-            boundingBox: { left: -1, top: 1, right: 1, bottom: -1 },
+            boundingBox: { left: -1, top: 1, right: 1, bottom: -1 }
         });
 
         expect(board.goofy).toBe(false);
@@ -255,7 +255,7 @@ describe("GraphicsBoard", function () {
         const x = 2;
         const y = 3;
         const L = board.line([0, 0], [1, 0], {
-            position: [x, y],
+            position: [x, y]
         });
         expect(L.X.x).toBe(x);
         expect(L.X.y).toBe(y);
@@ -315,7 +315,7 @@ describe("GraphicsBoard", function () {
 
         const viewDOM = new MockViewDOM();
         const board = initBoard(element, {
-            boundingBox: { left: -1, top: 1, right: 1, bottom: -1 },
+            boundingBox: { left: -1, top: 1, right: 1, bottom: -1 }
         });
 
         expect(board.goofy).toBe(false);
@@ -329,11 +329,11 @@ describe("GraphicsBoard", function () {
                 [0, 0],
                 [1, 0],
                 [1, 1],
-                [0, 1],
+                [0, 1]
             ],
             {
-                position: [x, y],
-            },
+                position: [x, y]
+            }
         );
         expect(path.X.x).toBe(x);
         expect(path.X.y).toBe(y);
@@ -392,7 +392,7 @@ describe("GraphicsBoard", function () {
 
         const viewDOM = new MockViewDOM();
         const board = initBoard(element, {
-            boundingBox: { left: -1, top: 1, right: 1, bottom: -1 },
+            boundingBox: { left: -1, top: 1, right: 1, bottom: -1 }
         });
 
         expect(board.goofy).toBe(false);
@@ -431,7 +431,7 @@ describe("GraphicsBoard", function () {
 
         const viewDOM = new MockViewDOM();
         const board = initBoard(element, {
-            boundingBox: { left: -1, top: 1, right: 1, bottom: -1 },
+            boundingBox: { left: -1, top: 1, right: 1, bottom: -1 }
         });
 
         expect(board.goofy).toBe(false);
@@ -440,7 +440,7 @@ describe("GraphicsBoard", function () {
         const x = 2;
         const y = 3;
         const polygon = board.polygon([], {
-            position: [x, y],
+            position: [x, y]
         });
         expect(polygon.X.x).toBe(x);
         expect(polygon.X.y).toBe(y);
@@ -472,7 +472,7 @@ describe("GraphicsBoard", function () {
 
         const viewDOM = new MockViewDOM();
         const board = initBoard(element, {
-            boundingBox: { left: -1, top: 1, right: 1, bottom: -1 },
+            boundingBox: { left: -1, top: 1, right: 1, bottom: -1 }
         });
 
         expect(board.goofy).toBe(false);
@@ -481,7 +481,7 @@ describe("GraphicsBoard", function () {
         const x = 2;
         const y = 3;
         const rectangle = board.rectangle({
-            position: [x, y],
+            position: [x, y]
         });
         expect(rectangle.X.x).toBe(x);
         expect(rectangle.X.y).toBe(y);
@@ -514,7 +514,7 @@ describe("GraphicsBoard", function () {
 
         const viewDOM = new MockViewDOM();
         const board = initBoard(element, {
-            boundingBox: { left: -1, top: 1, right: 1, bottom: -1 },
+            boundingBox: { left: -1, top: 1, right: 1, bottom: -1 }
         });
 
         expect(board.goofy).toBe(false);
@@ -523,7 +523,7 @@ describe("GraphicsBoard", function () {
         const x = 2;
         const y = 3;
         const text = board.text("Hello, World!", {
-            position: [x, y],
+            position: [x, y]
         });
         expect(text.X.x).toBe(x);
         expect(text.X.y).toBe(y);

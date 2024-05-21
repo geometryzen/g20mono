@@ -24,7 +24,7 @@ export class TreeView<T> implements View<T> {
         this.viewBox = viewBox;
         this.viewBox.parent = null;
         this.domElement = this.#viewDOM.createSVGElement("svg", {
-            id: `${containerId}-svg`,
+            id: `${containerId}-svg`
         });
 
         this.#defs = this.#viewDOM.createSVGElement("defs", {});
@@ -57,7 +57,7 @@ export class TreeView<T> implements View<T> {
         this.height = size.height;
         this.#viewDOM.setAttributes(this.domElement, {
             width: `${size.width}px`,
-            height: `${size.height}px`,
+            height: `${size.height}px`
         });
         this.#size.set(size);
         return this;

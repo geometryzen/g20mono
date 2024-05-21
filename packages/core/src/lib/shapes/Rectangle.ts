@@ -84,19 +84,19 @@ export class Rectangle extends Path implements RectangleProperties, Disposable {
         this.#disposables.push(
             this.#width.change$.subscribe(() => {
                 this.update();
-            }),
+            })
         );
 
         this.#disposables.push(
             this.#height.change$.subscribe(() => {
                 this.update();
-            }),
+            })
         );
 
         this.#disposables.push(
             this.#origin.change$.subscribe(() => {
                 this.update();
-            }),
+            })
         );
 
         this.flagReset(true);
@@ -170,7 +170,7 @@ function path_options_from_rectangle_options(options: RectangleOptions, owner: B
         sx: options.sx,
         sy: options.sy,
         vectorEffect: options.vectorEffect,
-        visibility: options.visibility,
+        visibility: options.visibility
     };
     return retval;
 }

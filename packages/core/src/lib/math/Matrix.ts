@@ -22,7 +22,7 @@ export class Matrix {
      */
     readonly #signalValue: [ELEMENTS, ELEMENTS] = [
         [1, 0, 0, 0, 1, 0, 0, 0, 1],
-        [1, 0, 0, 0, 1, 0, 0, 0, 1],
+        [1, 0, 0, 0, 1, 0, 0, 0, 1]
     ];
 
     /**
@@ -32,7 +32,7 @@ export class Matrix {
      * and MUST NOT be called when mutating this multivector.
      */
     readonly #signal: State<ELEMENTS> = signal(this.#signalValue[0], {
-        equals: equalsValue,
+        equals: equalsValue
     });
 
     // readonly #change = variable(this);
@@ -90,7 +90,7 @@ export class Matrix {
         return JSON.stringify([
             [this.a11, this.a12, this.a13],
             [this.a21, this.a22, this.a23],
-            [this.a31, this.a32, this.a33],
+            [this.a31, this.a32, this.a33]
         ]);
     }
 

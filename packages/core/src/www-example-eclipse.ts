@@ -2,7 +2,7 @@ import { Board, initBoard, Shape } from "./index";
 
 document.addEventListener("DOMContentLoaded", function () {
     const board = initBoard("my-board", {
-        boundingBox: { left: -2, top: 2, right: 2, bottom: -2 }, // regular (y increases upwards)
+        boundingBox: { left: -2, top: 2, right: 2, bottom: -2 } // regular (y increases upwards)
         // boundingBox: { left: -2, top: -2, right: 2, bottom: 2 } // goofy (y increases downwards)
         // boundingBox: { left: 2, top: 2, right: -2, bottom: -2 } // regular, crazy (x increases leftwards)
         // boundingBox: { left: 2, top: -2, right: -2, bottom: 2 } // goofy, crazy (x increases leftwards)
@@ -13,14 +13,14 @@ document.addEventListener("DOMContentLoaded", function () {
         rx: 1.0,
         ry: 0.5,
         strokeColor: "lightgreen",
-        strokeWidth: 4,
+        strokeWidth: 4
     });
     ellipse.R.rotorFromAngle(Math.PI / 4);
     ellipse.X.x += 1.0;
 
     const origin = board.point([0.0, 0.0], {
         id: "origin",
-        visibility: "hidden",
+        visibility: "hidden"
     });
     const unitX = board.point([1.0, 0.0], { id: "unitX", visibility: "hidden" });
     const unitY = board.point([0.0, 1.0], { id: "unitY", visibility: "hidden" });
@@ -29,14 +29,14 @@ document.addEventListener("DOMContentLoaded", function () {
         id: "ex",
         position: origin.X,
         strokeColor: "red",
-        strokeWidth: 4,
+        strokeWidth: 4
     });
 
     const ey = board.arrow(unitY.X, {
         id: "ey",
         position: origin.X,
         strokeColor: "blue",
-        strokeWidth: 4,
+        strokeWidth: 4
     });
 
     const textX = board.text("ex", {
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
         fontSize: 20,
         strokeOpacity: 0.5,
         strokeWidth: 1,
-        dx: 20,
+        dx: 20
     });
     rescale(textX, board);
 
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
         fontSize: 20,
         strokeOpacity: 0.5,
         strokeWidth: 1,
-        dy: 20,
+        dy: 20
     });
     rescale(textY, board);
 

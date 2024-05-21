@@ -12,7 +12,7 @@ export class Anchor {
     readonly #origin_change: Disposable;
     readonly controls = {
         a: new G20(),
-        b: new G20(),
+        b: new G20()
     };
     readonly #a_change: Disposable;
     readonly #b_change: Disposable;

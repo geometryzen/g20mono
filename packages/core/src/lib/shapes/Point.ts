@@ -104,7 +104,7 @@ function ellipse_options_from_point_options(options: PointOptions, owner: Board)
         strokeColor: default_color(options.strokeColor, owner.defaults.point.strokeColor),
         strokeOpacity: default_number(options.strokeOpacity, owner.defaults.point.strokeOpacity),
         strokeWidth: options.strokeWidth,
-        visibility: options.visibility,
+        visibility: options.visibility
     };
     return retval;
 }
@@ -116,7 +116,7 @@ function rectangle_options_from_point_options(options: PointOptions, owner: Boar
         strokeColor: default_color(options.strokeColor, owner.defaults.point.strokeColor),
         strokeOpacity: default_number(options.strokeOpacity, owner.defaults.point.strokeOpacity),
         strokeWidth: options.strokeWidth,
-        visibility: options.visibility,
+        visibility: options.visibility
     };
     return retval;
 }
@@ -134,7 +134,7 @@ function text_options_from_point_options(options: PointOptions, owner: Board): T
         strokeColor: default_color(options.strokeColor, owner.defaults.text.strokeColor),
         strokeOpacity: default_number(options.strokeOpacity, owner.defaults.text.strokeOpacity),
         strokeWidth: options.strokeWidth,
-        visibility: options.visibility,
+        visibility: options.visibility
     };
     return retval;
 }

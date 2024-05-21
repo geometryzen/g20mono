@@ -187,7 +187,7 @@ describe("Ellipse", function () {
         const ellipse = new Ellipse(board, {
             rx: [1, 0],
             ry: [0, 0.5],
-            id: "ellipse",
+            id: "ellipse"
         });
         board.add(ellipse);
         expect(ellipse.id).toBe("ellipse");

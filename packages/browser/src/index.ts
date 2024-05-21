@@ -63,7 +63,7 @@ export {
     View,
     ViewDOM,
     ViewFactory,
-    ZZZ,
+    ZZZ
 } from "@g20/core";
 export { CircleCircleIntersection } from "@g20/euclid";
 export { Gradient, GradientOptions, LinearGradient, LinearGradientOptions, RadialGradient, RadialGradientOptions, Stop } from "@g20/gradient";

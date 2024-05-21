@@ -3,5 +3,5 @@ export const Commands = {
     line: "L",
     curve: "C",
     arc: "A",
-    close: "Z",
+    close: "Z"
 } as const;

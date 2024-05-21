@@ -71,7 +71,7 @@ export class GraphicsBoard<E, T> implements Board {
         left: -1,
         top: 1,
         right: 1,
-        bottom: -1,
+        bottom: -1
     });
     /**
      * 'goofy' is actually regular SVG coordinates where the y coordinate increases downwards.
@@ -142,7 +142,7 @@ export class GraphicsBoard<E, T> implements Board {
                 this.height = height;
                 this.#update_view_box();
                 this.#size.set({ width, height });
-            }),
+            })
         );
     }
 
@@ -527,7 +527,7 @@ interface BoardConfig<E> {
 function config_from_options<E>(container: E): BoardConfig<E> {
     const config: BoardConfig<E> = {
         resizeTo: compute_config_resize_to(container),
-        size: compute_config_size(container),
+        size: compute_config_size(container)
     };
     return config;
 }

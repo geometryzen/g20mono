@@ -78,13 +78,13 @@ export class Ellipse extends Path {
         this.#disposables.push(
             this.rx.change$.subscribe(() => {
                 this.update();
-            }),
+            })
         );
 
         this.#disposables.push(
             this.ry.change$.subscribe(() => {
                 this.update();
-            }),
+            })
         );
 
         this.flagReset(true);
@@ -177,7 +177,7 @@ function path_options_from_ellipse_options(options: EllipseOptions, owner: Board
         sx: options.sx,
         sy: options.sy,
         vectorEffect: options.vectorEffect,
-        visibility: options.visibility,
+        visibility: options.visibility
     };
     return retval;
 }

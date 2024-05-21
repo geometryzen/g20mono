@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const disposables: Disposable[] = [];
 
     const board = initBoard("my-board", {
-        boundingBox: { left: -1, top: 1, right: 1, bottom: -1 }, // Cartesian
+        boundingBox: { left: -1, top: 1, right: 1, bottom: -1 } // Cartesian
         // boundingBox: { left: -1, top: -1, right: 1, bottom: 1 },     // SVG
         // boundingBox: { left: 1, top: 1, right: -1, bottom: -1 },     // crazy
         // boundingBox: { left: 1, top: -1, right: -1, bottom: 1 },     // crazy and goofy
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
         id: "A",
         visibility: "collapse",
         fill: "red",
-        stroke: "red",
+        stroke: "red"
     });
     const B = board.point([8.0, 0.0], { id: "B", visibility: "hidden" });
     const C = board.point([8.0, 4.0], { id: "C", visibility: "hidden" });
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
         strokeOpacity: 0.6,
         strokeWidth: 4,
         width: 2,
-        height: 1,
+        height: 1
     });
     box.attitude.rotorFromDirections(AB, AC);
     box.position
@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
         fontFamily: "Lato",
         fontSize: 20,
         opacity: 0.4,
-        position: A.X,
+        position: A.X
     });
     rescale(textA, board);
 
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
         fontFamily: "Lato",
         fontSize: 20,
         opacity: 0.4,
-        position: B.X,
+        position: B.X
     });
     rescale(textB, board);
 
@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
         fontFamily: "Lato",
         fontSize: 20,
         opacity: 0.4,
-        position: C.X,
+        position: C.X
     });
     rescale(textC, board);
 
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
         baseline: "middle",
         fontFamily: "Lato",
         fontSize: 20,
-        position: box.X,
+        position: box.X
     });
     textBox.attitude.rotorFromDirections(AB, AC);
     rescale(textBox, board);
@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
         baseline: "hanging",
         fontFamily: "Lato",
         fontSize: 20,
-        position: ramp.X,
+        position: ramp.X
     });
     textRamp.attitude.rotorFromDirections(AB, AC);
     rescale(textRamp, board);
@@ -107,14 +107,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const Fg = board.arrow(G20.ey.scale(-2), {
         id: "Fg",
         position: box.X,
-        strokeWidth: 2,
+        strokeWidth: 2
     });
     Fg.strokeOpacity = 0.4;
 
     const Fn = board.arrow(N.scale(1.5), {
         id: "Fn",
         position: box.X,
-        strokeOpacity: 0.4,
+        strokeOpacity: 0.4
     });
     Fn.strokeWidth = 2;
     const textFn = board.text("Fn", {
@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
         anchor: "middle",
         baseline: "auto",
         fontFamily: "Lato",
-        fontSize: 20,
+        fontSize: 20
     });
     rescale(textFn, board);
     textFn.attitude.rotorFromDirections(AB, AC);
@@ -130,19 +130,19 @@ document.addEventListener("DOMContentLoaded", function () {
     disposables.push(
         box.X.change$.subscribe(() => {
             textFn.position.copyVector(box.X).add(N.scale(1.6));
-        }),
+        })
     );
 
     const Fs = board.arrow(S.scale(1.5), {
         id: "Fs",
-        position: box.X,
+        position: box.X
     });
     Fs.strokeOpacity = 0.4;
     Fs.strokeWidth = 2;
 
     const arrow = board.arrow(G20.ex.scale(1), {
         id: "arrow",
-        strokeWidth: 4,
+        strokeWidth: 4
     });
     arrow.axis = G20.ey;
     arrow.headLength = 0.25;

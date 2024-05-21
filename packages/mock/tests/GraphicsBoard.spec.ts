@@ -19,7 +19,7 @@ describe("GraphicsBoard", function () {
 
         const viewDOM = new MockViewDOM();
         const board = initMockBoard(element, {
-            boundingBox: { left: -1, top: 1, right: 1, bottom: -1 },
+            boundingBox: { left: -1, top: 1, right: 1, bottom: -1 }
         });
 
         expect(board.goofy).toBe(false);

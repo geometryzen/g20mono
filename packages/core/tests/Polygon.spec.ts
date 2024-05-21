@@ -50,7 +50,7 @@ describe("Polygon", function () {
         const polygon = new Polygon(board, [
             [0, 0],
             [4, 0],
-            [4, 3],
+            [4, 3]
         ]);
         board.add(polygon);
         expect(polygon.id).toBe(null);

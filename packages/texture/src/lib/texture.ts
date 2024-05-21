@@ -73,7 +73,7 @@ export class Texture extends ElementBase implements ColorProvider {
                 x: "0",
                 y: "0",
                 width: `${this.image.width}`,
-                height: `${this.image.height}`,
+                height: `${this.image.height}`
             });
             if (is_canvas(this.image)) {
                 viewDOM.setAttribute(this.zzz.image as T, "href", this.image.toDataURL("image/png"));

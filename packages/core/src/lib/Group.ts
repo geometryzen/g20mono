@@ -253,7 +253,7 @@ export function update_shape_group(child: Shape, parent?: Group) {
 function shape_attributes(options: Partial<GroupOptions>): ShapeOptions {
     const retval: ShapeOptions = {
         id: options.id,
-        position: options.position,
+        position: options.position
     };
     return retval;
 }

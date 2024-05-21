@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
         fillOpacity: 0.3,
         stroke: "#FFCC00",
         strokeOpacity: 0.6,
-        strokeWidth: 4 / board.sx,
+        strokeWidth: 4 / board.sx
         // vectorEffect:'non-scaling-stroke'
     });
 

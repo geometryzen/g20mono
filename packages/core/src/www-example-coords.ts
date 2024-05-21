@@ -3,7 +3,7 @@ import { Board, initBoard, Shape } from "./index";
 document.addEventListener("DOMContentLoaded", function () {
     const board = initBoard("my-board", {
         // viewFactory: new CanvasViewFactory(),
-        boundingBox: { left: -2, top: 2, right: 2, bottom: -2 }, // regular (y increases upwards)
+        boundingBox: { left: -2, top: 2, right: 2, bottom: -2 } // regular (y increases upwards)
         // boundingBox: { left: -2, top: -2, right: 2, bottom: 2 } // SVG (y increases downwards)
         // boundingBox: { left: 2, top: 2, right: -2, bottom: -2 } // regular, crazy
         // boundingBox: { left: 2, top: -2, right: -2, bottom: 2 } // SVG, crazy
@@ -17,14 +17,14 @@ document.addEventListener("DOMContentLoaded", function () {
         id: "ex",
         position: origin.X,
         strokeColor: "red",
-        strokeWidth: 4,
+        strokeWidth: 4
     });
 
     const ey = board.arrow(unitY.X, {
         id: "ey",
         position: origin.X,
         strokeColor: "blue",
-        strokeWidth: 4,
+        strokeWidth: 4
     });
 
     const textX = board.text("ex (red)", {
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
         opacity: 0.5,
         fillOpacity: 0.5,
         strokeOpacity: 0.5,
-        strokeWidth: 1,
+        strokeWidth: 1
     });
     rescale(textX, board);
 
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
         opacity: 0.5,
         fillOpacity: 0.5,
         strokeOpacity: 0.5,
-        strokeWidth: 1,
+        strokeWidth: 1
     });
     rescale(textY, board);
 

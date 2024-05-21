@@ -22,7 +22,7 @@ export class Grid extends Group {
         for (let i = 0; i < Ly; i++) {
             const line = new Line(board, [bbox.left, my * (i - My)], [bbox.right, my * (i - My)], {
                 strokeWidth: 2 / board.sx,
-                strokeOpacity: 0.5,
+                strokeOpacity: 0.5
             });
             this.add(line);
         }
@@ -30,7 +30,7 @@ export class Grid extends Group {
         for (let i = 0; i < Lx; i++) {
             const line = new Line(board, [mx * (i - Mx), bbox.bottom], [mx * (i - Mx), bbox.top], {
                 strokeWidth: 2 / board.sx,
-                strokeOpacity: 0.5,
+                strokeOpacity: 0.5
             });
             this.add(line);
         }

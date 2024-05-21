@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const disposables: Disposable[] = [];
 
     const board = initBoard("my-board", {
-        boundingBox: { left: -1, top: 1, right: 1, bottom: -1 }, // Cartesian
+        boundingBox: { left: -1, top: 1, right: 1, bottom: -1 } // Cartesian
         // boundingBox: { left: -1, top: -1, right: 1, bottom: 1 },     // SVG
         // boundingBox: { left: 1, top: 1, right: -1, bottom: -1 },     // crazy
         // boundingBox: { left: 1, top: -1, right: -1, bottom: 1 },     // crazy and goofy
@@ -15,12 +15,12 @@ document.addEventListener("DOMContentLoaded", function () {
     // Here it's not the Board itself, but the classes that it refers to.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const gridA = new Grid(board as any, {
-        id: "gridA",
+        id: "gridA"
     });
     board.add(gridA as unknown as Path);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const gridB = new Grid(board as any, {
-        id: "gridB",
+        id: "gridB"
     });
     board.add(gridB as unknown as Path);
     gridB.xAxis.strokeOpacity = 0.5;

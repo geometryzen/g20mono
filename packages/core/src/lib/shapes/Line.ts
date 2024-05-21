@@ -72,7 +72,7 @@ function path_options_from_line_options(options: LineOptions, owner: Board): Pat
         sx: options.sx,
         sy: options.sy,
         vectorEffect: options.vectorEffect,
-        visibility: options.visibility,
+        visibility: options.visibility
     };
     return retval;
 }

@@ -3,3 +3,4 @@ printWidth: 256
 semi: true
 singleQuote: false
 tabWidth: 4
+trailingComma: none

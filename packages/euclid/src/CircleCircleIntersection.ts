@@ -60,7 +60,7 @@ export class CircleCircleIntersection implements Disposable {
                 r = circleB.radius;
                 compute();
                 this.#change.set(this.#change.get() + 1);
-            }),
+            })
         );
     }
     dispose(): void {

@@ -14,7 +14,7 @@ if (mode === "write") {
     // eslint-disable-next-line no-undef
     console.log(
         await esbuild.analyzeMetafile(result.metafile, {
-            verbose: false,
-        }),
+            verbose: false
+        })
     );
 }

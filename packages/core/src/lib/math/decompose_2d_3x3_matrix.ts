@@ -58,6 +58,6 @@ export function decompose_2d_3x3_matrix(m: Matrix): MatrixDecomposition {
         scaleY: Math.sqrt(b * b + d * d), // should be multiplied by sign(d)
         // TODO: rotation is being reported in degrees.
         // tan(φ) = -b/a = c/d
-        rotation: Math.atan2(b, a),
+        rotation: Math.atan2(b, a)
     };
 }

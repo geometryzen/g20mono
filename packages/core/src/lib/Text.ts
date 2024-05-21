@@ -191,7 +191,7 @@ export class Text extends ColoredShapeBase implements TextProperties {
                     return function () {
                         // No cleanup to be done.
                     };
-                }),
+                })
             );
 
             // decoration
@@ -204,7 +204,7 @@ export class Text extends ColoredShapeBase implements TextProperties {
                     return function () {
                         // No cleanup to be done.
                     };
-                }),
+                })
             );
 
             // direction
@@ -219,7 +219,7 @@ export class Text extends ColoredShapeBase implements TextProperties {
                     return function () {
                         // No cleanup to be done.
                     };
-                }),
+                })
             );
 
             // dominant-baseline
@@ -256,7 +256,7 @@ export class Text extends ColoredShapeBase implements TextProperties {
                     return function () {
                         // No cleanup to be done.
                     };
-                }),
+                })
             );
 
             // dx
@@ -280,7 +280,7 @@ export class Text extends ColoredShapeBase implements TextProperties {
                     return function () {
                         // No cleanup to be done.
                     };
-                }),
+                })
             );
 
             // dy
@@ -304,21 +304,21 @@ export class Text extends ColoredShapeBase implements TextProperties {
                     return function () {
                         // No cleanup to be done.
                     };
-                }),
+                })
             );
 
             // font-family
             this.zzz.disposables.push(
                 effect(() => {
                     viewDOM.setAttributes(text, { "font-family": this.fontFamily });
-                }),
+                })
             );
 
             // font-size
             this.zzz.disposables.push(
                 effect(() => {
                     viewDOM.setAttributes(text, { "font-size": `${this.fontSize}` });
-                }),
+                })
             );
 
             // font-style
@@ -333,7 +333,7 @@ export class Text extends ColoredShapeBase implements TextProperties {
                     return function () {
                         // No cleanup to be done.
                     };
-                }),
+                })
             );
 
             // font-weight
@@ -348,14 +348,14 @@ export class Text extends ColoredShapeBase implements TextProperties {
                     return function () {
                         // No cleanup to be done.
                     };
-                }),
+                })
             );
 
             // textContent
             this.zzz.disposables.push(
                 effect(() => {
                     viewDOM.setTextContent(text, this.content);
-                }),
+                })
             );
         }
 
@@ -605,7 +605,7 @@ function shape_options_from_text_options(options: Partial<TextOptions>, owner: B
         sx: typeof options.sx === "number" ? options.sx : 1 / owner.sx,
         sy: typeof options.sy === "number" ? options.sy : 1 / owner.sy,
         vectorEffect: options.vectorEffect,
-        visibility: options.visibility,
+        visibility: options.visibility
     };
     return retval;
 }

@@ -96,13 +96,13 @@ export const Register = {
             image.src = texture.src;
             image.load();
         }
-    },
+    }
 } as const;
 
 const regex = {
     video: /\.(mp4|webm|ogg)$/i,
     image: /\.(jpe?g|png|gif|tiff|webp)$/i,
-    effect: /texture|gradient/i,
+    effect: /texture|gradient/i
 } as const;
 
 export function getImage(src: string): HTMLCanvasElement | HTMLImageElement | HTMLVideoElement {

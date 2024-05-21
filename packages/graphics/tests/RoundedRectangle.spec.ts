@@ -21,7 +21,7 @@ describe("RoundedRectangle", function () {
                     expect(viewee.getAttribute("stroke")).toBe("gray");
                     expect(viewee.getAttribute("stroke-width")).toBe("0.009375");
                     expect(viewee.getAttribute("d")).toBe(
-                        "M -0.707107 -0.507107 L -0.707107 0.507106 L -0.507107 0.707106 L 0.507106 0.707106 L 0.707106 0.507106 L 0.707106 -0.507107 L 0.507106 -0.707107 L -0.507107 -0.707107 L -0.707107 -0.507107 L -0.707107 -0.507107 Z",
+                        "M -0.707107 -0.507107 L -0.707107 0.507106 L -0.507107 0.707106 L 0.507106 0.707106 L 0.707106 0.507106 L 0.707106 -0.507107 L 0.507106 -0.707107 L -0.507107 -0.707107 L -0.707107 -0.507107 L -0.707107 -0.507107 Z"
                     );
                     board.dispose();
                     resolve();
@@ -37,7 +37,7 @@ describe("RoundedRectangle", function () {
         const shape = new RoundedRectangle(board, {
             width: 1,
             height: 1,
-            radius: 0.2,
+            radius: 0.2
         });
         board.add(shape);
         expect(shape.id).toBe(null);

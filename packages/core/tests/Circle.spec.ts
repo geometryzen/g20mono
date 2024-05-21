@@ -111,7 +111,7 @@ describe("Circle", function () {
         const circle = new Circle(board, {
             radius: 1,
             id: "circle",
-            resolution: 4,
+            resolution: 4
         });
         board.add(circle);
         expect(circle.id).toBe("circle");

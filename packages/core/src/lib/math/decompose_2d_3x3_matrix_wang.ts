@@ -26,7 +26,7 @@ export function decompose_2d_3x3_matrix_wang(matrix: Matrix) {
         position: { x, y },
         rotation: 0,
         scale: [0, 0],
-        skew: [0, 0],
+        skew: [0, 0]
     };
 
     // Apply the QR-like decomposition.

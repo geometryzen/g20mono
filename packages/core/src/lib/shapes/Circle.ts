@@ -57,7 +57,7 @@ export class Circle extends Path implements CircleProperties {
         this.#disposables.push(
             this.#radius.change$.subscribe(() => {
                 this.update();
-            }),
+            })
         );
 
         this.flagReset(true);
@@ -100,7 +100,7 @@ function path_options_from_circle_options(options: CircleOptions, owner: Board):
         sx: options.sx,
         sy: options.sy,
         vectorEffect: options.vectorEffect,
-        visibility: options.visibility,
+        visibility: options.visibility
     };
     return retval;
 }

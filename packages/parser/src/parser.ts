@@ -5,13 +5,13 @@ import { Gradient, LinearGradient, RadialGradient, Stop } from "@g20/gradient";
 const regex = {
     path: /[+-]?(?:\d*\.\d+|\d+)(?:[eE][+-]\d+)?/g,
     cssBackgroundImage: /url\(['"]?#([\w\d-_]*)['"]?\)/i,
-    unitSuffix: /[a-zA-Z%]*/i,
+    unitSuffix: /[a-zA-Z%]*/i
 } as const;
 
 const alignments = {
     start: "left",
     middle: "center",
-    end: "right",
+    end: "right"
 } as const;
 
 // Reserved attributes to remove
@@ -944,7 +944,7 @@ export const read = {
         // with the rest of the API.
         rect.centroid = {
             x: rect.left + rect.width / 2,
-            y: rect.top + rect.height / 2,
+            y: rect.top + rect.height / 2
         };
 
         _.each(path.vertices, function (v) {
@@ -1247,5 +1247,5 @@ export const read = {
         applySvgAttributes.call(this, node, sprite, parentStyles);
 
         return sprite;
-    },
+    }
 } as const;

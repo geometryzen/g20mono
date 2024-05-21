@@ -34,7 +34,7 @@ export class Arrow extends Path {
             new Anchor(G20.vector(0, 0), Commands.move), // port head
             new Anchor(G20.vector(0, 0), Commands.line), // port tail
             new Anchor(G20.vector(0, 0), Commands.move), // stbd head
-            new Anchor(G20.vector(0, 0), Commands.line), // stbd tail
+            new Anchor(G20.vector(0, 0), Commands.line) // stbd tail
         ];
 
         super(owner, vertices, false, false, true, path_attribs_from_arrow_attribs(options, owner));
@@ -57,17 +57,17 @@ export class Arrow extends Path {
         this.#disposables.push(
             this.axis.change$.subscribe(() => {
                 this.update();
-            }),
+            })
         );
         this.#disposables.push(
             this.#headLength.change$.subscribe(() => {
                 this.update();
-            }),
+            })
         );
         this.#disposables.push(
             this.#origin.change$.subscribe(() => {
                 this.update();
-            }),
+            })
         );
     }
     override dispose(): void {
@@ -156,7 +156,7 @@ function path_attribs_from_arrow_attribs(options: ArrowOptions, owner: Board): P
         sx: options.sx,
         sy: options.sy,
         vectorEffect: options.vectorEffect,
-        visibility: options.visibility,
+        visibility: options.visibility
     };
     return retval;
 }

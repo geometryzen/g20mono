@@ -10,5 +10,5 @@ export const Constants = {
 
     uniqueId: function (): number {
         return next_unique_id++;
-    },
+    }
 };

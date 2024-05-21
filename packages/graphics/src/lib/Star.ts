@@ -55,7 +55,7 @@ export class Star extends Path {
         this.#trash.push(
             effect(() => {
                 this.update();
-            }),
+            })
         );
     }
 
@@ -128,7 +128,7 @@ function path_options_from_star_options(options: StarOptions, owner: Board): Pat
         fillOpacity: default_number(options.fillOpacity, owner.defaults.polygon.fillOpacity),
         strokeColor: default_color(options.strokeColor, owner.defaults.polygon.strokeColor),
         strokeOpacity: default_number(options.strokeOpacity, owner.defaults.polygon.strokeOpacity),
-        strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
+        strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner)
     };
     return retval;
 }

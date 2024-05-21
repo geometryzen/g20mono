@@ -33,6 +33,6 @@ export function disposableFromFunction(f: Function): Disposable {
     return {
         dispose: () => {
             f();
-        },
+        }
     };
 }

@@ -100,7 +100,7 @@ export class G20 {
      */
     readonly #signalValue: [COORDS, COORDS] = [
         [0, 0, 0, 0],
-        [0, 0, 0, 0],
+        [0, 0, 0, 0]
     ];
     /**
      * The underlying data that makes this multivector into a signal.
@@ -108,7 +108,7 @@ export class G20 {
      * and MUST NOT be called when mutating this multivector.
      */
     readonly #signal: State<COORDS> = signal(this.#signalValue[0], {
-        equals: equalsValue,
+        equals: equalsValue
     });
 
     #lock = UNLOCKED;
@@ -466,7 +466,7 @@ export class G20 {
                 [+x0, +x1, +x2, -x3],
                 [+x1, +x0, -x3, +x2],
                 [+x2, +x3, +x0, -x1],
-                [+x3, +x2, -x1, +x0],
+                [+x3, +x2, -x1, +x0]
             ];
 
             const s = [1, 0, 0, 0];

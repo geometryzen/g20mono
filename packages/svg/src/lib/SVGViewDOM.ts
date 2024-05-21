@@ -281,7 +281,7 @@ export const svg = {
         let clipPath = shape.zzz.svgClipPathElement as T;
         if (!clipPath) {
             clipPath = shape.zzz.svgClipPathElement = viewDOM.createSVGElement("clipPath", {
-                "clip-rule": "nonzero",
+                "clip-rule": "nonzero"
             });
         }
         if (viewDOM.getParentNode(clipPath) === null) {
@@ -305,8 +305,8 @@ export const svg = {
                 }
                 set_defs_dirty_flag(defs, false);
             }
-        },
-    },
+        }
+    }
 } as const;
 
 /**

@@ -8,10 +8,10 @@ export function createBuildSettings(options) {
         sourcemap: true,
         plugins: [
             esbuildPluginTsc({
-                force: true,
+                force: true
                 //                tsconfigPath:"./build/tsconfig.json"
-            }),
+            })
         ],
-        ...options,
+        ...options
     };
 }

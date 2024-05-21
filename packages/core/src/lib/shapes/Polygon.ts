@@ -44,7 +44,7 @@ function path_attributes(options: PolygonOptions, owner: Board): PathOptions {
         sx: options.sx,
         sy: options.sy,
         vectorEffect: options.vectorEffect,
-        visibility: options.visibility,
+        visibility: options.visibility
     };
     return retval;
 }

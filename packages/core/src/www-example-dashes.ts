@@ -2,7 +2,7 @@ import { initBoard } from "./index";
 
 document.addEventListener("DOMContentLoaded", function () {
     const board = initBoard("my-board", {
-        boundingBox: { left: 0, top: 0, right: 30, bottom: 12 },
+        boundingBox: { left: 0, top: 0, right: 30, bottom: 12 }
     });
 
     board.line([0, 1], [30, 1], { vectorEffect: "none" });

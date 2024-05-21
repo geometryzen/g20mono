@@ -63,7 +63,7 @@ describe("Rectangle", function () {
         const rectangle = new Rectangle(board, {
             width: 4,
             height: 2,
-            id: "rectangle",
+            id: "rectangle"
         });
         board.add(rectangle);
         expect(rectangle.id).toBe("rectangle");
@@ -121,7 +121,7 @@ describe("Rectangle", function () {
         const rectangle = new Rectangle(board, {
             width: [4, 0],
             height: [0, 2],
-            id: "rectangle",
+            id: "rectangle"
         });
         board.add(rectangle);
         expect(rectangle.id).toBe("rectangle");

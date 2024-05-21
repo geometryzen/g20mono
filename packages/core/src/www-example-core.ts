@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
     board.polygon([
         [0, 1],
         [-Math.cos(Math.PI / 6), -Math.sin(Math.PI / 6)],
-        [Math.cos(Math.PI / 6), -Math.sin(Math.PI / 6)],
+        [Math.cos(Math.PI / 6), -Math.sin(Math.PI / 6)]
     ]);
 
     board.text("Hello, World");
@@ -33,14 +33,14 @@ document.addEventListener("DOMContentLoaded", function () {
         [0, -0.5],
         [-0.25, -0.75],
         [0, -1],
-        [0.25, -0.75],
+        [0.25, -0.75]
     ]);
 
     board.curve(true, [
         [0, 0],
         [0, 0.8],
         [-0.8, 0],
-        [0, -0.8],
+        [0, -0.8]
     ]);
 
     /*

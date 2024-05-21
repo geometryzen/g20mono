@@ -168,7 +168,7 @@ export abstract class ColoredShapeBase extends ShapeBase {
                     return function () {
                         // No cleanup to be done.
                     };
-                }),
+                })
             );
 
             // fill
@@ -178,7 +178,7 @@ export abstract class ColoredShapeBase extends ShapeBase {
                     return function () {
                         // No cleanup to be done.
                     };
-                }),
+                })
             );
 
             // fill-opacity
@@ -193,7 +193,7 @@ export abstract class ColoredShapeBase extends ShapeBase {
                     return function () {
                         // No cleanup to be done.
                     };
-                }),
+                })
             );
 
             // stroke
@@ -203,7 +203,7 @@ export abstract class ColoredShapeBase extends ShapeBase {
                     return function () {
                         // No cleanup to be done.
                     };
-                }),
+                })
             );
 
             // stroke-opacity
@@ -218,7 +218,7 @@ export abstract class ColoredShapeBase extends ShapeBase {
                     return function () {
                         // No cleanup to be done.
                     };
-                }),
+                })
             );
 
             // stroke-width
@@ -233,7 +233,7 @@ export abstract class ColoredShapeBase extends ShapeBase {
                     return function () {
                         // No cleanup to be done.
                     };
-                }),
+                })
             );
 
             // vector-effect
@@ -248,7 +248,7 @@ export abstract class ColoredShapeBase extends ShapeBase {
                     return function () {
                         // No cleanup to be done.
                     };
-                }),
+                })
             );
 
             super.render(viewDOM, parentElement, svgElement);
@@ -266,7 +266,7 @@ function shape_attribs_from_colored_attribs(options: ColoredShapeOptions): Parti
         position: options.position,
         sx: options.sx,
         sy: options.sy,
-        visibility: options.visibility,
+        visibility: options.visibility
     };
     return retval;
 }

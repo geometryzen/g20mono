@@ -5,8 +5,8 @@ import { createBuildSettings } from "./settings.js";
 const settings = createBuildSettings({
     sourcemap: true,
     banner: {
-        js: `new EventSource('/esbuild').addEventListener('change', () => location.reload());`,
-    },
+        js: `new EventSource('/esbuild').addEventListener('change', () => location.reload());`
+    }
 });
 
 const ctx = await esbuild.context(settings);
@@ -16,7 +16,7 @@ await ctx.watch();
 const { host, port } = await ctx.serve({
     port: 5500,
     servedir: "www",
-    fallback: "www/index.html",
+    fallback: "www/index.html"
 });
 
 // eslint-disable-next-line no-undef

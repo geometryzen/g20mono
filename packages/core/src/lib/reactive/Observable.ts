@@ -15,7 +15,7 @@ export class DisposableObservable<T> implements Observable<T> {
         const disposable: Disposable = {
             dispose(): void {
                 subscription.unsubscribe();
-            },
+            }
         };
         return disposable;
     }

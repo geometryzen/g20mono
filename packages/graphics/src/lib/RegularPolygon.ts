@@ -50,7 +50,7 @@ export class RegularPolygon extends Path {
         this.#trash.push(
             effect(() => {
                 this.update();
-            }),
+            })
         );
 
         this.flagReset(true);
@@ -103,7 +103,7 @@ function path_attribs_from_regular_polygon_attribs(options: RegularPolygonOption
         fillOpacity: default_number(options.fillOpacity, owner.defaults.polygon.fillOpacity),
         strokeColor: default_color(options.strokeColor, owner.defaults.polygon.strokeColor),
         strokeOpacity: default_number(options.strokeOpacity, owner.defaults.polygon.strokeOpacity),
-        strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
+        strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner)
         // plumb: attributes.plumb
     };
     return retval;

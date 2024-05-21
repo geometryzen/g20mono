@@ -15,5 +15,5 @@ export enum Flag {
     StartAngle,
     Stops,
     Stroke,
-    Units,
+    Units
 }
