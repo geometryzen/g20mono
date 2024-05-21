@@ -1,6 +1,6 @@
 {
     "name": "@g20/grid",
-    "version": "1.0.0-alpha.19",
+    "version": "1.0.0-alpha.20",
     "description": "Grid",
     "exports": {
         ".": {

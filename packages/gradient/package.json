@@ -1,6 +1,6 @@
 {
     "name": "@g20/gradient",
-    "version": "1.0.0-alpha.19",
+    "version": "1.0.0-alpha.20",
     "description": "LinearGradient and RadialGradient",
     "exports": {
         ".": {
