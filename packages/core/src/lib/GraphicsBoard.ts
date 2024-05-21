@@ -37,7 +37,7 @@ export interface GraphicsBoardOptions {
 }
 
 export class GraphicsBoard<E, T> implements Board {
-    readonly defaults = new Defaults();
+    readonly defaults: Defaults = new Defaults();
     readonly #disposables: Disposable[] = [];
 
     readonly #view: View<T>;

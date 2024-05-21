@@ -4,6 +4,7 @@ import { Color } from "../effects/ColorProvider";
 import { VectorLike, vector_from_like } from "../math/G20";
 import { Path, PathOptions } from "../Path";
 import { default_color } from "../utils/default_color";
+import { default_number } from "../utils/default_number";
 import { default_closed_path_stroke_width } from "../utils/default_stroke_width";
 
 export interface PolygonOptions extends PathOptions {
@@ -33,12 +34,12 @@ function path_attributes(options: PolygonOptions, owner: Board): PathOptions {
         position: options.position,
         attitude: options.attitude,
         dashes: options.dashes,
-        fillColor: default_color(options.fillColor, "none"),
-        fillOpacity: options.fillOpacity,
+        fillColor: default_color(options.fillColor, owner.defaults.polygon.fillColor),
+        fillOpacity: default_number(options.fillOpacity, owner.defaults.polygon.fillOpacity),
         opacity: options.opacity,
         plumb: options.plumb,
-        strokeColor: default_color(options.strokeColor, "gray"),
-        strokeOpacity: options.strokeOpacity,
+        strokeColor: default_color(options.strokeColor, owner.defaults.polygon.strokeColor),
+        strokeOpacity: default_number(options.strokeOpacity, owner.defaults.polygon.strokeOpacity),
         strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
         sx: options.sx,
         sy: options.sy,

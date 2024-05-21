@@ -6,10 +6,10 @@ import { Color } from "../effects/ColorProvider";
 import { G20, SpinorLike, VectorLike } from "../math/G20";
 import { Path, PathOptions } from "../Path";
 import { Disposable, dispose } from "../reactive/Disposable";
+import { Commands } from "../utils/Commands";
 import { default_color } from "../utils/default_color";
 import { default_closed_path_stroke_width } from "../utils/default_stroke_width";
 import { HALF_PI, TWO_PI } from "../utils/math";
-import { Commands } from "../utils/Commands";
 
 const cos = Math.cos;
 const sin = Math.sin;
@@ -102,14 +102,30 @@ export class Ellipse extends Path {
     get rx(): G20 {
         return this.#rx;
     }
-    set rx(rx: G20) {
-        this.#rx.copyVector(rx);
+    set rx(rx: number | VectorLike) {
+        if (rx instanceof G20) {
+            this.#rx.copyVector(rx);
+        }
+        else if (Array.isArray(rx)) {
+            this.#rx.set(rx[0], rx[1])
+        }
+        else if (typeof rx === 'number') {
+            this.#rx.set(rx, 0);
+        }
     }
     get ry(): G20 {
         return this.#ry;
     }
-    set ry(ry: G20) {
-        this.#ry.copyVector(ry);
+    set ry(ry: number | VectorLike) {
+        if (ry instanceof G20) {
+            this.#ry.copyVector(ry);
+        }
+        else if (Array.isArray(ry)) {
+            this.#ry.set(ry[0], ry[1])
+        }
+        else if (typeof ry === 'number') {
+            this.#ry.set(0, ry);
+        }
     }
 }
 

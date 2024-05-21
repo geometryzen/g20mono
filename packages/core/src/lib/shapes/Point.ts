@@ -13,6 +13,7 @@ export interface PointOptions extends Pick<TextOptions, "anchor" | "baseline" | 
     id?: string;
     fillColor?: Color;
     fillOpacity?: number;
+    hideIcon?: boolean;
     iconKind?: "ellipse" | "rectangle";
     name?: string;
     strokeColor?: Color;
@@ -36,6 +37,9 @@ export class Point extends Group {
                 }
                 icon_options.width = 8 / sx;
                 icon_options.height = 8 / sy;
+                if (options.hideIcon) {
+                    icon_options.visibility = "hidden";
+                }
                 const shape = new Rectangle(owner, icon_options);
                 this.add(shape);
                 break;
@@ -47,6 +51,9 @@ export class Point extends Group {
                 }
                 icon_options.rx = 4 / sx;
                 icon_options.ry = 4 / sy;
+                if (options.hideIcon) {
+                    icon_options.visibility = "hidden";
+                }
                 const shape = new Ellipse(owner, icon_options);
                 this.add(shape);
             }

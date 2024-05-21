@@ -6,6 +6,7 @@ import { G20, SpinorLike, VectorLike } from "../math/G20";
 import { Path, PathOptions } from "../Path";
 import { Disposable, dispose } from "../reactive/Disposable";
 import { default_color } from "../utils/default_color";
+import { default_number } from "../utils/default_number";
 import { default_closed_path_stroke_width } from "../utils/default_stroke_width";
 
 const scratch: G20 = G20.zero.clone();
@@ -160,10 +161,10 @@ function path_options_from_rectangle_options(options: RectangleOptions, owner: B
         opacity: options.opacity,
         position: options.position,
         visibility: options.visibility,
-        fillColor: default_color(options.fillColor, "none"),
-        fillOpacity: options.fillOpacity,
-        strokeColor: default_color(options.strokeColor, "gray"),
-        strokeOpacity: options.strokeOpacity,
+        fillColor: default_color(options.fillColor, owner.defaults.rectangle.fillColor),
+        fillOpacity: default_number(options.fillOpacity, owner.defaults.rectangle.fillOpacity),
+        strokeColor: default_color(options.strokeColor, owner.defaults.rectangle.strokeColor),
+        strokeOpacity: default_number(options.strokeOpacity, owner.defaults.rectangle.strokeOpacity),
         strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
         vectorEffect: options.vectorEffect,
     };

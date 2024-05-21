@@ -1,6 +1,7 @@
 import { Anchor, Board, Collection, Color, Disposable, dispose, G20, Path, PathOptions, SpinorLike, VectorLike } from "@g20/core";
 import { effect, signal } from "@g20/reactive";
 import { default_color } from "./default_color";
+import { default_number } from "./default_number";
 import { default_closed_path_stroke_width } from "./default_stroke_width";
 
 const cos = Math.cos;
@@ -98,10 +99,10 @@ function path_attribs_from_regular_polygon_attribs(options: RegularPolygonOption
         opacity: options.opacity,
         position: options.position,
         visibility: options.visibility,
-        fillColor: default_color(options.fillColor, "none"),
-        fillOpacity: options.fillOpacity,
-        strokeColor: default_color(options.strokeColor, "gray"),
-        strokeOpacity: options.strokeOpacity,
+        fillColor: default_color(options.fillColor, owner.defaults.polygon.fillColor),
+        fillOpacity: default_number(options.fillOpacity, owner.defaults.polygon.fillOpacity),
+        strokeColor: default_color(options.strokeColor, owner.defaults.polygon.strokeColor),
+        strokeOpacity: default_number(options.strokeOpacity, owner.defaults.polygon.strokeOpacity),
         strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
         // plumb: attributes.plumb
     };
