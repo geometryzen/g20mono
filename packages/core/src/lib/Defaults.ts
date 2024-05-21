@@ -1,3 +1,4 @@
+import { ArcSegmentOptions } from "./shapes/ArcSegment";
 import { ArrowOptions } from "./shapes/Arrow";
 import { CircleOptions } from "./shapes/Circle";
 import { EllipseOptions } from "./shapes/Ellipse";
@@ -8,6 +9,7 @@ import { RectangleOptions } from "./shapes/Rectangle";
 import { TextOptions } from "./Text";
 
 export class Defaults {
+    readonly arc: Pick<ArcSegmentOptions, "fillColor" | "fillOpacity" | "strokeColor" | "strokeOpacity" | "strokeWidth"> = {};
     readonly arrow: Pick<ArrowOptions, "fillColor" | "fillOpacity" | "strokeColor" | "strokeOpacity" | "strokeWidth"> = {};
     readonly circle: Pick<CircleOptions, "fillColor" | "fillOpacity" | "strokeColor" | "strokeOpacity" | "strokeWidth"> = {};
     readonly ellipse: Pick<EllipseOptions, "fillColor" | "fillOpacity" | "strokeColor" | "strokeOpacity" | "strokeWidth"> = {};
@@ -20,6 +22,12 @@ export class Defaults {
         this.reset();
     }
     reset(): void {
+        this.arc.fillColor = "none";
+        this.arc.fillOpacity = null;
+        this.arc.strokeColor = "gray";
+        this.arc.strokeOpacity = null;
+        this.arc.strokeWidth = null;
+
         this.arrow.fillColor = "none";
         this.arrow.fillOpacity = null;
         this.arrow.strokeColor = "gray";

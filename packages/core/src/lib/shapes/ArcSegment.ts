@@ -6,10 +6,11 @@ import { Color } from "../effects/ColorProvider.js";
 import { G20 } from "../math/G20.js";
 import { Path, PathOptions } from "../Path.js";
 import { Disposable, dispose } from "../reactive/Disposable";
+import { Commands } from "../utils/Commands.js";
 import { default_color } from "../utils/default_color.js";
+import { default_number } from "../utils/default_number.js";
 import { default_closed_path_stroke_width } from "../utils/default_stroke_width.js";
 import { HALF_PI, mod, TWO_PI } from "../utils/math.js";
-import { Commands } from "../utils/Commands.js";
 
 export interface ArcSegmentOptions extends PathOptions {
     innerRadius?: number;
@@ -143,11 +144,11 @@ function path_options_from_arc_options(options: ArcSegmentOptions, owner: Board)
         attitude: options.attitude,
         opacity: options.opacity,
         position: options.position,
-        fillColor: default_color(options.fillColor, "none"),
-        fillOpacity: options.fillOpacity,
-        strokeColor: default_color(options.strokeColor, "gray"),
-        strokeOpacity: options.strokeOpacity,
-        strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
+        fillColor: default_color(options.fillColor, owner.defaults.arc.fillColor),
+        fillOpacity: default_number(options.fillOpacity, owner.defaults.arc.fillOpacity),
+        strokeColor: default_color(options.strokeColor, owner.defaults.arc.strokeColor),
+        strokeOpacity: default_number(options.strokeOpacity, owner.defaults.arc.strokeOpacity),
+        strokeWidth: default_closed_path_stroke_width(default_number(options.strokeWidth, owner.defaults.arc.strokeWidth), owner),
         vectorEffect: options.vectorEffect,
         visibility: options.visibility,
     };
