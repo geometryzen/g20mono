@@ -1,6 +1,6 @@
 {
     "name": "@g20/core",
-    "version": "1.0.0-alpha.18",
+    "version": "1.0.0-alpha.19",
     "description": "Geometric Algebra 2D Graphics Library",
     "exports": {
         ".": {
