@@ -26,17 +26,7 @@ export interface RectangleOptions extends PathOptions {
     strokeWidth?: number;
 }
 
-export interface RectangleProperties {
-    id: string;
-    opacity: number;
-    width: G20;
-    height: G20;
-    visibility: "visible" | "hidden" | "collapse";
-    X: G20;
-    R: G20;
-}
-
-export class Rectangle extends Path implements RectangleProperties, Disposable {
+export class Rectangle extends Path implements Disposable {
     readonly #disposables: Disposable[] = [];
 
     /**

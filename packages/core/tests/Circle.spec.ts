@@ -154,9 +154,9 @@ describe("Circle", function () {
         board.add(circle);
         expect(circle.id).toBe(null);
 
-        expect(circle.radius).toBe(1);
+        expect(circle.radius.a).toBe(1);
         circle.radius = 2;
-        expect(circle.radius).toBe(2);
+        expect(circle.radius.a).toBe(2);
         return new Promise<void>((resolve, reject) => {
             setTimeout(() => {
                 try {

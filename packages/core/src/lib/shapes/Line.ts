@@ -17,15 +17,7 @@ export interface LineOptions extends PathOptions {
     visibility?: "visible" | "hidden" | "collapse";
 }
 
-export interface LineProperties {
-    id?: string;
-    stroke?: Color;
-    strokeOpacity?: number;
-    strokeWidth?: number;
-    visibility?: "visible" | "hidden" | "collapse";
-}
-
-export class Line extends Path implements LineProperties {
+export class Line extends Path {
     constructor(owner: Board, point1: VectorLike, point2: VectorLike, options: LineOptions = {}) {
         const vertex1 = new Anchor(vector_from_like(point1), "M");
         const vertex2 = new Anchor(vector_from_like(point2), "L");

@@ -42,29 +42,7 @@ export interface TextOptions extends ColoredShapeOptions {
     visibility?: "visible" | "hidden" | "collapse";
 }
 
-export interface TextProperties {
-    anchor: "start" | "middle" | "end";
-    baseline: "auto" | "text-bottom" | "alphabetic" | "ideographic" | "middle" | "central" | "mathematical" | "hanging" | "text-top";
-    decoration: TextDecoration[];
-    direction: "ltr" | "rtl";
-    dx: number | string;
-    dy: number | string;
-    fontFamily: string;
-    fillColor: Color;
-    fillOpacity: number;
-    id: string;
-    opacity: number;
-    fontSize: number;
-    strokeColor: Color;
-    strokeOpacity: number;
-    strokeWidth: number;
-    fontStyle: "normal" | "italic" | "oblique";
-    content: string;
-    visibility: "visible" | "hidden" | "collapse";
-    fontWeight: "normal" | "bold" | "bolder" | "lighter" | number;
-}
-
-export class Text extends ColoredShapeBase implements TextProperties {
+export class Text extends ColoredShapeBase {
     beginning: number;
     ending: number;
     length: number;

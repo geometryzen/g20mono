@@ -1,25 +1,28 @@
-import { CircleProperties, Color, G20 } from "@g20/core";
-import { signal } from "@g20/reactive";
-import { CircleCircleIntersection } from "../src/index";
+import { G20 } from "@g20/core";
+import { CircleCircleIntersection, circle_circle_intersection } from "../src/index";
 
-class MockCircle implements CircleProperties {
+class MockCircle {
     readonly X = G20.zero.clone();
-    readonly R = G20.one.clone();
-    readonly #radius = signal(1);
-    // radius$ = this.#radius.asObservable();
-    fillColor: Color;
-    fillOpacity: number;
-    strokeColor: Color;
-    strokeOpacity: number;
-    strokeWidth: number;
-    constructor() {}
-    get radius() {
-        return this.#radius.get();
-    }
+    readonly radius = G20.one.clone();
 }
 
-test("index", function () {
+test("intersection", function () {
     expect(typeof CircleCircleIntersection === "function").toBe(true);
+    const circleA = new MockCircle();
+    circleA.X.set(-0.5, 0);
+    const circleB = new MockCircle();
+    circleB.X.set(+0.5, 0);
+    const [point1, point2, disposable] = circle_circle_intersection(circleA, circleB);
+    expect(point1.x).toBe(0);
+    expect(point1.y).toBe(+Math.sqrt(0.75));
+    expect(point2.x).toBe(0);
+    expect(point2.y).toBe(-Math.sqrt(0.75));
+
+    disposable.dispose();
+});
+
+test("index", function () {
+    expect(typeof circle_circle_intersection === "function").toBe(true);
     const circleA = new MockCircle();
     circleA.X.set(-0.5, 0);
     const circleB = new MockCircle();

@@ -23,18 +23,7 @@ export interface CircleOptions extends PathOptions {
     resolution?: number;
 }
 
-export interface CircleProperties {
-    X: G20;
-    R: G20;
-    radius: number;
-    fillColor: Color;
-    fillOpacity: number;
-    strokeColor: Color;
-    strokeOpacity: number;
-    strokeWidth: number;
-}
-
-export class Circle extends Path implements CircleProperties {
+export class Circle extends Path {
     readonly #disposables: Disposable[] = [];
 
     readonly #radius = G20.scalar(1);
@@ -69,16 +58,18 @@ export class Circle extends Path implements CircleProperties {
     }
 
     override update(): this {
-        update_circle_vertices(this.radius, this.vertices);
+        update_circle_vertices(this.radius.a, this.vertices);
         super.update();
         return this;
     }
 
-    get radius(): number {
-        return this.#radius.a;
+    get radius(): G20 {
+        return this.#radius;
     }
-    set radius(radius: number) {
-        if (typeof radius === "number") {
+    set radius(radius: G20 | number) {
+        if (radius instanceof G20) {
+            this.#radius.set(0, 0, radius.a, 0);
+        } else if (typeof radius === "number") {
             this.#radius.set(0, 0, radius, 0);
         }
     }
