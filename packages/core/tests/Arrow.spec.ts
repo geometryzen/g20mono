@@ -12,7 +12,10 @@ describe("Arrow", () => {
         expect(arrow.X.y).toBe(0);
         expect(arrow.R.a).toBe(1);
         expect(arrow.R.b).toBe(0);
-        expect(arrow.headLength).toBe(0.2);
+        expect(arrow.headAngle).toBe(board.defaults.arrow.headAngle);
+        expect(arrow.headAngle).toBe(0.2997085997685563);
+        expect(arrow.headLength).toBe(board.defaults.arrow.headLength);
+        expect(arrow.headLength).toBe(0.05);
         board.add(arrow);
         board.dispose();
     });

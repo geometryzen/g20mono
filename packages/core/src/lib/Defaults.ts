@@ -8,9 +8,15 @@ import { PolygonOptions } from "./shapes/Polygon";
 import { RectangleOptions } from "./shapes/Rectangle";
 import { TextOptions } from "./Text";
 
+// This angle gives an arrow head that is an equilateral triangle.
+// const φ = Math.PI / 6;
+// This design gives an arrow head that fits into a golden ratio box.
+const golden = (1 + Math.sqrt(5)) / 2;
+const headAngle = Math.atan2(0.5, golden);
+
 export class Defaults {
     readonly arc: Pick<ArcSegmentOptions, "fillColor" | "fillOpacity" | "strokeColor" | "strokeOpacity" | "strokeWidth"> = {};
-    readonly arrow: Pick<ArrowOptions, "fillColor" | "fillOpacity" | "strokeColor" | "strokeOpacity" | "strokeWidth"> = {};
+    readonly arrow: Pick<ArrowOptions, "fillColor" | "fillOpacity" | "headAngle" | "headLength" | "strokeColor" | "strokeOpacity" | "strokeWidth"> = {};
     readonly circle: Pick<CircleOptions, "fillColor" | "fillOpacity" | "strokeColor" | "strokeOpacity" | "strokeWidth"> = {};
     readonly ellipse: Pick<EllipseOptions, "fillColor" | "fillOpacity" | "strokeColor" | "strokeOpacity" | "strokeWidth"> = {};
     readonly line: Pick<LineOptions, "fillColor" | "fillOpacity" | "strokeColor" | "strokeOpacity" | "strokeWidth"> = {};
@@ -30,6 +36,8 @@ export class Defaults {
 
         this.arrow.fillColor = "none";
         this.arrow.fillOpacity = null;
+        this.arrow.headAngle = headAngle;
+        this.arrow.headLength = 0.05;
         this.arrow.strokeColor = "gray";
         this.arrow.strokeOpacity = null;
         this.arrow.strokeWidth = null;

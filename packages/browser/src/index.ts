@@ -1,4 +1,4 @@
-export { initCanvasBoard } from "@g20/canvas";
+export { initBoard as initCanvasBoard } from "@g20/canvas";
 export {
     Anchor,
     ArcSegment,
@@ -65,7 +65,7 @@ export { circle_circle_intersection } from "@g20/euclid";
 export { Gradient, GradientOptions, LinearGradient, LinearGradientOptions, RadialGradient, RadialGradientOptions, Stop } from "@g20/gradient";
 export { RegularPolygon, RegularPolygonOptions, RoundedRectangle, RoundedRectangleOptions, Star, StarOptions } from "@g20/graphics";
 export { Axes, AxesOptions, Grid, GridOptions } from "@g20/grid";
-export { initMockBoard, MockElement, MockNode, MockViewDOM, MockViewFactory } from "@g20/mock";
+export { initBoard as initMockBoard, MockElement, MockNode, MockViewDOM, MockViewFactory } from "@g20/mock";
 export { Player } from "@g20/player";
 export { computed, Disposable, effect, Equals, Readable, signal, State, Writable } from "@g20/reactive";
 export { initBoard, SVGViewDOM, SVGViewFactory } from "@g20/svg";

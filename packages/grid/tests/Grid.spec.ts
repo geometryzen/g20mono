@@ -1,10 +1,10 @@
-import { initMockBoard, MockElement, MockViewDOM } from "@g20/mock";
+import { initBoard, MockElement, MockViewDOM } from "@g20/mock";
 import { Grid } from "../src/lib/Grid";
 
 describe("Grid", function () {
     it("constructor", function () {
         const element = new MockElement("div");
-        const board = initMockBoard(element);
+        const board = initBoard(element);
         const grid = new Grid(board);
         board.add(grid);
         expect(grid.id).toBe(null);
@@ -30,7 +30,7 @@ describe("Grid", function () {
     });
     it("options", function () {
         const element = new MockElement("div");
-        const board = initMockBoard(element);
+        const board = initBoard(element);
         const grid = new Grid(board, { id: "grid", opacity: 0.4 });
         board.add(grid);
         expect(grid.id).toBe("grid");

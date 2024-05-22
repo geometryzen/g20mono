@@ -12,6 +12,7 @@ import { default_open_path_stroke_width } from "../utils/default_stroke_width";
 
 export interface ArrowOptions extends PathOptions {
     id?: string;
+    headAngle?: number;
     headLength?: number;
     position?: VectorLike;
     attitude?: SpinorLike;
@@ -25,6 +26,7 @@ export interface ArrowOptions extends PathOptions {
 export class Arrow extends Path {
     readonly #disposables: Disposable[] = [];
     readonly #axis: G20;
+    readonly #headAngle: G20;
     readonly #headLength: G20;
     readonly #origin: G20;
     constructor(owner: Board, axis: VectorLike, options: ArrowOptions = {}) {
@@ -41,11 +43,16 @@ export class Arrow extends Path {
 
         this.#axis = vector_from_like(axis);
 
+        if (typeof options.headAngle === "number") {
+            this.#headAngle = G20.scalar(options.headAngle);
+        } else {
+            this.#headAngle = G20.scalar(owner.defaults.arrow.headAngle);
+        }
+
         if (typeof options.headLength === "number") {
-            // We're hitting the internal property so that we don't trigger a vertex update.
             this.#headLength = G20.scalar(options.headLength);
         } else {
-            this.#headLength = G20.scalar(0.2);
+            this.#headLength = G20.scalar(owner.defaults.arrow.headLength);
         }
 
         this.#origin = G20.zero.clone();
@@ -56,6 +63,11 @@ export class Arrow extends Path {
 
         this.#disposables.push(
             this.axis.change$.subscribe(() => {
+                this.update();
+            })
+        );
+        this.#disposables.push(
+            this.#headAngle.change$.subscribe(() => {
                 this.update();
             })
         );
@@ -75,7 +87,7 @@ export class Arrow extends Path {
         super.dispose();
     }
     override update(): this {
-        update_arrow_vertices(this.axis, this.headLength, this.origin, this.vertices);
+        update_arrow_vertices(this.axis, this.headAngle, this.headLength, this.origin, this.vertices);
         super.update();
         return this;
     }
@@ -91,6 +103,16 @@ export class Arrow extends Path {
             this.#axis.copyVector(axis);
         } else if (Array.isArray(axis)) {
             this.#axis.set(axis[0], axis[1]);
+        }
+    }
+    get headAngle(): number {
+        return this.#headAngle.a;
+    }
+    set headAngle(headAngle: number) {
+        if (typeof headAngle === "number") {
+            if (this.headAngle !== headAngle) {
+                this.#headAngle.set(0, 0, headAngle, 0);
+            }
         }
     }
     get headLength(): number {
@@ -115,13 +137,8 @@ export class Arrow extends Path {
     }
 }
 
-function update_arrow_vertices(axis: G20, headLength: number, origin: G20, vertices: Collection<Anchor>): void {
+function update_arrow_vertices(axis: G20, headAngle: number, headLength: number, origin: G20, vertices: Collection<Anchor>): void {
     const θ = Math.atan2(axis.y, axis.x);
-    // This angle gives an arrow head that is an equilateral triangle.
-    // const φ = Math.PI / 6;
-    // This design gives an arrow head that fits into a golden ratio box.
-    const golden = (1 + Math.sqrt(5)) / 2;
-    const φ = Math.atan2(0.5, golden);
 
     const tail = vertices.getAt(0);
     const head = vertices.getAt(1);
@@ -134,10 +151,12 @@ function update_arrow_vertices(axis: G20, headLength: number, origin: G20, verti
     head.origin.copyVector(axis).sub(origin);
 
     port_head.origin.copyVector(axis).sub(origin);
-    port_tail.origin.set(axis.x - headLength * Math.cos(θ - φ), axis.y - headLength * Math.sin(θ - φ)).sub(origin);
+    const θm = θ - headAngle;
+    port_tail.origin.set(axis.x - headLength * Math.cos(θm), axis.y - headLength * Math.sin(θm)).sub(origin);
 
     stbd_head.origin.copyVector(axis).sub(origin);
-    stbd_tail.origin.set(axis.x - headLength * Math.cos(θ + φ), axis.y - headLength * Math.sin(θ + φ)).sub(origin);
+    const θp = θ + headAngle;
+    stbd_tail.origin.set(axis.x - headLength * Math.cos(θp), axis.y - headLength * Math.sin(θp)).sub(origin);
 }
 
 function path_attribs_from_arrow_attribs(options: ArrowOptions, owner: Board): PathOptions {

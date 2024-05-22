@@ -1,10 +1,10 @@
-import { initMockBoard, MockElement, MockViewDOM } from "@g20/mock";
+import { initBoard, MockElement, MockViewDOM } from "@g20/mock";
 import { RoundedRectangle } from "../src/lib/RoundedRectangle";
 
 describe("RoundedRectangle", function () {
     it("constructor", function () {
         const element = new MockElement("div");
-        const board = initMockBoard(element);
+        const board = initBoard(element);
         const shape = new RoundedRectangle(board);
         board.add(shape);
         expect(shape.id).toBe(null);
@@ -33,7 +33,7 @@ describe("RoundedRectangle", function () {
     });
     it("options", function () {
         const element = new MockElement("div");
-        const board = initMockBoard(element);
+        const board = initBoard(element);
         const shape = new RoundedRectangle(board, {
             width: 1,
             height: 1,

@@ -12,10 +12,10 @@ export class Axes extends Group {
     constructor(board: Board, options: AxesOptions = {}) {
         super(board, [], options);
         const bbox = board.getBoundingBox();
-        const sx = Math.abs(bbox.right - bbox.left);
-        const sy = Math.abs(bbox.top - bbox.bottom);
-        const dx = sx * 0.05;
-        const dy = sy * 0.05;
+        const sizeX = Math.abs(bbox.right - bbox.left);
+        const sizeY = Math.abs(bbox.top - bbox.bottom);
+        const dx = sizeX * 0.05;
+        const dy = sizeY * 0.05;
 
         const xHead: [x: number, y: number] = [(board.crazy ? bbox.left : bbox.right) - dx, 0];
         const xTail: [x: number, y: number] = [(board.crazy ? bbox.right : bbox.left) + dx, 0];
@@ -23,15 +23,15 @@ export class Axes extends Group {
         const yHead: [x: number, y: number] = [0, (board.goofy ? bbox.bottom : bbox.top) - dy];
         const yTail: [x: number, y: number] = [0, (board.goofy ? bbox.top : bbox.bottom) + dy];
 
-        this.xAxis = new Arrow(board, G20.ex.scale(sx - 2 * dx), {
+        this.xAxis = new Arrow(board, G20.ex.scale(sizeX - 2 * dx), {
             position: xTail,
-            headLength: 0.025 * sx
+            headLength: 0.025 * sizeX
         });
         this.add(this.xAxis);
 
-        this.yAxis = new Arrow(board, G20.ey.scale(sy - 2 * dy), {
+        this.yAxis = new Arrow(board, G20.ey.scale(sizeY - 2 * dy), {
             position: yTail,
-            headLength: 0.025 * sy
+            headLength: 0.025 * sizeY
         });
         this.add(this.yAxis);
 

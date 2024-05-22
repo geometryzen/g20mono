@@ -1,6 +1,6 @@
 import { Shape } from "@g20/core";
 import { GraphicsBoard } from "../../core/src/index";
-import { initMockBoard, MockElement, MockViewDOM } from "../src/index";
+import { initBoard, MockElement, MockViewDOM } from "../src/index";
 
 describe("GraphicsBoard", function () {
     it("constructor", function () {
@@ -8,7 +8,7 @@ describe("GraphicsBoard", function () {
 
         const element = new MockElement("div");
 
-        const board = initMockBoard(element, {});
+        const board = initBoard(element, {});
 
         board.rectangle();
     });
@@ -18,7 +18,7 @@ describe("GraphicsBoard", function () {
         const element = new MockElement("div");
 
         const viewDOM = new MockViewDOM();
-        const board = initMockBoard(element, {
+        const board = initBoard(element, {
             boundingBox: { left: -1, top: 1, right: 1, bottom: -1 }
         });
 

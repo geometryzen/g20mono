@@ -1,10 +1,10 @@
-import { initMockBoard, MockElement, MockViewDOM } from "@g20/mock";
+import { initBoard, MockElement, MockViewDOM } from "@g20/mock";
 import { RegularPolygon } from "../src/lib/RegularPolygon";
 
 describe("RegularPolygon", function () {
     it("constructor", function () {
         const element = new MockElement("div");
-        const board = initMockBoard(element);
+        const board = initBoard(element);
         const shape = new RegularPolygon(board);
         board.add(shape);
         expect(shape.id).toBe(null);
@@ -31,7 +31,7 @@ describe("RegularPolygon", function () {
     });
     it("options", function () {
         const element = new MockElement("div");
-        const board = initMockBoard(element);
+        const board = initBoard(element);
         const shape = new RegularPolygon(board, { radius: 1 });
         board.add(shape);
         expect(shape.id).toBe(null);

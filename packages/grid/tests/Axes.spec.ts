@@ -1,10 +1,10 @@
-import { initMockBoard, MockElement, MockViewDOM } from "@g20/mock";
+import { initBoard, MockElement, MockViewDOM } from "@g20/mock";
 import { Axes } from "../src/lib/Axes";
 
 describe("Grid", function () {
     it("constructor", function () {
         const element = new MockElement("div");
-        const board = initMockBoard(element);
+        const board = initBoard(element);
         const axes = new Axes(board);
         board.add(axes);
         expect(axes.id).toBe(null);

@@ -1,10 +1,10 @@
-import { initMockBoard, MockElement, MockViewDOM } from "@g20/mock";
+import { initBoard, MockElement, MockViewDOM } from "@g20/mock";
 import { Star } from "../src/lib/Star";
 
 describe("Star", function () {
     it("constructor", function () {
         const element = new MockElement("div");
-        const board = initMockBoard(element);
+        const board = initBoard(element);
         const shape = new Star(board);
         board.add(shape);
         expect(shape.id).toBe(null);
@@ -33,7 +33,7 @@ describe("Star", function () {
     });
     it("options", function () {
         const element = new MockElement("div");
-        const board = initMockBoard(element);
+        const board = initBoard(element);
         const shape = new Star(board, { radius: 1 });
         board.add(shape);
         expect(shape.id).toBe(null);

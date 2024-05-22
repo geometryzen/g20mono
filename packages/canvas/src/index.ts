@@ -1,1 +1,1 @@
-export { initCanvasBoard } from "./lib/initCanvasBoard";
+export { initBoard } from "./lib/initBoard";

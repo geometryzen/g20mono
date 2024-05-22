@@ -12,7 +12,10 @@ document.addEventListener("DOMContentLoaded", function () {
     board.defaults.point.iconKind = "rectangle";
     board.defaults.text.fontFamily = "Lato";
 
-    board.point([0.5, 0.5], { name: "A", id: "point" });
+    board.point([0.5, 0.5], { name: "A", id: "point", fillColor: "#FF0000" });
+    board.arrow([1, 0]);
+    board.arrow([0.5, 0.5]);
+    board.arrow([0, 1]);
 
     window.onunload = () => {
         board.dispose();
