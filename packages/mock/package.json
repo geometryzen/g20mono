@@ -1,6 +1,6 @@
 {
     "name": "@g20/mock",
-    "version": "1.0.0-alpha.23",
+    "version": "1.0.0-alpha.24",
     "description": "MockElement, MockNode, and initBoard",
     "exports": {
         ".": {
