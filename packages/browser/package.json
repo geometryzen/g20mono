@@ -69,9 +69,12 @@
     "dependencies": {
         "@g20/canvas": "file:../canvas",
         "@g20/core": "file:../core",
+        "@g20/euclid": "file:../euclid",
         "@g20/gradient": "file:../gradient",
         "@g20/graphics": "file:../graphics",
         "@g20/grid": "file:../grid",
+        "@g20/mock": "file:../mock",
+        "@g20/player": "file:../player",
         "@g20/reactive": "file:../reactive",
         "@g20/svg": "file:../svg",
         "canvg": "^4.0.2",

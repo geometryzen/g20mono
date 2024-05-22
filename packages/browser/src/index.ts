@@ -61,7 +61,7 @@ export {
     ViewFactory,
     ZZZ
 } from "@g20/core";
-export { CircleCircleIntersection } from "@g20/euclid";
+export { circle_circle_intersection } from "@g20/euclid";
 export { Gradient, GradientOptions, LinearGradient, LinearGradientOptions, RadialGradient, RadialGradientOptions, Stop } from "@g20/gradient";
 export { RegularPolygon, RegularPolygonOptions, RoundedRectangle, RoundedRectangleOptions, Star, StarOptions } from "@g20/graphics";
 export { Axes, AxesOptions, Grid, GridOptions } from "@g20/grid";
