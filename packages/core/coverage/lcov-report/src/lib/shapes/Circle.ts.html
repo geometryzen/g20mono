@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">98.14% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>51/51</span>
+                <span class='fraction'>53/54</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">88.88% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>7/7</span>
+                <span class='fraction'>8/9</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">98.07% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>49/49</span>
+                <span class='fraction'>51/52</span>
             </div>
         
             
@@ -191,15 +191,7 @@
 <a name='L126'></a><a href='#L126'>126</a>
 <a name='L127'></a><a href='#L127'>127</a>
 <a name='L128'></a><a href='#L128'>128</a>
-<a name='L129'></a><a href='#L129'>129</a>
-<a name='L130'></a><a href='#L130'>130</a>
-<a name='L131'></a><a href='#L131'>131</a>
-<a name='L132'></a><a href='#L132'>132</a>
-<a name='L133'></a><a href='#L133'>133</a>
-<a name='L134'></a><a href='#L134'>134</a>
-<a name='L135'></a><a href='#L135'>135</a>
-<a name='L136'></a><a href='#L136'>136</a>
-<a name='L137'></a><a href='#L137'>137</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">13x</span>
+<a name='L129'></a><a href='#L129'>129</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -210,17 +202,7 @@
 <span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-yes">13x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -278,6 +260,8 @@
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -342,10 +326,11 @@ import { Color } from "../effects/ColorProvider";
 import { G20, SpinorLike, VectorLike } from "../math/G20";
 import { Path, PathOptions } from "../Path";
 import { Disposable, dispose } from "../reactive/Disposable";
+import { Commands } from "../utils/Commands";
 import { default_color } from "../utils/default_color";
+import { default_number } from "../utils/default_number";
 import { default_closed_path_stroke_width } from "../utils/default_stroke_width";
 import { HALF_PI, TWO_PI } from "../utils/math";
-import { Commands } from "../utils/Commands";
 &nbsp;
 export interface CircleOptions extends PathOptions {
     position?: VectorLike;
@@ -359,18 +344,7 @@ export interface CircleOptions extends PathOptions {
     resolution?: number;
 }
 &nbsp;
-export interface CircleProperties {
-    X: G20;
-    R: G20;
-    radius: number;
-    fillColor: Color;
-    fillOpacity: number;
-    strokeColor: Color;
-    strokeOpacity: number;
-    strokeWidth: number;
-}
-&nbsp;
-export class Circle extends Path implements CircleProperties {
+export class Circle extends Path {
     readonly #disposables: Disposable[] = [];
 &nbsp;
     readonly #radius = G20.scalar(1);
@@ -405,16 +379,18 @@ export class Circle extends Path implements CircleProperties {
     }
 &nbsp;
     override update(): this {
-        update_circle_vertices(this.radius, this.vertices);
+        update_circle_vertices(this.radius.a, this.vertices);
         super.update();
         return this;
     }
 &nbsp;
-    get radius(): number {
-        return this.#radius.a;
+    get radius(): G20 {
+        return this.#radius;
     }
-    set radius(radius: number) {
-        if (typeof radius === "number") {
+    set radius(radius: G20 | number) {
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (radius instanceof G20) {
+<span class="cstat-no" title="statement not covered" >            this.#radius.set(0, 0, radius.a, 0);</span>
+        } else if (typeof radius === "number") {
             this.#radius.set(0, 0, radius, 0);
         }
     }
@@ -424,19 +400,19 @@ function path_options_from_circle_options(options: CircleOptions, owner: Board):
     const retval: PathOptions = {
         id: options.id,
         attitude: options.attitude,
-        position: options.position,
-        fillColor: default_color(options.fillColor, "none"),
-        fillOpacity: options.fillOpacity,
-        strokeColor: default_color(options.strokeColor, "gray"),
-        strokeOpacity: options.strokeOpacity,
-        strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
         dashes: options.dashes,
+        fillColor: default_color(options.fillColor, owner.defaults.circle.fillColor),
+        fillOpacity: default_number(options.fillOpacity, owner.defaults.circle.fillOpacity),
         opacity: options.opacity,
+        position: options.position,
         plumb: options.plumb,
+        strokeColor: default_color(options.strokeColor, owner.defaults.circle.strokeColor),
+        strokeOpacity: default_number(options.strokeOpacity, owner.defaults.circle.strokeOpacity),
+        strokeWidth: default_closed_path_stroke_width(default_number(options.strokeWidth, owner.defaults.circle.strokeWidth), owner),
         sx: options.sx,
         sy: options.sy,
         vectorEffect: options.vectorEffect,
-        visibility: options.visibility,
+        visibility: options.visibility
     };
     return retval;
 }
@@ -478,7 +454,7 @@ function update_circle_vertices(radius: number, vertices: Collection&lt;Anchor&g
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-05-21T14:18:41.262Z
+                at 2024-05-22T16:49:52.904Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

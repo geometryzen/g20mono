@@ -1,6 +1,6 @@
-import { Board, Group, Line, ViewDOM } from "@g20/core";
+import { Board, Group, GroupOptions, Line, ViewDOM } from "@g20/core";
 
-export interface GridOptions {
+export interface GridOptions extends GroupOptions {
     id?: string;
 }
 
@@ -20,25 +20,19 @@ export class Grid extends Group {
         const my = (bbox.top - bbox.bottom) / Ny;
 
         for (let i = 0; i < Ly; i++) {
-            const line = new Line(board, [bbox.left, my * (i - My)], [bbox.right, my * (i - My)], {
-                strokeWidth: 2 / board.sx,
-                strokeOpacity: 0.5
-            });
+            const line = new Line(board, [bbox.left, my * (i - My)], [bbox.right, my * (i - My)]);
             this.add(line);
         }
 
         for (let i = 0; i < Lx; i++) {
-            const line = new Line(board, [mx * (i - Mx), bbox.bottom], [mx * (i - Mx), bbox.top], {
-                strokeWidth: 2 / board.sx,
-                strokeOpacity: 0.5
-            });
+            const line = new Line(board, [mx * (i - Mx), bbox.bottom], [mx * (i - Mx), bbox.top]);
             this.add(line);
         }
     }
     override dispose(): void {
         super.dispose();
     }
-    override render<T>(viewDOM: ViewDOM<T>, parentElement: unknown, svgElement: unknown): void {
+    override render<T>(viewDOM: ViewDOM<T>, parentElement: T, svgElement: T): void {
         if (this.zzz.viewee) {
             // The element has already been defined.
         } else {

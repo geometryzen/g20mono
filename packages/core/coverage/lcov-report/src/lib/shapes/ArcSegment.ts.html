@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">90.64% </span>
+                <span class="strong">90.71% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>126/139</span>
+                <span class='fraction'>127/140</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">90.37% </span>
+                <span class="strong">90.44% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>122/135</span>
+                <span class='fraction'>123/136</span>
             </div>
         
             
@@ -335,18 +335,12 @@
 <a name='L270'></a><a href='#L270'>270</a>
 <a name='L271'></a><a href='#L271'>271</a>
 <a name='L272'></a><a href='#L272'>272</a>
-<a name='L273'></a><a href='#L273'>273</a>
-<a name='L274'></a><a href='#L274'>274</a>
-<a name='L275'></a><a href='#L275'>275</a>
-<a name='L276'></a><a href='#L276'>276</a>
-<a name='L277'></a><a href='#L277'>277</a>
-<a name='L278'></a><a href='#L278'>278</a>
-<a name='L279'></a><a href='#L279'>279</a>
-<a name='L280'></a><a href='#L280'>280</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">13x</span>
+<a name='L273'></a><a href='#L273'>273</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-yes">13x</span>
@@ -451,12 +445,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -501,13 +489,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -629,10 +615,11 @@ import { Color } from "../effects/ColorProvider.js";
 import { G20 } from "../math/G20.js";
 import { Path, PathOptions } from "../Path.js";
 import { Disposable, dispose } from "../reactive/Disposable";
+import { Commands } from "../utils/Commands.js";
 import { default_color } from "../utils/default_color.js";
+import { default_number } from "../utils/default_number.js";
 import { default_closed_path_stroke_width } from "../utils/default_stroke_width.js";
 import { HALF_PI, mod, TWO_PI } from "../utils/math.js";
-import { Commands } from "../utils/Commands.js";
 &nbsp;
 export interface ArcSegmentOptions extends PathOptions {
     innerRadius?: number;
@@ -729,13 +716,7 @@ export class ArcSegment extends Path {
     }
 &nbsp;
     override update() {
-        update_arc_vertices(
-            this.innerRadius,
-            this.outerRadius,
-            this.startAngle,
-            this.endAngle,
-            this.vertices
-        );
+        update_arc_vertices(this.innerRadius, this.outerRadius, this.startAngle, this.endAngle, this.vertices);
         super.update();
         return this;
     }
@@ -770,26 +751,24 @@ function path_options_from_arc_options(options: ArcSegmentOptions, owner: Board)
     const retval: PathOptions = {
         id: options.id,
         attitude: options.attitude,
+        dashes: options.dashes,
+        fillColor: default_color(options.fillColor, owner.defaults.arc.fillColor),
+        fillOpacity: default_number(options.fillOpacity, owner.defaults.arc.fillOpacity),
         opacity: options.opacity,
+        plumb: options.plumb,
         position: options.position,
-        fillColor: default_color(options.fillColor, "none"),
-        fillOpacity: options.fillOpacity,
-        strokeColor: default_color(options.strokeColor, "gray"),
-        strokeOpacity: options.strokeOpacity,
-        strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
+        strokeColor: default_color(options.strokeColor, owner.defaults.arc.strokeColor),
+        strokeOpacity: default_number(options.strokeOpacity, owner.defaults.arc.strokeOpacity),
+        strokeWidth: default_closed_path_stroke_width(default_number(options.strokeWidth, owner.defaults.arc.strokeWidth), owner),
+        sx: options.sx,
+        sy: options.sy,
         vectorEffect: options.vectorEffect,
-        visibility: options.visibility,
+        visibility: options.visibility
     };
     return retval;
 }
 &nbsp;
-function update_arc_vertices(
-    innerRadiues: number,
-    outerRadius: number,
-    startAngle: number,
-    endAngle: number,
-    vertices: Collection&lt;Anchor&gt;
-) {
+function update_arc_vertices(innerRadiues: number, outerRadius: number, startAngle: number, endAngle: number, vertices: Collection&lt;Anchor&gt;) {
     const connected = mod(startAngle, TWO_PI) === mod(endAngle, TWO_PI);
     const punctured = innerRadiues &gt; 0;
 &nbsp;
@@ -907,7 +886,7 @@ function update_arc_vertices(
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-05-21T14:18:41.262Z
+                at 2024-05-22T16:49:52.904Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

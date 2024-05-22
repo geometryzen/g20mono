@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>63/63</span>
+                <span class='fraction'>64/64</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>63/63</span>
+                <span class='fraction'>64/64</span>
             </div>
         
             
@@ -225,15 +225,11 @@
 <a name='L160'></a><a href='#L160'>160</a>
 <a name='L161'></a><a href='#L161'>161</a>
 <a name='L162'></a><a href='#L162'>162</a>
-<a name='L163'></a><a href='#L163'>163</a>
-<a name='L164'></a><a href='#L164'>164</a>
-<a name='L165'></a><a href='#L165'>165</a>
-<a name='L166'></a><a href='#L166'>166</a>
-<a name='L167'></a><a href='#L167'>167</a>
-<a name='L168'></a><a href='#L168'>168</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">13x</span>
+<a name='L163'></a><a href='#L163'>163</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-yes">13x</span>
@@ -347,11 +343,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">20x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -372,16 +363,15 @@
 <span class="cline-any cline-yes">20x</span>
 <span class="cline-any cline-yes">20x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">20x</span>
 <span class="cline-any cline-yes">20x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -406,6 +396,7 @@ import { Path, PathOptions } from "../Path";
 import { Disposable, dispose } from "../reactive/Disposable";
 import { Commands } from "../utils/Commands";
 import { default_color } from "../utils/default_color";
+import { default_number } from "../utils/default_number";
 import { default_open_path_stroke_width } from "../utils/default_stroke_width";
 &nbsp;
 export interface ArrowOptions extends PathOptions {
@@ -432,7 +423,7 @@ export class Arrow extends Path {
             new Anchor(G20.vector(0, 0), Commands.move), // port head
             new Anchor(G20.vector(0, 0), Commands.line), // port tail
             new Anchor(G20.vector(0, 0), Commands.move), // stbd head
-            new Anchor(G20.vector(0, 0), Commands.line), // stbd tail
+            new Anchor(G20.vector(0, 0), Commands.line) // stbd tail
         ];
 &nbsp;
         super(owner, vertices, false, false, true, path_attribs_from_arrow_attribs(options, owner));
@@ -513,12 +504,7 @@ export class Arrow extends Path {
     }
 }
 &nbsp;
-function update_arrow_vertices(
-    axis: G20,
-    headLength: number,
-    origin: G20,
-    vertices: Collection&lt;Anchor&gt;
-): void {
+function update_arrow_vertices(axis: G20, headLength: number, origin: G20, vertices: Collection&lt;Anchor&gt;): void {
     const θ = Math.atan2(axis.y, axis.x);
     // This angle gives an arrow head that is an equilateral triangle.
     // const φ = Math.PI / 6;
@@ -537,30 +523,29 @@ function update_arrow_vertices(
     head.origin.copyVector(axis).sub(origin);
 &nbsp;
     port_head.origin.copyVector(axis).sub(origin);
-    port_tail.origin
-        .set(axis.x - headLength * Math.cos(θ - φ), axis.y - headLength * Math.sin(θ - φ))
-        .sub(origin);
+    port_tail.origin.set(axis.x - headLength * Math.cos(θ - φ), axis.y - headLength * Math.sin(θ - φ)).sub(origin);
 &nbsp;
     stbd_head.origin.copyVector(axis).sub(origin);
-    stbd_tail.origin
-        .set(axis.x - headLength * Math.cos(θ + φ), axis.y - headLength * Math.sin(θ + φ))
-        .sub(origin);
+    stbd_tail.origin.set(axis.x - headLength * Math.cos(θ + φ), axis.y - headLength * Math.sin(θ + φ)).sub(origin);
 }
 &nbsp;
 function path_attribs_from_arrow_attribs(options: ArrowOptions, owner: Board): PathOptions {
     const retval: PathOptions = {
         id: options.id,
-        // attitude: attributes.attitude,
-        // opacity: attributes.opacity,
+        attitude: options.attitude,
+        dashes: options.dashes,
+        fillColor: default_color(options.fillColor, owner.defaults.arrow.fillColor),
+        fillOpacity: default_number(options.fillOpacity, owner.defaults.arrow.fillOpacity),
+        opacity: options.opacity,
+        plumb: options.plumb,
         position: options.position,
-        // visibility: attributes.visibility,
-        // fill: attributes.fill,
-        // fillOpacity: attributes.fillOpacity,
-        strokeColor: default_color(options.strokeColor, "gray"),
-        strokeOpacity: options.strokeOpacity,
-        strokeWidth: default_open_path_stroke_width(options.strokeWidth, owner),
+        strokeColor: default_color(options.strokeColor, owner.defaults.arrow.strokeColor),
+        strokeOpacity: default_number(options.strokeOpacity, owner.defaults.arrow.strokeOpacity),
+        strokeWidth: default_open_path_stroke_width(default_number(options.strokeWidth, owner.defaults.arrow.strokeWidth), owner),
+        sx: options.sx,
+        sy: options.sy,
         vectorEffect: options.vectorEffect,
-        visibility: options.visibility,
+        visibility: options.visibility
     };
     return retval;
 }
@@ -571,7 +556,7 @@ function path_attribs_from_arrow_attribs(options: ArrowOptions, owner: Board): P
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-05-21T14:18:41.262Z
+                at 2024-05-22T16:49:52.904Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

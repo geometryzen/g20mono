@@ -959,29 +959,7 @@
 <a name='L894'></a><a href='#L894'>894</a>
 <a name='L895'></a><a href='#L895'>895</a>
 <a name='L896'></a><a href='#L896'>896</a>
-<a name='L897'></a><a href='#L897'>897</a>
-<a name='L898'></a><a href='#L898'>898</a>
-<a name='L899'></a><a href='#L899'>899</a>
-<a name='L900'></a><a href='#L900'>900</a>
-<a name='L901'></a><a href='#L901'>901</a>
-<a name='L902'></a><a href='#L902'>902</a>
-<a name='L903'></a><a href='#L903'>903</a>
-<a name='L904'></a><a href='#L904'>904</a>
-<a name='L905'></a><a href='#L905'>905</a>
-<a name='L906'></a><a href='#L906'>906</a>
-<a name='L907'></a><a href='#L907'>907</a>
-<a name='L908'></a><a href='#L908'>908</a>
-<a name='L909'></a><a href='#L909'>909</a>
-<a name='L910'></a><a href='#L910'>910</a>
-<a name='L911'></a><a href='#L911'>911</a>
-<a name='L912'></a><a href='#L912'>912</a>
-<a name='L913'></a><a href='#L913'>913</a>
-<a name='L914'></a><a href='#L914'>914</a>
-<a name='L915'></a><a href='#L915'>915</a>
-<a name='L916'></a><a href='#L916'>916</a>
-<a name='L917'></a><a href='#L917'>917</a>
-<a name='L918'></a><a href='#L918'>918</a>
-<a name='L919'></a><a href='#L919'>919</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">13x</span>
+<a name='L897'></a><a href='#L897'>897</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">13x</span>
@@ -1064,13 +1042,6 @@
 <span class="cline-any cline-yes">43x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">43x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1172,12 +1143,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">139x</span>
 <span class="cline-any cline-yes">139x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">139x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1286,11 +1251,6 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1645,11 +1605,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">21298x</span>
@@ -1989,14 +1945,7 @@ export class Path extends ColoredShapeBase {
      * @param curved Describes whether the path automatically calculates bezier handles for each vertex.
      * @param manual Describes whether the developer controls how vertices are plotted.
      */
-    constructor(
-        owner: Board,
-        vertices: Anchor[] = <span class="branch-0 cbranch-no" title="branch not covered" >[],</span>
-        closed?: boolean,
-        curved?: boolean,
-        manual?: boolean,
-        options: PathOptions = <span class="branch-0 cbranch-no" title="branch not covered" >{}</span>
-    ) {
+    constructor(owner: Board, vertices: Anchor[] = <span class="branch-0 cbranch-no" title="branch not covered" >[],</span> closed?: boolean, curved?: boolean, manual?: boolean, options: PathOptions = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span> {
         super(owner, colored_shape_attribs_from_path_attribs(options));
 &nbsp;
         this.flagReset(true);
@@ -2089,13 +2038,7 @@ export class Path extends ColoredShapeBase {
             this.zzz.disposables.push(
                 this.zzz.vertices$.subscribe(() =&gt; {
                     const change: SVGAttributes = {};
-                    change.d = svg.path_from_anchors(
-                        this.board,
-                        this.X,
-                        this.R,
-                        this.zzz.vertices,
-                        this.closed
-                    );
+                    change.d = svg.path_from_anchors(this.board, this.X, this.R, this.zzz.vertices, this.closed);
                     viewDOM.setAttributes(path, change);
                 })
             );
@@ -2203,12 +2146,7 @@ export class Path extends ColoredShapeBase {
         let border = (this.strokeWidth || <span class="branch-1 cbranch-no" title="branch not covered" >0)</span> / 2;
         const l = this.zzz.vertices.length;
 &nbsp;
-        if (
-            this.strokeWidth &gt; 0 ||
-            (<span class="branch-1 cbranch-no" title="branch not covered" >this.strokeColor </span>&amp;&amp;
-<span class="branch-2 cbranch-no" title="branch not covered" >                typeof this.strokeColor === "string" </span>&amp;&amp;
-<span class="branch-3 cbranch-no" title="branch not covered" >                !/(transparent|none)/i.test(this.strokeColor))</span>
-        ) {
+        if (this.strokeWidth &gt; 0 || (<span class="branch-1 cbranch-no" title="branch not covered" >this.strokeColor </span>&amp;&amp; <span class="branch-2 cbranch-no" title="branch not covered" >typeof this.strokeColor === "string" </span>&amp;&amp; <span class="branch-3 cbranch-no" title="branch not covered" >!/(transparent|none)/i.test(this.strokeColor))</span>) {
             border *= max(this.sx, this.sy);
         }
 &nbsp;
@@ -2561,13 +2499,9 @@ export class Path extends ColoredShapeBase {
                             }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >                            if (prev.relative) {</span>
-<span class="cstat-no" title="statement not covered" >                                this.#anchors[i - 1].controls.b</span>
-                                    .copyVector(prev.controls.b)
-                                    .lerp(G20.zero, 1 - v.t);
+<span class="cstat-no" title="statement not covered" >                                this.#anchors[i - 1].controls.b.copyVector(prev.controls.b).lerp(G20.zero, 1 - v.t);</span>
                             } else {
-<span class="cstat-no" title="statement not covered" >                                this.#anchors[i - 1].controls.b</span>
-                                    .copyVector(prev.controls.b)
-                                    .lerp(prev.origin, 1 - v.t);
+<span class="cstat-no" title="statement not covered" >                                this.#anchors[i - 1].controls.b.copyVector(prev.controls.b).lerp(prev.origin, 1 - v.t);</span>
                             }
                         }
                     } else if (i &gt;= lBound &amp;&amp; i &lt;= uBound) {
@@ -2813,7 +2747,7 @@ function colored_shape_attribs_from_path_attribs(options: PathOptions): ColoredS
         opacity: options.opacity,
         plumb: options.plumb,
         vectorEffect: options.vectorEffect,
-        visibility: options.visibility,
+        visibility: options.visibility
     };
     return retval;
 }
@@ -2824,7 +2758,7 @@ function colored_shape_attribs_from_path_attribs(options: PathOptions): ColoredS
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-05-21T14:18:41.262Z
+                at 2024-05-22T16:49:52.904Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

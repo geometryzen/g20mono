@@ -60,9 +60,8 @@ export class MockViewDOM implements ViewDOM<MockElement> {
     removeChild(parent: unknown, child: unknown): void {
         throw new Error("Method not implemented.");
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     setTextContent(element: MockElement, textContent: string): void {
-        throw new Error("Method not implemented.");
+        element.textContent = textContent;
     }
     getParentNode(element: MockElement): MockElement {
         return element.parent;

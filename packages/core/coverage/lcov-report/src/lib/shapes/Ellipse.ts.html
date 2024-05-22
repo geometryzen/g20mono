@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">90.58% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>74/74</span>
+                <span class='fraction'>77/85</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">70.37% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>17/17</span>
+                <span class='fraction'>19/27</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">90.36% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>72/72</span>
+                <span class='fraction'>75/83</span>
             </div>
         
             
@@ -227,11 +227,31 @@
 <a name='L162'></a><a href='#L162'>162</a>
 <a name='L163'></a><a href='#L163'>163</a>
 <a name='L164'></a><a href='#L164'>164</a>
-<a name='L165'></a><a href='#L165'>165</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L165'></a><a href='#L165'>165</a>
+<a name='L166'></a><a href='#L166'>166</a>
+<a name='L167'></a><a href='#L167'>167</a>
+<a name='L168'></a><a href='#L168'>168</a>
+<a name='L169'></a><a href='#L169'>169</a>
+<a name='L170'></a><a href='#L170'>170</a>
+<a name='L171'></a><a href='#L171'>171</a>
+<a name='L172'></a><a href='#L172'>172</a>
+<a name='L173'></a><a href='#L173'>173</a>
+<a name='L174'></a><a href='#L174'>174</a>
+<a name='L175'></a><a href='#L175'>175</a>
+<a name='L176'></a><a href='#L176'>176</a>
+<a name='L177'></a><a href='#L177'>177</a>
+<a name='L178'></a><a href='#L178'>178</a>
+<a name='L179'></a><a href='#L179'>179</a>
+<a name='L180'></a><a href='#L180'>180</a>
+<a name='L181'></a><a href='#L181'>181</a>
+<a name='L182'></a><a href='#L182'>182</a>
+<a name='L183'></a><a href='#L183'>183</a>
+<a name='L184'></a><a href='#L184'>184</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-yes">13x</span>
@@ -333,12 +353,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -379,6 +411,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -399,10 +437,11 @@ import { Color } from "../effects/ColorProvider";
 import { G20, SpinorLike, VectorLike } from "../math/G20";
 import { Path, PathOptions } from "../Path";
 import { Disposable, dispose } from "../reactive/Disposable";
+import { Commands } from "../utils/Commands";
 import { default_color } from "../utils/default_color";
+import { default_number } from "../utils/default_number";
 import { default_closed_path_stroke_width } from "../utils/default_stroke_width";
 import { HALF_PI, TWO_PI } from "../utils/math";
-import { Commands } from "../utils/Commands";
 &nbsp;
 const cos = Math.cos;
 const sin = Math.sin;
@@ -495,14 +534,26 @@ export class Ellipse extends Path {
     get rx(): G20 {
         return this.#rx;
     }
-    set rx(rx: G20) {
-        this.#rx.copyVector(rx);
+    set rx(rx: number | VectorLike) {
+        if (rx instanceof G20) {
+            this.#rx.copyVector(rx);
+        } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="else path not taken" >E</span>if (Array.isArray(rx)) {</span>
+<span class="cstat-no" title="statement not covered" >            this.#rx.set(rx[0], rx[1]);</span>
+        } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span>if (typeof rx === "number") {</span>
+<span class="cstat-no" title="statement not covered" >            this.#rx.set(rx, 0);</span>
+        }
     }
     get ry(): G20 {
         return this.#ry;
     }
-    set ry(ry: G20) {
-        this.#ry.copyVector(ry);
+    set ry(ry: number | VectorLike) {
+        if (ry instanceof G20) {
+            this.#ry.copyVector(ry);
+        } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="else path not taken" >E</span>if (Array.isArray(ry)) {</span>
+<span class="cstat-no" title="statement not covered" >            this.#ry.set(ry[0], ry[1]);</span>
+        } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span>if (typeof ry === "number") {</span>
+<span class="cstat-no" title="statement not covered" >            this.#ry.set(0, ry);</span>
+        }
     }
 }
 &nbsp;
@@ -544,14 +595,20 @@ function update_ellipse_vertices(radiusX: G20, radiusY: G20, vertices: Collectio
 function path_options_from_ellipse_options(options: EllipseOptions, owner: Board): PathOptions {
     const retval: PathOptions = {
         id: options.id,
-        fillColor: default_color(options.fillColor, "none"),
-        fillOpacity: options.fillOpacity,
         attitude: options.attitude,
+        dashes: options.dashes,
+        fillColor: default_color(options.fillColor, owner.defaults.ellipse.fillColor),
+        fillOpacity: default_number(options.fillOpacity, owner.defaults.ellipse.fillOpacity),
+        opacity: options.opacity,
         position: options.position,
-        strokeColor: default_color(options.strokeColor, "gray"),
-        strokeOpacity: options.strokeOpacity,
-        strokeWidth: default_closed_path_stroke_width(options.strokeWidth, owner),
-        visibility: options.visibility,
+        plumb: options.plumb,
+        strokeColor: default_color(options.strokeColor, owner.defaults.ellipse.strokeColor),
+        strokeOpacity: default_number(options.strokeOpacity, owner.defaults.ellipse.strokeOpacity),
+        strokeWidth: default_closed_path_stroke_width(default_number(options.strokeWidth, owner.defaults.ellipse.strokeWidth), owner),
+        sx: options.sx,
+        sy: options.sy,
+        vectorEffect: options.vectorEffect,
+        visibility: options.visibility
     };
     return retval;
 }
@@ -562,7 +619,7 @@ function path_options_from_ellipse_options(options: EllipseOptions, owner: Board
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-05-21T14:18:41.262Z
+                at 2024-05-22T16:49:52.904Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

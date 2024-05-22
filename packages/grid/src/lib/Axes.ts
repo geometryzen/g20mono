@@ -1,6 +1,6 @@
-import { Arrow, Board, G20, Group, Shape, Text, ViewDOM } from "@g20/core";
+import { Arrow, Board, G20, Group, GroupOptions, Shape, Text, ViewDOM } from "@g20/core";
 
-export interface AxesOptions {
+export interface AxesOptions extends GroupOptions {
     id?: string;
 }
 
@@ -60,7 +60,7 @@ export class Axes extends Group {
         this.yAxis.dispose();
         super.dispose();
     }
-    override render<T>(viewDOM: ViewDOM<T>, parentElement: unknown, svgElement: unknown): void {
+    override render<T>(viewDOM: ViewDOM<T>, parentElement: T, svgElement: T): void {
         if (this.zzz.viewee) {
             // The element has already been defined.
         } else {

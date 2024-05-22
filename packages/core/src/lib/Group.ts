@@ -1,4 +1,4 @@
-import { State, signal } from "@g20/reactive";
+import { signal, State } from "@g20/reactive";
 import { Board } from "./Board";
 import { Flag } from "./Flag";
 import { transform_value_of_matrix } from "./renderers/SVGViewDOM";
@@ -13,7 +13,7 @@ export class Group extends ShapeBase {
     readonly #shapes: State<Shape[]>;
 
     constructor(owner: Board, shapes: Shape[] = [], options: GroupOptions = {}) {
-        super(owner, shape_attributes(options));
+        super(owner, shape_options_from_group_options(options));
 
         this.flagReset(true);
         this.zzz.flags[Flag.Beginning] = false;
@@ -250,10 +250,16 @@ export function update_shape_group(child: Shape, parent?: Group) {
     delete child.parent;
 }
 
-function shape_attributes(options: Partial<GroupOptions>): ShapeOptions {
+function shape_options_from_group_options(options: GroupOptions): ShapeOptions {
     const retval: ShapeOptions = {
         id: options.id,
-        position: options.position
+        attitude: options.attitude,
+        opacity: options.opacity,
+        plumb: options.plumb,
+        position: options.position,
+        sx: options.sx,
+        sy: options.sy,
+        visibility: options.visibility
     };
     return retval;
 }

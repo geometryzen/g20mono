@@ -12,6 +12,10 @@ export class MockElement extends MockNode {
     get children(): MockNode[] {
         return this.#children;
     }
+    set textContent(content: string) {
+        this.#children.length = 0;
+        this.appendChild(new MockText(content));
+    }
     appendChild(child: MockNode) {
         this.#children.push(child);
         child.parent = this;
@@ -31,5 +35,11 @@ export class MockElement extends MockNode {
     }
     setAttribute(name: string, value: string): void {
         this.#attributes.set(name, value);
+    }
+}
+
+export class MockText extends MockNode {
+    constructor(readonly content: string) {
+        super();
     }
 }
