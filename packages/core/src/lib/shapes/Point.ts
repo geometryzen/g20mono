@@ -11,16 +11,15 @@ import { Rectangle, RectangleOptions } from "./Rectangle";
 
 export interface PointOptions extends Pick<TextOptions, "anchor" | "baseline" | "dx" | "dy" | "fontFamily" | "fontSize"> {
     id?: string;
-    fillColor?: Color;
-    fillOpacity?: number;
     hideIcon?: boolean;
+    iconColor?: Color;
     iconKind?: "ellipse" | "rectangle";
-    name?: string;
-    strokeColor?: Color;
-    strokeOpacity?: number;
+    iconOpacity?: number;
+    text?: string;
+    textColor?: Color;
+    textOpacity?: number;
     strokeWidth?: number;
     visibility?: "visible" | "hidden" | "collapse";
-    withLabel?: boolean;
 }
 
 export class Point extends Group {
@@ -58,12 +57,12 @@ export class Point extends Group {
                 this.add(shape);
             }
         }
-        if (should_add_label(options)) {
+        if (should_add_text(options)) {
             const text_options: TextOptions = text_options_from_point_options(options, owner);
             if (typeof options.id === "string") {
                 text_options.id = `${options.id}-text`;
             }
-            const text = new Text(owner, options.name, text_options);
+            const text = new Text(owner, options.text, text_options);
             this.add(text);
         }
         this.X = position;
@@ -99,10 +98,10 @@ export class Point extends Group {
 
 function ellipse_options_from_point_options(options: PointOptions, owner: Board): EllipseOptions {
     const retval: EllipseOptions = {
-        fillColor: default_color(options.fillColor, owner.defaults.point.fillColor),
-        fillOpacity: default_number(options.fillOpacity, owner.defaults.point.fillOpacity),
-        strokeColor: default_color(options.strokeColor, owner.defaults.point.strokeColor),
-        strokeOpacity: default_number(options.strokeOpacity, owner.defaults.point.strokeOpacity),
+        fillColor: default_color(options.iconColor, owner.defaults.point.iconColor),
+        fillOpacity: default_number(options.iconOpacity, owner.defaults.point.iconOpacity),
+        strokeColor: default_color(options.iconColor, owner.defaults.point.iconColor),
+        strokeOpacity: default_number(options.iconOpacity, owner.defaults.point.iconOpacity),
         strokeWidth: options.strokeWidth,
         visibility: options.visibility
     };
@@ -111,10 +110,10 @@ function ellipse_options_from_point_options(options: PointOptions, owner: Board)
 
 function rectangle_options_from_point_options(options: PointOptions, owner: Board): RectangleOptions {
     const retval: RectangleOptions = {
-        fillColor: default_color(options.fillColor, owner.defaults.point.fillColor),
-        fillOpacity: default_number(options.fillOpacity, owner.defaults.point.fillOpacity),
-        strokeColor: default_color(options.strokeColor, owner.defaults.point.strokeColor),
-        strokeOpacity: default_number(options.strokeOpacity, owner.defaults.point.strokeOpacity),
+        fillColor: default_color(options.iconColor, owner.defaults.point.iconColor),
+        fillOpacity: default_number(options.iconOpacity, owner.defaults.point.iconOpacity),
+        strokeColor: default_color(options.iconColor, owner.defaults.point.iconColor),
+        strokeOpacity: default_number(options.iconOpacity, owner.defaults.point.iconOpacity),
         strokeWidth: options.strokeWidth,
         visibility: options.visibility
     };
@@ -127,27 +126,23 @@ function text_options_from_point_options(options: PointOptions, owner: Board): T
         baseline: options.baseline,
         dx: options.dx,
         dy: options.dy,
-        fillColor: default_color(options.fillColor, owner.defaults.text.fillColor),
-        fillOpacity: default_number(options.fillOpacity, owner.defaults.text.fillOpacity),
+        fillColor: default_color(options.textColor, owner.defaults.point.textColor),
+        fillOpacity: default_number(options.textOpacity, owner.defaults.point.textOpacity),
         fontFamily: default_string(options.fontFamily, owner.defaults.text.fontFamily),
         fontSize: default_number(options.fontSize, owner.defaults.text.fontSize),
-        strokeColor: default_color(options.strokeColor, owner.defaults.text.strokeColor),
-        strokeOpacity: default_number(options.strokeOpacity, owner.defaults.text.strokeOpacity),
+        strokeColor: default_color(options.textColor, owner.defaults.point.textColor),
+        strokeOpacity: default_number(options.textOpacity, owner.defaults.point.textOpacity),
         strokeWidth: options.strokeWidth,
         visibility: options.visibility
     };
     return retval;
 }
 
-function should_add_label(options: PointOptions): boolean {
-    if (options.withLabel) {
+function should_add_text(options: PointOptions): boolean {
+    if (typeof options.text === "string") {
         return true;
     } else {
-        if (options.name) {
-            return true;
-        } else {
-            return false;
-        }
+        return false;
     }
 }
 

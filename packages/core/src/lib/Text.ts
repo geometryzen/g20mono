@@ -175,10 +175,23 @@ export class Text extends ColoredShapeBase {
             // decoration
             this.zzz.disposables.push(
                 effect(() => {
-                    const decoration = this.decoration;
-                    const change: SVGAttributes = {};
-                    change["text-decoration"] = decoration.join(" ");
-                    viewDOM.setAttributes(text, change);
+                    const decorations = this.decoration;
+                    if (decorations.length === 0) {
+                        viewDOM.removeAttribute(text, "text-decoration");
+                    } else if (decorations.length === 1) {
+                        const decoration = decorations[0];
+                        switch (decoration) {
+                            case "none": {
+                                viewDOM.removeAttribute(text, "text-decoration");
+                                break;
+                            }
+                            default: {
+                                viewDOM.setAttribute(text, "text-decoration", decoration);
+                            }
+                        }
+                    } else {
+                        viewDOM.setAttribute(text, "text-decoration", decorations.join(" "));
+                    }
                     return function () {
                         // No cleanup to be done.
                     };

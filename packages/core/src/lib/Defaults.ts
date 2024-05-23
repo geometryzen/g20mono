@@ -20,7 +20,7 @@ export class Defaults {
     readonly circle: Pick<CircleOptions, "fillColor" | "fillOpacity" | "strokeColor" | "strokeOpacity" | "strokeWidth"> = {};
     readonly ellipse: Pick<EllipseOptions, "fillColor" | "fillOpacity" | "strokeColor" | "strokeOpacity" | "strokeWidth"> = {};
     readonly line: Pick<LineOptions, "fillColor" | "fillOpacity" | "strokeColor" | "strokeOpacity" | "strokeWidth"> = {};
-    readonly point: Pick<PointOptions, "fillColor" | "fillOpacity" | "hideIcon" | "iconKind" | "strokeColor" | "strokeOpacity"> = {};
+    readonly point: Pick<PointOptions, "iconColor" | "iconOpacity" | "hideIcon" | "iconKind" | "textColor" | "textOpacity" | "strokeWidth"> = {};
     readonly polygon: Pick<PolygonOptions, "fillColor" | "fillOpacity" | "strokeColor" | "strokeOpacity" | "strokeWidth"> = {};
     readonly rectangle: Pick<RectangleOptions, "fillColor" | "fillOpacity" | "strokeColor" | "strokeOpacity" | "strokeWidth"> = {};
     readonly text: Pick<TextOptions, "fillColor" | "fillOpacity" | "fontFamily" | "fontSize" | "strokeColor" | "strokeOpacity"> = {};
@@ -60,11 +60,12 @@ export class Defaults {
         this.line.strokeOpacity = null;
         this.line.strokeWidth = null;
 
-        this.point.fillColor = "gray";
-        this.point.fillOpacity = null;
+        this.point.iconColor = "gray";
+        this.point.iconOpacity = null;
         this.point.iconKind = "ellipse";
-        this.point.strokeColor = "gray";
-        this.point.strokeOpacity = null;
+        this.point.textColor = "gray";
+        this.point.textOpacity = null;
+        this.point.strokeWidth = null;
 
         this.polygon.fillColor = "none";
         this.polygon.fillOpacity = null;
