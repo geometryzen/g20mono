@@ -262,11 +262,13 @@ describe("GraphicsBoard", function () {
 
         const viewee = viewDOM.downcast(L.viewee());
         expect(viewee.name).toBe("path");
-        expect(viewee.getAttribute("id")).toBe(null);
+        expect(viewee.getAttributeNames()).toStrictEqual(["d", "fill", "stroke", "stroke-opacity", "stroke-width", "transform"]);
+        expect(viewee.getAttribute("d")).toBe("M 0 0 L 0 1");
         expect(viewee.getAttribute("fill")).toBe("none");
         expect(viewee.getAttribute("stroke")).toBe("gray");
-        expect(viewee.getAttribute("stroke-width")).toBe("0.009375");
-        expect(viewee.getAttribute("d")).toBe("M 0 0 L 0 1");
+        expect(viewee.getAttribute("stroke-opacity")).toBe("0.6");
+        expect(viewee.getAttribute("stroke-width")).toBe("0.00625");
+        expect(viewee.getAttribute("transform")).toBe("matrix(1 0 0 1 3 2)");
 
         L.id = "P";
         expect(L.id).toBe("P");
@@ -293,7 +295,7 @@ describe("GraphicsBoard", function () {
                     expect(viewee.getAttribute("id")).toBe("P");
                     expect(viewee.getAttribute("fill")).toBe("none");
                     expect(viewee.getAttribute("stroke")).toBe("gray");
-                    expect(viewee.getAttribute("stroke-width")).toBe("0.009375");
+                    expect(viewee.getAttribute("stroke-width")).toBe("0.00625");
                     expect(viewee.getAttribute("d")).toBe("M 1 -1.5 L 1 -0.5");
                     expect(viewee.getAttribute("stroke-linecap")).toBe("square");
                     expect(viewee.getAttribute("stroke-linejoin")).toBe("round");

@@ -19,12 +19,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // TODO: NaN values (in the matrix) should cause the Point to vanish (visibility="hidden")?
     const point = board.point([NaN, NaN]);
-    // point.hide()
+    point.hide();
+
+    board.rectangle();
 
     board.text("Hello, 1234567890", {
-        strokeColor: "#FF0000",
-        strokeOpacity: 0,
-        strokeWidth: 0,
         fontSize: 90,
         // fontFamily: "Lato",
         anchor: "middle",

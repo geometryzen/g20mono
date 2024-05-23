@@ -37,7 +37,7 @@ export interface GraphicsBoardOptions {
 }
 
 export class GraphicsBoard<E, T> implements Board {
-    readonly defaults: Defaults = new Defaults();
+    readonly defaults: Defaults = new Defaults(this);
     readonly #disposables: Disposable[] = [];
 
     readonly #view: View<T>;
@@ -144,6 +144,8 @@ export class GraphicsBoard<E, T> implements Board {
                 this.#size.set({ width, height });
             })
         );
+
+        this.defaults.reset();
     }
 
     dispose(): void {
