@@ -1,6 +1,6 @@
 {
     "name": "@g20/canvas",
-    "version": "1.0.0-alpha.29",
+    "version": "1.0.0-alpha.30",
     "description": "Canvas View",
     "exports": {
         ".": {
