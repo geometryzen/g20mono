@@ -23,7 +23,7 @@ export class Defaults {
     readonly point: Pick<PointOptions, "iconColor" | "iconOpacity" | "hideIcon" | "iconKind" | "textColor" | "textOpacity" | "strokeWidth"> = {};
     readonly polygon: Pick<PolygonOptions, "fillColor" | "fillOpacity" | "strokeColor" | "strokeOpacity" | "strokeWidth"> = {};
     readonly rectangle: Pick<RectangleOptions, "fillColor" | "fillOpacity" | "strokeColor" | "strokeOpacity" | "strokeWidth"> = {};
-    readonly text: Pick<TextOptions, "fillColor" | "fillOpacity" | "fontFamily" | "fontSize" | "strokeColor" | "strokeOpacity"> = {};
+    readonly text: Pick<TextOptions, "fillColor" | "fillOpacity" | "fontFamily" | "fontSize"> = {};
     constructor() {
         this.reset();
     }
@@ -83,7 +83,5 @@ export class Defaults {
         this.text.fillOpacity = null;
         this.text.fontFamily = "sans-serif";
         this.text.fontSize = 20;
-        this.text.strokeColor = "gray";
-        this.text.strokeOpacity = null;
     }
 }

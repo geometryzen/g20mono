@@ -9,14 +9,13 @@ import { svg, transform_value_of_matrix } from "./renderers/SVGViewDOM";
 import { SVGAttributes, ViewDOM } from "./Shape";
 import { default_color } from "./utils/default_color";
 import { default_number } from "./utils/default_number";
-import { default_open_path_stroke_width } from "./utils/default_stroke_width";
 
 const min = Math.min,
     max = Math.max;
 
 export type TextDecoration = "none" | "underline" | "overline" | "line-through";
 
-export interface TextOptions extends ColoredShapeOptions {
+export interface TextOptions extends Omit<ColoredShapeOptions, "strokeColor" | "strokeOpacity" | "strokeWidth"> {
     anchor?: "start" | "middle" | "end";
     baseline?: "auto" | "text-bottom" | "alphabetic" | "ideographic" | "middle" | "central" | "mathematical" | "hanging" | "text-top";
     decoration?: TextDecoration[];
@@ -33,9 +32,9 @@ export interface TextOptions extends ColoredShapeOptions {
     position?: VectorLike;
     attitude?: SpinorLike;
     fontSize?: number;
-    strokeColor?: Color;
-    strokeOpacity?: number;
-    strokeWidth?: number;
+    // strokeColor?: Color;
+    // strokeOpacity?: number;
+    // strokeWidth?: number;
     sx?: number;
     sy?: number;
     value?: string;
@@ -360,7 +359,11 @@ export class Text extends ColoredShapeBase {
                 viewDOM.appendChild(clip, elem);
             } else {
                 viewDOM.removeAttribute(clip, "id");
-                viewDOM.setAttribute(elem, "id", this.id);
+                if (typeof this.id === "string") {
+                    viewDOM.setAttribute(elem, "id", this.id);
+                } else {
+                    viewDOM.removeAttribute(elem, "id");
+                }
                 if (this.parent instanceof ElementBase) {
                     viewDOM.appendChild(this.parent.zzz.viewee as T, elem); // TODO: should be insertBefore
                 }
@@ -580,8 +583,8 @@ export class Text extends ColoredShapeBase {
     }
 }
 
-function shape_options_from_text_options(options: Partial<TextOptions>, owner: Board): Partial<ColoredShapeOptions> {
-    const retval: Partial<ColoredShapeOptions> = {
+function shape_options_from_text_options(options: Partial<TextOptions>, owner: Board): Partial<Omit<ColoredShapeOptions, "strokeColor" | "strokeOpacity" | "strokeWidth">> {
+    const retval: Partial<Omit<ColoredShapeOptions, "strokeColor" | "strokeOpacity" | "strokeWidth">> = {
         id: options.id,
         dashes: options.dashes,
         plumb: true, //options.plumb,
@@ -590,9 +593,9 @@ function shape_options_from_text_options(options: Partial<TextOptions>, owner: B
         fillColor: default_color(options.fillColor, owner.defaults.text.fillColor),
         fillOpacity: default_number(options.fillOpacity, owner.defaults.text.fillOpacity),
         opacity: options.opacity,
-        strokeColor: default_color(options.strokeColor, owner.defaults.text.strokeColor),
-        strokeOpacity: default_number(options.strokeOpacity, owner.defaults.text.strokeOpacity),
-        strokeWidth: default_open_path_stroke_width(options.strokeWidth, owner),
+        // strokeColor: default_color(options.strokeColor, owner.defaults.text.strokeColor),
+        // strokeOpacity: default_number(options.strokeOpacity, owner.defaults.text.strokeOpacity),
+        // strokeWidth: default_open_path_stroke_width(options.strokeWidth, owner),
         sx: typeof options.sx === "number" ? options.sx : 1 / owner.sx,
         sy: typeof options.sy === "number" ? options.sy : 1 / owner.sy,
         vectorEffect: options.vectorEffect,

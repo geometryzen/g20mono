@@ -12,6 +12,15 @@ export class MockElement extends MockNode {
     get children(): MockNode[] {
         return this.#children;
     }
+    get textContent(): string {
+        if (this.#children.length === 1) {
+            const text = this.#children[0];
+            if (text instanceof MockText) {
+                return text.content;
+            }
+        }
+        return "";
+    }
     set textContent(content: string) {
         this.#children.length = 0;
         this.appendChild(new MockText(content));

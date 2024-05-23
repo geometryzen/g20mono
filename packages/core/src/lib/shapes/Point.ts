@@ -86,13 +86,9 @@ export class Point extends Group {
                 return child;
             }
         }
-        const text_options: TextOptions = text_options_from_point_options({}, this.board);
-        if (typeof this.id === "string") {
-            text_options.id = `${this.id}-text`;
-        }
-        const text = new Text(this.board, "", text_options);
-        this.add(text);
-        return text;
+        // Lazily constructing the text node isn't helpful if it is not connected to the DOM.
+        /* istanbul ignore next */
+        throw new Error();
     }
 }
 
@@ -130,9 +126,9 @@ function text_options_from_point_options(options: PointOptions, owner: Board): T
         fillOpacity: default_number(options.textOpacity, owner.defaults.point.textOpacity),
         fontFamily: default_string(options.fontFamily, owner.defaults.text.fontFamily),
         fontSize: default_number(options.fontSize, owner.defaults.text.fontSize),
-        strokeColor: default_color(options.textColor, owner.defaults.point.textColor),
-        strokeOpacity: default_number(options.textOpacity, owner.defaults.point.textOpacity),
-        strokeWidth: options.strokeWidth,
+        // strokeColor: default_color(options.textColor, owner.defaults.point.textColor),
+        // strokeOpacity: default_number(options.textOpacity, owner.defaults.point.textOpacity),
+        // strokeWidth: options.strokeWidth,
         visibility: options.visibility
     };
     return retval;
