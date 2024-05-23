@@ -204,10 +204,16 @@ export abstract class ShapeBase extends ElementBase implements Shape {
         // transform
         this.zzz.disposables.push(
             effect(() => {
+                const viewee = this.zzz.viewee as T;
                 if (this.matrix.isOne()) {
-                    viewDOM.removeAttribute(this.zzz.viewee as T, "transform");
+                    viewDOM.removeAttribute(viewee, "transform");
                 } else {
-                    viewDOM.setAttribute(this.zzz.viewee as T, "transform", transform_value_of_matrix(this.matrix));
+                    if (this.matrix.isNaN()) {
+                        viewDOM.setAttribute(viewee, "visibility", "collapse");
+                        viewDOM.removeAttribute(viewee, "transform");
+                    } else {
+                        viewDOM.setAttribute(viewee, "transform", transform_value_of_matrix(this.matrix));
+                    }
                 }
             })
         );

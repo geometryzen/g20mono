@@ -42,9 +42,10 @@
     "scripts": {
         "build": "npm run clean && rollup --config rollup.config.mts --configPlugin @rollup/plugin-typescript",
         "check": "npx package-check",
-        "clean": "rm -rf coverage && rm -rf dist && rm -rf docs && rm -rf es2015 && rm -rf system && rm -rf types && rm -rf build",
+        "clean": "rm -rf coverage && rm -rf dist && rm -rf docs && rm -rf es2015 && rm -rf system && rm -rf types",
         "coverage": "npm run test -- --coverage",
         "dev": "rollup --config rollup.config.mts --configPlugin @rollup/plugin-typescript -w",
+        "dev-euclid": "node ./build/serve.js --watch",
         "docs": "npm run docs:typedoc && open-cli docs/index.html",
         "docs:typedoc": "rm -rf docs && typedoc --options typedoc.json",
         "lint": "eslint .",
@@ -71,7 +72,8 @@
         "@g20/reactive": "file:../reactive"
     },
     "devDependencies": {
-        "@g20/mock": "file:../mock"
+        "@g20/mock": "file:../mock",
+        "@g20/svg": "file:../svg"
     },
     "gitHead": "2f2e946762414c168dd7541fabcf2aaf80cb71e5"
 }

@@ -52,7 +52,7 @@ function update_circle_crcle_intersection_points(point1: G20, point2: G20, ca: G
             point1.copyVector(ca).add(λdhat).add(avec);
             point2.copyVector(ca).add(λdhat).sub(avec);
         } else {
-            // No intersection
+            // No intersection.
             point1.set(NaN, NaN);
             point2.set(NaN, NaN);
         }

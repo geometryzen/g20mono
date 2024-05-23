@@ -131,6 +131,10 @@ export class Matrix {
         return this.set(1, 0, 0, 0, 1, 0, 0, 0, 1);
     }
 
+    isNaN(): boolean {
+        return isNaN(this.a11) || isNaN(this.a12) || isNaN(this.a13) || isNaN(this.a21) || isNaN(this.a22) || isNaN(this.a23) || isNaN(this.a31) || isNaN(this.a32) || isNaN(this.a33);
+    }
+
     isOne(): boolean {
         return this.a11 === 1 && this.a12 === 0 && this.a13 == 0 && this.a21 === 0 && this.a22 === 1 && this.a23 === 0 && this.a31 === 0 && this.a32 === 0 && this.a33 === 1;
     }

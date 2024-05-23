@@ -1,7 +1,7 @@
 import { Board } from "../Board";
 import { Color } from "../effects/ColorProvider";
-import { Group } from "../Group";
-import { VectorLike } from "../math/G20";
+import { Group, GroupOptions } from "../Group";
+import { G20, VectorLike } from "../math/G20";
 import { Text, TextOptions } from "../Text";
 import { default_color } from "../utils/default_color";
 import { default_number } from "../utils/default_number";
@@ -24,7 +24,7 @@ export interface PointOptions extends Pick<TextOptions, "anchor" | "baseline" | 
 
 export class Point extends Group {
     constructor(owner: Board, position: VectorLike, options: PointOptions = {}) {
-        super(owner, [], options);
+        super(owner, [], group_options_from_point_options(options, position));
         const { left, top, right, bottom } = owner.getBoundingBox();
         const sx = owner.width / Math.abs(right - left);
         const sy = owner.height / Math.abs(bottom - top);
@@ -65,7 +65,6 @@ export class Point extends Group {
             const text = new Text(owner, options.text, text_options);
             this.add(text);
         }
-        this.X = position;
     }
     get icon(): Ellipse | Rectangle {
         for (const child of this.children) {
@@ -90,6 +89,20 @@ export class Point extends Group {
         /* istanbul ignore next */
         throw new Error();
     }
+}
+
+function group_options_from_point_options(options: PointOptions, position: VectorLike): GroupOptions {
+    const retval: GroupOptions = {
+        id: options.id,
+        attitude: G20.one.clone(),
+        opacity: 1,
+        plumb: false,
+        position: position,
+        sx: 1,
+        sy: 1,
+        visibility: options.visibility
+    };
+    return retval;
 }
 
 function ellipse_options_from_point_options(options: PointOptions, owner: Board): EllipseOptions {
