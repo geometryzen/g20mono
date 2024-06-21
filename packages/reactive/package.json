@@ -1,6 +1,6 @@
 {
     "name": "@g20/reactive",
-    "version": "1.0.0-alpha.34",
+    "version": "1.0.0-alpha.35",
     "description": "Wrapper around signal-polyfill to support different module formats",
     "exports": {
         ".": {
