@@ -1,11 +1,11 @@
-import { effect, State, signal } from "@g20/reactive";
+import { effect, signal, State } from "@g20/reactive";
 import { Board } from "./Board";
 import { ColorManager } from "./ColorManager";
 import { Color } from "./effects/ColorProvider";
 import { Flag } from "./Flag";
 import { SpinorLike, VectorLike } from "./math/G20";
-import { ViewDOM } from "./Shape";
 import { ShapeBase, ShapeOptions } from "./ShapeBase";
+import { ViewDOM } from "./ViewDOM";
 
 export interface ColoredShapeOptions extends ShapeOptions {
     position?: VectorLike;

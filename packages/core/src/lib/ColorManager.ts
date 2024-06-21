@@ -1,6 +1,6 @@
 import { signal, State } from "@g20/reactive";
 import { Color, ColorProvider, is_color_provider } from "./effects/ColorProvider";
-import { ViewDOM } from "./Shape";
+import { ViewDOM } from "./ViewDOM";
 
 /**
  * Helps to keep fillColor and strokeColor code DRY as well as defining the protocol

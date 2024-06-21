@@ -10,7 +10,7 @@ import { Disposable, disposableFromFunction, dispose } from "./reactive/Disposab
 import { sizeEquals } from "./renderers/Size";
 import { View } from "./renderers/View";
 import { ViewFactory } from "./renderers/ViewFactory";
-import { Shape, ViewDOM } from "./Shape";
+import { Shape } from "./Shape";
 import { ArcSegment, ArcSegmentOptions } from "./shapes/ArcSegment";
 import { Arrow, ArrowOptions } from "./shapes/Arrow";
 import { Circle, CircleOptions } from "./shapes/Circle";
@@ -24,6 +24,7 @@ import { default_color } from "./utils/default_color";
 import { default_number } from "./utils/default_number";
 import { default_closed_path_stroke_width, default_open_path_stroke_width } from "./utils/default_stroke_width";
 import { dateTime } from "./utils/performance";
+import { ViewDOM } from "./ViewDOM";
 
 export type BoundingBox = {
     left: number;

@@ -1,3 +1,6 @@
+/**
+ * A Handle-Body pattern for interacting with a DOM.
+ */
 export interface ElementDOM<E, T> {
     getElementById(elementId: string): E;
     getAttribute(element: E, qname: string): string;

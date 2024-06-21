@@ -8,8 +8,9 @@ import { G20, SpinorLike, spinor_from_like, VectorLike, vector_from_like } from 
 import { Matrix } from "./math/Matrix";
 import { Disposable, dispose } from "./reactive/Disposable";
 import { transform_value_of_matrix } from "./renderers/SVGViewDOM";
-import { Shape, SVGAttributes, ViewDOM } from "./Shape";
+import { Shape, SVGAttributes } from "./Shape";
 import { computed_world_matrix } from "./utils/compute_world_matrix";
+import { ViewDOM } from "./ViewDOM";
 
 export interface Parent {
     update?(): void;

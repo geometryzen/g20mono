@@ -1,6 +1,6 @@
 import { signal } from "@g20/reactive";
 import { Group } from "../Group";
-import { ViewDOM } from "../Shape";
+import { ViewDOM } from "../ViewDOM";
 import { sizeEquals } from "./Size";
 import { View } from "./View";
 

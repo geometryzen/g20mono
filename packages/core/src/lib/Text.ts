@@ -6,9 +6,10 @@ import { ElementBase } from "./element";
 import { Flag } from "./Flag";
 import { SpinorLike, VectorLike } from "./math/G20";
 import { svg, transform_value_of_matrix } from "./renderers/SVGViewDOM";
-import { SVGAttributes, ViewDOM } from "./Shape";
+import { SVGAttributes } from "./Shape";
 import { default_color } from "./utils/default_color";
 import { default_number } from "./utils/default_number";
+import { ViewDOM } from "./ViewDOM";
 
 const min = Math.min,
     max = Math.max;

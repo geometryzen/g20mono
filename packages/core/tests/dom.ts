@@ -1,5 +1,6 @@
 import { ElementDOM } from "../src/lib/ElementDOM";
-import { SVGAttributes, ViewDOM } from "../src/lib/Shape";
+import { SVGAttributes } from "../src/lib/Shape";
+import { ViewDOM } from "../src/lib/ViewDOM";
 import { MockElement, MockNode } from "./nodes";
 
 /**

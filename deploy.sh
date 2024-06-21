@@ -1,6 +1,6 @@
 #!/bin/sh
-npm --registry=http://localhost:4873 install
-npm --registry=http://localhost:4873 update
+npm --registry=http://localhost:4873 install --force
+npm --registry=http://localhost:4873 update --force
 npm run format:write
 npm run lint
 npm run build

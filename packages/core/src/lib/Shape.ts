@@ -1,6 +1,7 @@
 import { G20 } from "./math/G20";
 import { Matrix } from "./math/Matrix";
 import { Disposable } from "./reactive/Disposable";
+import { ViewDOM } from "./ViewDOM";
 
 /**
  * A more specific representation of the attributes that are permitted on SVG elements.
@@ -69,25 +70,6 @@ export interface SVGAttributes {
     y?: string;
     y1?: string;
     y2?: string;
-}
-
-export interface ViewDOM<T> {
-    /**
-     * A runtime typesafe assertion that the element has the type required.
-     */
-    downcast(element: unknown): T;
-    createSVGElement(name: string, attributes: { [name: string]: string }): T;
-    setAttribute(element: T, name: string, value: string): void;
-    setAttributes(element: T, attributes: { [name: string]: string }): void;
-    removeAttribute(element: T, name: string): void;
-    removeAttributes(element: T, attributes: { [name: string]: string }): void;
-    appendChild(parent: T, child: T): void;
-    removeChild(parent: T, child: T): void;
-    setTextContent(element: T, content: string): void;
-    getParentNode(element: T): T | null;
-    getLastChild(element: T): T | null;
-    getElementDefs(svg: T): T;
-    setStyle(element: T, name: "display" | "overflow" | "top", value: string): void;
 }
 
 /**

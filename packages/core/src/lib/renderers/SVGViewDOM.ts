@@ -2,10 +2,11 @@ import { Anchor } from "../Anchor";
 import { Board } from "../Board";
 import { G20 } from "../math/G20";
 import { Matrix } from "../math/Matrix";
-import { SVGAttributes, ViewDOM } from "../Shape";
+import { SVGAttributes } from "../Shape";
 import { ShapeBase } from "../ShapeBase";
-import { mod, toFixed } from "../utils/math";
 import { Commands } from "../utils/Commands";
+import { mod, toFixed } from "../utils/math";
+import { ViewDOM } from "../ViewDOM";
 
 type DOMElement = HTMLElement | SVGElement;
 

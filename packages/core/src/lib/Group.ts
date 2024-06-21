@@ -2,8 +2,9 @@ import { signal, State } from "@g20/reactive";
 import { Board } from "./Board";
 import { Flag } from "./Flag";
 import { transform_value_of_matrix } from "./renderers/SVGViewDOM";
-import { Shape, ViewDOM } from "./Shape";
+import { Shape } from "./Shape";
 import { ShapeBase, ShapeOptions } from "./ShapeBase";
+import { ViewDOM } from "./ViewDOM";
 
 export interface GroupOptions extends ShapeOptions {
     id?: string;

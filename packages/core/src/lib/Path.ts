@@ -10,11 +10,12 @@ import { SpinorLike, VectorLike } from "./math/G20";
 import { G20 } from "./math/G20.js";
 import { Disposable } from "./reactive/Disposable";
 import { svg } from "./renderers/SVGViewDOM";
-import { SVGAttributes, ViewDOM } from "./Shape";
+import { SVGAttributes } from "./Shape";
+import { Commands } from "./utils/Commands";
 import { getComponentOnCubicBezier, getCurveBoundingBox, getCurveFromPoints } from "./utils/curves";
 import { lerp, mod } from "./utils/math";
-import { Commands } from "./utils/Commands";
 import { contains, getCurveLength, getIdByLength, getSubdivisions } from "./utils/shape";
+import { ViewDOM } from "./ViewDOM";
 
 const min = Math.min;
 const max = Math.max;

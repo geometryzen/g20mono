@@ -7,7 +7,7 @@ import eslintTs from "typescript-eslint";
 
 export default [
     {
-        ignores: ["build/**", "coverage/**", "dist/**", "docs/**", "node_modules/**", "types/**"]
+        ignores: ["build/**", "coverage/**", "dist/**", "docs/**", "node_modules/**", "types/**", "www/**"]
     },
     {
         files: ["**/*.ts"],

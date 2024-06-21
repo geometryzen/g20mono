@@ -1,4 +1,4 @@
-import { ViewDOM } from "../Shape";
+import { ViewDOM } from "../ViewDOM";
 
 /**
  * Abstraction of a Gradient or Texture.
