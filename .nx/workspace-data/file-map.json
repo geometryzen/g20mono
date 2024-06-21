@@ -37,24 +37,32 @@
   "fileMap": {
     "nonProjectFiles": [
       {
-        "file": "build.sh",
-        "hash": "56083330577083476"
+        "file": "CODE_OF_CONDUCT.md",
+        "hash": "5761439908609575263"
+      },
+      {
+        "file": "images/ramp.png",
+        "hash": "7747722104767091917"
       },
       {
         "file": "package.json",
         "hash": "6623753741066414698"
       },
       {
-        "file": "images/grid.png",
-        "hash": "10740789132729694091"
+        "file": "deploy.sh",
+        "hash": "4354840590558303234"
       },
       {
-        "file": ".gitignore",
-        "hash": "3145140838529243436"
+        "file": ".prettierrc.yml",
+        "hash": "8853013848672716792"
       },
       {
-        "file": "images/ramp.png",
-        "hash": "7747722104767091917"
+        "file": "images/euclid.png",
+        "hash": "16022523158362360962"
+      },
+      {
+        "file": ".prettierignore",
+        "hash": "17069329343991277275"
       },
       {
         "file": "CONTRIBUTING.md",
@@ -65,497 +73,226 @@
         "hash": "9738649517935869644"
       },
       {
-        "file": ".prettierrc.yml",
-        "hash": "8853013848672716792"
-      },
-      {
-        "file": "lerna.json",
-        "hash": "6525279057195899554"
-      },
-      {
-        "file": "deploy.sh",
-        "hash": "4354840590558303234"
+        "file": ".gitignore",
+        "hash": "3919779229877909243"
       },
       {
         "file": "DEVELOPER.md",
         "hash": "10409494529744659035"
       },
       {
+        "file": "README.md",
+        "hash": "17603359081359983066"
+      },
+      {
         "file": "images/gradient.png",
         "hash": "17226973532929434129"
       },
       {
-        "file": ".prettierignore",
-        "hash": "17069329343991277275"
+        "file": "lerna.json",
+        "hash": "9748377784513357576"
+      },
+      {
+        "file": "package-lock.json",
+        "hash": "10787794491262685746"
       },
       {
         "file": "tsconfig.json",
         "hash": "11141804043103207938"
       },
       {
-        "file": "package-lock.json",
-        "hash": "11103932801632576935"
-      },
-      {
-        "file": "CODE_OF_CONDUCT.md",
-        "hash": "5761439908609575263"
-      },
-      {
-        "file": "images/euclid.png",
-        "hash": "16022523158362360962"
-      },
-      {
-        "file": "README.md",
-        "hash": "17603359081359983066"
-      },
-      {
         "file": "images/graphics.png",
         "hash": "11525823546417277130"
+      },
+      {
+        "file": "build.sh",
+        "hash": "56083330577083476"
+      },
+      {
+        "file": "images/grid.png",
+        "hash": "10740789132729694091"
       }
     ],
     "projectFileMap": {
-      "@g20/gradient": [
+      "@g20/svg": [
         {
-          "file": "packages/gradient/.gitignore",
+          "file": "packages/svg/.gitignore",
           "hash": "9546552638670805930"
         },
         {
-          "file": "packages/gradient/.npmignore",
+          "file": "packages/svg/.npmignore",
           "hash": "12417621034516993667"
         },
         {
-          "file": "packages/gradient/LICENSE",
+          "file": "packages/svg/LICENSE",
           "hash": "15646080515525459838"
         },
         {
-          "file": "packages/gradient/README.md",
-          "hash": "17135490867159292741"
+          "file": "packages/svg/README.md",
+          "hash": "9986645369859664506"
         },
         {
-          "file": "packages/gradient/eslint.config.js",
+          "file": "packages/svg/eslint.config.js",
           "hash": "13650591441913680035"
         },
         {
-          "file": "packages/gradient/jest.config.ts",
+          "file": "packages/svg/jest.config.ts",
           "hash": "4141595349173808716"
         },
         {
-          "file": "packages/gradient/package.json",
-          "hash": "18325371306611130600",
+          "file": "packages/svg/package.json",
+          "hash": "15695637432276442941",
           "deps": [
             "@g20/core",
-            "@g20/reactive"
+            "npm:@types/jsdom",
+            "npm:canvg",
+            "npm:jsdom"
           ]
         },
         {
-          "file": "packages/gradient/rollup-plugin-dts.d.ts",
+          "file": "packages/svg/rollup-plugin-dts.d.ts",
           "hash": "8129597529994452175"
         },
         {
-          "file": "packages/gradient/rollup.config.mts",
-          "hash": "278383127032786579"
+          "file": "packages/svg/rollup.config.mts",
+          "hash": "7276975786252664781"
         },
         {
-          "file": "packages/gradient/src/constants.ts",
-          "hash": "15879546003086434472"
+          "file": "packages/svg/src/index.ts",
+          "hash": "8564150002073643254"
         },
         {
-          "file": "packages/gradient/src/gradient.ts",
-          "hash": "15040395612177106327"
+          "file": "packages/svg/src/lib/HTMLElementDOM.ts",
+          "hash": "17241050738900395436"
         },
         {
-          "file": "packages/gradient/src/index.ts",
-          "hash": "18205028652822608576"
+          "file": "packages/svg/src/lib/SVGViewDOM.ts",
+          "hash": "16665688006048815168"
         },
         {
-          "file": "packages/gradient/src/linear-gradient.ts",
-          "hash": "14285306896036369471"
+          "file": "packages/svg/src/lib/SVGViewFactory.ts",
+          "hash": "10338464890834297259"
         },
         {
-          "file": "packages/gradient/src/radial-gradient.ts",
-          "hash": "8015384420028251067"
+          "file": "packages/svg/src/lib/initBoard.ts",
+          "hash": "8406476581565889993"
         },
         {
-          "file": "packages/gradient/src/stop.ts",
-          "hash": "10193408182300843539"
+          "file": "packages/svg/src/lib/math.ts",
+          "hash": "17341620417553941541"
         },
         {
-          "file": "packages/gradient/src/svg.ts",
-          "hash": "8369152767416184312"
-        },
-        {
-          "file": "packages/gradient/tests/index.spec.ts",
-          "hash": "15574089367467645379"
-        },
-        {
-          "file": "packages/gradient/tsconfig.json",
-          "hash": "6974964432934522290"
-        },
-        {
-          "file": "packages/gradient/typedoc.json",
-          "hash": "10065894750015554983"
-        },
-        {
-          "file": "packages/gradient/rollup.config-1719003142443.mjs",
-          "hash": "12838088868627529438"
-        },
-        {
-          "file": "packages/gradient/rollup.config-1719003225850.mjs",
-          "hash": "12838088868627529438"
-        }
-      ],
-      "@g20/mock": [
-        {
-          "file": "packages/mock/.gitignore",
-          "hash": "8541454419134350581"
-        },
-        {
-          "file": "packages/mock/.npmignore",
-          "hash": "12417621034516993667"
-        },
-        {
-          "file": "packages/mock/LICENSE",
-          "hash": "15646080515525459838"
-        },
-        {
-          "file": "packages/mock/README.md",
-          "hash": "12309126708379303049"
-        },
-        {
-          "file": "packages/mock/eslint.config.js",
-          "hash": "13650591441913680035"
-        },
-        {
-          "file": "packages/mock/jest.config.ts",
-          "hash": "4141595349173808716"
-        },
-        {
-          "file": "packages/mock/package.json",
-          "hash": "16066523464943203711",
-          "deps": [
-            "@g20/core",
-            "@g20/reactive"
-          ]
-        },
-        {
-          "file": "packages/mock/rollup-plugin-dts.d.ts",
-          "hash": "8129597529994452175"
-        },
-        {
-          "file": "packages/mock/rollup.config.mts",
-          "hash": "278383127032786579"
-        },
-        {
-          "file": "packages/mock/src/index.ts",
-          "hash": "7761449109433916938"
-        },
-        {
-          "file": "packages/mock/src/lib/dom.ts",
-          "hash": "4646766476411829977"
-        },
-        {
-          "file": "packages/mock/src/lib/initBoard.ts",
-          "hash": "12039999722119356778"
-        },
-        {
-          "file": "packages/mock/src/lib/nodes.ts",
-          "hash": "4666659291898384780"
-        },
-        {
-          "file": "packages/mock/src/lib/view.ts",
-          "hash": "14567921926947933952"
-        },
-        {
-          "file": "packages/mock/tests/GraphicsBoard.spec.ts",
-          "hash": "4143387360768153623"
-        },
-        {
-          "file": "packages/mock/tests/index.spec.ts",
+          "file": "packages/svg/tests/index.spec.ts",
           "hash": "9392766273978861428"
         },
         {
-          "file": "packages/mock/tsconfig.json",
+          "file": "packages/svg/tsconfig.json",
           "hash": "6974964432934522290"
         },
         {
-          "file": "packages/mock/typedoc.json",
+          "file": "packages/svg/typedoc.json",
           "hash": "10065894750015554983"
         },
         {
-          "file": "packages/mock/rollup.config-1719003141990.mjs",
-          "hash": "12838088868627529438"
+          "file": "packages/svg/rollup.config-1719003573235.mjs",
+          "hash": "17530340098800028236"
         },
         {
-          "file": "packages/mock/rollup.config-1719003225437.mjs",
-          "hash": "12838088868627529438"
+          "file": "packages/svg/rollup.config-1719003657845.mjs",
+          "hash": "17530340098800028236"
         }
       ],
-      "@g20/euclid": [
+      "@g20/reactive": [
         {
-          "file": "packages/euclid/.npmignore",
-          "hash": "12417621034516993667"
-        },
-        {
-          "file": "packages/euclid/LICENSE",
-          "hash": "15646080515525459838"
-        },
-        {
-          "file": "packages/euclid/README.md",
-          "hash": "4367571688950359834"
-        },
-        {
-          "file": "packages/euclid/build/analyze.js",
-          "hash": "15146733646264785440"
-        },
-        {
-          "file": "packages/euclid/build/build.js",
-          "hash": "8747744760561765364"
-        },
-        {
-          "file": "packages/euclid/build/serve.js",
-          "hash": "18267729480592188786"
-        },
-        {
-          "file": "packages/euclid/build/settings.js",
-          "hash": "17993628275536725190"
-        },
-        {
-          "file": "packages/euclid/eslint.config.js",
-          "hash": "8899652408128135793"
-        },
-        {
-          "file": "packages/euclid/jest.config.ts",
-          "hash": "4141595349173808716"
-        },
-        {
-          "file": "packages/euclid/package.json",
-          "hash": "2591430954902642535",
-          "deps": [
-            "@g20/core",
-            "@g20/reactive",
-            "@g20/mock",
-            "@g20/svg"
-          ]
-        },
-        {
-          "file": "packages/euclid/rollup-plugin-dts.d.ts",
-          "hash": "8129597529994452175"
-        },
-        {
-          "file": "packages/euclid/rollup.config.mts",
-          "hash": "278383127032786579"
-        },
-        {
-          "file": "packages/euclid/src/circle_circle_intersection.ts",
-          "hash": "17813409651606484334"
-        },
-        {
-          "file": "packages/euclid/src/index.ts",
-          "hash": "260285143380726780"
-        },
-        {
-          "file": "packages/euclid/src/main.ts",
-          "hash": "1091615923435089286"
-        },
-        {
-          "file": "packages/euclid/tests/index.spec.ts",
-          "hash": "4770382365860893238"
-        },
-        {
-          "file": "packages/euclid/tsconfig.json",
-          "hash": "6974964432934522290"
-        },
-        {
-          "file": "packages/euclid/typedoc.json",
-          "hash": "10065894750015554983"
-        },
-        {
-          "file": "packages/euclid/www/index.html",
-          "hash": "17841035965496964005"
-        },
-        {
-          "file": "packages/euclid/rollup.config-1719003154074.mjs",
-          "hash": "12838088868627529438"
-        },
-        {
-          "file": "packages/euclid/rollup.config-1719003263212.mjs",
-          "hash": "12838088868627529438"
-        }
-      ],
-      "@g20/player": [
-        {
-          "file": "packages/player/.gitignore",
+          "file": "packages/reactive/.gitignore",
           "hash": "9546552638670805930"
         },
         {
-          "file": "packages/player/.npmignore",
+          "file": "packages/reactive/.npmignore",
           "hash": "12417621034516993667"
         },
         {
-          "file": "packages/player/LICENSE",
+          "file": "packages/reactive/LICENSE",
           "hash": "15646080515525459838"
         },
         {
-          "file": "packages/player/README.md",
-          "hash": "16764722350645649390"
+          "file": "packages/reactive/README.md",
+          "hash": "16145891786861870205"
         },
         {
-          "file": "packages/player/eslint.config.js",
+          "file": "packages/reactive/eslint.config.js",
           "hash": "8899544372203675394"
         },
         {
-          "file": "packages/player/jest.config.ts",
+          "file": "packages/reactive/index.spec.ts",
+          "hash": "13965806215591097718"
+        },
+        {
+          "file": "packages/reactive/jest.config.ts",
           "hash": "4141595349173808716"
         },
         {
-          "file": "packages/player/package.json",
-          "hash": "18258860433368899565",
+          "file": "packages/reactive/package.json",
+          "hash": "2526838592159203129",
           "deps": [
-            "@g20/core",
-            "@g20/reactive"
+            "npm:signal-polyfill"
           ]
         },
         {
-          "file": "packages/player/rollup-plugin-dts.d.ts",
+          "file": "packages/reactive/rollup-plugin-dts.d.ts",
           "hash": "8129597529994452175"
         },
         {
-          "file": "packages/player/rollup.config.mts",
-          "hash": "278383127032786579"
+          "file": "packages/reactive/rollup.config.mts",
+          "hash": "13143011420124464804"
         },
         {
-          "file": "packages/player/src/index.ts",
-          "hash": "16967534690292177008"
+          "file": "packages/reactive/src/Disposable.ts",
+          "hash": "9673110013201368494"
         },
         {
-          "file": "packages/player/src/player.ts",
-          "hash": "3110279625783314797"
+          "file": "packages/reactive/src/computed.ts",
+          "hash": "10992717095179746769"
         },
         {
-          "file": "packages/player/tests/index.spec.ts",
-          "hash": "35575997227194084"
+          "file": "packages/reactive/src/effect.ts",
+          "hash": "14378843202278587656"
         },
         {
-          "file": "packages/player/tsconfig.json",
+          "file": "packages/reactive/src/index.ts",
+          "hash": "2679232102653976912"
+        },
+        {
+          "file": "packages/reactive/src/signal.ts",
+          "hash": "6399635751389463659"
+        },
+        {
+          "file": "packages/reactive/src/types.ts",
+          "hash": "10187682278573562901"
+        },
+        {
+          "file": "packages/reactive/src/untrack.ts",
+          "hash": "9534805065276493740"
+        },
+        {
+          "file": "packages/reactive/tests/Signal.spec.ts",
+          "hash": "10595800573873100964"
+        },
+        {
+          "file": "packages/reactive/tsconfig.json",
           "hash": "6974964432934522290"
         },
         {
-          "file": "packages/player/typedoc.json",
-          "hash": "10065894750015554983"
+          "file": "packages/reactive/typedoc.json",
+          "hash": "7469225736468351656"
         },
         {
-          "file": "packages/player/rollup.config-1719003141506.mjs",
-          "hash": "12838088868627529438"
+          "file": "packages/reactive/rollup.config-1719003544452.mjs",
+          "hash": "13910523969656288839"
         },
         {
-          "file": "packages/player/rollup.config-1719003224719.mjs",
-          "hash": "12838088868627529438"
-        }
-      ],
-      "@g20/texture": [
-        {
-          "file": "packages/texture/.gitignore",
-          "hash": "9546552638670805930"
-        },
-        {
-          "file": "packages/texture/.npmignore",
-          "hash": "12417621034516993667"
-        },
-        {
-          "file": "packages/texture/LICENSE",
-          "hash": "15646080515525459838"
-        },
-        {
-          "file": "packages/texture/README.md",
-          "hash": "5903160502673372750"
-        },
-        {
-          "file": "packages/texture/eslint.config.js",
-          "hash": "13650591441913680035"
-        },
-        {
-          "file": "packages/texture/jest.config.ts",
-          "hash": "4141595349173808716"
-        },
-        {
-          "file": "packages/texture/package.json",
-          "hash": "6288564763361569242",
-          "deps": [
-            "@g20/core",
-            "@g20/reactive"
-          ]
-        },
-        {
-          "file": "packages/texture/rollup-plugin-dts.d.ts",
-          "hash": "8129597529994452175"
-        },
-        {
-          "file": "packages/texture/rollup.config.mts",
-          "hash": "278383127032786579"
-        },
-        {
-          "file": "packages/texture/src/index.ts",
-          "hash": "9391045261304689788"
-        },
-        {
-          "file": "packages/texture/src/lib/Register.ts",
-          "hash": "16942457803251621324"
-        },
-        {
-          "file": "packages/texture/src/lib/constants.ts",
-          "hash": "3296592738059510836"
-        },
-        {
-          "file": "packages/texture/src/lib/getAbsoluteURL.ts",
-          "hash": "10678190138813122931"
-        },
-        {
-          "file": "packages/texture/src/lib/image-sequence.md",
-          "hash": "16985000261249926770"
-        },
-        {
-          "file": "packages/texture/src/lib/is_canvas.ts",
-          "hash": "4665277184634554105"
-        },
-        {
-          "file": "packages/texture/src/lib/is_img.ts",
-          "hash": "10399724604891989761"
-        },
-        {
-          "file": "packages/texture/src/lib/is_video.ts",
-          "hash": "5591774284436105300"
-        },
-        {
-          "file": "packages/texture/src/lib/sprite.md",
-          "hash": "12179617961195727452"
-        },
-        {
-          "file": "packages/texture/src/lib/svg.ts",
-          "hash": "1169222826949071212"
-        },
-        {
-          "file": "packages/texture/src/lib/texture.ts",
-          "hash": "5972906792709179850"
-        },
-        {
-          "file": "packages/texture/tests/index.spec.ts",
-          "hash": "15939735264228519011"
-        },
-        {
-          "file": "packages/texture/tsconfig.json",
-          "hash": "6974964432934522290"
-        },
-        {
-          "file": "packages/texture/typedoc.json",
-          "hash": "10065894750015554983"
-        },
-        {
-          "file": "packages/texture/rollup.config-1719003142094.mjs",
-          "hash": "12838088868627529438"
-        },
-        {
-          "file": "packages/texture/rollup.config-1719003227186.mjs",
-          "hash": "12838088868627529438"
+          "file": "packages/reactive/rollup.config-1719003608767.mjs",
+          "hash": "13910523969656288839"
         }
       ],
       "@g20/core": [
@@ -597,7 +334,7 @@
         },
         {
           "file": "packages/core/package.json",
-          "hash": "12341279609730302495",
+          "hash": "1500924862143517407",
           "deps": [
             "@g20/reactive",
             "npm:rxjs"
@@ -1036,101 +773,12 @@
           "hash": "18259137456263691715"
         },
         {
-          "file": "packages/core/rollup.config-1719003125836.mjs",
+          "file": "packages/core/rollup.config-1719003552622.mjs",
           "hash": "12682119606354892922"
         },
         {
-          "file": "packages/core/rollup.config-1719003184724.mjs",
+          "file": "packages/core/rollup.config-1719003622713.mjs",
           "hash": "12682119606354892922"
-        }
-      ],
-      "@g20/reactive": [
-        {
-          "file": "packages/reactive/.gitignore",
-          "hash": "9546552638670805930"
-        },
-        {
-          "file": "packages/reactive/.npmignore",
-          "hash": "12417621034516993667"
-        },
-        {
-          "file": "packages/reactive/LICENSE",
-          "hash": "15646080515525459838"
-        },
-        {
-          "file": "packages/reactive/README.md",
-          "hash": "16145891786861870205"
-        },
-        {
-          "file": "packages/reactive/eslint.config.js",
-          "hash": "8899544372203675394"
-        },
-        {
-          "file": "packages/reactive/index.spec.ts",
-          "hash": "13965806215591097718"
-        },
-        {
-          "file": "packages/reactive/jest.config.ts",
-          "hash": "4141595349173808716"
-        },
-        {
-          "file": "packages/reactive/package.json",
-          "hash": "1393622290493142535",
-          "deps": [
-            "npm:signal-polyfill"
-          ]
-        },
-        {
-          "file": "packages/reactive/rollup-plugin-dts.d.ts",
-          "hash": "8129597529994452175"
-        },
-        {
-          "file": "packages/reactive/rollup.config.mts",
-          "hash": "13143011420124464804"
-        },
-        {
-          "file": "packages/reactive/src/Disposable.ts",
-          "hash": "9673110013201368494"
-        },
-        {
-          "file": "packages/reactive/src/computed.ts",
-          "hash": "10992717095179746769"
-        },
-        {
-          "file": "packages/reactive/src/effect.ts",
-          "hash": "14378843202278587656"
-        },
-        {
-          "file": "packages/reactive/src/index.ts",
-          "hash": "2679232102653976912"
-        },
-        {
-          "file": "packages/reactive/src/signal.ts",
-          "hash": "6399635751389463659"
-        },
-        {
-          "file": "packages/reactive/src/types.ts",
-          "hash": "10187682278573562901"
-        },
-        {
-          "file": "packages/reactive/src/untrack.ts",
-          "hash": "9534805065276493740"
-        },
-        {
-          "file": "packages/reactive/tests/Signal.spec.ts",
-          "hash": "10595800573873100964"
-        },
-        {
-          "file": "packages/reactive/tsconfig.json",
-          "hash": "6974964432934522290"
-        },
-        {
-          "file": "packages/reactive/typedoc.json",
-          "hash": "7469225736468351656"
-        },
-        {
-          "file": "packages/reactive/rollup.config-1719003172661.mjs",
-          "hash": "13910523969656288839"
         }
       ],
       "@g20/browser": [
@@ -1160,7 +808,7 @@
         },
         {
           "file": "packages/browser/package.json",
-          "hash": "10515619749297643214",
+          "hash": "1685603373413484406",
           "deps": [
             "npm:@types/jsdom",
             "@g20/canvas",
@@ -1202,80 +850,8 @@
           "hash": "12129201704576181087"
         },
         {
-          "file": "packages/browser/rollup.config-1719003163005.mjs",
+          "file": "packages/browser/rollup.config-1719003598015.mjs",
           "hash": "10398628023675395733"
-        }
-      ],
-      "@g20/server": [
-        {
-          "file": "packages/server/.gitignore",
-          "hash": "9546552638670805930"
-        },
-        {
-          "file": "packages/server/.npmignore",
-          "hash": "12417621034516993667"
-        },
-        {
-          "file": "packages/server/LICENSE",
-          "hash": "15646080515525459838"
-        },
-        {
-          "file": "packages/server/README.md",
-          "hash": "1648034877284352395"
-        },
-        {
-          "file": "packages/server/eslint.config.js",
-          "hash": "8899544372203675394"
-        },
-        {
-          "file": "packages/server/jest.config.ts",
-          "hash": "4141595349173808716"
-        },
-        {
-          "file": "packages/server/package.json",
-          "hash": "12401399299720698596",
-          "deps": [
-            "@g20/core",
-            "npm:@types/jsdom",
-            "npm:canvg",
-            "npm:jsdom"
-          ]
-        },
-        {
-          "file": "packages/server/rollup-plugin-dts.d.ts",
-          "hash": "8129597529994452175"
-        },
-        {
-          "file": "packages/server/rollup.config.mts",
-          "hash": "7276975786252664781"
-        },
-        {
-          "file": "packages/server/src/index.ts",
-          "hash": "1386271558677218153"
-        },
-        {
-          "file": "packages/server/src/lib/initBoard.ts",
-          "hash": "12890709640989117274"
-        },
-        {
-          "file": "packages/server/tests/index.spec.ts",
-          "hash": "9392766273978861428"
-        },
-        {
-          "file": "packages/server/tsconfig.json",
-          "hash": "6974964432934522290"
-        },
-        {
-          "file": "packages/server/typedoc.json",
-          "hash": "10065894750015554983"
-        },
-        {
-          "file": "packages/server/rollup.config-1719003140661.mjs",
-          "hash": "17530340098800028236"
-        },
-        {
-          "file": "packages/server/rollup.config-1719003225323.mjs",
-          "hash": "17530340098800028236"
         }
       ],
       "@g20/graphics": [
@@ -1305,7 +881,7 @@
         },
         {
           "file": "packages/graphics/package.json",
-          "hash": "361973621003300306",
+          "hash": "10558005004840030232",
           "deps": [
             "@g20/core",
             "@g20/reactive",
@@ -1369,11 +945,97 @@
           "hash": "10065894750015554983"
         },
         {
-          "file": "packages/graphics/rollup.config-1719003153528.mjs",
+          "file": "packages/graphics/rollup.config-1719003586549.mjs",
           "hash": "12838088868627529438"
         },
         {
-          "file": "packages/graphics/rollup.config-1719003263396.mjs",
+          "file": "packages/graphics/rollup.config-1719003690654.mjs",
+          "hash": "12838088868627529438"
+        }
+      ],
+      "@g20/mock": [
+        {
+          "file": "packages/mock/.gitignore",
+          "hash": "8541454419134350581"
+        },
+        {
+          "file": "packages/mock/.npmignore",
+          "hash": "12417621034516993667"
+        },
+        {
+          "file": "packages/mock/LICENSE",
+          "hash": "15646080515525459838"
+        },
+        {
+          "file": "packages/mock/README.md",
+          "hash": "12309126708379303049"
+        },
+        {
+          "file": "packages/mock/eslint.config.js",
+          "hash": "13650591441913680035"
+        },
+        {
+          "file": "packages/mock/jest.config.ts",
+          "hash": "4141595349173808716"
+        },
+        {
+          "file": "packages/mock/package.json",
+          "hash": "2385000905308989250",
+          "deps": [
+            "@g20/core",
+            "@g20/reactive"
+          ]
+        },
+        {
+          "file": "packages/mock/rollup-plugin-dts.d.ts",
+          "hash": "8129597529994452175"
+        },
+        {
+          "file": "packages/mock/rollup.config.mts",
+          "hash": "278383127032786579"
+        },
+        {
+          "file": "packages/mock/src/index.ts",
+          "hash": "7761449109433916938"
+        },
+        {
+          "file": "packages/mock/src/lib/dom.ts",
+          "hash": "4646766476411829977"
+        },
+        {
+          "file": "packages/mock/src/lib/initBoard.ts",
+          "hash": "12039999722119356778"
+        },
+        {
+          "file": "packages/mock/src/lib/nodes.ts",
+          "hash": "4666659291898384780"
+        },
+        {
+          "file": "packages/mock/src/lib/view.ts",
+          "hash": "14567921926947933952"
+        },
+        {
+          "file": "packages/mock/tests/GraphicsBoard.spec.ts",
+          "hash": "4143387360768153623"
+        },
+        {
+          "file": "packages/mock/tests/index.spec.ts",
+          "hash": "9392766273978861428"
+        },
+        {
+          "file": "packages/mock/tsconfig.json",
+          "hash": "6974964432934522290"
+        },
+        {
+          "file": "packages/mock/typedoc.json",
+          "hash": "10065894750015554983"
+        },
+        {
+          "file": "packages/mock/rollup.config-1719003572069.mjs",
+          "hash": "12838088868627529438"
+        },
+        {
+          "file": "packages/mock/rollup.config-1719003655683.mjs",
           "hash": "12838088868627529438"
         }
       ],
@@ -1439,94 +1101,6 @@
           "hash": "10065894750015554983"
         }
       ],
-      "@g20/svg": [
-        {
-          "file": "packages/svg/.gitignore",
-          "hash": "9546552638670805930"
-        },
-        {
-          "file": "packages/svg/.npmignore",
-          "hash": "12417621034516993667"
-        },
-        {
-          "file": "packages/svg/LICENSE",
-          "hash": "15646080515525459838"
-        },
-        {
-          "file": "packages/svg/README.md",
-          "hash": "9986645369859664506"
-        },
-        {
-          "file": "packages/svg/eslint.config.js",
-          "hash": "13650591441913680035"
-        },
-        {
-          "file": "packages/svg/jest.config.ts",
-          "hash": "4141595349173808716"
-        },
-        {
-          "file": "packages/svg/package.json",
-          "hash": "2791346009639968812",
-          "deps": [
-            "@g20/core",
-            "npm:@types/jsdom",
-            "npm:canvg",
-            "npm:jsdom"
-          ]
-        },
-        {
-          "file": "packages/svg/rollup-plugin-dts.d.ts",
-          "hash": "8129597529994452175"
-        },
-        {
-          "file": "packages/svg/rollup.config.mts",
-          "hash": "7276975786252664781"
-        },
-        {
-          "file": "packages/svg/src/index.ts",
-          "hash": "8564150002073643254"
-        },
-        {
-          "file": "packages/svg/src/lib/HTMLElementDOM.ts",
-          "hash": "17241050738900395436"
-        },
-        {
-          "file": "packages/svg/src/lib/SVGViewDOM.ts",
-          "hash": "16665688006048815168"
-        },
-        {
-          "file": "packages/svg/src/lib/SVGViewFactory.ts",
-          "hash": "10338464890834297259"
-        },
-        {
-          "file": "packages/svg/src/lib/initBoard.ts",
-          "hash": "8406476581565889993"
-        },
-        {
-          "file": "packages/svg/src/lib/math.ts",
-          "hash": "17341620417553941541"
-        },
-        {
-          "file": "packages/svg/tests/index.spec.ts",
-          "hash": "9392766273978861428"
-        },
-        {
-          "file": "packages/svg/tsconfig.json",
-          "hash": "6974964432934522290"
-        },
-        {
-          "file": "packages/svg/typedoc.json",
-          "hash": "10065894750015554983"
-        },
-        {
-          "file": "packages/svg/rollup.config-1719003142868.mjs",
-          "hash": "17530340098800028236"
-        },
-        {
-          "file": "packages/svg/rollup.config-1719003226609.mjs",
-          "hash": "17530340098800028236"
-        }
-      ],
       "@g20/grid": [
         {
           "file": "packages/grid/.gitignore",
@@ -1554,7 +1128,7 @@
         },
         {
           "file": "packages/grid/package.json",
-          "hash": "5918995233937797596",
+          "hash": "8685672711672485505",
           "deps": [
             "@g20/core",
             "@g20/reactive"
@@ -1613,11 +1187,441 @@
           "hash": "10065894750015554983"
         },
         {
-          "file": "packages/grid/rollup.config-1719003141530.mjs",
+          "file": "packages/grid/rollup.config-1719003572612.mjs",
           "hash": "12838088868627529438"
         },
         {
-          "file": "packages/grid/rollup.config-1719003225744.mjs",
+          "file": "packages/grid/rollup.config-1719003656855.mjs",
+          "hash": "12838088868627529438"
+        }
+      ],
+      "@g20/gradient": [
+        {
+          "file": "packages/gradient/.gitignore",
+          "hash": "9546552638670805930"
+        },
+        {
+          "file": "packages/gradient/.npmignore",
+          "hash": "12417621034516993667"
+        },
+        {
+          "file": "packages/gradient/LICENSE",
+          "hash": "15646080515525459838"
+        },
+        {
+          "file": "packages/gradient/README.md",
+          "hash": "17135490867159292741"
+        },
+        {
+          "file": "packages/gradient/eslint.config.js",
+          "hash": "13650591441913680035"
+        },
+        {
+          "file": "packages/gradient/jest.config.ts",
+          "hash": "4141595349173808716"
+        },
+        {
+          "file": "packages/gradient/package.json",
+          "hash": "4301489962797900857",
+          "deps": [
+            "@g20/core",
+            "@g20/reactive"
+          ]
+        },
+        {
+          "file": "packages/gradient/rollup-plugin-dts.d.ts",
+          "hash": "8129597529994452175"
+        },
+        {
+          "file": "packages/gradient/rollup.config.mts",
+          "hash": "278383127032786579"
+        },
+        {
+          "file": "packages/gradient/src/constants.ts",
+          "hash": "15879546003086434472"
+        },
+        {
+          "file": "packages/gradient/src/gradient.ts",
+          "hash": "15040395612177106327"
+        },
+        {
+          "file": "packages/gradient/src/index.ts",
+          "hash": "18205028652822608576"
+        },
+        {
+          "file": "packages/gradient/src/linear-gradient.ts",
+          "hash": "14285306896036369471"
+        },
+        {
+          "file": "packages/gradient/src/radial-gradient.ts",
+          "hash": "8015384420028251067"
+        },
+        {
+          "file": "packages/gradient/src/stop.ts",
+          "hash": "10193408182300843539"
+        },
+        {
+          "file": "packages/gradient/src/svg.ts",
+          "hash": "8369152767416184312"
+        },
+        {
+          "file": "packages/gradient/tests/index.spec.ts",
+          "hash": "15574089367467645379"
+        },
+        {
+          "file": "packages/gradient/tsconfig.json",
+          "hash": "6974964432934522290"
+        },
+        {
+          "file": "packages/gradient/typedoc.json",
+          "hash": "10065894750015554983"
+        },
+        {
+          "file": "packages/gradient/rollup.config-1719003573395.mjs",
+          "hash": "12838088868627529438"
+        },
+        {
+          "file": "packages/gradient/rollup.config-1719003658559.mjs",
+          "hash": "12838088868627529438"
+        }
+      ],
+      "@g20/texture": [
+        {
+          "file": "packages/texture/.gitignore",
+          "hash": "9546552638670805930"
+        },
+        {
+          "file": "packages/texture/.npmignore",
+          "hash": "12417621034516993667"
+        },
+        {
+          "file": "packages/texture/LICENSE",
+          "hash": "15646080515525459838"
+        },
+        {
+          "file": "packages/texture/README.md",
+          "hash": "5903160502673372750"
+        },
+        {
+          "file": "packages/texture/eslint.config.js",
+          "hash": "13650591441913680035"
+        },
+        {
+          "file": "packages/texture/jest.config.ts",
+          "hash": "4141595349173808716"
+        },
+        {
+          "file": "packages/texture/package.json",
+          "hash": "2282079551896479856",
+          "deps": [
+            "@g20/core",
+            "@g20/reactive"
+          ]
+        },
+        {
+          "file": "packages/texture/rollup-plugin-dts.d.ts",
+          "hash": "8129597529994452175"
+        },
+        {
+          "file": "packages/texture/rollup.config.mts",
+          "hash": "278383127032786579"
+        },
+        {
+          "file": "packages/texture/src/index.ts",
+          "hash": "9391045261304689788"
+        },
+        {
+          "file": "packages/texture/src/lib/Register.ts",
+          "hash": "16942457803251621324"
+        },
+        {
+          "file": "packages/texture/src/lib/constants.ts",
+          "hash": "3296592738059510836"
+        },
+        {
+          "file": "packages/texture/src/lib/getAbsoluteURL.ts",
+          "hash": "10678190138813122931"
+        },
+        {
+          "file": "packages/texture/src/lib/image-sequence.md",
+          "hash": "16985000261249926770"
+        },
+        {
+          "file": "packages/texture/src/lib/is_canvas.ts",
+          "hash": "4665277184634554105"
+        },
+        {
+          "file": "packages/texture/src/lib/is_img.ts",
+          "hash": "10399724604891989761"
+        },
+        {
+          "file": "packages/texture/src/lib/is_video.ts",
+          "hash": "5591774284436105300"
+        },
+        {
+          "file": "packages/texture/src/lib/sprite.md",
+          "hash": "12179617961195727452"
+        },
+        {
+          "file": "packages/texture/src/lib/svg.ts",
+          "hash": "1169222826949071212"
+        },
+        {
+          "file": "packages/texture/src/lib/texture.ts",
+          "hash": "5972906792709179850"
+        },
+        {
+          "file": "packages/texture/tests/index.spec.ts",
+          "hash": "15939735264228519011"
+        },
+        {
+          "file": "packages/texture/tsconfig.json",
+          "hash": "6974964432934522290"
+        },
+        {
+          "file": "packages/texture/typedoc.json",
+          "hash": "10065894750015554983"
+        },
+        {
+          "file": "packages/texture/rollup.config-1719003572731.mjs",
+          "hash": "12838088868627529438"
+        },
+        {
+          "file": "packages/texture/rollup.config-1719003657375.mjs",
+          "hash": "12838088868627529438"
+        }
+      ],
+      "@g20/server": [
+        {
+          "file": "packages/server/.gitignore",
+          "hash": "9546552638670805930"
+        },
+        {
+          "file": "packages/server/.npmignore",
+          "hash": "12417621034516993667"
+        },
+        {
+          "file": "packages/server/LICENSE",
+          "hash": "15646080515525459838"
+        },
+        {
+          "file": "packages/server/README.md",
+          "hash": "1648034877284352395"
+        },
+        {
+          "file": "packages/server/eslint.config.js",
+          "hash": "8899544372203675394"
+        },
+        {
+          "file": "packages/server/jest.config.ts",
+          "hash": "4141595349173808716"
+        },
+        {
+          "file": "packages/server/package.json",
+          "hash": "12056700305373500922",
+          "deps": [
+            "@g20/core",
+            "npm:@types/jsdom",
+            "npm:canvg",
+            "npm:jsdom"
+          ]
+        },
+        {
+          "file": "packages/server/rollup-plugin-dts.d.ts",
+          "hash": "8129597529994452175"
+        },
+        {
+          "file": "packages/server/rollup.config.mts",
+          "hash": "7276975786252664781"
+        },
+        {
+          "file": "packages/server/src/index.ts",
+          "hash": "1386271558677218153"
+        },
+        {
+          "file": "packages/server/src/lib/initBoard.ts",
+          "hash": "12890709640989117274"
+        },
+        {
+          "file": "packages/server/tests/index.spec.ts",
+          "hash": "9392766273978861428"
+        },
+        {
+          "file": "packages/server/tsconfig.json",
+          "hash": "6974964432934522290"
+        },
+        {
+          "file": "packages/server/typedoc.json",
+          "hash": "10065894750015554983"
+        },
+        {
+          "file": "packages/server/rollup.config-1719003571907.mjs",
+          "hash": "17530340098800028236"
+        },
+        {
+          "file": "packages/server/rollup.config-1719003656468.mjs",
+          "hash": "17530340098800028236"
+        }
+      ],
+      "@g20/player": [
+        {
+          "file": "packages/player/.gitignore",
+          "hash": "9546552638670805930"
+        },
+        {
+          "file": "packages/player/.npmignore",
+          "hash": "12417621034516993667"
+        },
+        {
+          "file": "packages/player/LICENSE",
+          "hash": "15646080515525459838"
+        },
+        {
+          "file": "packages/player/README.md",
+          "hash": "16764722350645649390"
+        },
+        {
+          "file": "packages/player/eslint.config.js",
+          "hash": "8899544372203675394"
+        },
+        {
+          "file": "packages/player/jest.config.ts",
+          "hash": "4141595349173808716"
+        },
+        {
+          "file": "packages/player/package.json",
+          "hash": "15943786254478958034",
+          "deps": [
+            "@g20/core",
+            "@g20/reactive"
+          ]
+        },
+        {
+          "file": "packages/player/rollup-plugin-dts.d.ts",
+          "hash": "8129597529994452175"
+        },
+        {
+          "file": "packages/player/rollup.config.mts",
+          "hash": "278383127032786579"
+        },
+        {
+          "file": "packages/player/src/index.ts",
+          "hash": "16967534690292177008"
+        },
+        {
+          "file": "packages/player/src/player.ts",
+          "hash": "3110279625783314797"
+        },
+        {
+          "file": "packages/player/tests/index.spec.ts",
+          "hash": "35575997227194084"
+        },
+        {
+          "file": "packages/player/tsconfig.json",
+          "hash": "6974964432934522290"
+        },
+        {
+          "file": "packages/player/typedoc.json",
+          "hash": "10065894750015554983"
+        },
+        {
+          "file": "packages/player/rollup.config-1719003573358.mjs",
+          "hash": "12838088868627529438"
+        },
+        {
+          "file": "packages/player/rollup.config-1719003656568.mjs",
+          "hash": "12838088868627529438"
+        }
+      ],
+      "@g20/euclid": [
+        {
+          "file": "packages/euclid/.npmignore",
+          "hash": "12417621034516993667"
+        },
+        {
+          "file": "packages/euclid/LICENSE",
+          "hash": "15646080515525459838"
+        },
+        {
+          "file": "packages/euclid/README.md",
+          "hash": "4367571688950359834"
+        },
+        {
+          "file": "packages/euclid/build/analyze.js",
+          "hash": "15146733646264785440"
+        },
+        {
+          "file": "packages/euclid/build/build.js",
+          "hash": "8747744760561765364"
+        },
+        {
+          "file": "packages/euclid/build/serve.js",
+          "hash": "18267729480592188786"
+        },
+        {
+          "file": "packages/euclid/build/settings.js",
+          "hash": "17993628275536725190"
+        },
+        {
+          "file": "packages/euclid/eslint.config.js",
+          "hash": "8899652408128135793"
+        },
+        {
+          "file": "packages/euclid/jest.config.ts",
+          "hash": "4141595349173808716"
+        },
+        {
+          "file": "packages/euclid/package.json",
+          "hash": "12788329634536343158",
+          "deps": [
+            "@g20/core",
+            "@g20/reactive",
+            "@g20/mock",
+            "@g20/svg"
+          ]
+        },
+        {
+          "file": "packages/euclid/rollup-plugin-dts.d.ts",
+          "hash": "8129597529994452175"
+        },
+        {
+          "file": "packages/euclid/rollup.config.mts",
+          "hash": "278383127032786579"
+        },
+        {
+          "file": "packages/euclid/src/circle_circle_intersection.ts",
+          "hash": "17813409651606484334"
+        },
+        {
+          "file": "packages/euclid/src/index.ts",
+          "hash": "260285143380726780"
+        },
+        {
+          "file": "packages/euclid/src/main.ts",
+          "hash": "1091615923435089286"
+        },
+        {
+          "file": "packages/euclid/tests/index.spec.ts",
+          "hash": "4770382365860893238"
+        },
+        {
+          "file": "packages/euclid/tsconfig.json",
+          "hash": "6974964432934522290"
+        },
+        {
+          "file": "packages/euclid/typedoc.json",
+          "hash": "10065894750015554983"
+        },
+        {
+          "file": "packages/euclid/www/index.html",
+          "hash": "17841035965496964005"
+        },
+        {
+          "file": "packages/euclid/rollup.config-1719003587275.mjs",
+          "hash": "12838088868627529438"
+        },
+        {
+          "file": "packages/euclid/rollup.config-1719003690357.mjs",
           "hash": "12838088868627529438"
         }
       ],
@@ -1648,7 +1652,7 @@
         },
         {
           "file": "packages/canvas/package.json",
-          "hash": "16079995577689361873",
+          "hash": "15711223220763477394",
           "deps": [
             "@g20/core",
             "@g20/svg",
@@ -1696,11 +1700,11 @@
           "hash": "10065894750015554983"
         },
         {
-          "file": "packages/canvas/rollup.config-1719003154329.mjs",
+          "file": "packages/canvas/rollup.config-1719003587803.mjs",
           "hash": "17530340098800028236"
         },
         {
-          "file": "packages/canvas/rollup.config-1719003259801.mjs",
+          "file": "packages/canvas/rollup.config-1719003690554.mjs",
           "hash": "17530340098800028236"
         }
       ]
