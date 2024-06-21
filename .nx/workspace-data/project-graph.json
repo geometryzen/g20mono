@@ -12751,9 +12751,9 @@
       "type": "npm",
       "name": "npm:typescript",
       "data": {
-        "version": "5.5.2",
+        "version": "5.4.5",
         "packageName": "typescript",
-        "hash": "sha512-NcRtPEOsPFFWjobJEtfihkLCZCXZt/os3zf8nTxjVH3RvTSxjrCamJpbExGvYOF+tFHc3pA65qpdwPbzjohhew=="
+        "hash": "sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ=="
       }
     },
     "npm:typescript-eslint": {
@@ -26025,6 +26025,11 @@
       }
     ],
     "npm:typedoc": [
+      {
+        "source": "npm:typedoc",
+        "target": "npm:typescript",
+        "type": "static"
+      },
       {
         "source": "npm:typedoc",
         "target": "npm:lunr",
