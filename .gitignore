@@ -7,7 +7,5 @@ packages/core/www/main.js
 packages/core/www/main.js.map
 packages/euclid/www/main.js
 packages/euclid/www/main.js.map
-
-.nx/cache
-.nx/workspace-data
+.nx
 
