@@ -1,6 +1,6 @@
 {
     "name": "@g20/euclid",
-    "version": "1.0.0-alpha.36",
+    "version": "1.0.0-alpha.37",
     "description": "Euclidean Geometry Utilities",
     "exports": {
         ".": {
