@@ -71,8 +71,8 @@
         "canvg": "^4.0.2"
     },
     "peerDependencies": {
-        "@g20/core": "file:../core",
-        "@g20/svg": "file:../svg"
+        "@g20/core": "workspace:*",
+        "@g20/svg": "workspace:*"
     },
     "gitHead": "2f2e946762414c168dd7541fabcf2aaf80cb71e5"
 }

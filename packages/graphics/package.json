@@ -69,11 +69,11 @@
     },
     "homepage": "https://github.com/geometryzen/g20mono#readme",
     "peerDependencies": {
-        "@g20/core": "file:../core",
-        "@g20/reactive": "file:../reactive"
+        "@g20/core": "workspace:*",
+        "@g20/reactive": "workspace:*"
     },
     "devDependencies": {
-        "@g20/mock": "file:../mock"
+        "@g20/mock": "workspace:*"
     },
     "gitHead": "2f2e946762414c168dd7541fabcf2aaf80cb71e5"
 }

@@ -75,7 +75,7 @@
         "@types/jsdom": "^21.1.7"
     },
     "peerDependencies": {
-        "@g20/core": "file:../core"
+        "@g20/core": "workspace:*"
     },
     "gitHead": "2f2e946762414c168dd7541fabcf2aaf80cb71e5"
 }

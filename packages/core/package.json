@@ -75,7 +75,7 @@
         "rxjs": "^7.8.1"
     },
     "peerDependencies": {
-        "@g20/reactive": "file:../reactive"
+        "@g20/reactive": "workspace:*"
     },
     "gitHead": "2f2e946762414c168dd7541fabcf2aaf80cb71e5"
 }
