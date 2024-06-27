@@ -1,6 +1,6 @@
 {
     "name": "@g20/player",
-    "version": "1.0.0-alpha.38",
+    "version": "1.0.0-alpha.39",
     "description": "Window Animation Frame Player",
     "exports": {
         ".": {
