@@ -1,10 +1,8 @@
 0 silly argv {
-0 silly argv   _: [ 'version' ],
-0 silly argv   private: false,
-0 silly argv   'force-publish': true,
-0 silly argv   forcePublish: true,
+0 silly argv   _: [ 'run' ],
 0 silly argv   lernaVersion: '999.9.9',
-0 silly argv   '$0': 'node_modules/lerna/dist/cli.js'
+0 silly argv   '$0': 'node_modules/lerna/dist/cli.js',
+0 silly argv   script: 'lint'
 0 silly argv }
 1 notice cli v999.9.9
 2 verbose packageConfigs Package manager "pnpm" detected. Resolving packages using `pnpm-workspace.yaml`.
