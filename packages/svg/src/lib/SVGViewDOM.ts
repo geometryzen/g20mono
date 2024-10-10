@@ -174,7 +174,7 @@ export const svg = {
 
             let command: string;
             let c;
-            Anchor;
+            // Anchor;
             let vx, vy, ux, uy, ar, bl, br, cl;
             let rx, ry, xAxisRotation, largeArcFlag, sweepFlag;
 

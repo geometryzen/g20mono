@@ -108,7 +108,7 @@ export const svg = {
 
             let command: string;
             let c;
-            Anchor;
+            // Anchor;
 
             let x = toFixed(screenX(b.x, b.y));
             let y = toFixed(screenY(b.x, b.y));

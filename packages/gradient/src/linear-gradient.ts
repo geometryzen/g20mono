@@ -4,6 +4,7 @@ import { Gradient, GradientOptions } from "./gradient";
 import { Stop } from "./stop";
 import { SVGAttributes } from "./svg";
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface LinearGradientOptions extends GradientOptions {}
 
 export class LinearGradient extends Gradient implements ColorProvider {

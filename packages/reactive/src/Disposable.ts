@@ -28,7 +28,7 @@ export function disposable_from_disposables(disposables: Disposable[]): Disposab
     });
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 export function disposableFromFunction(f: Function): Disposable {
     return {
         dispose: () => {

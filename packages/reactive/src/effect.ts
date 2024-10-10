@@ -24,6 +24,7 @@ export function effect(callback: () => unknown): Disposable {
     let cleanup: unknown;
 
     const computed = new Sp.Computed(() => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         typeof cleanup === "function" && cleanup();
         cleanup = callback();
     });
@@ -33,6 +34,7 @@ export function effect(callback: () => unknown): Disposable {
 
     return disposableFromFunction(() => {
         w.unwatch(computed);
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         typeof cleanup === "function" && cleanup();
     });
 }
