@@ -1,7 +1,8 @@
 #!/bin/sh
-pnpm --registry=http://localhost:4873 install
+pnpm run clean
+pnpm --registry=http://localhost:4873 install --force
 pnpm run format:write
 pnpm run lint
 pnpm run build
 pnpm run test
-pnpm --registry=http://localhost:4873 update
+# pnpm --registry=http://localhost:4873 update
