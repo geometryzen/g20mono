@@ -39,7 +39,7 @@ This installs dependencies in the node_modules folder.
 You are now ready to build g20...
 
 ```
-npm run build
+pnpm run build
 ```
 
 In order to allow Jest testing in consuming libraries, it is necessary to make some "undesirable" changes to this package.json
